@@ -1,5 +1,5 @@
-ScriptAlias /${vars:instanceid}/mapserv ${mapserverexec}
-<Location /${vars:instanceid}/mapserv>
+ScriptAlias /${vars:instanceid}/wmscrdppf ${mapserverexec}
+<Location /${vars:instanceid}/wmscrdppf>
    # If you use tilecache and want to prevent direct WMS access, uncomment 
    # the following lines:
    Order Deny,Allow
