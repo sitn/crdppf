@@ -1,0 +1,12 @@
+a.banner2:hover {
+	background-color: #cccccc;
+	text-decoration: none !important;
+}
+
+.banner2 {
+     color: #333333;
+     font-family: Verdana;
+     font-size: 10px;
+     font-weight: bold;
+	 text-decoration: none !important;
+ }
