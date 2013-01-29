@@ -4,6 +4,8 @@ import sqlahelper
 
 from pyramid.session import UnencryptedCookieSessionFactoryConfig
 
+from pyramid.mako_templating import renderer_factory as mako_renderer_factory
+
 import papyrus
 
 def main(global_config, **settings):
@@ -16,24 +18,31 @@ def main(global_config, **settings):
         encoding='utf-8'
         )
     sqlahelper.add_engine(engine)
-    
+
     settings.setdefault('mako.directories','crdppf:templates')
     settings.setdefault('reload_templates',True)
     my_session_factory = UnencryptedCookieSessionFactoryConfig('itsaseekreet',2400)
     config = Configurator(settings=settings, session_factory = my_session_factory)
     config.include(papyrus.includeme)
     config.add_static_view('static', 'crdppf:static', cache_max_age=3600)
-    
+
+    config.add_renderer('.js', mako_renderer_factory)
+
+    # ROUTES
     config.add_route('home', '/')
-    config.add_view('crdppf.entry.Entry', route_name = 'home')
-    
-    
     config.add_route('create_extrait', 'create_extrait')
-    
-    
-    
-    
+    config.add_route('crdppf', 'crdppf')
+    config.add_route('map', 'map')
+
+    config.add_route('globalsjs', '/globals.js')
+
+    config.add_route('ogcproxy', '/ogcproxy')
+
+    # VIEWS
+    config.add_view('crdppf.entry.Entry', route_name = 'home')
+    config.add_view('crdppf.entry.Entry', route_name='crdppf')
+
     config.scan()
-    
+
     return config.make_wsgi_app()
 
