@@ -4,6 +4,8 @@
 
 Ext.namespace('Crdppf');
 
+// test svn olivier
+
 /**
  * Constructor: Crdppf.Map
  * Creates a panel with an Openlayer.map object
