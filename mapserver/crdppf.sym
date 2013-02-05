@@ -1,0 +1,637 @@
+SYMBOLSET
+
+SYMBOL
+    Name 'triangle'
+    Type VECTOR 
+    Filled true
+    Points
+        0 1
+        .5 0.13
+        1 1
+        0 1
+    END
+END
+
+Symbol
+    NAME "hach"
+    Type VECTOR
+    TRANSPARENT 0
+    Points
+        0 1
+        1 1
+    END
+END
+
+SYMBOL
+    Name 'square'
+    Type VECTOR
+    Filled true
+    Points
+        0 1
+        0 0
+        1 0
+        1 1
+        0 1
+    END
+END
+
+SYMBOL
+    Name 'circle'
+    Type ELLIPSE
+    Filled true
+    Points
+        1 1
+    END
+END
+
+SYMBOL
+  NAME "croix"
+  TYPE PIXMAP
+  IMAGE "images/pt_limite_croix.gif"
+END
+
+SYMBOL
+  Name 'pointilles'
+  Type VECTOR
+  Points
+    0 0
+    0 0
+    -99 -99
+    1 1
+    1 1
+  END
+END
+
+SYMBOL
+    Name 'agri1'
+    Type Truetype
+    FONT "esri15"
+    CHARACTER "G"
+END
+
+SYMBOL
+    Name 'agri2'
+    Type Truetype
+    FONT "esri10"
+    CHARACTER "H"
+END
+
+SYMBOL
+    Name "hachure2"	# ///
+    TRANSPARENT 0
+    Type VECTOR
+    Points
+        0 1
+        1 0
+    END
+END
+
+SYMBOL
+    Name "hachure1" # \\\
+    TRANSPARENT 0
+    Type VECTOR
+    Points
+        0 0
+        1 1
+    END
+END
+
+SYMBOL
+    Name "pointille1" # 
+    TRANSPARENT 0
+    Type VECTOR
+    Points
+        1 1
+        1 1
+    END
+END
+
+SYMBOL
+  NAME 'pointilles2'
+  TYPE ELLIPSE
+  POINTS 1 1 END
+  FILLED true
+END
+
+SYMBOL
+    Name "hachure3" # ¦¦¦
+    TRANSPARENT 0
+    Type VECTOR
+    Points
+        0 0
+        0 1
+        -99 -99
+        1 0
+        1 1
+    END
+END
+
+SYMBOL
+    Name "hachure4" # ___
+    TRANSPARENT 0
+    Type VECTOR
+    Points
+        0 0
+        1 0
+        -99 -99
+        0 1
+        1 1
+    END
+END
+
+SYMBOL
+    Name "chapeau" # ^
+    TRANSPARENT 0
+    Type VECTOR
+    Points
+        0 0
+        0.5 0.5
+        1 0
+    END
+END
+
+SYMBOL
+    Name 'points1'
+    Type VECTOR
+    Points
+        1 1
+        1 1.2
+        -99 -99
+        2 0
+        2 0.2
+    END
+END
+
+SYMBOL
+    Name 'points2'
+    Type VECTOR
+    Points
+        1 1
+        1 1.2
+        1.2 1.2
+        1.2 1
+        -99 -99
+        2 1.5
+        2 1.7
+        2.2 1.7
+        2.2 2.5
+        -99 -99
+        1 2
+        1 2.2
+        1.2 2.2
+        1.2 2
+        -99 -99
+        2 2.5
+        2 2.7
+        2.2 2.7
+        2.2 2.5
+    END
+END
+
+SYMBOL
+    Name "hachure5" # ___ épais
+    TRANSPARENT 0
+    Type VECTOR
+    Points
+        0 0
+        1 0
+        -99 -99
+        0 1
+        1 1
+        -99 -99
+        0 0.1
+        1 0.1
+        -99 -99
+        0 1.1
+        1 1.1
+    END
+END
+
+SYMBOL
+    Name "brique"
+    Type VECTOR
+    Points
+        0 1
+        1 2
+        1.5 1.5
+        0.5 0.5
+        0 1
+    END
+END
+
+SYMBOL
+    Name 'points3'
+    Type VECTOR
+    Points
+        0 0
+        0.8 0
+        -99 -99
+        1 2
+        1.8 2
+        -99 -99
+        2 1
+        2.8 1
+    END
+END
+
+SYMBOL
+    NAME "maison_autorisation"
+    TYPE truetype
+    ANTIALIAS true
+    FILLED true
+    FONT "esri4" 
+    CHARACTER "8"
+END
+
+SYMBOL
+    Name 'pfp_3'
+    Type Truetype
+    Antialias true
+    FONT "esri4"
+    CHARACTER "%"
+END
+
+SYMBOL
+    Name 'patrimoine_architectural'
+    Type Truetype
+    Antialias true
+    FONT "esri4"
+    CHARACTER "'"
+END
+
+SYMBOL
+    Name 'losange'
+    Type VECTOR
+    Filled true
+    Points
+        0 1
+        1 0
+        2 1
+        1 2
+        0 1
+    END
+END
+
+SYMBOL
+  NAME "thermometre"
+  TYPE PIXMAP
+  IMAGE "images/thermometre.gif"
+END
+
+SYMBOL
+    Name "hachure6" 
+    TRANSPARENT 0
+    Type VECTOR
+    Points
+        0 0
+        1 1
+        -99 -99
+        0.5 0.5
+        1.5 1.5
+    END
+END
+ 
+SYMBOL
+    NAME "attention"
+    TYPE PIXMAP
+    TRANSPARENT 5
+    IMAGE "images/attention.png"
+END
+
+SYMBOL
+    NAME "interdiction"
+    TYPE PIXMAP
+    TRANSPARENT 92
+    IMAGE "images/interdiction.png"
+END
+
+SYMBOL
+    Name 'barre'
+    Type VECTOR
+    Filled true
+    Points
+        -2 16
+        2 16
+        2 -16
+        -2 -16
+    END
+END
+
+SYMBOL
+    Name 'barre2'
+    Type VECTOR
+    Filled true
+    Points
+        -4 16
+        4 16
+        4 -16
+        -4 -16
+    END
+END
+
+SYMBOL
+    Name 'rectangle'
+    Type VECTOR
+    Filled true
+    Points
+        0 4
+        8 4
+        8 0
+        0 0
+    END
+END
+
+SYMBOL
+    NAME "hachure7"
+    TYPE PIXMAP
+    IMAGE "images/hachure.png"
+    TRANSPARENT 1
+END
+
+SYMBOL
+    NAME 'hachure'
+    TYPE HATCH
+END
+
+SYMBOL
+  NAME "poi_police"
+  TYPE PIXMAP
+  IMAGE "images/poi_police.png"
+END
+
+SYMBOL
+  NAME "poi_administration"
+  TYPE PIXMAP
+  IMAGE "images/poi_administration.png"
+END
+
+SYMBOL
+  NAME "poi_aeroport"
+  TYPE PIXMAP
+  IMAGE "images/poi_aeroport.png"
+END
+
+SYMBOL
+  NAME "poi_bateau"
+  TYPE PIXMAP
+  IMAGE "images/poi_bateau.png"
+END
+
+SYMBOL
+  NAME "poi_bibliotheque"
+  TYPE PIXMAP
+  IMAGE "images/poi_bibliotheque.png"
+END
+
+SYMBOL
+  NAME "poi_camping"
+  TYPE PIXMAP
+  IMAGE "images/poi_camping.png"
+END
+
+SYMBOL
+  NAME "poi_cimetiere"
+  TYPE PIXMAP
+  IMAGE "images/poi_cimetiere.png"
+END
+
+SYMBOL
+  NAME "poi_dechetterie"
+  TYPE PIXMAP
+  IMAGE "images/poi_dechetterie.png"
+END
+
+SYMBOL
+  NAME "poi_ecole"
+  TYPE PIXMAP
+  IMAGE "images/poi_ecole.png"
+END
+
+SYMBOL
+  NAME "poi_fondation"
+  TYPE PIXMAP
+  IMAGE "images/poi_fondation.png"
+END
+
+SYMBOL
+  NAME "poi_funiculaire"
+  TYPE PIXMAP
+  IMAGE "images/poi_funiculaire.png"
+END
+
+SYMBOL
+  NAME "poi_hopital"
+  TYPE PIXMAP
+  IMAGE "images/poi_hopital.png"
+END
+
+SYMBOL
+  NAME "poi_information"
+  TYPE PIXMAP
+  IMAGE "images/poi_information.png"
+END
+
+SYMBOL
+  NAME "poi_jardinpublicparc"
+  TYPE PIXMAP
+  IMAGE "images/poi_jardinpublicparc.png"
+END
+
+SYMBOL
+  NAME "poi_lieuculte"
+  TYPE PIXMAP
+  IMAGE "images/poi_lieuculte.png"
+END
+
+SYMBOL
+  NAME "poi_lieuhistorique"
+  TYPE PIXMAP
+  IMAGE "images/poi_lieuhistorique.png"
+END
+
+SYMBOL
+  NAME "poi_ludotheque"
+  TYPE PIXMAP
+  IMAGE "images/poi_ludotheque.png"
+END
+
+SYMBOL
+  NAME "poi_musee"
+  TYPE PIXMAP
+  IMAGE "images/poi_musee.png"
+END
+
+SYMBOL
+  NAME "poi_pandr"
+  TYPE PIXMAP
+  IMAGE "images/poi_pandr.png"
+END
+
+SYMBOL
+  NAME "poi_parking"
+  TYPE PIXMAP
+  IMAGE "images/poi_parking.png"
+END
+
+SYMBOL
+  NAME "poi_patinoire"
+  TYPE PIXMAP
+  IMAGE "images/poi_patinoire.png"
+END
+
+SYMBOL
+  NAME "poi_piquenique"
+  TYPE PIXMAP
+  IMAGE "images/poi_piquenique.png"
+END
+
+SYMBOL
+  NAME "poi_piscine"
+  TYPE PIXMAP
+  IMAGE "images/poi_piscine.png"
+END
+
+SYMBOL
+  NAME "poi_placejeux"
+  TYPE PIXMAP
+  IMAGE "images/poi_placejeux.png"
+END
+
+SYMBOL
+  NAME "poi_plage"
+  TYPE PIXMAP
+  IMAGE "images/poi_plage.png"
+END
+
+SYMBOL
+  NAME "poi_pointdevue"
+  TYPE PIXMAP
+  IMAGE "images/poi_pointdevue.png"
+END
+
+SYMBOL
+  NAME "poi_pompier"
+  TYPE PIXMAP
+  IMAGE "images/poi_pompier.png"
+END
+
+SYMBOL
+  NAME "poi_poste"
+  TYPE PIXMAP
+  IMAGE "images/poi_poste.png"
+END
+
+SYMBOL
+  NAME "poi_sallespectacle"
+  TYPE PIXMAP
+  IMAGE "images/poi_sallespectacle.png"
+END
+
+SYMBOL
+  NAME "poi_sallesport"
+  TYPE PIXMAP
+  IMAGE "images/poi_sallesport.png"
+END
+
+SYMBOL
+  NAME "poi_standtir"
+  TYPE PIXMAP
+  IMAGE "images/poi_standtir.png"
+END
+
+SYMBOL
+  NAME "poi_telecabine"
+  TYPE PIXMAP
+  IMAGE "images/poi_telecabine.png"
+END
+
+SYMBOL
+  NAME "poi_telephone"
+  TYPE PIXMAP
+  IMAGE "images/poi_telephone.png"
+END
+
+SYMBOL
+  NAME "poi_telesiege"
+  TYPE PIXMAP
+  IMAGE "images/poi_telesiege.png"
+END
+
+SYMBOL
+  NAME "poi_teleski"
+  TYPE PIXMAP
+  IMAGE "images/poi_teleski.png"
+END
+
+SYMBOL
+  NAME "poi_terrainsport"
+  TYPE PIXMAP
+  IMAGE "images/poi_terrainsport.png"
+END
+
+SYMBOL
+  NAME "poi_trambus"
+  TYPE PIXMAP
+  IMAGE "images/poi_trambus.png"
+END
+
+SYMBOL
+  NAME "poi_train"
+  TYPE PIXMAP
+  IMAGE "images/poi_train.png"
+END
+
+SYMBOL
+  NAME "poi_wcpublic"
+  TYPE PIXMAP
+  IMAGE "images/poi_wcpublic.png"
+END
+
+SYMBOL
+  NAME "poi_camera"
+  TYPE PIXMAP
+  IMAGE "images/poi_camera.png"
+END
+
+SYMBOL
+  NAME "poi_home"
+  TYPE PIXMAP
+  IMAGE "images/poi_home.png"
+END
+
+SYMBOL
+  NAME "centre_sportif"
+  TYPE PIXMAP
+  IMAGE "images/stade_athletisme.png"
+END
+
+SYMBOL
+    Name "triangles2"
+    Type TRUETYPE
+    FONT "esri17" 
+    CHARACTER "¨" 
+END
+
+SYMBOL
+    Name "ronds"
+    Type TRUETYPE
+    FONT "esri1" 
+    CHARACTER "c"
+END
+
+SYMBOL
+    Name "quadrillage"
+    Type VECTOR
+    TRANSPARENT 0
+    Points
+        0 1
+        1 1
+        -99 -99
+        0 0
+        0 1
+    END
+END
+
+
+
+
