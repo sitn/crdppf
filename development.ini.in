@@ -12,10 +12,13 @@ pyramid.includes =
 
 sqlalchemy.url = postgresql://${vars:dbuser}:${vars:dbpassword}@${vars:dbhost}:${vars:dbport}/${vars:db}
 
+crdppf_wms = ${vars:crdppf_wms}
+sld_url = ${vars:sld_url}
+
 [server:main]
 use = egg:waitress#main
 host = 0.0.0.0
-port = 6543
+port = 6544
 
 # Begin logging configuration
 
