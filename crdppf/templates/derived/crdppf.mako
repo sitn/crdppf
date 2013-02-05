@@ -1,30 +1,27 @@
 <%inherit file="/base/index.mako"/>
 
-<script type="text/javascript">
+    <script type="text/javascript">
+        var OLImgPath = "${request.static_url('crdppf:static/images/ol/')}";
+    </script>
 
-Ext.onReady(function(){
-    Ext.QuickTips.init();
+% if debug:
+    <!-- GENERAL LIBRARIES -->
+    <script type="text/javascript" src="${request.static_url('crdppf:static/lib/openlayers/lib/OpenLayers.js')}"></script>
+    <script type="text/javascript" src="${request.static_url('crdppf:static/lib/openlayers/lib/Openlayers/Lang/fr.js')}"></script>
+    <script type="text/javascript" src="${request.static_url('crdppf:static/lib/geoext/lib/GeoExt.js')}"></script>
+    <script type="text/javascript" src="${request.static_url('crdppf:static/lib/ext/resources/ux/statusbar/StatusBar.js')}"></script>
     
-        var button = new Ext.Button({
-        text: 'Créer l\'extrait',    
-        renderTo: 'pdf',
-    });
-    
-    Ext.get('pdf').on('click', function(){
-        url = 'createExtrait';
-        window.location = url;
-	});
-	
-});
-
+    <!-- CUSTOM CRDPPF STUFF -->
+    <script type="text/javascript" src="${request.static_url('crdppf:static/js/Crdppf/resources/themesFr.js')}"></script>
+    <script type="text/javascript" src="${request.static_url('crdppf:static/js/Crdppf/map.js')}"></script>
+    <script type="text/javascript" src="${request.static_url('crdppf:static/js/Crdppf/main.js')}"></script>
+    <script type="text/javascript" src="${request.static_url('crdppf:static/js/Crdppf/searcher/searcher.js')}"></script>
+    <script type="text/javascript" src="${request.static_url('crdppf:static/js/Crdppf/searcher/GroupComboBox.js')}"></script>
+    <script type="text/javascript" src="${request.static_url('crdppf:static/js/Crdppf/searcher/GroupingView.js')}"></script>
+% else:
+    <script type="text/javascript" src="${request.static_url('crdppf:static/build/crdppf.js')}"></script>
+% endif
 
     
-		  
-</script>
-
-
-<h1>Interface d'administration - Geoshop du SITN</h1>
-
-<div id="pdf"></div>
-
-
+    
+<div id="main"></div>
