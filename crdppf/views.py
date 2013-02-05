@@ -1,16 +1,16 @@
+# -*- coding: UTF-8 -*-
 from pyramid.response import Response
 from pyramid.view import view_config
 
-from .models import DBSession
-from .models import Commune
+@view_config(route_name='globalsjs', renderer='derived/globals.js')
+def globalsjs(request):
+    request.response.content = 'application/javascript'
+    d = {}
+    return d
 
 
-def crdppf(request):
 
-    
-    #~ try:
-        #~ one = DBSession.query(MyModel).filter(MyModel.name=='one').first()
-    #~ except DBAPIError:
-        #~ return Response(conn_err_msg, content_type='text/plain', status_int=500)
-    one =12
-    return {'one':one, 'project':'crdppf'}
+#~ @view_config(renderer = '/derived/crdppf.mako')
+#~ def crdppf(request):
+
+    #~ return request
