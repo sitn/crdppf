@@ -32,6 +32,7 @@ def main(global_config, **settings):
     config.add_route('home', '/')
     config.add_route('create_extrait', 'create_extrait')
     config.add_route('crdppf', 'crdppf')
+    config.add_route('test', 'test')
     config.add_route('map', 'map')
 
     config.add_route('globalsjs', '/globals.js')
@@ -41,6 +42,7 @@ def main(global_config, **settings):
     # VIEWS
     config.add_view('crdppf.entry.Entry', route_name = 'home')
     config.add_view('crdppf.entry.Entry', route_name='crdppf')
+    config.add_view('crdppf.entry.Entry', route_name='test')
 
     config.scan()
 
