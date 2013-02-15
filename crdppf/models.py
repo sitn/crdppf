@@ -27,7 +27,7 @@ from geoalchemy import (
 Base = sqlahelper.get_base()
 
 class Topics(Base):
-    __tablename__ = 'topics'
+    __tablename__ = 'topic'
     __table_args__ = {'schema': 'crdppf', 'autoload': True}
     
 class Authority(Base):
