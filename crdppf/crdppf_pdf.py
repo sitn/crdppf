@@ -13,7 +13,80 @@ import pkg_resources
 from geojson import Feature, FeatureCollection, dumps, loads as gloads
 from simplejson import loads as sloads,dumps as sdumps
         
-        
+from crdppf.models import *
+
+# FUNCTIONS
+# initialisation
+# getFeatureInfoByXY
+# getFeatureInfoByID
+# getFeatureInfoByAdresse
+# getRestrictions
+# getMap
+# getLegalBases
+# getLegalProvisions
+# getComplemantaryInformation
+# writePDF
+# getTitlePage
+
+
+def initialisation(self):
+    """Sets the default type and values of the global variables"""
+    # Creation d'un tableau vide qui accueillit le(s) parametre(s) passé(s) en get
+    parametres = {}
+    parametres['numcom'] = None
+    parametres['numcad'] = None
+    parametres['bien_fonds'] = None
+    parametres['X'] = None
+    parametres['Y'] = None
+    
+    parcelInfo = {}
+    parcelInfo['nummai'] = None
+    parcelInfo['idemai'] = None
+    parcelInfo['lieu_dit'] = None
+    parcelInfo['adresses'] = None
+    parcelInfo['numcad'] = None
+    parcelInfo['nomcad'] = None
+    parcelInfo['numcom'] = None
+    parcelInfo['nomcom'] = None
+    parcelInfo['nufeco'] = None
+    parcelInfo['centerX'] = None
+    parcelInfo['centerY'] = None
+    parcelInfo['BBOX'] = None
+    parcelInfo['geom'] = None
+    
+    
+# Intersection d'un polygone de bien_fonds avec les différentes couches pour récuperer
+# des informations quant au lieu_dit, le cadastre, la commune et les adresses
+def getFeatureInfoByID(id, parcelInfo):
+    """The function gets the geometry of a parcel by it's ID and does an overlay with other administrative layers to get the basic parcelInfo and attribute information of the parcel : County, local names, and so on"""
+    srs = 21781
+
+    parcelInfo['idemai'] = id
+    
+    # for debbuging the query use str(query) in the console/browser window
+    # to visualize geom.wkt use session.scalar(geom.wkt)
+    queryresult =DBSession.query(ImmeublesCanton).filter_by(idemai=parcelInfo['idemai']).first()
+    parcelInfo['geom'] = queryresult.geom
+
+    queryresult1= DBSession.query(NomLocalLieuDit).filter(NomLocalLieuDit.geom.intersects(parcelInfo['geom'])).first()
+    queryresult2= DBSession.query(Cadastre).filter(Cadastre.geom.gcontains(parcelInfo['geom'])).first()
+    
+    parcelInfo['nummai'] = queryresult.nummai
+    parcelInfo['lieu_dit']  = queryresult1.nomloc
+    parcelInfo['numcad'] = queryresult2.numcad
+    parcelInfo['nomcad'] = queryresult2.cadnom
+    parcelInfo['numcom'] = queryresult.numcom
+    parcelInfo['nomcom'] = queryresult2.comnom
+    parcelInfo['nufeco'] = queryresult2.nufeco
+    #parcelInfo['centerX'],parcelInfo['centerY'] = self.getCenterPointFromGeom(queryresult.geom)
+    #parcelInfo['BBOX'] = queryresult.geom.bounds 
+    #adresses = self.getAdresses(parcelInfo['centerX'],parcelInfo['centerY'] )
+    #if adresses is not None :
+    #    parcelInfo['adresses'] = adresses 
+
+    return parcelInfo
+
+
 def plans_wms(restriction_layers,crdppf_wms,bbox):
  
     # Creates the pdf file
@@ -71,19 +144,40 @@ class ExtraitPDF(FPDF):
         self.set_font('Arial','',7);
         self.cell(0,10,'RUE DE TIVOLI 22, CH-2003 NEUCHATEL 3   TEL. 032 889 67 50   FAX 032 889 61 21   SGRF@NE.CH  WWW.NE.CH/SGRF',0,0,'C');
 
-
+#~ def getTitlePage(request):
+    #~ return
 
 @view_config(route_name='create_extrait')
 def create_extrait(request):
     # to get vars defined in the buildout  use : request.registry.settings['key']
     crdppf_wms = request.registry.settings['crdppf_wms']
     sld_url = request.registry.settings['sld_url']
+
+    #initialisation()
+    parcelInfo = {}
+    
+    # the dictionnary for the document
+    reportInfo = {}
+    reportInfo['type'] = '[officiel]'
+    
+    # the dictionnary for the parcel
+    featureInfo = {}
+    featureInfo['no_EGRID'] = 'xxxxx'
+    featureInfo['CoordSys'] = 'MN03'
+    featureInfo['lastUpdate'] = datetime.now()
+    featureInfo['operator'] = 'F.Voisard - SITN'
+    
+    featureID = '1_14127' # test parcel
+    
+    # temporary variables for developping purposes - will be assigned by DB requests
     restriction_layers = ['affectation','canepo','foret']
     bbox = {'minY':203560,'minX':559150,'maxY':203960,'maxX':559750,'width':600,'height':400}
 
-
     i = plans_wms(restriction_layers,crdppf_wms,bbox)
+
     
+    # Gets the basic attributes of the parcel
+    featureInfo.update(getFeatureInfoByID(featureID,parcelInfo))
     
     # Creates the pdf file
     pdf_name = 'extrait'
@@ -99,58 +193,67 @@ def create_extrait(request):
     #~ r1 = conn.getresponse()
     #~ query = r1.read()
 
+    competentAuthority = DBSession.query(Authority).all()
+    crdppfTopics = DBSession.query(Topics).all()
+ 
+    
     # Create order PDF
     pdf = ExtraitPDF()
-    #pdf=FPDF(format='A4')
+    #pdf=FPDF(format='A4')    
+    
+    # START TITLEPAGE
     pdf.add_page()
     pdf.set_margins(25,25,25)
     path = pkg_resources.resource_filename('crdppf','utils\\')
 
-
+    # PageTitle
     pdf.set_y(70)
     pdf.set_font('Arial','B',28)
-    pdf.multi_cell(0,12,unicode('Extrait [officiel]', 'utf-8').encode('iso-8859-1'))
+    pdf.multi_cell(0,12,unicode('Extrait '+reportInfo['type'] , 'utf-8').encode('iso-8859-1'))
     pdf.set_font('Arial','B',22)
     pdf.multi_cell(0,12,unicode('du cadastre des restrictions de\ndroit public à la propriété foncière', 'utf-8').encode('iso-8859-1'))
     pdf.ln()
     pdf.ln()
+    
+    # First infoline
     pdf.set_font('Arial','B',12)
     pdf.cell(37,5,unicode("Bien-fonds n°", 'utf-8').encode('iso-8859-1'),0,0,'L')
     pdf.cell(3,5,unicode(": ", 'utf-8').encode('iso-8859-1'),0,0,'L')
-    pdf.cell(50,5,unicode("14127", 'utf-8').encode('iso-8859-1'),0,0,'L')
+    pdf.cell(50,5,featureInfo['nummai'].encode('iso-8859-1'),0,0,'L')
     pdf.cell(37,5,unicode("N° EGRID", 'utf-8').encode('iso-8859-1'),0,0,'L')
     pdf.cell(3,5,unicode(": ", 'utf-8').encode('iso-8859-1'),0,0,'L')
-    pdf.cell(50,5,unicode("xxxxx", 'utf-8').encode('iso-8859-1'),0,1,'L')
+    pdf.cell(50,5,featureInfo['no_EGRID'].encode('iso-8859-1'),0,1,'L')
     
+     # Second infoline   
     pdf.cell(37,5,unicode("Cadastre", 'utf-8').encode('iso-8859-1'),0,0,'L')
     pdf.cell(3,5,unicode(": ", 'utf-8').encode('iso-8859-1'),0,0,'L')
-    pdf.cell(50,5,unicode("Neuchâtel", 'utf-8').encode('iso-8859-1'),0,1,'L')
+    pdf.cell(50,5,featureInfo['nomcad'].encode('iso-8859-1'),0,1,'L')
     
+    # Third infoline
     pdf.cell(37,5,unicode('Commune', 'utf-8').encode('iso-8859-1'),0,0,'L')
     pdf.cell(3,5,unicode(": ", 'utf-8').encode('iso-8859-1'),0,0,'L')
-    pdf.cell(50,5,unicode('Neuchâtel', 'utf-8').encode('iso-8859-1'),0,0,'L')
+    pdf.cell(50,5,featureInfo['nomcom'].encode('iso-8859-1'),0,0,'L')
     pdf.cell(37,5,unicode('N° OFS', 'utf-8').encode('iso-8859-1'),0,0,'L')
     pdf.cell(3,5,unicode(": ", 'utf-8').encode('iso-8859-1'),0,0,'L')
-    pdf.cell(50,5,unicode("6458", 'utf-8').encode('iso-8859-1'),0,1,'L')
+    pdf.cell(50,5,str(featureInfo['nufeco']).encode('iso-8859-1'),0,1,'L')
 
     pdf.set_y(165)
     pdf.set_font('Arial','B',10)
     pdf.cell(65,5,unicode('Extrait établi le', 'utf-8').encode('iso-8859-1'),0,0,'L')
-    pdf.cell(40,5,unicode(': 31.01.2013', 'utf-8').encode('iso-8859-1'),0,1,'L')
+    pdf.cell(40,5, ': '+today.strftime('%d.%m.%Y - %Hh%M'),0,1,'L')
     pdf.cell(65,5,unicode('Dernière mise à jour des données', 'utf-8').encode('iso-8859-1'),0,0,'L')
-    pdf.cell(40,5,unicode(': 30.01.2013', 'utf-8').encode('iso-8859-1'),0,1,'L')
+    pdf.cell(40,5,': '+featureInfo['lastUpdate'].strftime('%d.%m.%Y'),0,1,'L')
     pdf.cell(65,5,unicode('Editeur de l\'extrait', 'utf-8').encode('iso-8859-1'),0,0,'L')
-    pdf.cell(40,5,unicode(': FV-SITN', 'utf-8').encode('iso-8859-1'),0,1,'L')
+    pdf.cell(40,5,': '+featureInfo['operator'].encode('iso-8859-1'),0,1,'L')
 
     pdf.set_y(190)
     pdf.cell(65,5,unicode('Etat des données de la MO', 'utf-8').encode('iso-8859-1'),0,0,'L')
     pdf.cell(40,5,unicode(':', 'utf-8').encode('iso-8859-1'),0,1,'L')
     pdf.cell(65,5,unicode('Cadre de référence', 'utf-8').encode('iso-8859-1'),0,0,'L')
-    pdf.cell(40,5,unicode(': MN03', 'utf-8').encode('iso-8859-1'),0,1,'L')
+    pdf.cell(40,5,': '+featureInfo['CoordSys'].encode('iso-8859-1'),0,1,'L')
 
 
     pdf.image(path+"Neuchatel.jpg",180,180,20,22)
-
 
     pdf.set_y(215)
     pdf.set_font('Arial','',10)
@@ -162,6 +265,7 @@ def create_extrait(request):
     pdf.set_font('Arial','',10)
     pdf.multi_cell(0,5,unicode('Mise en garde : Le canton de Neuchâtel n\'engage pas sa responsabilité sur l\'exactitude ou la fiabilité des documents législatifs dans leur version électronique. Ces documents ne créent aucun autre droit ou obligation que ceux qui découlent des textes légalement adoptés et publiés, qui font seuls foi.', 'utf-8').encode('iso-8859-1'),0,1,'L')
 
+    # END TITLEPAGE
 
     layers= [    
         'la3_limites_communales',
