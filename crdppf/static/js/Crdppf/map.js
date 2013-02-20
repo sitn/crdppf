@@ -196,28 +196,26 @@ var setOverlays = function(overlaysList) {
     selectionLayer.removeAllFeatures();
     
     layerName = 'Themes'
-    //console.log(this.map.getLayersByName(layerName));
-    // add new overlays
-    var layerObject = {};
-    var layerName = '';
-    var layerList = [];
-    // if(typeof overlays!='undefined'){
-        // this.map.removeLayer(overlays);
-    // }
-    if(overlaysList.length == 0 && typeof overlays!='undefined'){
-        this.map.removeLayer(overlays);
+    theLayer = this.map.getLayer('overlayLayer');
+    if(theLayer){
+        this.map.removeLayer(theLayer)
     }
-    overlays = new OpenLayers.Layer.WMS(
-            layerName, 
-            Crdppf.wmsUrl,
-            {layers: overlaysList,
-            format: 'image/png',
-            singleTile: true,
-            transparent: 'true'},
-            {fixedLayer: false,
-            singleTile: true}
-            );
-    this.map.addLayer(overlays);
+    // add new overlays
+    if(overlaysList.length > 0){
+        overlays = new OpenLayers.Layer.WMS(
+                layerName, 
+                Crdppf.wmsUrl,
+                {layers: overlaysList,
+                format: 'image/png',
+                singleTile: true,
+                transparent: 'true'},
+                {fixedLayer: false,
+                singleTile: true}
+                );
+        overlays.id = 'overlayLayer';
+        this.map.addLayer(overlays);
+    }
+
     // toggle pan button
     var panButton= Ext.getCmp('panButton');
     panButton.toggle();
