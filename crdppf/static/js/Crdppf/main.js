@@ -238,21 +238,26 @@ Ext.onReady(function() {
         draggable:false,
         id:'rootNode'})
     featureTree.setRootNode(root);
-        
-    legendPanel = new Ext.Panel({
-            region: 'east',
-            title: 'Légende',
+    
+    legendPanel = new GeoExt.LegendPanel({
+        title: 'Légende',
+        defaults: {
+                //labelCls: 'mylabel',
+                style: 'padding:5px'
+            },
             id: 'legendPanel',
-            width: 200,
+            bodyStyle: 'padding:5px',
+            width: 300,
+            autoScroll: true,
             collapsible: true,
             split: true,
-        })    
+            region: 'east',
+        });
     infoPanel = new Ext.Panel({
             region: 'east',
             title: 'Informations',
             id: 'infoPanel',
-            width: 200,
-            html: 'Légende',
+            width: 300,
             collapsible: true,
             split: true,
             items:[featureTree, legendPanel]
