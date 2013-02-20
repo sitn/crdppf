@@ -15,6 +15,10 @@ body {
     height:26px !important;
     width:26px !important;
 }
+.crdppf_printbutton {
+    height:26px !important;
+    width:26px !important;
+}
 
 /* .matrix_cell_preavis_positif { background-image: url(../images/preavis_positif.png) !important; background-repeat: no-repeat;text-align:center;cursor:pointer;}
 .matrix_cell_preavis_positif_cond { background-image: url(../images/preavis_positif_cond.png) !important; background-repeat: no-repeat;text-align:center;cursor:pointer;}
@@ -65,6 +69,16 @@ img.matrix_cell_preavis_negatif : hover {cursor:pointer !important;}
 }
 .x-btn-over .crdppf_infobutton {
     background-image:url(../images/ui_buttons/on/icon_querybypoint_on.gif) !important;
+}
+.crdppf_printbutton {
+    background:url(../images/ui_buttons/normal/icon_report_selection.gif);
+	height:26px !important;
+}
+.map-toolbar .over .crdppf_printbutton {
+    background:url(../images/ui_buttons/over/icon_report_selection.gif);
+}
+.x-btn-over .crdppf_printbutton {
+    background-image:url(../images/ui_buttons/on/icon_report_selection.gif) !important;
 }
 .crdppf_panbutton {
     background:url(../images/ui_buttons/normal/icon_pan.gif);
