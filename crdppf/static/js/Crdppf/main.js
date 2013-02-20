@@ -1,8 +1,9 @@
 /*
  * @requires GeoExt/widgets/MapPanel.js
  * @include Crdppf/map.js
+ * @include Crdppf/layerTree.js
  * @include OpenLayers/Control/MousePosition.js
-  * @include Crdppf/searcher/searcher.js
+ * @include Crdppf/searcher/searcher.js
  */
 
 // VARIABLES
@@ -19,7 +20,7 @@ Ext.onReady(function() {
     var mapOptions = {
         divMousePosition: 'mousepos'
     }
-    var MapO = new Crdppf.Map(mapOptions);
+    MapO = new Crdppf.Map(mapOptions);
     var map = MapO.map;
     var infoButton = new Ext.Button({
         xtype: 'button',
@@ -46,9 +47,6 @@ Ext.onReady(function() {
         listeners:{
             click: function (){
                         MapO.disableInfoControl()
-                        // var mapP = document.getElementById('OpenLayers_Map_9');
-                        // console.log(mapP);
-                        // mapP.style.cursor = "pointer";
                     }  
         }
     });
@@ -102,35 +100,9 @@ Ext.onReady(function() {
         border: false,
         contentEl: 'header'
     });
-    
-    // layerTree diplayed in navPanel as a global view
-    var layerTree = new Ext.tree.TreePanel({
-        title: 'Vue d\'ensemble',
-        height: 300,
-        width: 400,
-        useArrows:true,
-        autoScroll:true,
-        animate:true,
-        enableDD:true,
-        containerScroll: true,
-        rootVisible: false,
-        frame: true,
-        root: new Ext.tree.AsyncTreeNode({
-        text: 'Thèmes',
-        draggable:false,
-        id:'layerTree',
-        children: Crdppf.layerTreeListFr}),
-        listeners: {
-                'checkchange': function(node, checked){
-                    if(checked){
-                        MapO.setOverlays(node.id)
-                    }else{
-                        //MapO.removeOverlays(node.id)
-                    }
-                }
-            },
-    });
 
+    layerTreeO = new Crdppf.LayerTree();
+    layerTree = layerTreeO.makeLayerTree();
     var navPanel = new Ext.Panel({
         layout: 'accordion',
         border: false,
@@ -216,7 +188,7 @@ Ext.onReady(function() {
       for (i = 0; i < navPanel.items.length; i++){
         var item = navPanel.items.items[i];
         item.on('beforeexpand', function(item){
-            MapO.setOverlays(item.themeId);
+            //MapO.setOverlays(item.themeId);
         });
       }
       
@@ -316,8 +288,8 @@ Ext.onReady(function() {
         collapsible: true,
         html: 'Mise en garde : Le canton de Neuchâtel n\'engage pas sa responsabilité sur l\'exactitude ou la fiabilité des documents législatifs dans leur version électronique. Ces documents ne créent aucun autre droit ou obligation que ceux qui découlent des textes légalement adoptés et publiés, qui font seuls foi.',
         split: true,
-        height: 100,
-        minHeight: 100
+        height: 50,
+        minHeight: 50
     });
 
     
@@ -331,16 +303,9 @@ Ext.onReady(function() {
             centerPanel,
             southPanel]
     });
-    MapO.setOverlays('0');
     mapPanel = Ext.getCmp('mappanel');    
 	// Refait la mise en page si la fenêtre change de taille
 	//pass along browser window resize events to the panel
 	Ext.EventManager.onWindowResize(crdppf.doLayout,crdppf);
-    
-
-    // set up and activate the infoControl
-    // MapO.setInfoControl();
-    // deactivate the infoControl
-    // MapO.disableInfoControl();
     
 });
