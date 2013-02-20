@@ -43,6 +43,7 @@ Crdppf.Map = function Map(mapOptions) {
 var removeOverlays = function(idTheme){
  
 }
+// Disable the existing infoControls
 var disableInfoControl = function disableInfoControl(){ 
     root.removeAll(true);
     var selectionLayer = this.map.getLayer('selectionLayer');
@@ -52,6 +53,7 @@ var disableInfoControl = function disableInfoControl(){
         infoControl.destroy();
     }
 }
+// Create the infocontrols supporting the getFeatureInfo functionnalities
 var setInfoControl = function setInfoControl(){
     root.removeAll(true);
     OpenLayers.ProxyHost= Crdppf.ogcproxyUrl;
@@ -79,16 +81,20 @@ var setInfoControl = function setInfoControl(){
     control.events.register("featureselected", this, function(e) {
         select.addFeatures([e.feature]); 
         var attributes = e.feature.attributes;
+        console.log(e);
         keys = Object.keys(attributes);
         child =  new Ext.tree.TreeNode({
             text: 'parcelle : ' + e.feature.attributes.nummai,
             draggable:false,
-            id:'idChild',
+            id: e.feature.id,
             leaf: false,
         })
         var html = '';
         for (i=1; i < keys.length - 1; i++){
-            html += keys[i] + ' : ' + e.feature.attributes[keys[i]] + '<br>';
+            if(keys[i] != 'nummai')
+            {
+                html += keys[i] + ' : ' + e.feature.attributes[keys[i]] + '<br>';
+            }
         }
         subchild =  new Ext.tree.TreeNode({
             text: html,
@@ -118,6 +124,7 @@ var setInfoControl = function setInfoControl(){
 
 // Create OL map object, add base layer & zoom to max extent
 function makeMap(mapOptions){
+    // base layer: topographic layer
     var layer = new OpenLayers.Layer.WMTS({
         name: "Plan cadastral",
         url: 'http://sitn.ne.ch/mapproxy/wmts',
@@ -129,6 +136,8 @@ function makeMap(mapOptions){
         fixedLayer: true,
         requestEncoding: 'REST'
     });
+    
+    // selection layer: display selected features
     select = new OpenLayers.Layer.Vector(
         "Selection",
         {
@@ -137,6 +146,7 @@ function makeMap(mapOptions){
             displayInLayerSwitcher: false,
         });
     select.id = 'selectionLayer';
+    // THE OL map object
     var map = new OpenLayers.Map({
         projection: new OpenLayers.Projection('EPSG:21781'),
         resolutions: [250, 100, 50, 20, 10, 5, 2.5, 2, 1.5, 1, 0.5, 0.25, 0.125, 0.0625],
@@ -153,16 +163,20 @@ function makeMap(mapOptions){
             new OpenLayers.Control.Navigation()   
         ]
     });
+    // Event registering & Control setting on the Map Object
     map.events.register("mousemove", map, function(e) {
                 var pixel = new OpenLayers.Pixel(e.xy.x,e.xy.y);
                 var lonlat = map.getLonLatFromPixel(pixel);
                 OpenLayers.Util.getElement(mapOptions.divMousePosition).innerHTML = 'Coordonnées (ch1903) - Y : ' + Math.round(lonlat.lon) + '  X : ' + Math.round(lonlat.lat) + 'm';
     });
+    // add base layers & selection layers
     map.addLayers([layer,select]);
+    // load all specifics layers
     var ls= new OpenLayers.Control.LayerSwitcher(); 
     map.addControl(ls); 
     ls.minimizeControl(); 
-    map.zoomToMaxExtent();      
+    map.zoomToMaxExtent(); 
+        
     return map;
 }
 
@@ -173,62 +187,78 @@ function makeMap(mapOptions){
 * Parameters:
 * idTheme - {String} Unique ID of the selected theme
 */ 
-var setOverlays = function(idTheme) {
-        if(!this.map){
-            console.log('error: undefined map object. Use Crdppf.createMap first');
-            return;
-        }
-        // remove existing infoControl
-        infoControl = this.map.getControl('infoControl001');
-        if(infoControl){
-            infoControl.destroy();
-        }
-        // empty selection layer
-        var selectionLayer = this.map.getLayer('selectionLayer');
-        selectionLayer.removeAllFeatures();
-        // remove existing overlays
-        for (var i = this.map.layers.length - 1; i >= 0; i--) {
-            if(this.map.layers[i].fixedLayer == false){
-                this.map.removeLayer(this.map.layers[i]);
-            }
-        }
-        // add new overlays
-        var layerObject = {};
-        var layerName = '';
-        var layerList = [];
-        // for (var lKey in Crdppf.layerListFr[idTheme]){
-            // layerName = Crdppf.layerListFr[idTheme][lKey];
-            // layerObject[lKey] = new OpenLayers.Layer.WMS(
-                // layerName, 
-                // Crdppf.wmsUrl,
-                // {layers: lKey,
-                // format: 'image/png',
-                // singleTile: true,
-                // transparent: 'true'},
-                // {fixedLayer: false}
-                // );
-            // this.map.addLayer(layerObject[lKey]);
+var setOverlays = function(overlaysList) {
+    if(!this.map){
+        console.log('error: undefined map object !');
+        return;
+    }
+    // remove existing infoControl
+    infoControl = this.map.getControl('infoControl001');
+    if(infoControl){
+        infoControl.destroy();
+    }
+    // empty selection layer
+    var selectionLayer = this.map.getLayer('selectionLayer');
+    selectionLayer.removeAllFeatures();
+    // remove existing overlays
+    // for (var i = this.map.layers.length - 1; i >= 0; i--) {
+        // if(this.map.layers[i].fixedLayer == false){
+            // this.map.removeLayer(this.map.layers[i]);
+        // }
+    // }
+    
+    layerName = 'Themes'
+    console.log(this.map.getLayersByName(layerName));
+    // add new overlays
+    var layerObject = {};
+    var layerName = '';
+    var layerList = [];
+    overlays = new OpenLayers.Layer.WMS(
+            layerName, 
+            Crdppf.wmsUrl,
+            {layers: overlaysList,
+            format: 'image/png',
+            singleTile: true,
+            transparent: 'true'},
+            {fixedLayer: false,
+            singleTile: true}
+            );
+    this.map.addLayer(overlays);
+    // toggle pan button
+    var panButton= Ext.getCmp('panButton');
+    panButton.toggle();
+}
+
+// var loadLayers = function loadLayer(map){
+    // load all layers as one wms
+    // layerList = []
+    // for (var lKeyTheme in Crdppf.layerListFr){
+        // for (var lKey in Crdppf.layerListFr[lKeyTheme]){
             // layerList.push(lKey);
         // }
-        for (var lKey in Crdppf.layerListFr[idTheme]){
-            layerList.push(lKey);
-        }
-            layerName = 'Thèmes',
-            layerObject[lKey] = new OpenLayers.Layer.WMS(
-                layerName, 
-                Crdppf.wmsUrl,
-                {layers: layerList,
-                format: 'image/png',
-                singleTile: true,
-                transparent: 'true'},
-                {fixedLayer: false,
-                singleTile: true}
-                );
-        this.map.addLayer(layerObject[lKey]);
-        this.layerList = layerList;
-        // toggle pan button
-        var panButton= Ext.getCmp('panButton');
-        panButton.toggle();
-    }
+    // }
+    // layerName = 'Thèmes',
+    // groupLayer = new OpenLayers.Layer.WMS(
+        // layerName, 
+        // Crdppf.wmsUrl,
+        // {layers: layerList,
+        // format: 'image/png',
+        // singleTile: true,
+        // transparent: 'true'},
+        // {fixedLayer: false,
+        // singleTile: true}
+        // );
+    // map.addLayers(groupLayer);
+    // var groupLayerNode = new GeoExt.tree.LayerNode({
+        // layer: groupLayer,
+        // leaf: false,
+        // expanded: true,
+        // loader: {
+            // param: "LAYERS"
+        // }
+    // })
+    // console.log(groupLayerNode)
+// }
+
     
     
