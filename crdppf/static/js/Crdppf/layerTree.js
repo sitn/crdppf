@@ -8,7 +8,7 @@ var makeLayerTree = function makeLayertree(){
     // create layer tree object
     var overlaysList = [];
     layerTree = new Ext.tree.TreePanel({
-        title: 'LayerTree',
+        title: 'Table des matières',
         height: 300,
         width: 400,
         useArrows:true,
@@ -39,10 +39,12 @@ var makeLayerTree = function makeLayertree(){
             listeners: {
                 'checkchange': function(node, checked){
                     if(checked){
+                        node.expand();
                         for (k=0; k < node.childNodes.length; k++){
                             node.childNodes[k].getUI().toggleCheck(true);
                         }
                     }else{ 
+                        node.collapse();
                         for (k=0; k < node.childNodes.length; k++){
                             node.childNodes[k].getUI().toggleCheck(false);
                         }
