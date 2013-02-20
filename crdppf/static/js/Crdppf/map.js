@@ -58,14 +58,14 @@ var setInfoControl = function setInfoControl(){
     root.removeAll(true);
     OpenLayers.ProxyHost= Crdppf.ogcproxyUrl;
     var protocol = new OpenLayers.Protocol.WFS({
-    url: Crdppf.ogcproxyUrl,
-    geometryName: this.geometryName,
-    srsName: this.map.getProjection(),
-    formatOptions: {
-        featureType: 'parcelles',
-        featureNS: 'http://mapserver.gis.umn.edu/mapserver',
-        autoconfig: false
-    }
+        url: Crdppf.ogcproxyUrl,
+        geometryName: this.geometryName,
+        srsName: this.map.getProjection(),
+        formatOptions: {
+            featureType: 'parcelles',
+            featureNS: 'http://mapserver.gis.umn.edu/mapserver',
+            autoconfig: false
+        }
     });
     control = new OpenLayers.Control.GetFeature({
         protocol: protocol,
@@ -75,13 +75,10 @@ var setInfoControl = function setInfoControl(){
         single: true,
         maxFeatures: 1,
         clickTolerance: 10
-        // multipleKey: "shiftKey",
-        // toggleKey: "ctrlKey"
     });
     control.events.register("featureselected", this, function(e) {
         select.addFeatures([e.feature]); 
         var attributes = e.feature.attributes;
-        console.log(e);
         keys = Object.keys(attributes);
         child =  new Ext.tree.TreeNode({
             text: 'parcelle : ' + e.feature.attributes.nummai,
@@ -117,9 +114,6 @@ var setInfoControl = function setInfoControl(){
     });
     this.map.addControl(control);
     control.activate();
-    
-    
-  
 }
 
 // Create OL map object, add base layer & zoom to max extent
@@ -200,19 +194,19 @@ var setOverlays = function(overlaysList) {
     // empty selection layer
     var selectionLayer = this.map.getLayer('selectionLayer');
     selectionLayer.removeAllFeatures();
-    // remove existing overlays
-    // for (var i = this.map.layers.length - 1; i >= 0; i--) {
-        // if(this.map.layers[i].fixedLayer == false){
-            // this.map.removeLayer(this.map.layers[i]);
-        // }
-    // }
     
     layerName = 'Themes'
-    console.log(this.map.getLayersByName(layerName));
+    //console.log(this.map.getLayersByName(layerName));
     // add new overlays
     var layerObject = {};
     var layerName = '';
     var layerList = [];
+    // if(typeof overlays!='undefined'){
+        // this.map.removeLayer(overlays);
+    // }
+    if(overlaysList.length == 0 && typeof overlays!='undefined'){
+        this.map.removeLayer(overlays);
+    }
     overlays = new OpenLayers.Layer.WMS(
             layerName, 
             Crdppf.wmsUrl,
@@ -228,37 +222,6 @@ var setOverlays = function(overlaysList) {
     var panButton= Ext.getCmp('panButton');
     panButton.toggle();
 }
-
-// var loadLayers = function loadLayer(map){
-    // load all layers as one wms
-    // layerList = []
-    // for (var lKeyTheme in Crdppf.layerListFr){
-        // for (var lKey in Crdppf.layerListFr[lKeyTheme]){
-            // layerList.push(lKey);
-        // }
-    // }
-    // layerName = 'Thèmes',
-    // groupLayer = new OpenLayers.Layer.WMS(
-        // layerName, 
-        // Crdppf.wmsUrl,
-        // {layers: layerList,
-        // format: 'image/png',
-        // singleTile: true,
-        // transparent: 'true'},
-        // {fixedLayer: false,
-        // singleTile: true}
-        // );
-    // map.addLayers(groupLayer);
-    // var groupLayerNode = new GeoExt.tree.LayerNode({
-        // layer: groupLayer,
-        // leaf: false,
-        // expanded: true,
-        // loader: {
-            // param: "LAYERS"
-        // }
-    // })
-    // console.log(groupLayerNode)
-// }
 
     
     
