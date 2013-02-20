@@ -35,6 +35,19 @@ Ext.onReady(function() {
                     }  
         }
     });
+    var printButton = new Ext.Button({
+    xtype: 'button',
+    width: 40,
+    enableToggle: true,
+    iconCls: 'crdppf_printbutton',
+    // cls: 'crdppf_printbutton',
+    toggleGroup: 'mapTools',
+    listeners:{
+        click: function (){
+                    alert('Impression en cours....'); 
+                }  
+    }
+    });
     var panButton = new Ext.Button({
         pressed: true,
         xtype: 'button',
@@ -55,7 +68,8 @@ Ext.onReady(function() {
     height: 20,
     cls: 'map-toolbar',
     items: [panButton,
-            infoButton]
+            infoButton,
+            printButton]
    });
    
     var mapPanel = new GeoExt.MapPanel({
