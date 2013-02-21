@@ -33,7 +33,7 @@ def ogcproxy(request):
     resp, content = http.request(url, method=method, body=body, headers=h)
 
     if method == "POST" and is_get_feature(body):
-        content = limit_featurecollection(content, limit=200)
+        content = limit_featurecollection(content, limit=1)
 
     headers = {"Content-Type": resp["content-type"]}
     
