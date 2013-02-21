@@ -70,18 +70,18 @@ var setInfoControl = function setInfoControl(){
     control = new OpenLayers.Control.GetFeature({
         protocol: protocol,
         id: 'infoControl001',
-        box: true,
+        box: false,
         hover: false,
-        single: true,
+        single: false,
         maxFeatures: 1,
-        clickTolerance: 10
+        clickTolerance: 20
     });
     control.events.register("featureselected", this, function(e) {
         select.addFeatures([e.feature]); 
         var attributes = e.feature.attributes;
         keys = Object.keys(attributes);
         child =  new Ext.tree.TreeNode({
-            text: 'parcelle : ' + e.feature.attributes.nummai,
+            text: 'parcelle n° ' + e.feature.attributes.nummai,
             draggable:false,
             id: e.feature.id,
             leaf: false,
@@ -106,12 +106,12 @@ var setInfoControl = function setInfoControl(){
         select.removeFeatures([e.feature]);
         root.removeAll(true);
     });
-    control.events.register("hoverfeature", this, function(e) {
-        hover.addFeatures([e.feature]);
-    });
-    control.events.register("outfeature", this, function(e) {
-        hover.removeFeatures([e.feature]);
-    });
+    // control.events.register("hoverfeature", this, function(e) {
+        // hover.addFeatures([e.feature]);
+    // });
+    // control.events.register("outfeature", this, function(e) {
+        // hover.removeFeatures([e.feature]);
+    // });
     this.map.addControl(control);
     control.activate();
 }
