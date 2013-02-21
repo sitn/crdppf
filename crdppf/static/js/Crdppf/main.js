@@ -1,5 +1,6 @@
 /*
  * @requires GeoExt/widgets/MapPanel.js
+ * @requires GeoExt/widgets/LegendPanel.js
  * @include Crdppf/map.js
  * @include Crdppf/layerTree.js
  * @include OpenLayers/Control/MousePosition.js
