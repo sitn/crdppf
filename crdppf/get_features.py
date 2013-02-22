@@ -13,36 +13,44 @@ from simplejson import loads as sloads,dumps as sdumps
 from crdppf.models import *
 from geojson import GeoJSON, Feature, FeatureCollection, dumps, loads as geojsonloads
 import csv
+from sqlalchemy import or_
 
-@view_config(route_name='get_features',renderer='json')
+@view_config(route_name='get_features',renderer='geojson')
 def get_features(request):
     # for dev purposes: matching dictionnary model-table name
-    table2model =   {'at39_itineraires_pedestres':'PedestrianWays',
-                    'at14_zones_communales': 'CommunalArea',
-                    'at08_zones_cantonales': 'StateArea',
-                    'clo_couloirs': 'Corridors',
-                    'clo_cotes_altitude_surfaces': 'AltitudeRatings',
-                    'en07_canepo_accidents': 'PollutedSitesAccidents',
-                    'en07_canepo_decharges': 'PollutedSitesLandDumps',
-                    'en07_canepo_decharges_points': 'PollutedSitesLandDumpsPts',
-                    'en07_canepo_decharges_polygones': 'PollutedSitesLandDumpsPoly',
-                    'en07_canepo_entreprises': 'PollutedSitesCompanies',
-                    'en07_canepo_entreprises_points': 'PollutedSitesCompaniesPts',
-                    'en07_canepo_entreprises_polygones': 'PollutedSitesCompaniesPoly'}
+    table2model =   {'at39_itineraires_pedestres':PedestrianWays,
+                    'at14_zones_communales': CommunalArea,
+                    'at08_zones_cantonales': StateArea,
+                    'clo_couloirs': Corridors,
+                    'clo_cotes_altitude_surfaces': AltitudeRatings,
+                    'en07_canepo_accidents': PollutedSitesAccidents,
+                    'en07_canepo_decharges': PollutedSitesLandDumps,
+                    'en07_canepo_decharges_points': PollutedSitesLandDumpsPts,
+                    'en07_canepo_decharges_polygones': PollutedSitesLandDumpsPoly,
+                    'en07_canepo_entreprises': PollutedSitesCompanies,
+                    'en07_canepo_entreprises_points': PollutedSitesCompaniesPts,
+                    'en07_canepo_entreprises_polygones': PollutedSitesCompaniesPoly}
                 
     params = dict(request.params)
     parcelId = params['id']
     # get the parcel geometry
-    queryresult =DBSession.query(ImmeublesCanton).filter_by(idemai=parcelId).first()
-    sourceParcelGeom = queryresult.geom
+    queryParcel =DBSession.query(ImmeublesCanton).filter_by(idemai=parcelId).first()
+    parcelGeom = queryParcel.geom
     # split the layer list string into proper python list
-    layersList = csv.reader([params['layerList']], skipinitialspace=True)
-    test = []
-    # iterte over layer and make intersects queries
-    for layer in layersList:
-        test.append(layer);
+    csvReader = csv.reader([params['layerList']], skipinitialspace=True)
 
-    queryresult1= DBSession.query(Zoneprotection).filter(Zoneprotection.geom.intersects(sourceParcelGeom)).first()
-    out = queryresult1.geom.wkt
-    out2 = table2model['at39_itineraires_pedestres']
-    return test[0]
+    # iterate over layer and make intersects queries
+    itemList = []
+    for item in csvReader:
+        itemList.append(item)
+    layerList = itemList[0]
+    response = []
+    test = 'empty'
+    for layer in layerList:
+        targetModel = table2model[layer]
+        intersectResult = DBSession.query(targetModel).filter(or_(targetModel.geom.intersects(parcelGeom),targetModel.geom.within(parcelGeom))).all()
+        if intersectResult:
+            for feature in intersectResult:
+                response.append(feature)
+
+    return response
