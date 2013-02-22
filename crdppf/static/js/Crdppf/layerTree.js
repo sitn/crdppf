@@ -6,7 +6,7 @@ Crdppf.LayerTree = function createLayerTree () {
 }
 var makeLayerTree = function makeLayertree(){
     // create layer tree object
-    var overlaysList = [];
+    overlaysList = [];
     layerTree = new Ext.tree.TreePanel({
         title: 'Table des matières',
         height: 300,
@@ -66,10 +66,10 @@ var makeLayerTree = function makeLayertree(){
                         'checkchange': function(node, checked){
                             if(checked){
                                 overlaysList.push(node.id)
-                                MapO.setOverlays(overlaysList)
+                                MapO.setOverlays()
                             }else{
                                 overlaysList.remove(node.id)
-                                MapO.setOverlays(overlaysList)
+                                MapO.setOverlays()
                             }
                         }
                     }
