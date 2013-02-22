@@ -66,7 +66,7 @@ class Zoneprotection(Base):
     
 # models for theme: pedestrian ways
 
-class PedestrianWays(Base):
+class PedestrianWays(GeoInterface,Base):
     __tablename__ = 'at39_itineraires_pedestres'
     __table_args__ = {'schema': 'amenagement', 'autoload': True}
     idobj = Column(Integer, primary_key=True)
@@ -74,13 +74,13 @@ class PedestrianWays(Base):
 
 # models for theme: allocation plan
 
-class CommunalArea(Base):
+class CommunalArea(GeoInterface,Base):
     __tablename__ = 'at14_zones_communales'
     __table_args__ = {'schema': 'amenagement', 'autoload': True}
     idobj = Column(Integer, primary_key=True)
     geom =GeometryColumn(Geometry(2,srid=21781))
     
-class StateArea(Base):
+class StateArea(GeoInterface,Base):
     __tablename__ = 'at08_zones_cantonales'
     __table_args__ = {'schema': 'amenagement', 'autoload': True}
     idobj = Column(Integer, primary_key=True)
@@ -88,13 +88,13 @@ class StateArea(Base):
 
 # models for obstacles to navigation
 
-class Corridors(Base):
+class Corridors(GeoInterface,Base):
     __tablename__ = 'clo_couloirs'
     __table_args__ = {'schema': 'amenagement', 'autoload': True}
     idobj = Column(Integer, primary_key=True)
     geom =GeometryColumn(Geometry(2,srid=21781))
     
-class AltitudeRatings(Base):
+class AltitudeRatings(GeoInterface,Base):
     __tablename__ = 'clo_cotes_altitude_surfaces'
     __table_args__ = {'schema': 'amenagement', 'autoload': True}
     idobj = Column(Integer, primary_key=True)
@@ -102,7 +102,7 @@ class AltitudeRatings(Base):
 
 # models for theme: register of polluted sites
 
-class PollutedSitesAccidents(Base):
+class PollutedSitesAccidents(GeoInterface,Base):
     __tablename__ = 'en07_canepo_accidents'
     __table_args__ = {'schema': 'environnement', 'autoload': True}
     idobj = Column(Integer, primary_key=True)
@@ -114,31 +114,31 @@ class PollutedSitesLandDumps(Base):
     idobj = Column(Integer, primary_key=True)
     geom =GeometryColumn(Geometry(2,srid=21781))
     
-class PollutedSitesLandDumpsPts(Base):
+class PollutedSitesLandDumpsPts(GeoInterface,Base):
     __tablename__ = 'en07_canepo_decharges_points'
     __table_args__ = {'schema': 'environnement', 'autoload': True}
     idobj = Column(Integer, primary_key=True)
     geom =GeometryColumn(Geometry(2,srid=21781))
     
-class PollutedSitesLandDumpsPoly(Base):
+class PollutedSitesLandDumpsPoly(GeoInterface,Base):
     __tablename__ = 'en07_canepo_decharges_polygones'
     __table_args__ = {'schema': 'environnement', 'autoload': True}
     idobj = Column(Integer, primary_key=True)
     geom =GeometryColumn(Geometry(2,srid=21781))
 
-class PollutedSitesCompanies(Base):
+class PollutedSitesCompanies(GeoInterface,Base):
     __tablename__ = 'en07_canepo_entreprises'
     __table_args__ = {'schema': 'environnement', 'autoload': True}
     idobj = Column(Integer, primary_key=True)
     geom =GeometryColumn(Geometry(2,srid=21781))
     
-class PollutedSitesCompaniesPts(Base):
+class PollutedSitesCompaniesPts(GeoInterface,Base):
     __tablename__ = 'en07_canepo_entreprises_points'
     __table_args__ = {'schema': 'environnement', 'autoload': True}
     idobj = Column(Integer, primary_key=True)
     geom =GeometryColumn(Geometry(2,srid=21781))
     
-class PollutedSitesCompaniesPoly(Base):
+class PollutedSitesCompaniesPoly(GeoInterface,Base):
     __tablename__ = 'en07_canepo_entreprises_polygones'
     __table_args__ = {'schema': 'environnement', 'autoload': True}
     idobj = Column(Integer, primary_key=True)
