@@ -3,11 +3,13 @@ from sqlalchemy import engine_from_config
 import sqlahelper
 from pyramid.session import UnencryptedCookieSessionFactoryConfig
 from pyramid.mako_templating import renderer_factory as mako_renderer_factory
+from papyrus.renderers import GeoJSON
 import papyrus
 
 def main(global_config, **settings):
     """ This function returns a Pyramid WSGI application.
     """
+    
     engine = engine_from_config(
         settings,
         'sqlalchemy.',
@@ -21,9 +23,9 @@ def main(global_config, **settings):
     my_session_factory = UnencryptedCookieSessionFactoryConfig('itsaseekreet',2400)
     config = Configurator(settings=settings, session_factory = my_session_factory)
     config.include(papyrus.includeme)
-    config.add_static_view('static', 'crdppf:static', cache_max_age=3600)
-
     config.add_renderer('.js', mako_renderer_factory)
+    config.add_renderer('geojson', GeoJSON())
+    config.add_static_view('static', 'crdppf:static', cache_max_age=3600)
 
     # ROUTES
     config.add_route('home', '/')
