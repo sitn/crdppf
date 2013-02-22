@@ -13,6 +13,7 @@ pyramid.includes =
 sqlalchemy.url = postgresql://${vars:dbuser}:${vars:dbpassword}@${vars:dbhost}:${vars:dbport}/${vars:db}
 
 crdppf_wms = ${vars:crdppf_wms}
+getFeatureUrl = ${vars:getFeatureUrl}
 sld_url = ${vars:sld_url}
 
 [server:main]
