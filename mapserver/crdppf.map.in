@@ -82,7 +82,7 @@ LAYER
     "wms_srs" "epsg:21781"
     "wfs_enable_request" "*"
     "gml_types" "auto"
-    "gml_include_items" "cadastre,nummai,typimm,srfmai,source,url_terris"
+    "gml_include_items" "idemai,cadastre,nummai,typimm,srfmai,source,url_terris"
   END
   PROJECTION
     "init=epsg:21781"   ##required
