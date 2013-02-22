@@ -61,8 +61,8 @@ var setInfoControl = function setInfoControl(){
         url: Crdppf.ogcproxyUrl,
         geometryName: this.geometryName,
         srsName: this.map.getProjection(),
-        formatOptions: {
             featureType: 'parcelles',
+        formatOptions: {
             featureNS: 'http://mapserver.gis.umn.edu/mapserver',
             autoconfig: false
         }
@@ -74,33 +74,77 @@ var setInfoControl = function setInfoControl(){
         hover: false,
         single: false,
         maxFeatures: 1,
-        clickTolerance: 20
+        clickTolerance: 10
     });
     control.events.register("featureselected", this, function(e) {
         select.addFeatures([e.feature]); 
-        var attributes = e.feature.attributes;
-        keys = Object.keys(attributes);
-        child =  new Ext.tree.TreeNode({
-            text: 'parcelle n° ' + e.feature.attributes.nummai,
-            draggable:false,
-            id: e.feature.id,
-            leaf: false,
-        })
-        var html = '';
-        for (i=1; i < keys.length - 1; i++){
-            if(keys[i] != 'nummai')
-            {
-                html += keys[i] + ' : ' + e.feature.attributes[keys[i]] + '<br>';
-            }
+        var parcelId = e.feature.attributes.idemai;
+        if(overlaysList.length == 0){
+            child =  new Ext.tree.TreeNode({
+                text: 'parcelle n° ' + parcelId,
+                draggable:false,
+                leaf: false
+            })
+            subchild =  new Ext.tree.TreeNode({
+                text: 'Aucune couche active !',
+                draggable:false,
+                id:'idSubChild',
+                leaf: true
+            })
+            child.appendChild(subchild);
+            root.appendChild(child); 
         }
-        subchild =  new Ext.tree.TreeNode({
-            text: html,
-            draggable:false,
-            id:'idSubChild',
-            leaf: true
-        })
-        child.appendChild(subchild);
-        root.appendChild(child);        
+        else {
+            function handler(request) {
+                console.log(request)
+               var geojson_format = new OpenLayers.Format.GeoJSON();
+               var intersectionLayer = this.MapO.map.getLayer('intersectLayer');
+               intersectionLayer.removeAllFeatures();
+               jsonData = geojson_format.read(request.responseText);
+               intersectionLayer.addFeatures(jsonData);
+               // for (features in jsonData) {
+                    // child =  new Ext.tree.TreeNode({
+                        // text: 'parcelle n° ' + e.feature.attributes.idemai,
+                        // draggable:false,
+                        // id: e.feature.id,
+                        // leaf: false,
+                    // });
+               // }
+               
+            }
+            var request = OpenLayers.Request.GET({
+                url: Crdppf.getFeatureUrl,
+                params: {
+                    id: parcelId,
+                    layerList: overlaysList
+                },
+                callback: handler,
+                proxy: null
+            });
+        }
+        // var attributes = e.feature.attributes;
+        // keys = Object.keys(attributes);
+        // child =  new Ext.tree.TreeNode({
+            // text: 'parcelle n° ' + e.feature.attributes.nummai,
+            // draggable:false,
+            // id: e.feature.id,
+            // leaf: false,
+        // })
+        // var html = '';
+        // for (i=1; i < keys.length - 1; i++){
+            // if(keys[i] != 'nummai')
+            // {
+                // html += keys[i] + ' : ' + e.feature.attributes[keys[i]] + '<br>';
+            // }
+        // }
+        // subchild =  new Ext.tree.TreeNode({
+            // text: html,
+            // draggable:false,
+            // id:'idSubChild',
+            // leaf: true
+        // })
+        // child.appendChild(subchild);
+        // root.appendChild(child);        
     });
     control.events.register("featureunselected", this, function(e) {
         select.removeFeatures([e.feature]);
@@ -139,7 +183,22 @@ function makeMap(mapOptions){
             fixedLayer: true, 
             displayInLayerSwitcher: false,
         });
-    select.id = 'selectionLayer';
+        select.id = 'selectionLayer';
+        var intersectStyle = new OpenLayers.Style({
+            'strokeColor':'#ff0000',
+            'fillOpacity': '0.0',
+            'strokeWidth':'2',
+            'pointRadius': '20'
+            
+        });
+        intersect = new OpenLayers.Layer.Vector(
+        "intersection result",
+        {
+            styleMap: intersectStyle,
+            fixedLayer: true, 
+            displayInLayerSwitcher: false,
+        });
+        intersect.id='intersectLayer';
     // THE OL map object
     var map = new OpenLayers.Map({
         projection: new OpenLayers.Projection('EPSG:21781'),
@@ -164,7 +223,7 @@ function makeMap(mapOptions){
                 OpenLayers.Util.getElement(mapOptions.divMousePosition).innerHTML = 'Coordonnées (ch1903) - Y : ' + Math.round(lonlat.lon) + '  X : ' + Math.round(lonlat.lat) + 'm';
     });
     // add base layers & selection layers
-    map.addLayers([layer,select]);
+    map.addLayers([layer,select, intersect]);
     // load all specifics layers
     var ls= new OpenLayers.Control.LayerSwitcher(); 
     map.addControl(ls); 
@@ -181,7 +240,7 @@ function makeMap(mapOptions){
 * Parameters:
 * idTheme - {String} Unique ID of the selected theme
 */ 
-var setOverlays = function(overlaysList) {
+var setOverlays = function() {
     if(!this.map){
         console.log('error: undefined map object !');
         return;
