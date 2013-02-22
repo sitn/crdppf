@@ -3,7 +3,6 @@ from pyramid.response import FileResponse
 from pyramid.renderers import render_to_response
 from pyramid.httpexceptions import HTTPForbidden
 from pyramid.view import view_config
-
 from fpdf import FPDF
 from datetime import datetime
 import httplib
