@@ -26,7 +26,7 @@ var makeLayerTree = function makeLayertree(){
         text: 'rootLayerTree',
         draggable:false,
         id:'rootLayerTree'})
-    ll = Crdppf.layerListFr.themes;
+    var ll = Crdppf.layerListFr.themes;
     // iterate over themes and create nodes
     for (i=0;i<ll.length;i++){
         var themeId = ll[i].id;
