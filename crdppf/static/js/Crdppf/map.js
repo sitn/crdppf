@@ -83,34 +83,93 @@ var setInfoControl = function setInfoControl(){
             child =  new Ext.tree.TreeNode({
                 text: 'parcelle n° ' + parcelId,
                 draggable:false,
-                leaf: false
+                leaf: false,
+                expanded: true,
+                id: guid()
             })
             subchild =  new Ext.tree.TreeNode({
                 text: 'Aucune couche active !',
                 draggable:false,
-                id:'idSubChild',
+                id:guid(),
                 leaf: true
             })
             child.appendChild(subchild);
             root.appendChild(child); 
         }
         else {
-            function handler(request) {
-                console.log(request)
+               function handler(request) {
                var geojson_format = new OpenLayers.Format.GeoJSON();
-               var intersectionLayer = this.MapO.map.getLayer('intersectLayer');
-               intersectionLayer.removeAllFeatures();
-               jsonData = geojson_format.read(request.responseText);
-               intersectionLayer.addFeatures(jsonData);
-               // for (features in jsonData) {
-                    // child =  new Ext.tree.TreeNode({
-                        // text: 'parcelle n° ' + e.feature.attributes.idemai,
-                        // draggable:false,
-                        // id: e.feature.id,
-                        // leaf: false,
-                    // });
-               // }
-               
+               var jsonData = geojson_format.read(request.responseText);
+               var child =  new Ext.tree.TreeNode({
+                   text: 'parcelle n° ' + parcelId,
+                   draggable:false,
+                   leaf: false,
+                   expanded: true
+               })
+               lList = [];
+               // iterate over the features
+               for (i=0; i<jsonData.length; i++) {
+                    lName = jsonData[i].attributes['layerName'];
+                    var fullName = '';
+                    // var ll = Crdppf.layerListFr.themes;
+                    // for (i=0;i<ll.length;i++){
+                        // for (key in ll[i].layers){
+                            // if(lName==key){
+                                // fullName = ll[i].layers[key]; 
+                            // }
+                        // }
+                    // }
+                    // create child for layer if not already created
+                    if(!contains(lName,lList)){
+                          var layerChild =  new Ext.tree.TreeNode({
+                                text: lName,
+                                draggable:false,
+                                id:guid(),
+                                leaf: false,
+                                expanded: false
+                            })
+                            // iterate over all features
+                            for (j=0; j<jsonData.length; j++) {
+                                var feature = jsonData[j];
+                                if(jsonData[j].attributes['layerName']==lName){
+                                    html = '';
+                                    for (value in jsonData[j].attributes){
+                                        html += '' + value + ' : ' + jsonData[j].attributes[value] +'<br>' ;
+                                    }
+                                    html += '';
+                                    var sameLayerNode = new Ext.tree.TreeNode({
+                                        text: 'Restriction n°' + j,
+                                        draggable:false,
+                                        leaf: false,
+                                        expanded: false
+                                   })
+                                   sameLayerNode.id = guid();
+                                    sameLayerNode.on('click',this.onClick, this, {
+                                    single: true,
+                                    delay: 100
+                                    });
+                                    function selectIt(feature) {
+                                            intersect.removeAllFeatures();
+                                            intersect.addFeatures(feature);
+                                    }
+                                    sameLayerNode.addListener('click', selectIt(jsonData[j]));
+                                   //sameLayerNode.on('mouseover':this.onMouseOver)
+                                   var contentNode = new Ext.tree.TreeNode({
+                                       text: html,
+                                       draggable:false,
+                                       leaf: false,
+                                       expanded: false,
+                                       id: guid()
+                                   })
+                                    sameLayerNode.appendChild(contentNode);
+                                    layerChild.appendChild(sameLayerNode);
+                                }
+                            }
+                            child.appendChild(layerChild);
+                            root.appendChild(child);
+                            lList.push(lName);
+                       }
+                }               
             }
             var request = OpenLayers.Request.GET({
                 url: Crdppf.getFeatureUrl,
@@ -121,30 +180,7 @@ var setInfoControl = function setInfoControl(){
                 callback: handler,
                 proxy: null
             });
-        }
-        // var attributes = e.feature.attributes;
-        // keys = Object.keys(attributes);
-        // child =  new Ext.tree.TreeNode({
-            // text: 'parcelle n° ' + e.feature.attributes.nummai,
-            // draggable:false,
-            // id: e.feature.id,
-            // leaf: false,
-        // })
-        // var html = '';
-        // for (i=1; i < keys.length - 1; i++){
-            // if(keys[i] != 'nummai')
-            // {
-                // html += keys[i] + ' : ' + e.feature.attributes[keys[i]] + '<br>';
-            // }
-        // }
-        // subchild =  new Ext.tree.TreeNode({
-            // text: html,
-            // draggable:false,
-            // id:'idSubChild',
-            // leaf: true
-        // })
-        // child.appendChild(subchild);
-        // root.appendChild(child);        
+        }       
     });
     control.events.register("featureunselected", this, function(e) {
         select.removeFeatures([e.feature]);
@@ -158,6 +194,15 @@ var setInfoControl = function setInfoControl(){
     // });
     this.map.addControl(control);
     control.activate();
+}
+
+var contains = function contains(element,list){
+        for (item in list) {
+            if(list[item]==element){
+                return true
+            }
+        }
+    return false;
 }
 
 // Create OL map object, add base layer & zoom to max extent
@@ -223,7 +268,7 @@ function makeMap(mapOptions){
                 OpenLayers.Util.getElement(mapOptions.divMousePosition).innerHTML = 'Coordonnées (ch1903) - Y : ' + Math.round(lonlat.lon) + '  X : ' + Math.round(lonlat.lat) + 'm';
     });
     // add base layers & selection layers
-    map.addLayers([layer,select, intersect]);
+    map.addLayers([intersect,select, layer]);
     // load all specifics layers
     var ls= new OpenLayers.Control.LayerSwitcher(); 
     map.addControl(ls); 
@@ -280,5 +325,15 @@ var setOverlays = function() {
     panButton.toggle();
 }
 
-    
+// helping functions
+function s4() {
+  return Math.floor((1 + Math.random()) * 0x10000)
+             .toString(16)
+             .substring(1);
+};
+
+function guid() {
+  return s4() + s4() + '-' + s4() + '-' + s4() + '-' +
+         s4() + '-' + s4() + s4() + s4();
+}
     
