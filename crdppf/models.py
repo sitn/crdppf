@@ -9,7 +9,7 @@ from sqlalchemy import (
     Float
     )
     
-from sqlalchemy.orm import relationship, backref
+from sqlalchemy.orm import relationship, backref, deferred
 
 from zope.sqlalchemy import ZopeTransactionExtension
 
@@ -75,8 +75,8 @@ class PedestrianWays(GeoInterface,Base):
 # models for theme: allocation plan
 
 class CommunalArea(GeoInterface,Base):
-    __tablename__ = 'at14_zones_communales'
     __table_args__ = {'schema': 'amenagement', 'autoload': True}
+    __tablename__ = 'at14_zones_communales'
     idobj = Column(Integer, primary_key=True)
     geom =GeometryColumn(Geometry(2,srid=21781))
     
