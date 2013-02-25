@@ -123,81 +123,82 @@ Ext.onReady(function() {
         border: false,
         flex: 1.0,
         id : 'nav',
-        items:[layerTree,
-        {
-            title: '73 - <b style=\'color:orange;\'>Plans d\'affectation - Pas disponible</b>',
-            id: '73',
-            themeId: '73',
-            autoLoad : {
-                url : '/dev_crdppf/static/public/adresse.html'
-            }
-        },{
-            title: '79 - <b style=\'color:red;\'>Chemins pour piétons - pas concerné</b>',
-            themeId: '79',
-            html: 'Content'
-        },{
-            themeId: '87',
-            title: '87 - Zones réservées des routes nationales',
-            html: 'Content'
-        },{
-            title: '88 - Alignements des routes nationales',
-            html: 'Content'
-        },{
-            title: '96 - Zones réservées des installations ferroviaires',
-            html: 'Content'
-        },{
-            title: '97 - Alignements des installations ferroviaires',
-            html: 'Content'
-        },{
-            title: '103 - zones réservées des installations aéropotuaires',
-            themeId:'103',
-            html: 'Content'
-        },{
-            title: '104 - Alignements des installations aéroportuaires',
-            html: 'Content'
-        },{
-            title: '108 - Carte et liste des obstacles à la navigation aérienne',
-            themeId:'108',
-            html: 'Content'
-        },{
-            title: '116 - Cadastre des sites pollués',
-            themeId:'116',
-            html: 'Content'
-        },{
-            title: '117 - Cadastre des sites pollués - domaine militaire',
-            html: 'Content'
-        },{
-            title: '118 - Cadastre des sites pollués - domaine des aérodromes civils',
-            html: 'Content'
-        },{
-            title: '119 - Cadastre des sites pollués - domaine des transports publics',
-            html: 'Content'
-        },{
-            title: '131 - Zones de protection des eaux souterraines',
-            html: 'Content'
-        },{
-            title: '132 - Périmètres de protection des eaux souterraines',
-            html: 'Content'
-        },{
-            title: '145 - Degrés de sensibilité au bruit',
-            html: 'Content'
-        },{
-            title: '157 - Limites de la forêt',
-            id: 'panel2',
-            html: 'Content'
-        },{
-            title: '159 - Distances par rapport à la forêt',
-            id: '159',
-            html: 'Content'
-        },{
-            title: '50-NE - Plans d\'alignement (communaux)',
-            id: '50-NE',
-            html: 'Content'
-        },{
-            title: '74-NE - Alignements des routes cantonales',
-            id: 'panel2',
-            html: 'Content'
-        }]
+        items:[layerTree
+        // {
+            // title: '73 - <b style=\'color:orange;\'>Plans d\'affectation - Pas disponible</b>',
+            // id: '73',
+            // themeId: '73',
+            // autoLoad : {
+                // url : '/dev_crdppf/static/public/adresse.html'
+            // }
+        // },{
+            // title: '79 - <b style=\'color:red;\'>Chemins pour piétons - pas concerné</b>',
+            // themeId: '79',
+            // html: 'Content'
+        // },{
+            // themeId: '87',
+            // title: '87 - Zones réservées des routes nationales',
+            // html: 'Content'
+        // },{
+            // title: '88 - Alignements des routes nationales',
+            // html: 'Content'
+        // },{
+            // title: '96 - Zones réservées des installations ferroviaires',
+            // html: 'Content'
+        // },{
+            // title: '97 - Alignements des installations ferroviaires',
+            // html: 'Content'
+        // },{
+            // title: '103 - zones réservées des installations aéropotuaires',
+            // themeId:'103',
+            // html: 'Content'
+        // },{
+            // title: '104 - Alignements des installations aéroportuaires',
+            // html: 'Content'
+        // },{
+            // title: '108 - Carte et liste des obstacles à la navigation aérienne',
+            // themeId:'108',
+            // html: 'Content'
+        // },{
+            // title: '116 - Cadastre des sites pollués',
+            // themeId:'116',
+            // html: 'Content'
+        // },{
+            // title: '117 - Cadastre des sites pollués - domaine militaire',
+            // html: 'Content'
+        // },{
+            // title: '118 - Cadastre des sites pollués - domaine des aérodromes civils',
+            // html: 'Content'
+        // },{
+            // title: '119 - Cadastre des sites pollués - domaine des transports publics',
+            // html: 'Content'
+        // },{
+            // title: '131 - Zones de protection des eaux souterraines',
+            // html: 'Content'
+        // },{
+            // title: '132 - Périmètres de protection des eaux souterraines',
+            // html: 'Content'
+        // },{
+            // title: '145 - Degrés de sensibilité au bruit',
+            // html: 'Content'
+        // },{
+            // title: '157 - Limites de la forêt',
+            // id: 'panel2',
+            // html: 'Content'
+        // },{
+            // title: '159 - Distances par rapport à la forêt',
+            // id: '159',
+            // html: 'Content'
+        // },{
+            // title: '50-NE - Plans d\'alignement (communaux)',
+            // id: '50-NE',
+            // html: 'Content'
+        // },{
+            // title: '74-NE - Alignements des routes cantonales',
+            // id: 'panel2',
+            // html: 'Content'
+        // }
+        ]
       });
       // set the beforeexpand event to add the corresponding layers
       for (i = 0; i < navPanel.items.length; i++){
