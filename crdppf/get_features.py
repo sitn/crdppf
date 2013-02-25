@@ -7,16 +7,16 @@ from fpdf import FPDF
 from datetime import datetime
 import httplib
 from owslib.wms import WebMapService
-import pkg_resources
-from geojson import Feature, FeatureCollection, dumps, loads as gloads
 from simplejson import loads as sloads,dumps as sdumps   
+import pkg_resources
 from crdppf.models import *
-from geojson import GeoJSON, Feature, FeatureCollection, dumps, loads as geojsonloads
 import csv
 from sqlalchemy import or_
+from papyrus.geojsonencoder import dumps
 
-@view_config(route_name='get_features',renderer='geojson')
+@view_config(route_name='get_features',renderer='json')
 def get_features(request):
+    
     # for dev purposes: matching dictionnary model-table name
     table2model =   {'at39_itineraires_pedestres':PedestrianWays,
                     'at14_zones_communales': CommunalArea,
@@ -30,7 +30,7 @@ def get_features(request):
                     'en07_canepo_entreprises': PollutedSitesCompanies,
                     'en07_canepo_entreprises_points': PollutedSitesCompaniesPts,
                     'en07_canepo_entreprises_polygones': PollutedSitesCompaniesPoly}
-                
+    
     params = dict(request.params)
     parcelId = params['id']
     # get the parcel geometry
@@ -46,11 +46,21 @@ def get_features(request):
     layerList = itemList[0]
     response = []
     test = 'empty'
+    # adapt models of selected layers
+    for layer in layerList:
+        model = table2model[layer]
+        # adapt_model(model)
+    myResponse = {}  
+    featureList = []
     for layer in layerList:
         targetModel = table2model[layer]
         intersectResult = DBSession.query(targetModel).filter(or_(targetModel.geom.intersects(parcelGeom),targetModel.geom.within(parcelGeom))).all()
         if intersectResult:
             for feature in intersectResult:
-                response.append(feature)
+                # feature.layerName = layer
+                jsonFeature = sloads(dumps(feature))
+                jsonFeature['properties']['layerName'] = layer
+                featureList.append(jsonFeature)
+    myResponse.update({'type':'FeatureCollection', 'features': featureList})   
 
-    return response
+    return myResponse
