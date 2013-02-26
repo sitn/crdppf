@@ -458,3 +458,24 @@ td.helpfile {
 	background:         linear-gradient( to bottom, #D8D8D8, white)!important;
 	filter:progid:DXImageTransform.Microsoft.gradient(startColorstr='#D8D8D8',endColorstr='white', GradientType=0);
 }
+
+/*ThemeSelector*/
+
+#themeListView .x-list-body-inner dl{
+   border-bottom: 1px solid #DDDDDD;
+   border-right: 1px solid #DDDDDD;
+}
+#themeListView .x-list-over{
+    background-color: #EBEBEB;
+    cursor:pointer;
+}
+
+#themeListView .x-list-selected {
+    background-color: #BDBDBD;
+}
+#themeListView .x-list-selected:hover {
+    background-color: #BDBDBD;
+}
+
+/*layerTree*/
+
