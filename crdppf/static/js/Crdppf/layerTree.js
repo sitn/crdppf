@@ -8,9 +8,10 @@ var makeLayerTree = function makeLayertree(){
     // create layer tree object
     overlaysList = [];
     layerTree = new Ext.tree.TreePanel({
-        title: 'Table des matières',
-        height: 300,
-        width: 400,
+        title: 'Arbre des couches',
+        autoHeight: true,
+        collapsible:true,
+        autoWidth:true,
         useArrows:true,
         autoScroll:true,
         animate:true,
