@@ -1,10 +1,12 @@
 /*
  * @requires GeoExt/widgets/MapPanel.js
+ * @requires GeoExt/widgets/list/ListView.js
  * @requires GeoExt/widgets/LegendPanel.js
  * @include Crdppf/map.js
  * @include Crdppf/layerTree.js
  * @include OpenLayers/Control/MousePosition.js
  * @include Crdppf/searcher/searcher.js
+ * @include Crdppf/themeSelector.js
  */
 
 // VARIABLES
