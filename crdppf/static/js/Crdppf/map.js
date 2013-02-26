@@ -55,8 +55,13 @@ var disableInfoControl = function disableInfoControl(){
 }
 // Create the infocontrols supporting the getFeatureInfo functionnalities
 var setInfoControl = function setInfoControl(){
+    // avoid doubling infoControls
+    MapO.disableInfoControl();
+    
+    // remove all 
     root.removeAll(true);
     OpenLayers.ProxyHost= Crdppf.ogcproxyUrl;
+    
     var protocol = new OpenLayers.Protocol.WFS({
         url: Crdppf.ogcproxyUrl,
         geometryName: this.geometryName,
@@ -67,6 +72,7 @@ var setInfoControl = function setInfoControl(){
             autoconfig: false
         }
     });
+    
     control = new OpenLayers.Control.GetFeature({
         protocol: protocol,
         id: 'infoControl001',
@@ -76,6 +82,7 @@ var setInfoControl = function setInfoControl(){
         maxFeatures: 1,
         clickTolerance: 10
     });
+    
     control.events.register("featureselected", this, function(e) {
         select.addFeatures([e.feature]); 
         var parcelId = e.feature.attributes.idemai;
@@ -85,7 +92,8 @@ var setInfoControl = function setInfoControl(){
                 draggable:false,
                 leaf: false,
                 expanded: true,
-                id: guid()
+                id: guid(),
+
             })
             subchild =  new Ext.tree.TreeNode({
                 text: 'Aucune couche active !',
@@ -96,79 +104,80 @@ var setInfoControl = function setInfoControl(){
             child.appendChild(subchild);
             root.appendChild(child); 
         }
-        else {
-               function handler(request) {
-               var geojson_format = new OpenLayers.Format.GeoJSON();
-               var jsonData = geojson_format.read(request.responseText);
-               var child =  new Ext.tree.TreeNode({
-                   text: 'parcelle n° ' + parcelId,
-                   draggable:false,
-                   leaf: false,
-                   expanded: true
-               })
-               lList = [];
-               // iterate over the features
-               for (i=0; i<jsonData.length; i++) {
+        else { // send intersection request and process results
+                function handler(request) {
+                var geojson_format = new OpenLayers.Format.GeoJSON();
+                var jsonData = geojson_format.read(request.responseText);
+                var child =  new Ext.tree.TreeNode({
+                    text: 'parcelle n° ' + parcelId,
+                    draggable:false,
+                    leaf: false,
+                    expanded: true
+                })
+                lList = [];
+                // iterate over the features
+                for (i=0; i<jsonData.length; i++) {
                     lName = jsonData[i].attributes['layerName'];
-                    var fullName = '';
-                    // var ll = Crdppf.layerListFr.themes;
-                    // for (i=0;i<ll.length;i++){
-                        // for (key in ll[i].layers){
-                            // if(lName==key){
-                                // fullName = ll[i].layers[key]; 
-                            // }
-                        // }
-                    // }
                     // create child for layer if not already created
                     if(!contains(lName,lList)){
-                          var layerChild =  new Ext.tree.TreeNode({
-                                text: lName,
-                                draggable:false,
-                                id:guid(),
-                                leaf: false,
-                                expanded: false
-                            })
-                            // iterate over all features
-                            for (j=0; j<jsonData.length; j++) {
-                                var feature = jsonData[j];
-                                if(jsonData[j].attributes['layerName']==lName){
-                                    html = '';
-                                    for (value in jsonData[j].attributes){
-                                        html += '' + value + ' : ' + jsonData[j].attributes[value] +'<br>' ;
-                                    }
-                                    html += '';
-                                    var sameLayerNode = new Ext.tree.TreeNode({
-                                        text: 'Restriction n°' + j,
-                                        draggable:false,
-                                        leaf: false,
-                                        expanded: false
-                                   })
-                                   sameLayerNode.id = guid();
-                                    sameLayerNode.on('click',this.onClick, this, {
-                                    single: true,
-                                    delay: 100
-                                    });
-                                    function selectIt(feature) {
-                                            intersect.removeAllFeatures();
-                                            intersect.addFeatures(feature);
-                                    }
-                                    sameLayerNode.addListener('click', selectIt(jsonData[j]));
-                                   //sameLayerNode.on('mouseover':this.onMouseOver)
-                                   var contentNode = new Ext.tree.TreeNode({
-                                       text: html,
-                                       draggable:false,
-                                       leaf: false,
-                                       expanded: false,
-                                       id: guid()
-                                   })
-                                    sameLayerNode.appendChild(contentNode);
-                                    layerChild.appendChild(sameLayerNode);
+                        var fullName = '';
+                        var ll = Crdppf.layerListFr.themes;
+                        for (l=0;l<ll.length;l++){
+                            for (key in ll[l].layers){
+                                if(lName==key){
+                                    fullName = ll[l].layers[key]; 
                                 }
                             }
-                            child.appendChild(layerChild);
-                            root.appendChild(child);
-                            lList.push(lName);
-                       }
+                        }
+                        
+                        var layerChild =  new Ext.tree.TreeNode({
+                            text: fullName,
+                            draggable:false,
+                            id:guid(),
+                            leaf: false,
+                            expanded: false
+                        })
+                        // iterate over all features
+                        for (j=0; j<jsonData.length; j++) {
+                            if(jsonData[j].attributes['layerName']==lName){
+                                html = '';
+                                for (value in jsonData[j].attributes){
+                                    html += '' + value + ' : ' + jsonData[j].attributes[value] +'<br>' ;
+                                }
+                                html += '';
+                                var sameLayerNode = new Ext.tree.TreeNode({
+                                    attributes: jsonData[j],
+                                    text: 'Restriction n°' + j,
+                                    draggable:false,
+                                    leaf: false,
+                                    expanded: false,
+                                    id: guid(),
+                                    listeners: {
+                                        'click': function(node,e) {
+                                            intersect.removeAllFeatures();
+                                            feature = node.attributes.attributes;
+                                            intersect.addFeatures(feature);
+                                            MapO.map.zoomToExtent(feature.geometry.bounds);
+                                        }
+                                    }
+                                })
+                                // sameLayerNode.addEvents(Ext.Element.mouseover);
+                                //sameLayerNode.on('mouseover':this.onMouseOver)
+                                var contentNode = new Ext.tree.TreeNode({
+                                    text: html,
+                                    draggable:false,
+                                    leaf: false,
+                                    expanded: false,
+                                    id: guid()
+                                })
+                                sameLayerNode.appendChild(contentNode);
+                                layerChild.appendChild(sameLayerNode);
+                            }
+                        }
+                        child.appendChild(layerChild);
+                        root.appendChild(child);
+                        lList.push(lName);
+                    }
                 }               
             }
             var request = OpenLayers.Request.GET({
@@ -231,7 +240,8 @@ function makeMap(mapOptions){
         select.id = 'selectionLayer';
         var intersectStyle = new OpenLayers.Style({
             'strokeColor':'#ff0000',
-            'fillOpacity': '0.0',
+            'fillOpacity': '0.5',
+            'fillColor': '#ff0000',
             'strokeWidth':'2',
             'pointRadius': '20'
             
