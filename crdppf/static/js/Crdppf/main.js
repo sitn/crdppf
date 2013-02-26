@@ -1,6 +1,5 @@
 /*
  * @requires GeoExt/widgets/MapPanel.js
- * @requires GeoExt/widgets/list/ListView.js
  * @requires GeoExt/widgets/LegendPanel.js
  * @include Crdppf/map.js
  * @include Crdppf/layerTree.js
@@ -120,12 +119,17 @@ Ext.onReady(function() {
 
     layerTreeO = new Crdppf.LayerTree();
     layerTree = layerTreeO.makeLayerTree();
+    themeSelectorO = new Crdppf.ThemeSelector();
+    themeSelector = themeSelectorO.makeThemeSelector();
+    
     var navPanel = new Ext.Panel({
-        layout: 'accordion',
+        
+        split: true,
+        collapside: true,
         border: false,
         flex: 1.0,
         id : 'nav',
-        items:[layerTree
+        items:[themeSelector,layerTree
         // {
             // title: '73 - <b style=\'color:orange;\'>Plans d\'affectation - Pas disponible</b>',
             // id: '73',
@@ -216,7 +220,7 @@ Ext.onReady(function() {
     
     var searchPanel = new Ext.Panel({
         autoHeight: true,
-        width: 300,
+        autoWidth: true,
         border: false,
         items: [searcher]
     });
@@ -269,7 +273,7 @@ Ext.onReady(function() {
             autoScroll: true,
             collapsible: true,
             split: true,
-            region: 'east',
+            region: 'east'
         });
     infoPanel = new Ext.Panel({
             region: 'east',
