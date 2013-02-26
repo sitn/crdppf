@@ -15,6 +15,7 @@
     <script type="text/javascript" src="${request.static_url('crdppf:static/js/Crdppf/resources/themesFr.js')}"></script>
     <script type="text/javascript" src="${request.static_url('crdppf:static/js/Crdppf/map.js')}"></script>
     <script type="text/javascript" src="${request.static_url('crdppf:static/js/Crdppf/layerTree.js')}"></script>
+        <script type="text/javascript" src="${request.static_url('crdppf:static/js/Crdppf/themeSelector.js')}"></script>
     <script type="text/javascript" src="${request.static_url('crdppf:static/js/Crdppf/main.js')}"></script>
     <script type="text/javascript" src="${request.static_url('crdppf:static/js/Crdppf/searcher/searcher.js')}"></script>
     <script type="text/javascript" src="${request.static_url('crdppf:static/js/Crdppf/searcher/GroupComboBox.js')}"></script>
