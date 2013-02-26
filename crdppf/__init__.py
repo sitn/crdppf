@@ -29,6 +29,7 @@ def main(global_config, **settings):
 
     # ROUTES
     config.add_route('home', '/')
+    config.add_route('images', '/static/images/')
     config.add_route('create_extrait', 'create_extrait')
     config.add_route('get_features', 'get_features')
     config.add_route('crdppf', 'crdppf')
@@ -41,6 +42,7 @@ def main(global_config, **settings):
 
     # VIEWS
     config.add_view('crdppf.entry.Entry', route_name = 'home')
+    config.add_view('crdppf.entry.Entry', route_name = 'images')
     config.add_view('crdppf.entry.Entry', route_name='crdppf')
     config.add_view('crdppf.entry.Entry', route_name='test')
 
