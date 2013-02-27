@@ -245,10 +245,12 @@ Ext.onReady(function() {
           
     featureTree = new Ext.tree.TreePanel({
         title: 'Restrictions',
+        collapsed: true,
         height: 300,
         autoWidth: true,
         useArrows:false,
         autoScroll:true,
+        collapside: true,
         animate:true,
         lines: true,
         enableDD:false,
@@ -263,11 +265,9 @@ Ext.onReady(function() {
         draggable:false,
         id:'rootNode'})
     featureTree.setRootNode(root);
-    
     legendPanel = new GeoExt.LegendPanel({
         title: 'Légende',
         defaults: {
-                //labelCls: 'mylabel',
                 style: 'padding:5px'
             },
             id: 'legendPanel',
