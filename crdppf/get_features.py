@@ -46,21 +46,50 @@ def get_features(request):
     layerList = itemList[0]
     response = []
     test = 'empty'
-    # adapt models of selected layers
+    # retrieve models from table2model
     for layer in layerList:
         model = table2model[layer]
-        # adapt_model(model)
-    myResponse = {}  
+    
+    # spatial analysis
+    response = {}  
     featureList = []
     for layer in layerList:
         targetModel = table2model[layer]
         intersectResult = DBSession.query(targetModel).filter(or_(targetModel.geom.intersects(parcelGeom),targetModel.geom.within(parcelGeom))).all()
         if intersectResult:
+            # create geojson output with custom attributes
             for feature in intersectResult:
-                # feature.layerName = layer
+                geometryType = DBSession.scalar(feature.geom.geometry_type())
+                geomType = ''
+                featureClass = ''
+                featureMeasure = -9991
+                if geometryType == 'ST_Polygon' or geometryType == 'ST_MultiPolygon':
+                    intersectionArea = DBSession.scalar(feature.geom.intersection(parcelGeom).area())
+                    featureMeasure = 100*intersectionArea/DBSession.scalar(parcelGeom.area())
+                    geomType = 'Polygone'
+                    if featureMeasure >= 99:
+                        featureClass = 'within'
+                    elif featureMeasure < 99 and featureMeasure > 1:
+                        featureClass = 'intersects'
+                    elif featureMeasure <= 1:
+                        featureClass = 'adjacent'
+
+                elif geometryType == 'ST_Line' or geometryType == 'ST_MultiLineString':
+                    # featureMeasure = DBSession.scalar(feature.geom.length())
+                    # test = feature.geom.union(parcelGeom)
+                    featureMeasure = -9999
+                    geomType = 'Ligne'
+                elif geometryType == 'ST_Point' or geometryType == 'ST_MultiPoint':
+                    featureMeasure = -9999
+                    geomType = 'Point'
                 jsonFeature = sloads(dumps(feature))
                 jsonFeature['properties']['layerName'] = layer
+                jsonFeature['properties']['featureClass'] = featureClass
                 featureList.append(jsonFeature)
-    myResponse.update({'type':'FeatureCollection', 'features': featureList})   
-
-    return myResponse
+                
+                
+                
+     
+    # append feature list to the response
+    response.update({'type':'FeatureCollection', 'features': featureList})   
+    return response
