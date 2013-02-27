@@ -45,6 +45,8 @@ var removeOverlays = function(idTheme){
 }
 // Disable the existing infoControls
 var disableInfoControl = function disableInfoControl(){ 
+    intersect.removeAllFeatures();
+    featureTree.setTitle('Restrictions');
     root.removeAll(true);
     var selectionLayer = this.map.getLayer('selectionLayer');
     selectionLayer.removeAllFeatures();
@@ -60,6 +62,7 @@ var setInfoControl = function setInfoControl(){
     
     // remove all 
     root.removeAll(true);
+    
     OpenLayers.ProxyHost= Crdppf.ogcproxyUrl;
     
     var protocol = new OpenLayers.Protocol.WFS({
@@ -84,36 +87,31 @@ var setInfoControl = function setInfoControl(){
     });
     
     control.events.register("featureselected", this, function(e) {
+        intersect.removeAllFeatures();
         select.addFeatures([e.feature]); 
         var parcelId = e.feature.attributes.idemai;
         if(overlaysList.length == 0){
-            child =  new Ext.tree.TreeNode({
-                text: 'parcelle n° ' + parcelId,
+            var top =  new Ext.tree.TreeNode({
+                text: 'Aucune couche active',
                 draggable:false,
-                leaf: false,
-                expanded: true,
-                id: guid(),
-
+                leaf: true,
+                expanded: false
             })
-            subchild =  new Ext.tree.TreeNode({
-                text: 'Aucune couche active !',
-                draggable:false,
-                id:guid(),
-                leaf: true
-            })
-            child.appendChild(subchild);
-            root.appendChild(child); 
+            root.appendChild(top);
         }
         else { // send intersection request and process results
                 function handler(request) {
                 var geojson_format = new OpenLayers.Format.GeoJSON();
                 var jsonData = geojson_format.read(request.responseText);
-                var child =  new Ext.tree.TreeNode({
-                    text: 'parcelle n° ' + parcelId,
-                    draggable:false,
-                    leaf: false,
-                    expanded: true
-                })
+                // var top =  new Ext.tree.TreeNode({
+                    // text: 'parcelle n° ' + parcelId,
+                    // draggable:false,
+                    // leaf: true,
+                    // expanded: false
+                // })
+                // root.appendChild(top);
+                featureTree.setTitle('Restrictions affectant la parcelle n°' + parcelId);
+
                 lList = [];
                 // iterate over the features
                 for (i=0; i<jsonData.length; i++) {
@@ -140,6 +138,8 @@ var setInfoControl = function setInfoControl(){
                         // iterate over all features
                         for (j=0; j<jsonData.length; j++) {
                             if(jsonData[j].attributes['layerName']==lName){
+                                featureClass = jsonData[j].attributes['featureClass']
+                                nodeCss = switchClass(featureClass);
                                 html = '';
                                 for (value in jsonData[j].attributes){
                                     html += '' + value + ' : ' + jsonData[j].attributes[value] +'<br>' ;
@@ -147,7 +147,8 @@ var setInfoControl = function setInfoControl(){
                                 html += '';
                                 var sameLayerNode = new Ext.tree.TreeNode({
                                     attributes: jsonData[j],
-                                    text: 'Restriction n°' + j,
+                                    cls: nodeCss,
+                                    text: 'Restriction n°' + (j+1) + ' : ' + featureClass,
                                     draggable:false,
                                     leaf: false,
                                     expanded: false,
@@ -161,8 +162,6 @@ var setInfoControl = function setInfoControl(){
                                         }
                                     }
                                 })
-                                // sameLayerNode.addEvents(Ext.Element.mouseover);
-                                //sameLayerNode.on('mouseover':this.onMouseOver)
                                 var contentNode = new Ext.tree.TreeNode({
                                     text: html,
                                     draggable:false,
@@ -173,9 +172,9 @@ var setInfoControl = function setInfoControl(){
                                 sameLayerNode.appendChild(contentNode);
                                 layerChild.appendChild(sameLayerNode);
                             }
+                            root.appendChild(layerChild);
                         }
-                        child.appendChild(layerChild);
-                        root.appendChild(child);
+                        //top.appendChild(layerChild);
                         lList.push(lName);
                     }
                 }               
@@ -346,4 +345,21 @@ function guid() {
   return s4() + s4() + '-' + s4() + '-' + s4() + '-' +
          s4() + '-' + s4() + s4() + s4();
 }
-    
+
+function switchClass(featureClass){
+    outCss ='';
+    switch(featureClass){
+        case 'intersects':
+            outCss = 'sameLayerNodeIntersectsCls';
+        break;
+        case 'within':
+            outCss = 'sameLayerNodeWithinCls';
+        break;
+        case 'adjacent':
+             outCss = 'sameLayerNodeAdjacentCls';
+        break;
+        default:
+        break;
+    }
+    return outCss
+}
