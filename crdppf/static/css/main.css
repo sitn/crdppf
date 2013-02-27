@@ -64,10 +64,10 @@ img.matrix_cell_preavis_negatif : hover {cursor:pointer !important;}
     background:url(../images/ui_buttons/normal/icon_querybypoint.gif);
 	height:26px !important;
 }
-.map-toolbar .over .crdppf_infobutton {
+.x-btn-over .crdppf_infobutton {
     background:url(../images/ui_buttons/over/icon_querybypoint_over.gif);
 }
-.x-btn-over .crdppf_infobutton {
+.x-btn-pressed .crdppf_infobutton {
     background-image:url(../images/ui_buttons/on/icon_querybypoint_on.gif) !important;
 }
 .crdppf_printbutton {
@@ -477,5 +477,76 @@ td.helpfile {
     background-color: #BDBDBD;
 }
 
-/*layerTree*/
+/*featureTree*/
+/*  .x-tree-ec-icon  .x-tree-node-icon .x-tree-ec-elbow-plus .x-tree-node-icon*/
+/* .x-tree-lines  .sameLayerNodeCls   img{
+    background-image:url(../images/featureTree/collapse_yellow.png)!important;
+    background-repeat:no-repeat;
+} */
+
+.sameLayerNodeAdjacentCls .x-tree-elbow-end-plus{
+    background-image:url(../images/featureTree/expand_green.png)!important;
+    background-repeat:no-repeat;
+    background-size:10px 10px;
+}
+.sameLayerNodeAdjacentCls .x-tree-elbow-plus{
+    background-image:url(../images/featureTree/expand_green.png)!important;
+    background-repeat:no-repeat;
+    background-size:10px 10px;
+}
+.sameLayerNodeAdjacentCls .x-tree-elbow-end-minus{
+    background-image:url(../images/featureTree/collapse_green.png)!important;
+    background-repeat:no-repeat;
+    background-size:10px 10px;
+}
+.sameLayerNodeAdjacentCls .x-tree-elbow-minus{
+    background-image:url(../images/featureTree/collapse_green.png)!important;
+    background-repeat:no-repeat;
+    background-size:10px 10px;
+}
+.sameLayerNodeIntersectsCls .x-tree-elbow-end-plus{
+    background-image:url(../images/featureTree/expand_yellow.png)!important;
+    background-repeat:no-repeat;
+    background-size:10px 10px;
+}
+.sameLayerNodeIntersectsCls .x-tree-elbow-plus{
+    background-image:url(../images/featureTree/expand_yellow.png)!important;
+    background-repeat:no-repeat;
+    background-size:10px 10px;
+}
+.sameLayerNodeIntersectsCls .x-tree-elbow-end-minus{
+    background-image:url(../images/featureTree/collapse_yellow.png)!important;
+    background-repeat:no-repeat;
+    background-size:10px 10px;
+}
+.sameLayerNodeIntersectsCls .x-tree-elbow-minus{
+    background-image:url(../images/featureTree/collapse_yellow.png)!important;
+    background-repeat:no-repeat;
+    background-size:10px 10px;
+}
+.sameLayerNodeWithinCls .x-tree-elbow-end-plus{
+    background-image:url(../images/featureTree/expand_red.png)!important;
+    background-repeat:no-repeat;
+    background-size:10px 10px;
+}
+.sameLayerNodeWithinCls .x-tree-elbow-plus{
+    background-image:url(../images/featureTree/expand_red.png)!important;
+    background-repeat:no-repeat;
+    background-size:10px 10px;
+}
+.sameLayerNodeWithinCls .x-tree-elbow-end-minus{
+    background-image:url(../images/featureTree/collapse_red.png)!important;
+    background-repeat:no-repeat;
+    background-size:10px 10px;
+}
+.sameLayerNodeWithintCls .x-tree-elbow-minus{
+    background-image:url(../images/featureTree/collapse_red.png)!important;
+    background-repeat:no-repeat;
+    background-size:10px 10px;
+}
+.layerNodeCls{
+    padding-left:10px;
+}
+
+
 
