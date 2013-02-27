@@ -26,8 +26,11 @@ Ext.onReady(function() {
     var map = MapO.map;
     var infoButton = new Ext.Button({
         xtype: 'button',
+        margins: '0 0 0 20',
+        id: 'infoButton',
         width: 40,
         enableToggle: true,
+        toggleGroup: 'mapTools',
         iconCls: 'crdppf_infobutton',
         // cls: 'crdppf_infobutton',
         toggleGroup: 'mapTools',
@@ -241,9 +244,9 @@ Ext.onReady(function() {
    // featureTree diplayed in infoPanel as a global view 
           
     featureTree = new Ext.tree.TreePanel({
-        title: 'Attributs',
+        title: 'Restrictions',
         height: 300,
-        width: 400,
+        autoWidth: true,
         useArrows:false,
         autoScroll:true,
         animate:true,
