@@ -4,7 +4,6 @@
 Crdppf.ThemeSelector = function createThemeSelector () {
     this.makeThemeSelector = makeThemeSelector;
 }
-
 var makeThemeSelector = function makeThemeSelector(){
 
     var myReader = new Ext.data.JsonReader({
@@ -20,10 +19,8 @@ var makeThemeSelector = function makeThemeSelector(){
         reader: myReader
     });
 
+    // load data and create listView
     myStore.loadData(Crdppf.layerListFr);
-    console.log(myStore)
-    
-    testUrl = '<img src=' + Crdppf.imagesDir +'sitn_banniere_final_right.png' + '></img>';
     var listView = new Ext.list.ListView({
         id: 'themeListView',
         store: myStore,
@@ -34,8 +31,6 @@ var makeThemeSelector = function makeThemeSelector(){
         singleSelect : true,
         emptyText: 'No images to display',
         reserveScrollOffset: true,
-        // selectedClass: 'clsListViewItemSelected',
-        // overClass: 'listViewOverClass',
         columns: [
             {header:'icon',
              width: 0.15,
@@ -60,7 +55,7 @@ var makeThemeSelector = function makeThemeSelector(){
             }
         }
     });
-
+    // insert listView into a nice looking panel
     var themePanel = new Ext.Panel({
         id:'images-view',
         autoWidth:true,
@@ -72,12 +67,5 @@ var makeThemeSelector = function makeThemeSelector(){
         title:'Sélection des thèmes',
         items: listView
     });
-    // little bit of feedback
-    // listView.on('selectionchange', function(view, nodes){
-        // var l = nodes.length;
-        // var s = l != 1 ? 's' : '';
-        // themePanel.setTitle('Simple ListView ('+l+' item'+s+' selected)');
-    // });
-    
     return themePanel;
 }
