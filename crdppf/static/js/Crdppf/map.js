@@ -44,7 +44,8 @@ var removeOverlays = function(idTheme){
  
 }
 // Disable the existing infoControls
-var disableInfoControl = function disableInfoControl(){ 
+var disableInfoControl = function disableInfoControl(){
+    featureTree.collapse(false);
     intersect.removeAllFeatures();
     featureTree.setTitle('Restrictions');
     root.removeAll(true);
@@ -87,6 +88,7 @@ var setInfoControl = function setInfoControl(){
     });
     
     control.events.register("featureselected", this, function(e) {
+        featureTree.expand(true);
         intersect.removeAllFeatures();
         select.addFeatures([e.feature]); 
         var parcelId = e.feature.attributes.idemai;
@@ -95,7 +97,7 @@ var setInfoControl = function setInfoControl(){
                 text: 'Aucune couche active',
                 draggable:false,
                 leaf: true,
-                expanded: false
+                expanded: true
             })
             root.appendChild(top);
         }
@@ -103,15 +105,7 @@ var setInfoControl = function setInfoControl(){
                 function handler(request) {
                 var geojson_format = new OpenLayers.Format.GeoJSON();
                 var jsonData = geojson_format.read(request.responseText);
-                // var top =  new Ext.tree.TreeNode({
-                    // text: 'parcelle n° ' + parcelId,
-                    // draggable:false,
-                    // leaf: true,
-                    // expanded: false
-                // })
-                // root.appendChild(top);
                 featureTree.setTitle('Restrictions affectant la parcelle n°' + parcelId);
-
                 lList = [];
                 // iterate over the features
                 for (i=0; i<jsonData.length; i++) {
@@ -133,7 +127,7 @@ var setInfoControl = function setInfoControl(){
                             draggable:false,
                             id:guid(),
                             leaf: false,
-                            expanded: false
+                            expanded: true
                         })
                         // iterate over all features
                         for (j=0; j<jsonData.length; j++) {
