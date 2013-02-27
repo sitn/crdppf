@@ -28,9 +28,35 @@ var makeLayerTree = function makeLayertree(){
         draggable:false,
         id:'rootLayerTree'})
     var ll = Crdppf.layerListFr.themes;
+    // create a node on top of tree to select all nodes
+    checkAllNode = new Ext.tree.TreeNode({
+        text: 'Sélectionner toutes les couches',
+        id: 'selectAllNode',
+        draggable: false,
+        checked: false,
+        leaf: true,
+        listeners: {
+            'checkchange':function(node,checked){
+                if(checked){
+                    layerTree.expandAll();
+                    for (n=1; n < rootLayerTree.childNodes.length; n++){
+                        rootLayerTree.childNodes[n].getUI().toggleCheck(true);
+                    }
+                    
+                }else{
+                    for (n=1; n < rootLayerTree.childNodes.length; n++){
+                            rootLayerTree.childNodes[n].getUI().toggleCheck(false);
+                        }
+                    layerTree.collapseAll();
+                }
+            }
+        }
+    });
+    rootLayerTree.appendChild(checkAllNode)
     // iterate over themes and create nodes
     for (i=0;i<ll.length;i++){
         var themeId = ll[i].id;
+        // fill tree with nodes relative to themes (level 1)
         var themeNode =  new Ext.tree.TreeNode({
             text: ll[i].name,
             draggable:false,
@@ -39,6 +65,7 @@ var makeLayerTree = function makeLayertree(){
             checked:false,
             listeners: {
                 'checkchange': function(node, checked){
+                    MapO.disableInfoControl();
                     if(checked){
                         node.expand();
                         for (k=0; k < node.childNodes.length; k++){
@@ -53,7 +80,7 @@ var makeLayerTree = function makeLayertree(){
                 }
             }
         })
-        // iterate over layers and create subnodes
+        // fill each theme node with his contained node (level 2)
         for (var keys in ll[i].layers)
         {
             var lName = ll[i].layers[keys];
@@ -61,6 +88,7 @@ var makeLayerTree = function makeLayertree(){
                 text: ll[i].layers[keys],
                 draggable: false,
                 id: keys,
+                cls:'layerNodeCls',
                 leaf: true,
                 checked:false,
                 listeners: {
