@@ -55,7 +55,7 @@ Crdppf.SearchBox = function(options) {
         enableKeyEvents: true,
         minChars: 3,
         queryDelay: 50, 
-        emptyText: OpenLayers.i18n('Rechercher...'),
+        emptyText: labels['searchBoxEmptyTxt'],
         loadingText: OpenLayers.i18n('loadingText'),
         displayField: 'searchfield',
         groupingField: 'source',
