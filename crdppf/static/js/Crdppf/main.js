@@ -11,7 +11,7 @@
 // VARIABLES
 var mapPanel;
 var winWait;
-lang = 'De';
+lang = 'Fr';
 // MAIN USER INTERFACE
 
 Ext.onReady(function() {
