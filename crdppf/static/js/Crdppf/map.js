@@ -47,7 +47,7 @@ var removeOverlays = function(idTheme){
 var disableInfoControl = function disableInfoControl(){
     featureTree.collapse(false);
     intersect.removeAllFeatures();
-    featureTree.setTitle('Restrictions');
+    featureTree.setTitle(labels['restrictionPanelTitle']);
     root.removeAll(true);
     var selectionLayer = this.map.getLayer('selectionLayer');
     selectionLayer.removeAllFeatures();
@@ -94,7 +94,7 @@ var setInfoControl = function setInfoControl(){
         var parcelId = e.feature.attributes.idemai;
         if(overlaysList.length == 0){
             var top =  new Ext.tree.TreeNode({
-                text: 'Aucune couche active',
+                text: labels['noActiveLayertxt'],
                 draggable:false,
                 leaf: true,
                 expanded: true
@@ -105,7 +105,7 @@ var setInfoControl = function setInfoControl(){
                 function handler(request) {
                 var geojson_format = new OpenLayers.Format.GeoJSON();
                 var jsonData = geojson_format.read(request.responseText);
-                featureTree.setTitle('Restrictions affectant la parcelle n°' + parcelId);
+                featureTree.setTitle(labels['restrictionPanelTxt'] + parcelId);
                 lList = [];
                 // iterate over the features
                 for (i=0; i<jsonData.length; i++) {
@@ -113,7 +113,7 @@ var setInfoControl = function setInfoControl(){
                     // create child for layer if not already created
                     if(!contains(lName,lList)){
                         var fullName = '';
-                        var ll = Crdppf.layerListFr.themes;
+                        var ll = layerList.themes;
                         for (l=0;l<ll.length;l++){
                             for (key in ll[l].layers){
                                 if(lName==key){
@@ -142,7 +142,7 @@ var setInfoControl = function setInfoControl(){
                                 var sameLayerNode = new Ext.tree.TreeNode({
                                     attributes: jsonData[j],
                                     cls: nodeCss,
-                                    text: 'Restriction n°' + (j+1) + ' : ' + featureClass,
+                                    text: labels['restrictionFoundTxt'] + (j+1) + ' : ' + featureClass,
                                     draggable:false,
                                     leaf: false,
                                     expanded: false,
@@ -268,7 +268,7 @@ function makeMap(mapOptions){
     map.events.register("mousemove", map, function(e) {
                 var pixel = new OpenLayers.Pixel(e.xy.x,e.xy.y);
                 var lonlat = map.getLonLatFromPixel(pixel);
-                OpenLayers.Util.getElement(mapOptions.divMousePosition).innerHTML = 'Coordonnées (ch1903) - Y : ' + Math.round(lonlat.lon) + '  X : ' + Math.round(lonlat.lat) + 'm';
+                OpenLayers.Util.getElement(mapOptions.divMousePosition).innerHTML = labels['olCoordinates'] + ' (ch1903) - Y : ' + Math.round(lonlat.lon) + '  X : ' + Math.round(lonlat.lat) + 'm';
     });
     // add base layers & selection layers
     map.addLayers([intersect,select, layer]);
