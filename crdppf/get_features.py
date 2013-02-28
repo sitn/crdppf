@@ -75,8 +75,6 @@ def get_features(request):
                         featureClass = 'adjacent'
 
                 elif geometryType == 'ST_Line' or geometryType == 'ST_MultiLineString':
-                    # featureMeasure = DBSession.scalar(feature.geom.length())
-                    # test = feature.geom.union(parcelGeom)
                     featureMeasure = -9999
                     geomType = 'Ligne'
                 elif geometryType == 'ST_Point' or geometryType == 'ST_MultiPoint':
