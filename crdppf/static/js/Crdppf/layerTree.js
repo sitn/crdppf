@@ -8,7 +8,7 @@ var makeLayerTree = function makeLayertree(){
     // create layer tree object
     overlaysList = [];
     layerTree = new Ext.tree.TreePanel({
-        title: 'Arbre des couches',
+        title: labels['layerTreeTitle'],
         autoHeight: true,
         collapsible:true,
         autoWidth:true,
@@ -27,10 +27,10 @@ var makeLayerTree = function makeLayertree(){
         text: 'rootLayerTree',
         draggable:false,
         id:'rootLayerTree'})
-    var ll = Crdppf.layerListFr.themes;
+    var ll = layerList.themes;
     // create a node on top of tree to select all nodes
     checkAllNode = new Ext.tree.TreeNode({
-        text: 'Sélectionner toutes les couches',
+        text: labels['selectAllLayerLabel'],
         id: 'selectAllNode',
         draggable: false,
         checked: false,
