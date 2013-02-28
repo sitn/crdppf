@@ -11,11 +11,18 @@
 // VARIABLES
 var mapPanel;
 var winWait;
-
+lang = 'De';
 // MAIN USER INTERFACE
 
 Ext.onReady(function() {
-
+    layerList = Crdppf.layerListFr;
+    if(lang=='Fr'){
+        labels = Crdppf.labelsFr;
+        layerList = Crdppf.layerListFr;
+    }else if(lang=='De'){
+        labels = Crdppf.labelsDe;
+        layerList = Crdppf.layerListDe;
+    }
     Ext.QuickTips.init();
     
     // create map
@@ -68,6 +75,19 @@ Ext.onReady(function() {
                     }  
         }
     });
+    // var langButton = new Ext.Button({
+        // pressed: true,
+        // xtype: 'button',
+        // margins: '0 0 0 20',
+        // width: 40,
+        // id: 'langButton',
+        // listeners:{
+            // click: function (){
+                        // lang = 'De';
+                        // crdppf.doLayout(true,true);
+                    // }  
+        // }
+    // });
    var mapToolbar = new Ext.Toolbar({
     autoWidth: true,
     height: 20,
@@ -93,7 +113,7 @@ Ext.onReady(function() {
     // Status bar
     statusbar = new Ext.ux.StatusBar({
         id: 'statusbar',
-        defaultText: '<b>Informations dépourvues de foi publique, <a style="color:#660000;" href="http://sitn.ne.ch/web/conditions_utilisation/contrat_SITN_MO.htm" target="_new">&copy; SITN</a>, <a style="color:#660000;" href="http://sitn.ne.ch/web/conditions_utilisation/contratdv5741.htm" target="_new">swisstopo DV 571.4</a>, <a style="color:#660000;" href="http://www.openstreetmap.org/copyright" target="_new">OpenStreetMap</a></b>'
+        defaultText: labels['mapBottomTxt']
     });   
    
     statusbar.add({
@@ -104,7 +124,7 @@ Ext.onReady(function() {
 
    var mapContainer = new Ext.Panel({
         region: "center",
-        title: 'Carte',
+        title: labels['mapContainerTab'],
         margins: '5 5 0 0',
         layout: 'border',
         items: [
@@ -230,7 +250,7 @@ Ext.onReady(function() {
     
     var navigationPanel = new Ext.Panel({
         region: 'west',
-        title: 'Navigation',
+        title: labels['navPanelLabel'],
         layout:'vbox',
         split: true,
         collapseMode: 'mini',
@@ -244,7 +264,7 @@ Ext.onReady(function() {
    // featureTree diplayed in infoPanel as a global view 
           
     featureTree = new Ext.tree.TreePanel({
-        title: 'Restrictions',
+        title: labels['restrictionPanelTitle'],
         collapsed: true,
         height: 300,
         autoWidth: true,
@@ -266,7 +286,7 @@ Ext.onReady(function() {
         id:'rootNode'})
     featureTree.setRootNode(root);
     legendPanel = new GeoExt.LegendPanel({
-        title: 'Légende',
+        title: labels['legendPanelTitle'],
         defaults: {
                 style: 'padding:5px'
             },
@@ -280,7 +300,7 @@ Ext.onReady(function() {
         });
     infoPanel = new Ext.Panel({
             region: 'east',
-            title: 'Informations',
+            title: labels['infoTabLabel'],
             id: 'infoPanel',
             width: 300,
             collapsible: true,
@@ -294,19 +314,19 @@ Ext.onReady(function() {
             items:[
                 mapContainer,
             {
-                title: 'Bases légales',
+                title: labels['legalBasisTab'],
                 autoLoad : {
                     url : '/dev_crdppf/static/public/bases_legales.html'
                 }
             },{
-                title: 'Règlements',
+                title: labels['lawTabLabel'],
                 autoEl: {
                     tag: 'iframe',
                     style: 'height: 100%; width: 100%',
                     src: 'http://sitn.ne.ch/web/reglements/Regl_Amenagement/recupere/01_Regl_Amenagement.pdf'
                 }
             },{
-                title: 'Informations et renvois supplémentaires',
+                title: labels['additionnalInfoTab'],
                 html: 'une information complémentaire'
             }]
         });
@@ -316,7 +336,7 @@ Ext.onReady(function() {
         region: 'south',
         title: 'Disclaimer',
         collapsible: true,
-        html: 'Mise en garde : Le canton de Neuchâtel n\'engage pas sa responsabilité sur l\'exactitude ou la fiabilité des documents législatifs dans leur version électronique. Ces documents ne créent aucun autre droit ou obligation que ceux qui découlent des textes légalement adoptés et publiés, qui font seuls foi.',
+        html: labels['disclaimerTxt'],
         split: true,
         height: 50,
         minHeight: 50
@@ -326,6 +346,7 @@ Ext.onReady(function() {
     var crdppf = new Ext.Viewport({
         layout: 'border',
         renderTo:'main',
+        id:'viewPort',
         border:true,
         items: [headerPanel,
             navigationPanel,
