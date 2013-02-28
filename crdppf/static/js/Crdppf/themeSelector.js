@@ -20,7 +20,7 @@ var makeThemeSelector = function makeThemeSelector(){
     });
 
     // load data and create listView
-    myStore.loadData(Crdppf.layerListFr);
+    myStore.loadData(layerList);
     var listView = new Ext.list.ListView({
         id: 'themeListView',
         store: myStore,
@@ -64,7 +64,7 @@ var makeThemeSelector = function makeThemeSelector(){
         autoScroll:false,
         animate:true,
         layout:'fit',
-        title:'Sélection des thèmes',
+        title:labels['themeSelectorLabel'],
         items: listView
     });
     return themePanel;
