@@ -11,4 +11,7 @@ def set_language(request):
 @view_config(route_name='get_language',renderer='string')
 def get_language(request):
     session = request.session
+    if 'lang' not in session:
+        session['lang'] = request.registry.settings['default_language']
+
     return session['lang']
