@@ -1,6 +1,7 @@
 /*
  * @requires GeoExt/widgets/MapPanel.js
- * @requires GeoExt/widgets/LegendPanel.js
+ * @requires GeoExt/widgets/LegendPanel.js 
+ * @requires GeoExt/widgets/WMSLegend.js
  * @include Crdppf/map.js
  * @include Crdppf/layerTree.js
  * @include OpenLayers/Control/MousePosition.js
@@ -333,19 +334,36 @@ Ext.onReady(function() {
         draggable:false,
         id:'rootNode'})
     featureTree.setRootNode(root);
-    legendPanel = new GeoExt.LegendPanel({
-        title: labels['legendPanelTitle'],
+    var layerStore = new GeoExt.data.LayerStore({
+        map: MapO.map
+    });
+    
+    // legendPanel = new GeoExt.LegendPanel({
+        // title: labels['legendPanelTitle'],
+        // store: layerStore,
+        // html:'sdfsdfsdf',
+        // defaults: {
+                // style: 'padding:5px'
+            // },
+        // id: 'legendPanel',
+        // bodyStyle: 'padding:5px',
+        // width: 300,
+        // autoScroll: true,
+        // collapsible: true,
+        // split: true,
+        // region: 'east'
+        // });
+    var legendPanel = new GeoExt.LegendPanel({
+        map: MapO.map,
+        title: 'Legend Panel',
         defaults: {
-                style: 'padding:5px'
-            },
-            id: 'legendPanel',
-            bodyStyle: 'padding:5px',
-            width: 300,
-            autoScroll: true,
-            collapsible: true,
-            split: true,
-            region: 'east'
-        });
+            style: 'padding:5px',
+            baseParams: {
+                FORMAT: 'image/png',
+                LEGEND_OPTIONS: 'forceLabels:on'
+            }
+        }
+    });
     infoPanel = new Ext.Panel({
             region: 'east',
             title: labels['infoTabLabel'],
