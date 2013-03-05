@@ -1,0 +1,14 @@
+from pyramid.response import Response
+from pyramid.view import view_config
+
+@view_config(route_name='set_language',renderer='string')
+def set_language(request):
+    params = dict(request.params)
+    session = request.session
+    lang = params['lang']
+    session['lang']=lang
+    
+@view_config(route_name='get_language',renderer='string')
+def get_language(request):
+    session = request.session
+    return session['lang']
