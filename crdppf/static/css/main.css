@@ -91,6 +91,32 @@ img.matrix_cell_preavis_negatif : hover {cursor:pointer !important;}
     background-image:url(../images/ui_buttons/on/icon_pan.gif) !important;
 }
 
+.crdppf_frButton {
+    font-weight:normal;
+    position:absolute;
+    right:40px;
+    width:10px;
+}
+.x-btn-over .crdppf_frButton {
+    font-weight:normal;
+}
+.x-btn-pressed .crdppf_frButton {
+   font-weight:bold;
+}
+
+.crdppf_deButton {
+    font-weight:normal;
+    position:absolute;
+    right:10px;
+    width:10px;
+}
+.x-btn-over .crdppf_deButton {
+    font-weight:normal;
+}
+.x-btn-pressed .crdppf_deButton {
+    font-weight:bold;
+}
+
 /* .map-toolbar .drawpolygon {
     background:url(../images/normal/icon_shapeadd.png);
 }
