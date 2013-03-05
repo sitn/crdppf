@@ -11,10 +11,19 @@
 // VARIABLES
 var mapPanel;
 var winWait;
-lang = 'Fr';
 // MAIN USER INTERFACE
 
 Ext.onReady(function() {
+    lang = '';
+     var request = OpenLayers.Request.GET({
+                    url: Crdppf.getLanguageUrl,
+                    callback: defineLanguage,
+                    async: false
+    });
+    
+    function defineLanguage(request){
+        lang = request.responseText;
+    }
     layerList = Crdppf.layerListFr;
     if(lang=='Fr'){
         labels = Crdppf.labelsFr;
@@ -75,28 +84,67 @@ Ext.onReady(function() {
                     }  
         }
     });
-    // var langButton = new Ext.Button({
-        // pressed: true,
-        // xtype: 'button',
-        // margins: '0 0 0 20',
-        // width: 40,
-        // id: 'langButton',
-        // listeners:{
-            // click: function (){
-                        // lang = 'De';
-                        // crdppf.doLayout(true,true);
-                    // }  
-        // }
-    // });
+    
+    // define the language buttons state
+    var isPressedFr = false;
+    var isPressedDe = false;
+    if(lang=='Fr'){
+        isPressedFr = true;
+        isPressedDe = false;
+    }
+    else if(lang=='De'){
+        isPressedFr = false;
+        isPressedDe = true;
+    }
+    // create language buttons
+    var frButton = new Ext.Button({
+        pressed: isPressedFr,
+        text:'Fr',
+        xtype: 'button',
+        margins: '0 0 0 0',
+        width: 40,
+        id: 'frButton',
+        toggleGroup: 'langButton',
+        iconCls: 'crdppf_frButton',
+        listeners:{
+            click: function(){setLanguage('Fr')}
+        }
+    });
+    var deButton = new Ext.Button({
+        pressed: isPressedDe,
+        text:'De',
+        xtype: 'button',
+        margins: '0 0 0 0',
+        width: 40,
+        id: 'deButton',
+        iconCls: 'crdppf_deButton',
+        toggleGroup: 'langButton',
+        listeners:{
+            click: function(){setLanguage('De')}
+        }
+    });
+    // set the lang parameter in session
+    function setLanguage(value){
+         var request = OpenLayers.Request.GET({
+                            url: Crdppf.setLanguageUrl,
+                            params: {
+                                lang:value
+                            },
+                            proxy: null,
+                            async: false
+            });
+         window.location.reload();
+    }
    var mapToolbar = new Ext.Toolbar({
     autoWidth: true,
     height: 20,
     cls: 'map-toolbar',
     items: [panButton,
             infoButton,
-            printButton]
+            printButton,
+            frButton,
+            deButton]
    });
-   
     var mapPanel = new GeoExt.MapPanel({
         id:'mapPanel',
         stateId: "map",
@@ -230,12 +278,12 @@ Ext.onReady(function() {
         ]
       });
       // set the beforeexpand event to add the corresponding layers
-      for (i = 0; i < navPanel.items.length; i++){
-        var item = navPanel.items.items[i];
-        item.on('beforeexpand', function(item){
-            //MapO.setOverlays(item.themeId);
-        });
-      }
+      // for (i = 0; i < navPanel.items.length; i++){
+        // var item = navPanel.items.items[i];
+        // item.on('beforeexpand', function(item){
+            // MapO.setOverlays(item.themeId);
+        // });
+      // }
       
     var searcher = new Crdppf.SearchBox({
         map: mapPanel.map
