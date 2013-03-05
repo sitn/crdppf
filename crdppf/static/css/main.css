@@ -574,5 +574,11 @@ td.helpfile {
     padding-left:10px;
 }
 
+/*LegendPanel*/
+.legendPanelCls{
+    position:absolute;
+    bottom: 10px;
+}
+
 
 
