@@ -25,6 +25,7 @@ var makeThemeSelector = function makeThemeSelector(){
         id: 'themeListView',
         store: myStore,
         autoWidth:true,
+        autoHeight:true,
         hideHeaders: true,
         expanded: true,
         autoScroll:true,
