@@ -315,7 +315,7 @@ Ext.onReady(function() {
     featureTree = new Ext.tree.TreePanel({
         title: labels['restrictionPanelTitle'],
         collapsed: true,
-        height: 300,
+        autoheight: true,
         autoWidth: true,
         useArrows:false,
         autoScroll:true,
@@ -338,24 +338,14 @@ Ext.onReady(function() {
         map: MapO.map
     });
     
-    // legendPanel = new GeoExt.LegendPanel({
-        // title: labels['legendPanelTitle'],
-        // store: layerStore,
-        // html:'sdfsdfsdf',
-        // defaults: {
-                // style: 'padding:5px'
-            // },
-        // id: 'legendPanel',
-        // bodyStyle: 'padding:5px',
-        // width: 300,
-        // autoScroll: true,
-        // collapsible: true,
-        // split: true,
-        // region: 'east'
-        // });
     var legendPanel = new GeoExt.LegendPanel({
         map: MapO.map,
-        title: 'Legend Panel',
+        title: labels['legendPanelTitle'],
+        position: 'bottom',
+        cls: 'legendPanelCls',
+        height: 400,
+        width:300,
+        autoScroll:true,
         defaults: {
             style: 'padding:5px',
             baseParams: {
