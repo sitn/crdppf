@@ -36,6 +36,10 @@ class Authority(Base):
     __tablename__ = 'authority'
     __table_args__ = {'schema': 'crdppf', 'autoload': True}
     
+class PaperFormats(Base):
+    __tablename__ = 'paperformats'
+    __table_args__ = {'schema': 'crdppf', 'autoload': True}
+    
 class Cadastre(Base):
     __tablename__ = 'la02_cadastres'
     __table_args__ = {'schema': 'general', 'autoload': True}
