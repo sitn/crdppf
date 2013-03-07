@@ -53,7 +53,58 @@ def initialisation(self):
     parcelInfo['BBOX'] = None
     parcelInfo['geom'] = None
     
+# Returns the BBOX coordinates of an rectangle
+def getBBOX(geometry):
+    coordListStr = geometry.split("(")[2].split(")")[0].split(',')
+    X = []
+    Y = []
+    for coordStr in coordListStr:
+        X.append(float(coordStr.split(" ")[0]))
+        Y.append(float(coordStr.split(" ")[1]))
+
+    bbox = {'minX': min(X), 'minY': min(Y), 'maxX': max(X), 'maxY': max(Y)}
     
+    return bbox
+
+# Detects the best paper format and scale in function of the general form and size of the parcel
+def getPrintFormat(bbox):
+    """This function determines the ideal paper format and scale for the pdf print in dependency of the general form of the selected parcel"""
+    printFormat = {}
+    paperFormats = DBSession.query(PaperFormats).all()
+    fit = 'false'
+    fitRatio = 0.9
+    deltaX = bbox['maxX']-bbox['minX']
+    deltaY = bbox['maxY']-bbox['minY']
+    
+    # Decides what paper orientation 
+    if deltaX >= deltaY :
+        printFormat['orientation'] = 'landscape'
+        bboxWidth = deltaX
+        bboxHeight = deltaY
+    else :
+        printFormat['orientation'] = 'portrait'
+        bboxWidth = deltaY
+        bboxHeight = deltaX
+        
+    # Get the adapted paper format
+    if printFormat['orientation'] == 'landscape' :
+        for paperFormat in paperFormats :
+            ratioW = (bboxWidth/paperFormat.width)*(paperFormat.scale/1000)
+            ratioH = (bboxHeight/paperFormat.height)*(paperFormat.scale/1000)
+            if ratioW <= fitRatio and ratioH <= fitRatio :
+                printFormat = paperFormat.code
+                fit = 'true'
+                break
+    else:
+        for paperFormat in paperFormats :
+            ratioW = (bboxWidth/paperFormat.width)*(paperFormat.scale/1000)
+            ratioH = (bboxHeight/paperFormat.code)*(paperFormat.scale/1000)
+            if ratioW <= fitRatio and ratioH <= fitRatio :
+                printFormat = paperFormat.code
+                break
+    
+    return printFormat
+
 # Intersection d'un polygone de bien_fonds avec les différentes couches pour récuperer
 # des informations quant au lieu_dit, le cadastre, la commune et les adresses
 def getFeatureInfoByID(id, parcelInfo):
@@ -77,8 +128,10 @@ def getFeatureInfoByID(id, parcelInfo):
     parcelInfo['numcom'] = queryresult.numcom
     parcelInfo['nomcom'] = queryresult2.comnom
     parcelInfo['nufeco'] = queryresult2.nufeco
-    #parcelInfo['centerX'],parcelInfo['centerY'] = self.getCenterPointFromGeom(queryresult.geom)
-    #parcelInfo['BBOX'] = queryresult.geom.bounds 
+    parcelInfo['centerX'],parcelInfo['centerY'] = DBSession.scalar(queryresult.geom.centroid.x),DBSession.scalar(queryresult.geom.centroid.y)
+    parcelInfo['BBOX'] = getBBOX(DBSession.scalar(queryresult.geom.envelope.wkt))
+    parcelInfo['printFormat'] = getPrintFormat(parcelInfo['BBOX'])
+    
     #adresses = self.getAdresses(parcelInfo['centerX'],parcelInfo['centerY'] )
     #if adresses is not None :
     #    parcelInfo['adresses'] = adresses 
@@ -174,9 +227,19 @@ def create_extrait(request):
 
     i = plans_wms(restriction_layers,crdppf_wms,bbox)
 
+    # if request.params.get('idemai') is not None :
+    if featureID is not None :
+        # Gets the basic attributes of the parcel
+        featureInfo.update(getFeatureInfoByID(featureID,parcelInfo))
+    else :
+        try:
+            parcelInfo['X'] =request.params.get('X')
+            parcelInfo['Y'] =request.params.get('Y')
+            featureInfo.update(getFeatureInfoByID(featureID,parcelInfo))
+        except:
+            abort(404)
     
-    # Gets the basic attributes of the parcel
-    featureInfo.update(getFeatureInfoByID(featureID,parcelInfo))
+    pdf_format = parcelInfo['printFormat']
     
     # Creates the pdf file
     pdf_name = 'extrait'
