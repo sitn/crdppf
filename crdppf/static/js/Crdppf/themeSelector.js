@@ -52,6 +52,7 @@ var makeThemeSelector = function makeThemeSelector(){
                     ui.toggleCheck(false);
                 });
                 layerTree.getNodeById(myStore.getAt(index).id).getUI().toggleCheck(true)
+                Ext.getCmp('infoButton').toggle(true);
             }
         }
     });
