@@ -4,7 +4,9 @@
  * @requires Crdppf/resources/themesFr.js 
  * @requires OpenLayers/Request.js 
  * @requires OpenLayers/Layer/WMTS.js 
+ * @requires OpenLayers/Layer/Image.js 
  * @requires OpenLayers/Control/LayerSwitcher.js
+  * @requires OpenLayers/Control/OverViewMap.js
  * @requires OpenLayers/Control/PanZoomBar.js
  * @requires OpenLayers/Control/GetFeature.js
  * @requires OpenLayers/Util.js 
@@ -84,7 +86,7 @@ var setInfoControl = function setInfoControl(){
         hover: false,
         single: false,
         maxFeatures: 1,
-        clickTolerance: 10
+        clickTolerance: 15
     });
     
     control.events.register("featureselected", this, function(e) {
@@ -220,7 +222,7 @@ function makeMap(mapOptions){
         style: 'default',
         fixedLayer: true,
         requestEncoding: 'REST'
-    });
+    });    
     
     // selection layer: display selected features
     select = new OpenLayers.Layer.Vector(
@@ -276,6 +278,30 @@ function makeMap(mapOptions){
     var ls= new OpenLayers.Control.LayerSwitcher(); 
     map.addControl(ls); 
     ls.minimizeControl(); 
+    // create an overview map control with the default options
+   
+    var overviewMap = new OpenLayers.Control.OverviewMap({
+            layers: [
+                new OpenLayers.Layer.Image(
+                    "overview",
+                    Crdppf.imagesDir + 'ol_sitn/keymap_sitn.png',
+                    new OpenLayers.Bounds(522000, 180000, 575000, 225000),
+                    new OpenLayers.Size(150, 126)
+                )
+            ],
+            size: new OpenLayers.Size(150, 126),
+            maximized: true,
+            isSuitableOverview: function() {
+                return true;
+            },
+            mapOptions: {
+                projection: new OpenLayers.Projection("EPSG:21781"),
+                displayProjection: new OpenLayers.Projection("EPSG:21781"),
+                units: "m",
+                theme: null
+            }
+        })
+    map.addControl(overviewMap);
     map.zoomToMaxExtent(); 
         
     return map;
