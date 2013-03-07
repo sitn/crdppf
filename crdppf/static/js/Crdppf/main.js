@@ -54,7 +54,10 @@ Ext.onReady(function() {
         listeners:{
             click: function (){
                         MapO.setInfoControl()
-                    }  
+                    },
+        toggle: function(){
+            MapO.setInfoControl();
+        }                    
         }
     });
     var printButton = new Ext.Button({
@@ -67,7 +70,7 @@ Ext.onReady(function() {
     listeners:{
         click: function (){
                     alert('Impression en cours....'); 
-                }  
+                }
     }
     });
     var panButton = new Ext.Button({
@@ -195,23 +198,13 @@ Ext.onReady(function() {
     themeSelector = themeSelectorO.makeThemeSelector();
     
     var navPanel = new Ext.Panel({
-        
         split: true,
         collapside: true,
         border: false,
         flex: 1.0,
         id : 'nav',
-        items:[themeSelector,layerTree
-
-        ]
+        items:[themeSelector,layerTree]
       });
-      // set the beforeexpand event to add the corresponding layers
-      // for (i = 0; i < navPanel.items.length; i++){
-        // var item = navPanel.items.items[i];
-        // item.on('beforeexpand', function(item){
-            // MapO.setOverlays(item.themeId);
-        // });
-      // }
       
     var searcher = new Crdppf.SearchBox({
         map: mapPanel.map
@@ -266,6 +259,7 @@ Ext.onReady(function() {
     });
     
     var legendPanel = new GeoExt.LegendPanel({
+        collapsible:true, 
         map: MapO.map,
         title: labels['legendPanelTitle'],
         position: 'bottom',
@@ -282,8 +276,10 @@ Ext.onReady(function() {
         }
     });
     infoPanel = new Ext.Panel({
+            header:false,
             region: 'east',
             title: labels['infoTabLabel'],
+            collapseMode: 'mini',
             id: 'infoPanel',
             width: 300,
             collapsible: true,
