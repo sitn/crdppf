@@ -47,7 +47,6 @@ var makeThemeSelector = function makeThemeSelector(){
             ],
         listeners:{
             click: function(view, index, node, e){
-                console.log(layerTree)
                 layerTree.getRootNode().cascade(function(n) {
                     var ui = n.getUI();
                     ui.toggleCheck(false);
