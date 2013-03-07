@@ -26,21 +26,21 @@
         <table width="100%">
             <tr>
                 <td align="left" valign="top">
-                    <img src="${request.static_url('crdppf:static/images/sitn_banniere_final_left.png')}" alt="" align="top" />                </td>
-                <td rowspan="2" align="right">
-                    <img src="${request.static_url('crdppf:static/images/sitn_banniere_final_right.png')}" alt="" />                </td>
+                    <img src="${request.static_url('crdppf:static/images/banniere_crdppf.png')}" alt="" width="600px" height="30px"/>                </td>
+                <td rowspan="2" align="right" valign="top">
+                    <a href="http://www.ne.ch" target="_blank"><img src="${request.static_url('crdppf:static/images/sitn_banniere_final_right.png')}" alt="" /></a>                </td>
             </tr>
-            <tr valign="top">
-              <td height="20" align="left" valign="top">
+            <tr valign="top" >
+              <td align="left" valign="top" height="60">
                 <span class="Style1">&nbsp;
-                <a href="http://www.ne.ch/sitn" target="_blank">Accueil</a> - 
-                <a href="http://www.ne.ch/sitn/themes" target="_blank">Th&egrave;mes</a> - 
-                <a href="http://www.ne.ch/sitn/donnees" target="_blank">G&eacute;odonn&eacute;es</a> - 
-                <a href="http://www.ne.ch/neat/site/jsp/rubrique/rubrique.jsp?StyleType=bleu&CatId=12523" target="_blank">G&eacute;oservices</a> - 
-                <a href="http://sitn.ne.ch/" target="_blank">G&eacute;oportail</a> - 
-                <a href="http://sitn.ne.ch/mobile" target="_blank">G&eacute;oportail mobile</a> - 
-                <a href="http://sitn.ne.ch/sitn_php/divers/liens_cartographiques.html" target="_blank">Liens cartographiques</a> - 
-                <a href="mailto:sitn@ne.ch?subject=Nouveau Geoportail SITN" target="_blank">Contact</a>
+                <a class="banner2" href="http://www.ne.ch/sitn" target="_blank">Accueil</a> - 
+                <a class="banner2" href="http://www.ne.ch/sitn/themes" target="_blank">Th&egrave;mes</a> - 
+                <a class="banner2" href="http://www.ne.ch/sitn/donnees" target="_blank">G&eacute;odonn&eacute;es</a> - 
+                <a class="banner2" href="http://www.ne.ch/neat/site/jsp/rubrique/rubrique.jsp?StyleType=bleu&CatId=12523" target="_blank">G&eacute;oservices</a> - 
+                <a class="banner2" href="http://sitn.ne.ch/" target="_blank">G&eacute;oportail</a> - 
+                <a class="banner2" href="http://sitn.ne.ch/mobile" target="_blank">G&eacute;oportail mobile</a> - 
+                <a class="banner2" href="http://sitn.ne.ch/sitn_php/divers/liens_cartographiques.html" target="_blank">Liens cartographiques</a> - 
+                <a class="banner2" href="mailto:sitn@ne.ch?subject=Nouveau Geoportail SITN" target="_blank">Contact</a>
         </span>
         </td>
           </tr>
@@ -48,7 +48,7 @@
       </div>
     
 % if debug:
-    <p>J'ai réussi le debug...</p>
+    <p>debug:ok</p>
 % endif
     ${next.body()}
 
