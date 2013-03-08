@@ -70,40 +70,39 @@ def getBBOX(geometry):
 def getPrintFormat(bbox):
     """This function determines the ideal paper format and scale for the pdf print in dependency of the general form of the selected parcel"""
     printFormat = {}
-    paperFormats = DBSession.query(PaperFormats).all()
+    
+    #!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+    # TO DO : take care of a preselected paper format by the user
+    # ===================
+    formatChoice = 'A4'
+
+    paperFormats = DBSession.query(PaperFormats).order_by(PaperFormats.format.desc()).order_by(PaperFormats.scale.asc()).all()
     fit = 'false'
     fitRatio = 0.9
+    ratioW = 0
+    ratioH = 0
     deltaX = bbox['maxX']-bbox['minX']
     deltaY = bbox['maxY']-bbox['minY']
+
     
-    # Decides what paper orientation 
+    # Decides what parcel orientation 
     if deltaX >= deltaY :
-        printFormat['orientation'] = 'landscape'
         bboxWidth = deltaX
         bboxHeight = deltaY
     else :
-        printFormat['orientation'] = 'portrait'
         bboxWidth = deltaY
         bboxHeight = deltaX
-        
-    # Get the adapted paper format
-    if printFormat['orientation'] == 'landscape' :
-        for paperFormat in paperFormats :
-            ratioW = (bboxWidth/paperFormat.width)*(paperFormat.scale/1000)
-            ratioH = (bboxHeight/paperFormat.height)*(paperFormat.scale/1000)
-            if ratioW <= fitRatio and ratioH <= fitRatio :
-                printFormat = paperFormat.code
-                fit = 'true'
-                break
-    else:
-        for paperFormat in paperFormats :
-            ratioW = (bboxWidth/paperFormat.width)*(paperFormat.scale/1000)
-            ratioH = (bboxHeight/paperFormat.code)*(paperFormat.scale/1000)
-            if ratioW <= fitRatio and ratioH <= fitRatio :
-                printFormat = paperFormat.code
-                break
-    
-    return printFormat
+
+    # Get the appropriate paper format for the print
+    for paperFormat in paperFormats :
+        ratioW = bboxWidth*1000/paperFormat.width/paperFormat.scale
+        ratioH = bboxHeight*1000/paperFormat.height/paperFormat.scale
+        if ratioW <= fitRatio and ratioH <= fitRatio :
+            printFormat.update(paperFormat.__dict__)
+            fit = 'true'
+            break
+
+    return paperFormat
 
 # Intersection d'un polygone de bien_fonds avec les différentes couches pour récuperer
 # des informations quant au lieu_dit, le cadastre, la commune et les adresses
@@ -219,7 +218,7 @@ def create_extrait(request):
     featureInfo['lastUpdate'] = datetime.now()
     featureInfo['operator'] = 'F.Voisard - SITN'
     
-    featureID = '1_14127' # test parcel
+    featureID = '1_14127' # test parcel or '1_11340'
     
     # temporary variables for developping purposes - will be assigned by DB requests
     restriction_layers = ['affectation','canepo','foret']
@@ -492,12 +491,6 @@ def create_extrait(request):
     y = pdf.get_y()
     pdf.line(25,y+1,185,y+1)
 
-    pdf.image(pdfpath+pdf_name+'.jpg',25,y+5,90,70)
-
-    pdf.set_y(y+80)
-    y = pdf.get_y()
-    pdf.line(25,y+1,185,y+1)
-
     pdf.set_y(y+5)
     pdf.set_font('Arial','B',10)
     pdf.cell(47,6,unicode('Dispositions transitoires', 'utf-8').encode('iso-8859-1'),0,0,'L')
@@ -505,12 +498,19 @@ def create_extrait(request):
     pdf.set_font('Arial','',10)
     pdf.multi_cell(0,3.9,unicode('Plan d\'affectation Quartier Nord du 21 décembre 1975\nValable jusqu\'au 31.12.2013','utf-8').encode('iso-8859-1'),0,1,'L')
     
-    
+    # Thematic map
+    pdf.add_page(str(pdf_format.orientation + ','+pdf_format.format))
+    pdf.set_font('Arial','B',16)
+    pdf.multi_cell(0,6,'73 - Plan d\'affectation')
+    y = pdf.get_y()
+    pdf.image(pdfpath+pdf_name+'.jpg',10,y+5,277,160)
+    pdf.ln()
+
     # PAGE 3
     pdf.add_page()
+    pdf.set_y(25)
     pdf.set_font('Arial','B',16)
     pdf.multi_cell(0,6,unicode('116 Cadastre des sites pollués','utf-8').encode('iso-8859-1'))
-    pdf.image(pdfpath+pdf_name+'2.png',20,35,90,70)
     pdf.ln()
     
     # PAGE 4
