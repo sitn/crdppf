@@ -3,12 +3,12 @@
 // create layer tree and append nodes & subnodes to it
 Crdppf.LayerTree = function createLayerTree () {
     this.makeLayerTree = makeLayerTree;
-}
+};
 var makeLayerTree = function makeLayertree(){
     // create layer tree object
     overlaysList = [];
     layerTree = new Ext.tree.TreePanel({
-        title: labels['layerTreeTitle'],
+        title: labels.layerTreeTitle,
         autoHeight: true,
         collapsible:true,
         autoWidth:true,
@@ -26,11 +26,11 @@ var makeLayerTree = function makeLayertree(){
     rootLayerTree = new Ext.tree.TreeNode({
         text: 'rootLayerTree',
         draggable:false,
-        id:'rootLayerTree'})
+        id:'rootLayerTree'});
     var ll = layerList.themes;
     // create a node on top of tree to select all nodes
     checkAllNode = new Ext.tree.TreeNode({
-        text: labels['selectAllLayerLabel'],
+        text: labels.selectAllLayerLabel,
         id: 'selectAllNode',
         draggable: false,
         checked: false,
@@ -52,7 +52,7 @@ var makeLayerTree = function makeLayertree(){
             }
         }
     });
-    rootLayerTree.appendChild(checkAllNode)
+    rootLayerTree.appendChild(checkAllNode);
     // iterate over themes and create nodes
     for (i=0;i<ll.length;i++){
         var themeId = ll[i].id;
@@ -79,7 +79,7 @@ var makeLayerTree = function makeLayertree(){
                 }
                 }
             }
-        })
+        });
         // fill each theme node with his contained node (level 2)
         for (var keys in ll[i].layers)
         {
@@ -94,19 +94,19 @@ var makeLayerTree = function makeLayertree(){
                 listeners: {
                         'checkchange': function(node, checked){
                             if(checked){
-                                overlaysList.push(node.id)
-                                MapO.setOverlays()
+                                overlaysList.push(node.id);
+                                MapO.setOverlays();
                             }else{
-                                overlaysList.remove(node.id)
-                                MapO.setOverlays()
+                                overlaysList.remove(node.id);
+                                MapO.setOverlays();
                             }
                         }
                     }
-                })
-            themeNode.appendChild(layerNode)
+                });
+            themeNode.appendChild(layerNode);
         }
-        rootLayerTree.appendChild(themeNode)
+        rootLayerTree.appendChild(themeNode);
     }
     layerTree.setRootNode(rootLayerTree);
-    return layerTree
-}
+    return layerTree;
+};

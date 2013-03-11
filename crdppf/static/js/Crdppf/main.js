@@ -38,7 +38,7 @@ Ext.onReady(function() {
     // create map
     var mapOptions = {
         divMousePosition: 'mousepos'
-    }
+    };
     MapO = new Crdppf.Map(mapOptions);
     var map = MapO.map;
     var infoButton = new Ext.Button({
@@ -49,11 +49,9 @@ Ext.onReady(function() {
         enableToggle: true,
         toggleGroup: 'mapTools',
         iconCls: 'crdppf_infobutton',
-        // cls: 'crdppf_infobutton',
-        toggleGroup: 'mapTools',
         listeners:{
             click: function (){
-                        MapO.setInfoControl()
+                        MapO.setInfoControl();
                     },
         toggle: function(){
             MapO.setInfoControl();
@@ -84,7 +82,7 @@ Ext.onReady(function() {
         iconCls: 'crdppf_panbutton',
         listeners:{
             click: function (){
-                        MapO.disableInfoControl()
+                        MapO.disableInfoControl();
                     }  
         }
     });
@@ -111,7 +109,8 @@ Ext.onReady(function() {
         toggleGroup: 'langButton',
         iconCls: 'crdppf_frButton',
         listeners:{
-            click: function(){setLanguage('Fr')}
+            click: function(){setLanguage('Fr');
+            }
         }
     });
     var deButton = new Ext.Button({
@@ -124,7 +123,8 @@ Ext.onReady(function() {
         iconCls: 'crdppf_deButton',
         toggleGroup: 'langButton',
         listeners:{
-            click: function(){setLanguage('De')}
+            click: function(){setLanguage('De');
+            }
         }
     });
     // set the lang parameter in session
@@ -165,9 +165,8 @@ Ext.onReady(function() {
     // Status bar
     statusbar = new Ext.ux.StatusBar({
         id: 'statusbar',
-        defaultText: labels['mapBottomTxt']
+        defaultText: labels.mapBottomTxt
     });   
-   
     statusbar.add({
         xtype: 'tbtext',
         text: '<span id="mousepos" style="padding: 0 20px;"></span>'
@@ -176,11 +175,11 @@ Ext.onReady(function() {
 
    var mapContainer = new Ext.Panel({
         region: "center",
-        title: labels['mapContainerTab'],
+        title: labels.mapContainerTab,
         margins: '5 5 0 0',
         layout: 'border',
         items: [
-            mapPanel,   
+            mapPanel   
         ],
         bbar: statusbar
     }); 
@@ -219,7 +218,7 @@ Ext.onReady(function() {
     
     var navigationPanel = new Ext.Panel({
         region: 'west',
-        title: labels['navPanelLabel'],
+        title: labels.navPanelLabel,
         layout:'vbox',
         split: true,
         collapseMode: 'mini',
@@ -233,7 +232,7 @@ Ext.onReady(function() {
    // featureTree diplayed in infoPanel as a global view 
           
     featureTree = new Ext.tree.TreePanel({
-        title: labels['restrictionPanelTitle'],
+        title: labels.restrictionPanelTitle,
         collapsed: true,
         autoheight: true,
         autoWidth: true,
@@ -252,7 +251,7 @@ Ext.onReady(function() {
     root = new Ext.tree.TreeNode({
         text: 'Thèmes',
         draggable:false,
-        id:'rootNode'})
+        id:'rootNode'});
     featureTree.setRootNode(root);
     var layerStore = new GeoExt.data.LayerStore({
         map: MapO.map
@@ -261,7 +260,7 @@ Ext.onReady(function() {
     var legendPanel = new GeoExt.LegendPanel({
         collapsible:true, 
         map: MapO.map,
-        title: labels['legendPanelTitle'],
+        title: labels.legendPanelTitle,
         position: 'bottom',
         cls: 'legendPanelCls',
         height: 400,
@@ -278,7 +277,7 @@ Ext.onReady(function() {
     infoPanel = new Ext.Panel({
             header:false,
             region: 'east',
-            title: labels['infoTabLabel'],
+            title: labels.infoTabLabel,
             collapseMode: 'mini',
             id: 'infoPanel',
             width: 300,
@@ -293,19 +292,19 @@ Ext.onReady(function() {
             items:[
                 mapContainer,
             {
-                title: labels['legalBasisTab'],
+                title: labels.legalBasisTab,
                 autoLoad : {
                     url : '/dev_crdppf/static/public/bases_legales.html'
                 }
             },{
-                title: labels['lawTabLabel'],
+                title: labels.lawTabLabel,
                 autoEl: {
                     tag: 'iframe',
                     style: 'height: 100%; width: 100%',
                     src: 'http://sitn.ne.ch/web/reglements/Regl_Amenagement/recupere/01_Regl_Amenagement.pdf'
                 }
             },{
-                title: labels['additionnalInfoTab'],
+                title: labels.additionnalInfoTab,
                 html: 'une information complémentaire'
             }]
         });
@@ -315,7 +314,7 @@ Ext.onReady(function() {
         region: 'south',
         title: 'Disclaimer',
         collapsible: true,
-        html: labels['disclaimerTxt'],
+        html: labels.disclaimerTxt,
         split: true,
         height: 70,
         minHeight: 70

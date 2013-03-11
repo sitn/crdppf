@@ -11,9 +11,9 @@ Crdppf.layerListFr = {
                         {'id':'999','image':'foret.gif','name':'Forêts','layers':{'at39_itineraires_pedestres':'Itinéraires pédestres'}},
                         {'id':'998','image':'routes_nationales.gif','name':'Routes nationales','layers':{'at39_itineraires_pedestres':'Itinéraires pédestres'}},                        
                         {'id':'997','image':'protection_eaux.gif','name':'Protection des eaux','layers':{'at39_itineraires_pedestres':'Itinéraires pédestres'}},
-                        {'id':'996','image':'bruit.gif','name':'Bruit','layers':{'at39_itineraires_pedestres':'Itinéraires pédestres'}},
+                        {'id':'996','image':'bruit.gif','name':'Bruit','layers':{'at39_itineraires_pedestres':'Itinéraires pédestres'}}
         ]
-    }
+    };
 Crdppf.layerListDe = {
     "type": "ThemesCollection",
         'themes' :[  
@@ -23,9 +23,9 @@ Crdppf.layerListDe = {
                         {'id':'999','image':'foret.gif','name':'Wald','layers':{'at39_itineraires_pedestres':'Fusswege'}},
                         {'id':'998','image':'routes_nationales.gif','name':'Nationalstrassen','layers':{'at39_itineraires_pedestres':'Fusswege'}},                        
                         {'id':'997','image':'protection_eaux.gif','name':'Grundwasserschutz','layers':{'at39_itineraires_pedestres':'Fusswege'}},
-                        {'id':'996','image':'bruit.gif','name':'Lärm','layers':{'at39_itineraires_pedestres':'Fusswege'}},
+                        {'id':'996','image':'bruit.gif','name':'Lärm','layers':{'at39_itineraires_pedestres':'Fusswege'}}
         ]
-    }
+    };
 
 Crdppf.labelsFr  ={
     'navPanelLabel':'Navigation',
@@ -49,7 +49,7 @@ Crdppf.labelsFr  ={
     'mapBottomTxt':'<b>Informations dépourvues de foi publique, <a style="color:#660000;" href="http://sitn.ne.ch/web/conditions_utilisation/contrat_SITN_MO.htm" target="_new">&copy; SITN</a></b>',
     'maxTitleOverviewMap':'Afficher la carte de situation',
     'minTitleOverviewMap':'Masquer la carte de situation'
-    }
+    };
 Crdppf.labelsDe  ={
     'navPanelLabel':'Navigation',
     'searchBoxTxt':'Suche...',
@@ -69,8 +69,8 @@ Crdppf.labelsDe  ={
     'noActiveLayertxt':'Keine Ebene aktiv',
     'restrictionFoundTxt':'Eigentumsbeschränkung Nr. ',
     'disclaimerTxt':'Haftungsausschluss : Der Kanton Neuenburg übernimmt keine Garantie für die Exaktheit und Vollständigkeit der Gesetzestexte in ihrer elektronischen Form. Diese Dokumente ...',
-    'mapBottomTxt':'<b>Daten sind nicht rechtsverbindlich, <a style="color:#660000;" href="http://sitn.ne.ch/web/conditions_utilisation/contrat_SITN_MO.htm" target="_new">&copy; SITN</a></b>',
+    'mapBottomTxt':'<b>Daten sind nicht rechtsverbindlich, <a style="color:#660000;" href="http://sitn.ne.ch/web/conditions_utilisation/contrat_SITN_MO.htm" target="_new">&copy; SITN</a></b>'
 
 
-}
+};
 

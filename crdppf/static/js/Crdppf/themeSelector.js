@@ -3,7 +3,7 @@
 // create layer tree and append nodes & subnodes to it
 Crdppf.ThemeSelector = function createThemeSelector () {
     this.makeThemeSelector = makeThemeSelector;
-}
+};
 var makeThemeSelector = function makeThemeSelector(){
 
     var myReader = new Ext.data.JsonReader({
@@ -51,7 +51,7 @@ var makeThemeSelector = function makeThemeSelector(){
                     var ui = n.getUI();
                     ui.toggleCheck(false);
                 });
-                layerTree.getNodeById(myStore.getAt(index).id).getUI().toggleCheck(true)
+                layerTree.getNodeById(myStore.getAt(index).id).getUI().toggleCheck(true);
                 Ext.getCmp('infoButton').toggle(true);
             }
         }
@@ -65,8 +65,8 @@ var makeThemeSelector = function makeThemeSelector(){
         autoScroll:false,
         animate:true,
         layout:'fit',
-        title:labels['themeSelectorLabel'],
+        title:labels.themeSelectorLabel,
         items: listView
     });
     return themePanel;
-}
+};

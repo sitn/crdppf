@@ -26,9 +26,9 @@
         <table width="100%">
             <tr>
                 <td align="left" valign="top">
-                    <img src="${request.static_url('crdppf:static/images/banniere_crdppf.png')}" alt="" width="600px" height="30px"/>                </td>
+                    <img src="${request.static_url('crdppf:static/images/banniere_crdppf_.png')}" alt=""/>                </td>
                 <td rowspan="2" align="right" valign="top">
-                    <a href="http://www.ne.ch" target="_blank"><img src="${request.static_url('crdppf:static/images/sitn_banniere_final_right.png')}" alt="" /></a>                </td>
+                    <a href="http://www.ne.ch" target="_blank"><img src="${request.static_url('crdppf:static/images/sitn_banniere_final_right_.png')}" alt="" /></a>                </td>
             </tr>
             <tr valign="top" >
               <td align="left" valign="top" height="60">
