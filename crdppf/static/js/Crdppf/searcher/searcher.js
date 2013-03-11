@@ -59,7 +59,7 @@ Crdppf.SearchBox = function(options) {
         loadingText: OpenLayers.i18n('loadingText'),
         displayField: 'searchfield',
         groupingField: 'source',
-        width: 300
+        width:250
     }); 
 
     var onBeforeLoadStore = function(store, options) {
