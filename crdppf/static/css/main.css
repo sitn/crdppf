@@ -208,64 +208,52 @@ body {
 /*featureTree*/
 
 .sameLayerNodeAdjacentCls .x-tree-elbow-end-plus{
-    background-image:url(../images/featureTree/expand_green.png)!important;
+    background-image:url(../images/featureTree/expand_green_s.png)!important;
     background-repeat:no-repeat;
-    background-size:10px 10px;
 }
 .sameLayerNodeAdjacentCls .x-tree-elbow-plus{
-    background-image:url(../images/featureTree/expand_green.png)!important;
+    background-image:url(../images/featureTree/expand_green_s.png)!important;
     background-repeat:no-repeat;
-    background-size:10px 10px;
 }
 .sameLayerNodeAdjacentCls .x-tree-elbow-end-minus{
-    background-image:url(../images/featureTree/collapse_green.png)!important;
+    background-image:url(../images/featureTree/collapse_green_s.png)!important;
     background-repeat:no-repeat;
-    background-size:10px 10px;
 }
 .sameLayerNodeAdjacentCls .x-tree-elbow-minus{
-    background-image:url(../images/featureTree/collapse_green.png)!important;
+    background-image:url(../images/featureTree/collapse_green_s.png)!important;
     background-repeat:no-repeat;
-    background-size:10px 10px;
 }
 .sameLayerNodeIntersectsCls .x-tree-elbow-end-plus{
-    background-image:url(../images/featureTree/expand_yellow.png)!important;
+    background-image:url(../images/featureTree/expand_yellow_s.png)!important;
     background-repeat:no-repeat;
-    background-size:10px 10px;
 }
 .sameLayerNodeIntersectsCls .x-tree-elbow-plus{
-    background-image:url(../images/featureTree/expand_yellow.png)!important;
+    background-image:url(../images/featureTree/expand_yellow_s.png)!important;
     background-repeat:no-repeat;
-    background-size:10px 10px;
 }
 .sameLayerNodeIntersectsCls .x-tree-elbow-end-minus{
-    background-image:url(../images/featureTree/collapse_yellow.png)!important;
+    background-image:url(../images/featureTree/collapse_yellow_s.png)!important;
     background-repeat:no-repeat;
-    background-size:10px 10px;
 }
 .sameLayerNodeIntersectsCls .x-tree-elbow-minus{
-    background-image:url(../images/featureTree/collapse_yellow.png)!important;
+    background-image:url(../images/featureTree/collapse_yellow_s.png)!important;
     background-repeat:no-repeat;
-    background-size:10px 10px;
 }
 .sameLayerNodeWithinCls .x-tree-elbow-end-plus{
-    background-image:url(../images/featureTree/expand_red.png)!important;
+    background-image:url(../images/featureTree/expand_red_s.png)!important;
     background-repeat:no-repeat;
-    background-size:10px 10px;
 }
 .sameLayerNodeWithinCls .x-tree-elbow-plus{
-    background-image:url(../images/featureTree/expand_red.png)!important;
+    background-image:url(../images/featureTree/expand_red_s.png)!important;
     background-repeat:no-repeat;
-    background-size:10px 10px;
 }
 .sameLayerNodeWithinCls .x-tree-elbow-end-minus{
-    background-image:url(../images/featureTree/collapse_red.png)!important;
+    background-image:url(../images/featureTree/collapse_red_s.png)!important;
     background-repeat:no-repeat;
-    background-size:10px 10px;
 }
 .sameLayerNodeWithintCls .x-tree-elbow-minus{
-    background-image:url(../images/featureTree/collapse_red.png)!important;
+    background-image:url(../images/featureTree/collapse_red_s.png)!important;
     background-repeat:no-repeat;
-    background-size:10px 10px;
 }
 .layerNodeCls{
     padding-left:10px;
