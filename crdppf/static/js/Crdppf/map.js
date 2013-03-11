@@ -1,7 +1,8 @@
 ﻿/*
  * @include OpenLayers/Projection.js
  * @include OpenLayers/Map.js
- * @requires Crdppf/resources/themesFr.js 
+ * @requires Crdppf/resources/Fr.js 
+ * @requires Crdppf/resources/De.js 
  * @requires OpenLayers/Request.js 
  * @requires OpenLayers/Layer/WMTS.js 
  * @requires OpenLayers/Layer/Image.js 
