@@ -112,6 +112,7 @@ Crdppf.SearchBox = function(options) {
             map.zoomToExtent(bbox);
             if (map.getScale() < 400) {
                 map.setCenter(bbox.getCenterLonLat(), 12);
+                centerPanel.setActiveTab(0);
             }
         }
     };

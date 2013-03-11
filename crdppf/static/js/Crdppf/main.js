@@ -151,7 +151,6 @@ Ext.onReady(function() {
          window.location.reload();
     }
     
-    
     // create the mapPanel toolbar
     var mapToolbar = new Ext.Toolbar({
     autoWidth: true,
@@ -291,7 +290,7 @@ Ext.onReady(function() {
             items:[featureTree, legendPanel]
         });
 
-    var centerPanel = new Ext.TabPanel({
+    centerPanel = new Ext.TabPanel({
             region: 'center',
             activeTab: 0, // index or id
             items:[

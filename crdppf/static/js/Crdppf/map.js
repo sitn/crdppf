@@ -23,10 +23,6 @@
  * @include OpenLayers/Protocol/WFS/v1_0_0.js
  * @include OpenLayers/Protocol/WFS.js
  */
-
- /*
- Ext.getCmp('mon_id')
- */
  
 Ext.namespace('Crdppf');
 OpenLayers.ImgPath = OLImgPath;  
@@ -37,38 +33,21 @@ Crdppf.Map = function Map(mapOptions) {
     this.description = 'Manages all cartographic parameters and actions';       
     this.map = makeMap(mapOptions);
     this.setOverlays = setOverlays;
-    this.removeOverlays = removeOverlays;
-    // this.layerList;
     this.setInfoControl = setInfoControl;
     this.disableInfoControl = disableInfoControl;
 };
 
-var removeOverlays = function(idTheme){
- 
-};
-// Disable the existing infoControls
-var disableInfoControl = function disableInfoControl(){
-    featureTree.collapse(false);
-    intersect.removeAllFeatures();
-    featureTree.setTitle(labels.restrictionPanelTitle);
-    root.removeAll(true);
-    var selectionLayer = this.map.getLayer('selectionLayer');
-    selectionLayer.removeAllFeatures();
-    infoControl = this.map.getControl('infoControl001');
-    if(infoControl){
-        infoControl.destroy();
-    }
-};
 // Create the infocontrols supporting the getFeatureInfo functionnalities
 var setInfoControl = function setInfoControl(){
-    // avoid doubling infoControls
+    
+    // avoid duplicating infoControls
     MapO.disableInfoControl();
     
-    // remove all 
+    // remove all features in featureTree rootNode
     root.removeAll(true);
     
     OpenLayers.ProxyHost= Crdppf.ogcproxyUrl;
-    
+    // create OL WFS protocol
     var protocol = new OpenLayers.Protocol.WFS({
         url: Crdppf.ogcproxyUrl,
         geometryName: this.geometryName,
@@ -80,6 +59,7 @@ var setInfoControl = function setInfoControl(){
         }
     });
     
+    // create infoControl with our WFS protocol
     control = new OpenLayers.Control.GetFeature({
         protocol: protocol,
         id: 'infoControl001',
@@ -90,6 +70,7 @@ var setInfoControl = function setInfoControl(){
         clickTolerance: 15
     });
     
+    // define actions on feature selection
     control.events.register("featureselected", this, function(e) {
         featureTree.expand(true);
         intersect.removeAllFeatures();
@@ -106,76 +87,79 @@ var setInfoControl = function setInfoControl(){
         }
         else { // send intersection request and process results
                 function handler(request) {
-                var geojson_format = new OpenLayers.Format.GeoJSON();
-                var jsonData = geojson_format.read(request.responseText);
-                featureTree.setTitle(labels.restrictionPanelTxt + parcelId);
-                lList = [];
-                // iterate over the features
-                for (i=0; i<jsonData.length; i++) {
-                    lName = jsonData[i].attributes.layerName;
-                    // create child for layer if not already created
-                    if(!contains(lName,lList)){
-                        var fullName = '';
-                        var ll = layerList.themes;
-                        for (l=0;l<ll.length;l++){
-                            for (var key in ll[l].layers){
-                                if(lName==key){
-                                    fullName = ll[l].layers[key]; 
-                                }
-                            }
-                        }
-                        
-                        var layerChild =  new Ext.tree.TreeNode({
-                            text: fullName,
-                            draggable:false,
-                            id:guid(),
-                            leaf: false,
-                            expanded: true
-                        });
-                        // iterate over all features
-                        for (j=0; j<jsonData.length; j++) {
-                            if(jsonData[j].attributes.layerName ==lName){
-                                featureClass = jsonData[j].attributes.featureClass;
-                                nodeCss = switchClass(featureClass);
-                                html = '';
-                                for (var value in jsonData[j].attributes){
-                                    html += '' + value + ' : ' + jsonData[j].attributes[value] +'<br>' ;
-                                }
-                                html += '';
-                                var sameLayerNode = new Ext.tree.TreeNode({
-                                    attributes: jsonData[j],
-                                    cls: nodeCss,
-                                    text: labels.restrictionFoundTxt + (j+1) + ' : ' + featureClass,
-                                    draggable:false,
-                                    leaf: false,
-                                    expanded: false,
-                                    id: guid(),
-                                    listeners: {
-                                        'click': function(node,e) {
-                                            intersect.removeAllFeatures();
-                                            feature = node.attributes.attributes;
-                                            intersect.addFeatures(feature);
-                                            MapO.map.zoomToExtent(feature.geometry.bounds);
-                                        }
+                    var geojson_format = new OpenLayers.Format.GeoJSON();
+                    var jsonData = geojson_format.read(request.responseText);
+                    featureTree.setTitle(labels.restrictionPanelTxt + parcelId);
+                    lList = [];
+                    // iterate over the features
+                    for (i=0; i<jsonData.length; i++) {
+                        lName = jsonData[i].attributes.layerName;
+                        // create node for layer if not already created
+                        if(!contains(lName,lList)){
+                            var fullName = '';
+                            var ll = layerList.themes;
+                            for (l=0;l<ll.length;l++){
+                                for (var key in ll[l].layers){
+                                    if(lName==key){
+                                        fullName = ll[l].layers[key]; 
                                     }
-                                });
-                                var contentNode = new Ext.tree.TreeNode({
-                                    text: html,
-                                    draggable:false,
-                                    leaf: false,
-                                    expanded: false,
-                                    id: guid()
-                                });
-                                sameLayerNode.appendChild(contentNode);
-                                layerChild.appendChild(sameLayerNode);
+                                }
                             }
-                            root.appendChild(layerChild);
+                            // create layer node (level 1, root is level 0 in the hierarchy)
+                            var layerChild =  new Ext.tree.TreeNode({
+                                text: fullName,
+                                draggable:false,
+                                id:guid(),
+                                leaf: false,
+                                expanded: true
+                            });
+                            
+                            // iterate over all features: create a node for each restriction and group them by their owning layer
+                            for (j=0; j<jsonData.length; j++) {
+                                if (jsonData[j].attributes.layerName ==lName){
+                                    featureClass = jsonData[j].attributes.featureClass;
+                                    nodeCss = switchClass(featureClass);
+                                    html = '';
+                                    for (var value in jsonData[j].attributes){
+                                        html += '' + value + ' : ' + jsonData[j].attributes[value] +'<br>' ;
+                                    }
+                                    html += '';
+                                    // create 1 node for each restriction (level 2)
+                                    var sameLayerNode = new Ext.tree.TreeNode({
+                                        attributes: jsonData[j],
+                                        cls: nodeCss,
+                                        text: labels.restrictionFoundTxt + (j+1) + ' : ' + featureClass,
+                                        draggable:false,
+                                        leaf: false,
+                                        expanded: false,
+                                        id: guid(),
+                                        listeners: {
+                                            'click': function(node,e) {
+                                                intersect.removeAllFeatures();
+                                                feature = node.attributes.attributes;
+                                                intersect.addFeatures(feature);
+                                                MapO.map.zoomToExtent(feature.geometry.bounds);
+                                            }
+                                        }
+                                    });
+                                    // create node containing the feature attributes (level 3)
+                                    var contentNode = new Ext.tree.TreeNode({
+                                        text: html,
+                                        draggable:false,
+                                        leaf: false,
+                                        expanded: false,
+                                        id: guid()
+                                    });
+                                    sameLayerNode.appendChild(contentNode);
+                                    layerChild.appendChild(sameLayerNode);
+                                }
+                                root.appendChild(layerChild);
+                            }
+                            lList.push(lName);
                         }
-                        //top.appendChild(layerChild);
-                        lList.push(lName);
-                    }
-                }               
+                    }               
             }
+            // define an request object to the interection route
             var request = OpenLayers.Request.GET({
                 url: Crdppf.getFeatureUrl,
                 params: {
@@ -191,23 +175,8 @@ var setInfoControl = function setInfoControl(){
         select.removeFeatures([e.feature]);
         root.removeAll(true);
     });
-    // control.events.register("hoverfeature", this, function(e) {
-        // hover.addFeatures([e.feature]);
-    // });
-    // control.events.register("outfeature", this, function(e) {
-        // hover.removeFeatures([e.feature]);
-    // });
     this.map.addControl(control);
     control.activate();
-};
-
-var contains = function contains(element,list){
-        for (var item in list) {
-            if(list[item]==element){
-                return true;
-            }
-        }
-    return false;
 };
 
 // Create OL map object, add base layer & zoom to max extent
@@ -250,6 +219,7 @@ function makeMap(mapOptions){
             displayInLayerSwitcher: false
         });
         intersect.id='intersectLayer';
+        
     // THE OL map object
     var map = new OpenLayers.Map({
         projection: new OpenLayers.Projection('EPSG:21781'),
@@ -267,6 +237,7 @@ function makeMap(mapOptions){
             new OpenLayers.Control.Navigation()   
         ]
     });
+    
     // Event registering & Control setting on the Map Object
     map.events.register("mousemove", map, function(e) {
                 var pixel = new OpenLayers.Pixel(e.xy.x,e.xy.y);
@@ -279,8 +250,8 @@ function makeMap(mapOptions){
     var ls= new OpenLayers.Control.LayerSwitcher(); 
     map.addControl(ls); 
     ls.minimizeControl(); 
-    // create an overview map control with the default options
-   
+    
+    // create an overview map control and customize it
     var overviewMap = new OpenLayers.Control.OverviewMap({
             layers: [
                 new OpenLayers.Layer.Image(
@@ -308,12 +279,26 @@ function makeMap(mapOptions){
     return map;
 }
 
+// Disable the existing infoControls
+var disableInfoControl = function disableInfoControl(){
+    featureTree.collapse(false);
+    intersect.removeAllFeatures();
+    featureTree.setTitle(labels.restrictionPanelTitle);
+    root.removeAll(true);
+    var selectionLayer = this.map.getLayer('selectionLayer');
+    selectionLayer.removeAllFeatures();
+    infoControl = this.map.getControl('infoControl001');
+    if(infoControl){
+        infoControl.destroy();
+    }
+};
+
 /**
 * Method: setOverlays
-* Set the layers to be added to the map depending on the crdppf thematic selected
+* Set the layers to be added to the map depending on the crdppf thematic selected. All layer a group in one single WMS
 *
 * Parameters:
-* idTheme - {String} Unique ID of the selected theme
+* none
 */ 
 var setOverlays = function() {
     if(!this.map){
@@ -384,3 +369,13 @@ function switchClass(featureClass){
     }
     return outCss;
 }
+
+// check if an element belongs to a list
+var contains = function contains(element,list){
+        for (var item in list) {
+            if(list[item]==element){
+                return true;
+            }
+        }
+    return false;
+};
