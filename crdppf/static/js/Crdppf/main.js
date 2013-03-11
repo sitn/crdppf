@@ -269,7 +269,6 @@ Ext.onReady(function() {
         collapsible:true, 
         map: MapO.map,
         cls:'legendPanelCls',
-        autoHeight: true,
         title: labels.legendPanelTitle,
         defaults: {
             style: 'padding:5px',
