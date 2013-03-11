@@ -259,10 +259,19 @@ body {
     padding-left:10px;
 }
 
-/*LegendPanel*/
+/*infoPanel*/
+.infoPanelCls{
+
+}
+
+/*legendPanel*/
 .legendPanelCls{
-    position:absolute;
-    bottom: 10px;
+    
+}
+.legendPanelCls .x-panel.body {
+}
+/*featureTree*/
+.featureTreeCls .x-panel.body{
 }
 
 
