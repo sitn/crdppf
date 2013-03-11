@@ -10,7 +10,6 @@ var makeLayerTree = function makeLayertree(){
     layerTree = new Ext.tree.TreePanel({
         title: labels.layerTreeTitle,
         collapsible:true,
-        autoHeight: true,
         flex: 1.0,
         useArrows:true,
         animate:true,
