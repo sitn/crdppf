@@ -40,25 +40,25 @@ class PaperFormats(Base):
     __tablename__ = 'paperformats'
     __table_args__ = {'schema': 'crdppf', 'autoload': True}
     
-class Cadastre(Base):
+class Cadastre(GeoInterface,Base):
     __tablename__ = 'la02_cadastres'
     __table_args__ = {'schema': 'general', 'autoload': True}
     idobj = Column(Integer, primary_key=True)
     geom =GeometryColumn(Geometry(2,srid=21781))
 
-class ImmeublesCanton(Base):
+class ImmeublesCanton(GeoInterface,Base):
     __tablename__ = 'immeubles_canton'
     __table_args__ = {'schema': 'public', 'autoload': True}
     noobj = Column(Integer, primary_key=True)
     geom =GeometryColumn(Geometry(2,srid=21781))
 
-class NomLocalLieuDit(Base):
+class NomLocalLieuDit(GeoInterface,Base):
     __tablename__ = 'nom_local_lieu_dit'
     __table_args__ = {'schema': 'public', 'autoload': True}
     idcnlo = Column(String(30), primary_key=True)
     geom =GeometryColumn(Geometry(2,srid=21781))
     
-class Zoneprotection(Base):
+class Zoneprotection(GeoInterface,Base):
     __tablename__ = 'en01_zone_sect_protection_eaux'
     __table_args__ = {'schema': 'environnement', 'autoload': True}
     idobj = Column(String(40), primary_key=True)
@@ -89,6 +89,12 @@ class StateArea(GeoInterface,Base):
     __table_args__ = {'schema': 'amenagement', 'autoload': True}
     idobj = Column(Integer, primary_key=True)
     geom =GeometryColumn(Geometry(2,srid=21781))
+    
+class ConstructionsLimits(GeoInterface,Base):
+    __tablename__ = 'at28_limites_constructions'
+    __table_args__ = {'schema': 'amenagement', 'autoload': True}
+    idobj = Column(Integer, primary_key=True)
+    geom =GeometryColumn(Geometry(2,srid=21781))
 
 # models for obstacles to navigation
 
@@ -112,7 +118,7 @@ class PollutedSitesAccidents(GeoInterface,Base):
     idobj = Column(Integer, primary_key=True)
     geom =GeometryColumn(Geometry(2,srid=21781))
     
-class PollutedSitesLandDumps(Base):
+class PollutedSitesLandDumps(GeoInterface,Base):
     __tablename__ = 'en07_canepo_decharges'
     __table_args__ = {'schema': 'environnement', 'autoload': True}
     idobj = Column(Integer, primary_key=True)
@@ -144,6 +150,12 @@ class PollutedSitesCompaniesPts(GeoInterface,Base):
     
 class PollutedSitesCompaniesPoly(GeoInterface,Base):
     __tablename__ = 'en07_canepo_entreprises_polygones'
+    __table_args__ = {'schema': 'environnement', 'autoload': True}
+    idobj = Column(Integer, primary_key=True)
+    geom =GeometryColumn(Geometry(2,srid=21781))
+    
+class RoadNoise(GeoInterface,Base):
+    __tablename__ = 'en05_degres_sensibilite_bruit'
     __table_args__ = {'schema': 'environnement', 'autoload': True}
     idobj = Column(Integer, primary_key=True)
     geom =GeometryColumn(Geometry(2,srid=21781))

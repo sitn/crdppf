@@ -29,7 +29,10 @@ def get_features(request):
                     'en07_canepo_decharges_polygones': PollutedSitesLandDumpsPoly,
                     'en07_canepo_entreprises': PollutedSitesCompanies,
                     'en07_canepo_entreprises_points': PollutedSitesCompaniesPts,
-                    'en07_canepo_entreprises_polygones': PollutedSitesCompaniesPoly}
+                    'en07_canepo_entreprises_polygones': PollutedSitesCompaniesPoly,
+                    'at28_limites_constructions': ConstructionsLimits,
+                    'en05_degres_sensibilite_bruit': RoadNoise,
+                    'en01_zone_sect_protection_eaux': Zoneprotection}
     
     params = dict(request.params)
     parcelId = params['id']
