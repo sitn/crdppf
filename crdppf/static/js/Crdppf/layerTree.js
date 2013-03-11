@@ -9,15 +9,14 @@ var makeLayerTree = function makeLayertree(){
     overlaysList = [];
     layerTree = new Ext.tree.TreePanel({
         title: labels.layerTreeTitle,
-        autoHeight: true,
         collapsible:true,
-        autoWidth:true,
+        autoHeight: true,
+        flex: 1.0,
         useArrows:true,
-        autoScroll:true,
         animate:true,
         lines: true,
         enableDD:false,
-        containerScroll: false,
+        autoScroll: true,
         rootVisible: false,
         frame: true,
         id: 'layerTree'

@@ -15,13 +15,13 @@ var winWait;
 // MAIN USER INTERFACE
 
 Ext.onReady(function() {
+    // set the application language to the user session settings
     lang = '';
      var request = OpenLayers.Request.GET({
                     url: Crdppf.getLanguageUrl,
                     callback: defineLanguage,
                     async: false
     });
-    
     function defineLanguage(request){
         lang = request.responseText;
     }
@@ -33,6 +33,7 @@ Ext.onReady(function() {
         labels = Crdppf.labelsDe;
         layerList = Crdppf.layerListDe;
     }
+    
     Ext.QuickTips.init();
     
     // create map
@@ -41,6 +42,8 @@ Ext.onReady(function() {
     };
     MapO = new Crdppf.Map(mapOptions);
     var map = MapO.map;
+    
+    // getFeatureInfo button: activates the Openlayers infoControl
     var infoButton = new Ext.Button({
         xtype: 'button',
         margins: '0 0 0 20',
@@ -53,24 +56,28 @@ Ext.onReady(function() {
             click: function (){
                         MapO.setInfoControl();
                     },
-        toggle: function(){
-            MapO.setInfoControl();
-        }                    
+            toggle: function(){
+                MapO.setInfoControl();
+            }                    
         }
     });
+    
+    // generate the pdf file of the current map
     var printButton = new Ext.Button({
-    xtype: 'button',
-    width: 40,
-    enableToggle: true,
-    iconCls: 'crdppf_printbutton',
-    // cls: 'crdppf_printbutton',
-    toggleGroup: 'mapTools',
-    listeners:{
-        click: function (){
-                    alert('Impression en cours....'); 
-                }
-    }
+        xtype: 'button',
+        width: 40,
+        enableToggle: true,
+        iconCls: 'crdppf_printbutton',
+        // cls: 'crdppf_printbutton',
+        toggleGroup: 'mapTools',
+        listeners:{
+            click: function (){
+                        alert('Impression en cours....'); 
+                    }
+        }
     });
+    
+    // activate the standard pan button
     var panButton = new Ext.Button({
         pressed: true,
         xtype: 'button',
@@ -87,7 +94,7 @@ Ext.onReady(function() {
         }
     });
     
-    // define the language buttons state
+    // Create the buttons used to switch language
     var isPressedFr = false;
     var isPressedDe = false;
     if(lang=='Fr'){
@@ -98,7 +105,8 @@ Ext.onReady(function() {
         isPressedFr = false;
         isPressedDe = true;
     }
-    // create language buttons
+    
+    // button for french
     var frButton = new Ext.Button({
         pressed: isPressedFr,
         text:'Fr',
@@ -113,6 +121,8 @@ Ext.onReady(function() {
             }
         }
     });
+    
+    // button for german
     var deButton = new Ext.Button({
         pressed: isPressedDe,
         text:'De',
@@ -127,7 +137,8 @@ Ext.onReady(function() {
             }
         }
     });
-    // set the lang parameter in session
+    
+    // set the lang parameter in session when selected through the language buttons
     function setLanguage(value){
          var request = OpenLayers.Request.GET({
                             url: Crdppf.setLanguageUrl,
@@ -139,7 +150,10 @@ Ext.onReady(function() {
             });
          window.location.reload();
     }
-   var mapToolbar = new Ext.Toolbar({
+    
+    
+    // create the mapPanel toolbar
+    var mapToolbar = new Ext.Toolbar({
     autoWidth: true,
     height: 20,
     cls: 'map-toolbar',
@@ -149,6 +163,8 @@ Ext.onReady(function() {
             frButton,
             deButton]
    });
+   
+   // create the mapPanel
     var mapPanel = new GeoExt.MapPanel({
         id:'mapPanel',
         stateId: "map",
@@ -162,7 +178,7 @@ Ext.onReady(function() {
         tbar: mapToolbar
     });
     
-    // Status bar
+    // create the status bar
     statusbar = new Ext.ux.StatusBar({
         id: 'statusbar',
         defaultText: labels.mapBottomTxt
@@ -172,7 +188,7 @@ Ext.onReady(function() {
         text: '<span id="mousepos" style="padding: 0 20px;"></span>'
     });
     
-
+    // create the mapContaine: one Ext.Panel with a map & a toolbar
    var mapContainer = new Ext.Panel({
         region: "center",
         title: labels.mapContainerTab,
@@ -184,6 +200,7 @@ Ext.onReady(function() {
         bbar: statusbar
     }); 
     
+    // create the header panel containing the page banner
     var headerPanel = new Ext.Panel({
         region: 'north',
         height: 55,
@@ -196,34 +213,28 @@ Ext.onReady(function() {
     themeSelectorO = new Crdppf.ThemeSelector();
     themeSelector = themeSelectorO.makeThemeSelector();
     
-    var navPanel = new Ext.Panel({
-        split: true,
-        collapside: true,
-        border: false,
-        flex: 1.0,
-        id : 'nav',
-        items:[themeSelector,layerTree]
-      });
-      
+    // create the CGPX searchbox
     var searcher = new Crdppf.SearchBox({
         map: mapPanel.map
     });
     
+    // Add the searchBox to an Ext.Panel
     var searchPanel = new Ext.Panel({
-        autoHeight: true,
         autoWidth: true,
         border: false,
         items: [searcher]
     });
     
+    // Create the navigation panel
     var navigationPanel = new Ext.Panel({
         region: 'west',
         title: labels.navPanelLabel,
         layout:'vbox',
+        flex: 1.0,
         split: true,
         collapseMode: 'mini',
-        width: 300,
-        items:[searchPanel,navPanel],
+        width: 250,
+        items:[searchPanel,themeSelector,layerTree],
         layoutConfig: {
             align: 'stretch'
         }
@@ -233,16 +244,13 @@ Ext.onReady(function() {
           
     featureTree = new Ext.tree.TreePanel({
         title: labels.restrictionPanelTitle,
+        cls: 'featureTreeCls',
         collapsed: true,
-        autoheight: true,
-        autoWidth: true,
         useArrows:false,
-        autoScroll:true,
         collapside: true,
         animate:true,
         lines: true,
         enableDD:false,
-        containerScroll: false,
         rootVisible: false,
         frame: true,
         id: 'featureTree'
@@ -260,12 +268,9 @@ Ext.onReady(function() {
     var legendPanel = new GeoExt.LegendPanel({
         collapsible:true, 
         map: MapO.map,
+        cls:'legendPanelCls',
+        autoHeight: true,
         title: labels.legendPanelTitle,
-        position: 'bottom',
-        cls: 'legendPanelCls',
-        height: 400,
-        width:300,
-        autoScroll:true,
         defaults: {
             style: 'padding:5px',
             baseParams: {
@@ -276,11 +281,12 @@ Ext.onReady(function() {
     });
     infoPanel = new Ext.Panel({
             header:false,
+            width: 250,
             region: 'east',
             title: labels.infoTabLabel,
             collapseMode: 'mini',
             id: 'infoPanel',
-            width: 300,
+            cls: 'infoPanelCls',
             collapsible: true,
             split: true,
             items:[featureTree, legendPanel]

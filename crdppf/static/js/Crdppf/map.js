@@ -7,7 +7,7 @@
  * @requires OpenLayers/Layer/WMTS.js 
  * @requires OpenLayers/Layer/Image.js 
  * @requires OpenLayers/Control/LayerSwitcher.js
-  * @requires OpenLayers/Control/OverViewMap.js
+ * @requires OpenLayers/Control/OverViewMap.js
  * @requires OpenLayers/Control/PanZoomBar.js
  * @requires OpenLayers/Control/GetFeature.js
  * @requires OpenLayers/Util.js 

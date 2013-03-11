@@ -24,12 +24,11 @@ var makeThemeSelector = function makeThemeSelector(){
     var listView = new Ext.list.ListView({
         id: 'themeListView',
         store: myStore,
-        autoWidth:true,
-        autoHeight:true,
         hideHeaders: true,
+        autoWidth: true,
         expanded: true,
-        autoScroll:true,
         singleSelect : true,
+        flex: 1.0,
         emptyText: 'No images to display',
         reserveScrollOffset: true,
         columns: [
@@ -59,10 +58,7 @@ var makeThemeSelector = function makeThemeSelector(){
     // insert listView into a nice looking panel
     var themePanel = new Ext.Panel({
         id:'images-view',
-        autoWidth:true,
-        autoHeight: true,
         collapsible:true,
-        autoScroll:false,
         animate:true,
         layout:'fit',
         title:labels.themeSelectorLabel,
