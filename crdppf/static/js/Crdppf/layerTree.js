@@ -40,12 +40,15 @@ var makeLayerTree = function makeLayertree(){
                     for (n=1; n < rootLayerTree.childNodes.length; n++){
                         rootLayerTree.childNodes[n].getUI().toggleCheck(true);
                     }
+                    Ext.getCmp('infoButton').toggle(true);
+                    MapO.setInfoControl();
                     
                 }else{
                     for (n=1; n < rootLayerTree.childNodes.length; n++){
                             rootLayerTree.childNodes[n].getUI().toggleCheck(false);
                         }
                     layerTree.collapseAll();
+                    Ext.getCmp('panButton').toggle(true);
                 }
             }
         }
@@ -94,9 +97,12 @@ var makeLayerTree = function makeLayertree(){
                             if(checked){
                                 overlaysList.push(node.id);
                                 MapO.setOverlays();
+                                Ext.getCmp('infoButton').toggle(true);
+                                MapO.setInfoControl();
                             }else{
                                 overlaysList.remove(node.id);
                                 MapO.setOverlays();
+                                Ext.getCmp('panButton').toggle(true);
                             }
                         }
                     }

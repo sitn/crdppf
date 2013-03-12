@@ -118,17 +118,26 @@ var setInfoControl = function setInfoControl(){
                             for (j=0; j<jsonData.length; j++) {
                                 if (jsonData[j].attributes.layerName ==lName){
                                     featureClass = jsonData[j].attributes.featureClass;
-                                    nodeCss = switchClass(featureClass);
+                                    var out = switchClass(featureClass);
+                                    var nodeCss = out.outCss;
+                                    var toolTip = out.outToolTip;
                                     html = '';
+                                    stop = 0;
                                     for (var value in jsonData[j].attributes){
-                                        html += '' + value + ' : ' + jsonData[j].attributes[value] +'<br>' ;
+                                        html += '<p class=featureAttributeStyle><b>' + value + ' : </b>' + jsonData[j].attributes[value] +'</p>' ;
+                                        if (stop > 4){
+                                            break;
+                                        }
+                                        stop +=1;
                                     }
                                     html += '';
                                     // create 1 node for each restriction (level 2)
                                     var sameLayerNode = new Ext.tree.TreeNode({
+                                        qtip:toolTip,
+                                        singleClickExpand: true,
                                         attributes: jsonData[j],
                                         cls: nodeCss,
-                                        text: labels.restrictionFoundTxt + (j+1) + ' : ' + featureClass,
+                                        text: labels.restrictionFoundTxt + (j+1),
                                         draggable:false,
                                         leaf: false,
                                         expanded: false,
@@ -144,7 +153,8 @@ var setInfoControl = function setInfoControl(){
                                     });
                                     // create node containing the feature attributes (level 3)
                                     var contentNode = new Ext.tree.TreeNode({
-                                        text: html,
+                                        cls:'contentNodeCls',
+                                        text:html,
                                         draggable:false,
                                         leaf: false,
                                         expanded: false,
@@ -334,10 +344,6 @@ var setOverlays = function() {
         overlays.id = 'overlayLayer';
         this.map.addLayer(overlays);
     }
-
-    // toggle pan button
-    var panButton= Ext.getCmp('panButton');
-    panButton.toggle();
 };
 
 // helping functions
@@ -353,21 +359,26 @@ function guid() {
 }
 
 function switchClass(featureClass){
-    outCss ='';
+    var outCss ='';
+    var outToolTip = ''
     switch(featureClass){
         case 'intersects':
             outCss = 'sameLayerNodeIntersectsCls';
+            outToolTip = labels.intersectToolTipMessage;
         break;
         case 'within':
             outCss = 'sameLayerNodeWithinCls';
+            outToolTip = labels.withinToolTipMessage;
         break;
         case 'adjacent':
              outCss = 'sameLayerNodeAdjacentCls';
+             outToolTip = labels.adjacentToolTipMessage;
         break;
         default:
         break;
     }
-    return outCss;
+    var out = {'outCss':outCss, 'outToolTip':outToolTip}
+    return out;
 }
 
 // check if an element belongs to a list

@@ -52,6 +52,7 @@ var makeThemeSelector = function makeThemeSelector(){
                 });
                 layerTree.getNodeById(myStore.getAt(index).id).getUI().toggleCheck(true);
                 Ext.getCmp('infoButton').toggle(true);
+                MapO.setInfoControl();
             }
         }
     });

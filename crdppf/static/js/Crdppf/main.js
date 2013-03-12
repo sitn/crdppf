@@ -55,10 +55,7 @@ Ext.onReady(function() {
         listeners:{
             click: function (){
                         MapO.setInfoControl();
-                    },
-            toggle: function(){
-                MapO.setInfoControl();
-            }                    
+                    }                  
         }
     });
     
@@ -244,15 +241,17 @@ Ext.onReady(function() {
     featureTree = new Ext.tree.TreePanel({
         title: labels.restrictionPanelTitle,
         cls: 'featureTreeCls',
-        collapsed: true,
+        collapsed: false,
         useArrows:false,
-        collapside: true,
+        collapside: false,
         animate:true,
-        lines: true,
+        lines: false,
         enableDD:false,
         rootVisible: false,
-        frame: true,
-        id: 'featureTree'
+        frame: false,
+        id: 'featureTree',
+        height:300,
+        autoScroll: true
     });
     
     root = new Ext.tree.TreeNode({
