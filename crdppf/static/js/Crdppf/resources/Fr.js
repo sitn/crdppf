@@ -39,5 +39,5 @@ Crdppf.labelsFr  ={
     'minTitleOverviewMap':'Masquer la carte de situation',
     'intersectToolTipMessage':'Relation spatiale: intersection',
     'withinToolTipMessage':'Relation spatiale: à l\'intérieur de',
-    'adjacentToolTipMessage':'Relation spatiale: touche',
+    'adjacentToolTipMessage':'Relation spatiale: touche'
     };
