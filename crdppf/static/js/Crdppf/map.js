@@ -360,7 +360,7 @@ function guid() {
 
 function switchClass(featureClass){
     var outCss ='';
-    var outToolTip = ''
+    var outToolTip = '';
     switch(featureClass){
         case 'intersects':
             outCss = 'sameLayerNodeIntersectsCls';
@@ -377,7 +377,7 @@ function switchClass(featureClass){
         default:
         break;
     }
-    var out = {'outCss':outCss, 'outToolTip':outToolTip}
+    var out = {'outCss':outCss, 'outToolTip':outToolTip};
     return out;
 }
 
