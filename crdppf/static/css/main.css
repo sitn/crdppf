@@ -259,6 +259,15 @@ body {
     padding-left:10px;
 }
 
+.featureAttributeStyle{
+    text-align:left;
+    margin-left:30px;
+}
+.featureTreeCls .x-panel-mr .x-panel-mc {
+    background-color:white;
+    
+}
+
 /*infoPanel*/
 .infoPanelCls{
 
@@ -268,11 +277,9 @@ body {
 .legendPanelCls{
     
 }
-.legendPanelCls .x-panel.body {
+.legendPanelCls .x-panel-body {
 }
-/*featureTree*/
-.featureTreeCls .x-panel.body{
-}
+
 
 
 
