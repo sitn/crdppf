@@ -34,5 +34,8 @@ Crdppf.labelsDe  ={
     'noActiveLayertxt':'Keine Ebene aktiv',
     'restrictionFoundTxt':'Eigentumsbeschränkung Nr. ',
     'disclaimerTxt':'Haftungsausschluss : Der Kanton Neuenburg übernimmt keine Garantie für die Exaktheit und Vollständigkeit der Gesetzestexte in ihrer elektronischen Form. Diese Dokumente ...',
-    'mapBottomTxt':'<b>Daten sind nicht rechtsverbindlich, <a style="color:#660000;" href="http://sitn.ne.ch/web/conditions_utilisation/contrat_SITN_MO.htm" target="_new">&copy; SITN</a></b>'
+    'mapBottomTxt':'<b>Daten sind nicht rechtsverbindlich, <a style="color:#660000;" href="http://sitn.ne.ch/web/conditions_utilisation/contrat_SITN_MO.htm" target="_new">&copy; SITN</a></b>',
+    'intersectToolTipMessage':'Relation spatiale: intersection',
+    'withinToolTipMessage':'Relation spatiale: à l\'intérieur de',
+    'adjacentToolTipMessage':'Relation spatiale: touche',
 };
