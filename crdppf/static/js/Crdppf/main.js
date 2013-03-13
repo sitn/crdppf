@@ -41,11 +41,11 @@ Ext.onReady(function() {
     frLink = document.getElementById('frLink');
     frLink.onclick = function() {
         setLanguage('Fr');
-    }
+    };
     deLink = document.getElementById('deLink');
     deLink.onclick = function() {
         setLanguage('De');
-    }
+    };
     
     // create map
     var mapOptions = {
