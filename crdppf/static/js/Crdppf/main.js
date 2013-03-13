@@ -17,7 +17,7 @@ var winWait;
 Ext.onReady(function() {
     // set the application language to the user session settings
     lang = '';
-     var request = OpenLayers.Request.GET({
+    var request = OpenLayers.Request.GET({
                     url: Crdppf.getLanguageUrl,
                     callback: defineLanguage,
                     async: false
@@ -35,6 +35,17 @@ Ext.onReady(function() {
     }
     
     Ext.QuickTips.init();
+    
+    // add onclick event to the Fr/De links
+    
+    frLink = document.getElementById('frLink');
+    frLink.onclick = function() {
+        setLanguage('Fr');
+    }
+    deLink = document.getElementById('deLink');
+    deLink.onclick = function() {
+        setLanguage('De');
+    }
     
     // create map
     var mapOptions = {
