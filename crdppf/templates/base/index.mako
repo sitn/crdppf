@@ -34,13 +34,15 @@
               <td align="left" valign="top" height="60">
                 <span class="Style1">&nbsp;
                 <a class="banner2" href="http://www.ne.ch/sitn" target="_blank">Accueil</a> - 
-                <a class="banner2" href="http://www.ne.ch/sitn/themes" target="_blank">Th&egrave;mes</a> - 
-                <a class="banner2" href="http://www.ne.ch/sitn/donnees" target="_blank">G&eacute;odonn&eacute;es</a> - 
-                <a class="banner2" href="http://www.ne.ch/neat/site/jsp/rubrique/rubrique.jsp?StyleType=bleu&CatId=12523" target="_blank">G&eacute;oservices</a> - 
-                <a class="banner2" href="http://sitn.ne.ch/" target="_blank">G&eacute;oportail</a> - 
-                <a class="banner2" href="http://sitn.ne.ch/mobile" target="_blank">G&eacute;oportail mobile</a> - 
+                <a class="banner2" href="http://www.ne.ch/sitn/themes" target="_blank">Thèmes</a> - 
+                <a class="banner2" href="http://www.ne.ch/sitn/donnees" target="_blank">Géodonnées</a> - 
+                <a class="banner2" href="http://www.ne.ch/neat/site/jsp/rubrique/rubrique.jsp?StyleType=bleu&CatId=12523" target="_blank">Géoservices</a> - 
+                <a class="banner2" href="http://sitn.ne.ch/" target="_blank">Géoportail</a> - 
+                <a class="banner2" href="http://sitn.ne.ch/mobile" target="_blank">Géoportail mobile</a> - 
                 <a class="banner2" href="http://sitn.ne.ch/sitn_php/divers/liens_cartographiques.html" target="_blank">Liens cartographiques</a> - 
-                <a class="banner2" href="mailto:sitn@ne.ch?subject=Nouveau Geoportail SITN" target="_blank">Contact</a>
+                <a class="banner2" href="mailto:sitn@ne.ch?subject=Nouveau Geoportail SITN" target="_blank">Contact</a> - 
+                <a class="banner2" href="" id="frLink" target="_self">Fr</a> /
+                <a class="banner2" href="" id="deLink" target="_self">De</a>
         </span>
         </td>
           </tr>
