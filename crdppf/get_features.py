@@ -14,27 +14,34 @@ import csv
 from sqlalchemy import or_
 from papyrus.geojsonencoder import dumps
 
-@view_config(route_name='get_features',renderer='json')
+
+@view_config(route_name='get_features', renderer='json')
 def get_features(request):
-    
-    # for dev purposes: matching dictionnary model-table name
-    table2model =   {'at39_itineraires_pedestres':PedestrianWays,
-                    'at14_zones_communales': CommunalArea,
-                    'at08_zones_cantonales': StateArea,
-                    'clo_couloirs': Corridors,
-                    'clo_cotes_altitude_surfaces': AltitudeRatings,
-                    'en07_canepo_accidents': PollutedSitesAccidents,
-                    'en07_canepo_decharges': PollutedSitesLandDumps,
-                    'en07_canepo_decharges_points': PollutedSitesLandDumpsPts,
-                    'en07_canepo_decharges_polygones': PollutedSitesLandDumpsPoly,
-                    'en07_canepo_entreprises': PollutedSitesCompanies,
-                    'en07_canepo_entreprises_points': PollutedSitesCompaniesPts,
-                    'en07_canepo_entreprises_polygones': PollutedSitesCompaniesPoly,
-                    'at28_limites_constructions': ConstructionsLimits,
-                    'en05_degres_sensibilite_bruit': RoadNoise,
-                    'en01_zone_sect_protection_eaux': Zoneprotection}
-    
     params = dict(request.params)
+    result = get_features_function(params)
+    # append feature list to the response
+    return {'type':'FeatureCollection', 'features': result}
+
+def get_features_function(params):
+    # for dev purposes: matching dictionnary model-table name
+    table2model = {
+        'at39_itineraires_pedestres':PedestrianWays,
+        'at14_zones_communales': CommunalArea,
+        'at08_zones_cantonales': StateArea,
+        'clo_couloirs': Corridors,
+        'clo_cotes_altitude_surfaces': AltitudeRatings,
+        'en07_canepo_accidents': PollutedSitesAccidents,
+        'en07_canepo_decharges': PollutedSitesLandDumps,
+        'en07_canepo_decharges_points': PollutedSitesLandDumpsPts,
+        'en07_canepo_decharges_polygones': PollutedSitesLandDumpsPoly,
+        'en07_canepo_entreprises': PollutedSitesCompanies,
+        'en07_canepo_entreprises_points': PollutedSitesCompaniesPts,
+        'en07_canepo_entreprises_polygones': PollutedSitesCompaniesPoly,
+        'at28_limites_constructions': ConstructionsLimits,
+        'en05_degres_sensibilite_bruit': RoadNoise,
+        'en01_zone_sect_protection_eaux': Zoneprotection
+    }
+
     parcelId = params['id']
     # get the parcel geometry
     queryParcel =DBSession.query(ImmeublesCanton).filter_by(idemai=parcelId).first()
@@ -47,18 +54,17 @@ def get_features(request):
     for item in csvReader:
         itemList.append(item)
     layerList = itemList[0]
-    response = []
+
     test = 'empty'
     # retrieve models from table2model
     for layer in layerList:
         model = table2model[layer]
-    
+
     # spatial analysis
-    response = {}  
     featureList = []
     for layer in layerList:
         targetModel = table2model[layer]
-        intersectResult = DBSession.query(targetModel).filter(or_(targetModel.geom.intersects(parcelGeom),targetModel.geom.within(parcelGeom))).all()
+        intersectResult = DBSession.query(targetModel).filter(or_(targetModel.geom.intersects(parcelGeom), targetModel.geom.within(parcelGeom))).all()
         if intersectResult:
             # create geojson output with custom attributes
             for feature in intersectResult:
@@ -68,7 +74,7 @@ def get_features(request):
                 featureMeasure = -9991
                 if geometryType == 'ST_Polygon' or geometryType == 'ST_MultiPolygon':
                     intersectionArea = DBSession.scalar(feature.geom.intersection(parcelGeom).area())
-                    featureMeasure = 100*intersectionArea/DBSession.scalar(parcelGeom.area())
+                    featureMeasure = 100 * intersectionArea / DBSession.scalar(parcelGeom.area())
                     geomType = 'Polygone'
                     if featureMeasure >= 99:
                         featureClass = 'within'
@@ -87,10 +93,5 @@ def get_features(request):
                 jsonFeature['properties']['layerName'] = layer
                 jsonFeature['properties']['featureClass'] = featureClass
                 featureList.append(jsonFeature)
-                
-                
-                
-     
-    # append feature list to the response
-    response.update({'type':'FeatureCollection', 'features': featureList})   
-    return response
+
+    return featureList
