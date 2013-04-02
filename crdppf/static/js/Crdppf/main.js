@@ -57,6 +57,7 @@ Ext.onReady(function() {
     // getFeatureInfo button: activates the Openlayers infoControl
     var infoButton = new Ext.Button({
         xtype: 'button',
+        tooltip: labels.infoButtonTlp,
         margins: '0 0 0 20',
         id: 'infoButton',
         width: 40,
@@ -73,21 +74,26 @@ Ext.onReady(function() {
     // generate the pdf file of the current map
     var printButton = new Ext.Button({
         xtype: 'button',
+        tooltip: labels.printButtonTlp,
         width: 40,
         enableToggle: true,
         iconCls: 'crdppf_printbutton',
-        // cls: 'crdppf_printbutton',
-        toggleGroup: 'mapTools',
         listeners:{
             click: function (){
-                        alert('Impression en cours....'); 
-                    }
+                if(select.features.length == 1){
+                    window.open(Crdppf.printUrl + '?id=' + select.features[0].attributes.idemai);
+                }
+                else {
+                    alert(labels.noSelectedParcelMessage);
+                }
+            }
         }
     });
     
     // activate the standard pan button
     var panButton = new Ext.Button({
         pressed: true,
+        tooltip: labels.panButtonTlp,
         xtype: 'button',
         margins: '0 0 0 20',
         width: 40,
@@ -98,6 +104,42 @@ Ext.onReady(function() {
         listeners:{
             click: function (){
                         MapO.disableInfoControl();
+                    }  
+        }
+    });
+    
+    // zoom in button
+    var zoomInButton = new Ext.Button({
+        pressed: false,
+        tooltip: labels.zoomInButtonTlp,
+        xtype: 'button',
+        margins: '0 0 0 20',
+        width: 40,
+        id: 'zoomInButton',
+        enableToggle: true,
+        toggleGroup: 'mapTools',
+        iconCls: 'crdppf_zoominbutton',
+        listeners:{
+            click: function (){
+                        MapO.map.zoomIn();
+                    }  
+        }
+    });
+    
+    // zoom out Button
+        var zoomOutButton = new Ext.Button({
+        pressed: false,
+        tooltip: labels.zoomOutButtonTlp,
+        xtype: 'button',
+        margins: '0 0 0 20',
+        width: 40,
+        id: 'zoomOutButton',
+        enableToggle: true,
+        toggleGroup: 'mapTools',
+        iconCls: 'crdppf_zoomoutbutton',
+        listeners:{
+            click: function (){
+                        MapO.map.zoomOut();
                     }  
         }
     });
@@ -167,8 +209,11 @@ Ext.onReady(function() {
     items: [panButton,
             infoButton,
             printButton,
-            frButton,
-            deButton]
+            zoomInButton,
+            zoomOutButton,
+            // frButton,
+            // deButton
+            ]
    });
    
    // create the mapPanel
@@ -308,7 +353,8 @@ Ext.onReady(function() {
             {
                 title: labels.legalBasisTab,
                 autoLoad : {
-                    url : '/dev_crdppf/static/public/bases_legales.html'
+                    tag: 'iframe',
+                    url : 'http://www.geobasisdaten.ch/index.php?lang=fr&loc=CH&s=data&data=73/'
                 }
             },{
                 title: labels.lawTabLabel,

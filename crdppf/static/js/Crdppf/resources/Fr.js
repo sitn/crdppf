@@ -39,5 +39,12 @@ Crdppf.labelsFr  ={
     'minTitleOverviewMap':'Masquer la carte de situation',
     'intersectToolTipMessage':'Relation spatiale: intersection',
     'withinToolTipMessage':'Relation spatiale: à l\'intérieur de',
-    'adjacentToolTipMessage':'Relation spatiale: touche'
+    'adjacentToolTipMessage':'Relation spatiale: touche',
+    'printPdfWindowsTitle': 'Extraction au format pdf',
+    'noSelectedParcelMessage': 'Sélectionner d\'abord une parcelle !',
+    'printButtonTlp':'Générer l\'extrait',
+    'infoButtonTlp':'Interroger les restrictions',
+    'panButtonTlp':'Déplacement de la carte',
+    'zoomInButtonTlp':'Zoom avant',
+    'zoomOutButtonTlp':'Zoom arrière',
     };

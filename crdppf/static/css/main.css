@@ -19,6 +19,14 @@ body {
     height:26px !important;
     width:26px !important;
 }
+.crdppf_zoomoutbutton {
+    height:26px !important;
+    width:26px !important;
+}
+.crdppf_zoominbutton {
+    height:26px !important;
+    width:26px !important;
+}
 
 .close {
     background-position:1 6;
@@ -56,6 +64,26 @@ body {
 }
 .x-btn-pressed .crdppf_panbutton {
     background-image:url(../images/ui_buttons/on/icon_pan.gif) !important;
+}
+.crdppf_zoominbutton {
+    background:url(../images/ui_buttons/normal/icon_zoomin.gif);
+	height:26px !important;
+}
+.x-btn-over .crdppf_zoominbutton {
+    background:url(../images/ui_buttons/over/icon_zoomin_over.gif);
+}
+.x-btn-pressed .crdppf_zoominbutton {
+    background-image:url(../images/ui_buttons/on/icon_zoomin_on.gif) !important;
+}
+.crdppf_zoomoutbutton {
+    background:url(../images/ui_buttons/normal/icon_zoomout.gif);
+	height:26px !important;
+}
+.x-btn-over .crdppf_zoomoutbutton {
+    background:url(../images/ui_buttons/over/icon_zoomout_over.gif);
+}
+.x-btn-pressed .crdppf_zoomoutbutton {
+    background-image:url(../images/ui_buttons/on/icon_zoomout_on.gif) !important;
 }
 
 .crdppf_frButton {

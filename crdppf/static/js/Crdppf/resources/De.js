@@ -37,5 +37,12 @@ Crdppf.labelsDe  ={
     'mapBottomTxt':'<b>Daten sind nicht rechtsverbindlich, <a style="color:#660000;" href="http://sitn.ne.ch/web/conditions_utilisation/contrat_SITN_MO.htm" target="_new">&copy; SITN</a></b>',
     'intersectToolTipMessage':'Relation spatiale: intersection',
     'withinToolTipMessage':'Relation spatiale: à l\'intérieur de',
-    'adjacentToolTipMessage':'Relation spatiale: touche'
+    'adjacentToolTipMessage':'Relation spatiale: touche',
+    'printPdfWindowsTitle': 'PDF',
+    'noSelectedParcelMessage': 'Wählen Sie zuerst ein Grundstück !',
+    'printButtonTlp':'Générer l\'extrait',
+    'infoButtonTlp':'Sélectionner une parcelle et ses restrictions',
+    'panButtonTlp':'Déplacement de la carte',
+    'zoomInButtonTlp':'Zoom avant',
+    'zoomOutButtonTlp':'Zoom arrière',
 };
