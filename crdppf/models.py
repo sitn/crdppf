@@ -31,11 +31,12 @@ Base = sqlahelper.get_base()
 class Topics(Base):
     __tablename__ = 'topic'
     __table_args__ = {'schema': 'crdppf', 'autoload': True}
+    layers = relationship("Layers")
     
 class Layers(Base):
     __tablename__ = 'layers'
     __table_args__ = {'schema': 'crdppf', 'autoload': True}
-
+    topicsfk = Column(String(10), ForeignKey('crdppf.topic.topicid'))
     
 class Authority(Base):
     __tablename__ = 'authority'
