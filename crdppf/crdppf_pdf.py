@@ -1,17 +1,19 @@
 # -*- coding: UTF-8 -*-
-from pyramid.response import FileResponse
+from pyramid.response import FileResponse, Response
 from pyramid.renderers import render_to_response
-from pyramid.httpexceptions import HTTPForbidden
+from pyramid.httpexceptions import HTTPForbidden, HTTPBadRequest
 from pyramid.view import view_config
 from fpdf import FPDF
 from datetime import datetime
 import httplib
 from owslib.wms import WebMapService
+import get_features
 
 import pkg_resources
 from geojson import Feature, FeatureCollection, dumps, loads as gloads
 from simplejson import loads as sloads,dumps as sdumps
-        
+    
+from geoalchemy import *    
 from crdppf.models import *
 
 # FUNCTIONS
@@ -28,6 +30,7 @@ from crdppf.models import *
 # getTitlePage
 
 
+# Creates empty arrays for the get parameters
 def initialisation(self):
     """Sets the default type and values of the global variables"""
     # Creation d'un tableau vide qui accueillit le(s) parametre(s) passé(s) en get
@@ -53,6 +56,7 @@ def initialisation(self):
     parcelInfo['BBOX'] = None
     parcelInfo['geom'] = None
     
+    
 # Returns the BBOX coordinates of an rectangle
 def getBBOX(geometry):
     coordListStr = geometry.split("(")[2].split(")")[0].split(',')
@@ -69,6 +73,7 @@ def getBBOX(geometry):
 # Detects the best paper format and scale in function of the general form and size of the parcel
 def getPrintFormat(bbox):
     """This function determines the ideal paper format and scale for the pdf print in dependency of the general form of the selected parcel"""
+    
     printFormat = {}
     
     #!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
@@ -76,20 +81,25 @@ def getPrintFormat(bbox):
     # ===================
     formatChoice = 'A4'
 
-    paperFormats = DBSession.query(PaperFormats).order_by(PaperFormats.format.desc()).order_by(PaperFormats.scale.asc()).all()
+    # Gets the list of all available formats and their parameters : name, orientation, height, width
+    paperFormats = DBSession.query(PaperFormats).order_by(PaperFormats.format.desc()).order_by(PaperFormats.scale.asc()).order_by(PaperFormats.orientation.desc()).all()
     fit = 'false'
     fitRatio = 0.9
     ratioW = 0
     ratioH = 0
+    # Attention X and Y are standard carthesian and inverted in comparison to the Swiss Coordinate System 
     deltaX = bbox['maxX']-bbox['minX']
     deltaY = bbox['maxY']-bbox['minY']
+    resolution = 96
+    ratioInchMM =25.4
 
-    
     # Decides what parcel orientation 
     if deltaX >= deltaY :
+        # landscape
         bboxWidth = deltaX
         bboxHeight = deltaY
     else :
+        # portrait
         bboxWidth = deltaY
         bboxHeight = deltaX
 
@@ -97,24 +107,51 @@ def getPrintFormat(bbox):
     for paperFormat in paperFormats :
         ratioW = bboxWidth*1000/paperFormat.width/paperFormat.scale
         ratioH = bboxHeight*1000/paperFormat.height/paperFormat.scale
+
         if ratioW <= fitRatio and ratioH <= fitRatio :
             printFormat.update(paperFormat.__dict__)
+            printFormat['mapHeight'] = int(printFormat['height']/ratioInchMM*resolution)
+            printFormat['mapWidth'] = int(printFormat['width']/ratioInchMM*resolution)
             fit = 'true'
             break
+            
+    return printFormat
 
-    return paperFormat
 
 # Intersection d'un polygone de bien_fonds avec les différentes couches pour récuperer
 # des informations quant au lieu_dit, le cadastre, la commune et les adresses
-def getFeatureInfoByID(id, parcelInfo):
+def getFeatureInfo(request):
     """The function gets the geometry of a parcel by it's ID and does an overlay with other administrative layers to get the basic parcelInfo and attribute information of the parcel : County, local names, and so on"""
-    srs = 21781
-
-    parcelInfo['idemai'] = id
-    
+    # hint:
     # for debbuging the query use str(query) in the console/browser window
     # to visualize geom.wkt use session.scalar(geom.wkt)
-    queryresult =DBSession.query(ImmeublesCanton).filter_by(idemai=parcelInfo['idemai']).first()
+    
+    parcelInfo = {}
+    parcelInfo['idemai'] = None
+    Y = None
+    X = None
+
+    if request.params.get('id') :
+        parcelInfo['idemai']  = request.params.get('id')
+    elif request.params.get('X') and request.params.get('Y') :
+        X =int(request.params.get('X'))
+        Y =int(request.params.get('Y'))
+    else :
+        raise Exception('Aucun bien-fonds répondant à vos critères a pû être trouvé.')
+
+    if parcelInfo['idemai'] is not None :
+        queryresult =DBSession.query(ImmeublesCanton).filter_by(idemai=parcelInfo['idemai']).first()
+    elif (X > 0 and Y > 0) :
+        if  Y > X :
+            pointYX = WKTSpatialElement('POINT('+str(Y)+' '+str(X)+')',21781)
+        else :
+            pointYX = WKTSpatialElement('POINT('+str(X)+' '+str(Y)+')',21781)
+        queryresult =DBSession.query(ImmeublesCanton).filter(ImmeublesCanton.geom.gcontains(pointYX)).first()
+        parcelInfo['idemai']  = queryresult.idemai
+    else : 
+        # to define
+        return HTTPBadRequest('Aucun bien-fonds n\'a pu être identifié')
+        
     parcelInfo['geom'] = queryresult.geom
 
     queryresult1= DBSession.query(NomLocalLieuDit).filter(NomLocalLieuDit.geom.intersects(parcelInfo['geom'])).first()
@@ -138,18 +175,62 @@ def getFeatureInfoByID(id, parcelInfo):
     return parcelInfo
 
 
-def plans_wms(restriction_layers,crdppf_wms,bbox):
+def getRestrictions(parcelInfo) :
+    """ Geographic overlay to get all the restrictions within or adjacent to the parcel """	
+    geom = parcelInfo['geom']
+    restrictions = DBSession.query().all()
+    
+    return restrictionInfo
+
+
+def getMap(restriction_layers,crdppf_wms,map_params,pdf_format):
  
+    # http://sitn.ne.ch/dev_crdppf/wmscrdppf?SERVICE=WMS&VERSION=1.1.1&REQUEST=GetMap&SRS=EPSG:21781&LAYERS=etat_mo,la3_limites_communales,mo22_batiments,at14_zones_communales&BBOX=559150,203560,559750,203960&WIDTH=600&HEIGHT=400&FORMAT=image/jpeg
     # Creates the pdf file
     pdf_name = 'extrait'
     pdf_name='crdppf_'+pdf_name
     pdfpath = pkg_resources.resource_filename('crdppf','static\public\pdf\\')
+    scale = pdf_format['scale']
     
-    layers= [    
+    layers = [
+        'parcelles',
+        'mo22_batiments',
+        'mo21_batiments_provisoires',
+        'mo23_batiments_projetes',
+        'ag1_parcellaire_provisoire',
+        'mo9_immeubles',
+        'mo5_point_de_detail',
+        'mo14_servitudes_g_surf',
+        'mo14_servitudes_g_lig',
+        'mo14_servitudes_g_pts',
+        'mo14_servitudes_a_surf',
+        'mo14_servitudes_a_lig',
+        'mo14_servitudes_c_surf',
+        'mo14_servitudes_c_surf_autre',
+        'mo14_servitudes_c_lig',
+        'mo7_obj_divers_lineaire',
+        'mo7_obj_divers_couvert',
+        'mo7_obj_divers_piscine',
+        'mo7_obj_divers_cordbois',
+        'mo4_pfa_1',
+        'mo4_pfp_3',
+#        'mo9_immeubles_txt_rappel',
+        'mo4_pfp_1_2',  
         'etat_mo',
         'la3_limites_communales',
-        'mo22_batiments'
+        'mo22_batiments',
+        restriction_layers
     ]
+
+    #to recenter the map on the bbox of the feature, with the right scale and add at least 10% of space we calculate a wmsBBOX
+    wmsBBOX = {}
+    wmsBBOX['centerY'] =  int(map_params['bboxCenterY'])
+    wmsBBOX['centerX'] =  int(map_params['bboxCenterX'])
+    wmsBBOX['minX'] = int(wmsBBOX['centerX']-(pdf_format['width']*scale/1000/2))
+    wmsBBOX['maxX'] = int(wmsBBOX['centerX']+(pdf_format['width']*scale/1000/2))
+    wmsBBOX['minY'] = int(wmsBBOX['centerY']-(pdf_format['height']*scale/1000/2))
+    wmsBBOX['maxY'] = int(wmsBBOX['centerY']+(pdf_format['height']*scale/1000/2))
+    
     
     i = 0
     wms = WebMapService(crdppf_wms, version='1.1.1')
@@ -158,8 +239,8 @@ def plans_wms(restriction_layers,crdppf_wms,bbox):
         img = wms.getmap(   
             layers=layers,
             srs='EPSG:21781',
-            bbox=(bbox['minX'], bbox['minY'], bbox['maxX'], bbox['maxY']),
-            size=(bbox['width'], bbox['height']),
+            bbox=(wmsBBOX['minX'],wmsBBOX['minY'],wmsBBOX['maxX'],wmsBBOX['maxY']),
+            size=(map_params['width'], map_params['height']),
             format='image/png',
             transparent=False
         )
@@ -167,8 +248,9 @@ def plans_wms(restriction_layers,crdppf_wms,bbox):
         out = open(pdfpath+pdf_name+str(i)+'.png', 'wb')
         out.write(img.read())
         out.close()
-        
+
     return i
+    
     
 class ExtraitPDF(FPDF):
 
@@ -197,16 +279,13 @@ class ExtraitPDF(FPDF):
 
 #~ def getTitlePage(request):
     #~ return
-
+    
 @view_config(route_name='create_extrait')
 def create_extrait(request):
     # to get vars defined in the buildout  use : request.registry.settings['key']
     crdppf_wms = request.registry.settings['crdppf_wms']
     sld_url = request.registry.settings['sld_url']
 
-    #initialisation()
-    parcelInfo = {}
-    
     # the dictionnary for the document
     reportInfo = {}
     reportInfo['type'] = '[officiel]'
@@ -217,28 +296,19 @@ def create_extrait(request):
     featureInfo['CoordSys'] = 'MN03'
     featureInfo['lastUpdate'] = datetime.now()
     featureInfo['operator'] = 'F.Voisard - SITN'
-    
-    featureID = '1_14127' # test parcel or '1_11340'
+
+    # If the ID of the parcel is set get the basic attributs else get the ID (idemai) of the selected parcel first using X/Y coordinates of the center 
+    featureInfo.update(getFeatureInfo(request)) # '1_14127' # test parcel or '1_11340'
     
     # temporary variables for developping purposes - will be assigned by DB requests
     restriction_layers = ['affectation','canepo','foret']
-    bbox = {'minY':203560,'minX':559150,'maxY':203960,'maxX':559750,'width':600,'height':400}
 
-    i = plans_wms(restriction_layers,crdppf_wms,bbox)
+ 
+    map_params = {'width':featureInfo['printFormat']['mapWidth'],'height':featureInfo['printFormat']['mapHeight']}
+    map_params['bboxCenterX'] = (featureInfo['BBOX']['maxX']+featureInfo['BBOX']['minX'])/2
+    map_params['bboxCenterY'] = (featureInfo['BBOX']['maxY']+featureInfo['BBOX']['minY'])/2
 
-    # if request.params.get('idemai') is not None :
-    if featureID is not None :
-        # Gets the basic attributes of the parcel
-        featureInfo.update(getFeatureInfoByID(featureID,parcelInfo))
-    else :
-        try:
-            parcelInfo['X'] =request.params.get('X')
-            parcelInfo['Y'] =request.params.get('Y')
-            featureInfo.update(getFeatureInfoByID(featureID,parcelInfo))
-        except:
-            abort(404)
-    
-    pdf_format = parcelInfo['printFormat']
+    pdf_format = featureInfo['printFormat']
     
     # Creates the pdf file
     pdf_name = 'extrait'
@@ -246,18 +316,21 @@ def create_extrait(request):
     pdfpath = pkg_resources.resource_filename('crdppf','static\public\pdf\\')
     
     today= datetime.now()
-    mylist = {'company_name':'SITN','username':'Voisard','firstname':'François','street':'Tivoli 22','postalcode':'2003','city':'Neuchatel','country':'Suisse'}
-  
-    #~ conn = httplib.HTTPConnection("wms.geo.admin.ch")
-    #~ filter1 = '/?lang=fr&QUERY_LAYERS=ch.bazl.projektierungszonen-flughafenanlagen&LAYERS=ch.bazl.projektierungszonen-flughafenanlagen&VERSION=1.1.1&SERVICE=WMS&REQUEST=GetFeatureInfo&SRS=EPSG%3A21781&INFO_FORMAT=text/plain&BBOX=680153.65034247,256316,684977.65034247,257741&WIDTH=2412&HEIGHT=712&X=1206&Y=355'
-    #~ conn.request("GET",filter1)
-    #~ r1 = conn.getresponse()
-    #~ query = r1.read()
 
     competentAuthority = DBSession.query(Authority).all()
     crdppfTopics = DBSession.query(Topics).all()
- 
-    
+
+    result = {}
+    params = {'id':featureInfo['idemai'],'layerList':'at14_zones_communales'}
+    for crdppfTopic in crdppfTopics :
+        result['restriction'] = get_features.get_features_function(params)
+        if crdppfTopic.topicid == '73':
+            result['map'] = getMap(params['layerList'],crdppf_wms,map_params,pdf_format)
+        # getLegalBases()
+        # getLegalProvisions()
+        # getComplemantaryInformation()
+
+
     # Create order PDF
     pdf = ExtraitPDF()
     #pdf=FPDF(format='A4')    
@@ -342,8 +415,8 @@ def create_extrait(request):
     img = wms.getmap(   
         layers=layers,
         srs='EPSG:21781',
-        bbox=(bbox['minX'], bbox['minY'], bbox['maxX'], bbox['maxY']),
-        size=(bbox['width'], bbox['height']),
+        bbox=(559150,203560,559750,203960),
+        size=(map_params['width'], map_params['height']),
         format='image/jpeg',
         transparent=False
     )
@@ -365,41 +438,21 @@ def create_extrait(request):
     
     #http://sitn.ne.ch/ogc-sitn-poi/wms?SERVICE=WMS&VERSION=1.1.1&REQUEST=GetMap&SRS=EPSG:21781&LAYERS=en07_canepo_accidents,en07_canepo_entreprises,en07_canepo_decharges&BBOX=559150,203560,559750,203960&WIDTH=600&HEIGHT=400&FORMAT=image/png
     #wms2 = WebMapService('http://wms.geo.admin.ch/', version='1.1.1')
-    wms2 = WebMapService(crdppf_wms, version='1.1.1')
-    img2 = wms2.getmap(   
-        layers=layers2,
-        srs='EPSG:21781',
-        bbox=(bbox['minX'], bbox['minY'], bbox['maxX'], bbox['maxY']),
-        size=(bbox['width'], bbox['height']),
-        #bbox=(640000, 200000,750000,280000),
-        #size=(800,582),
-        format='image/png',
-        transparent=False
-    )
-
-    out2 = open(pdfpath+ pdf_name+'2.png', 'wb')
-    out2.write(img2.read())
-    out2.close()
-
-    #~ layers3= [
-        #~ 'ch.bazl.segelflugkarte',
-        #~ 'ch.bazl.projektierungszonen-flughafenanlage'
-    #~ ]
-    
-    #~ #http://sitn.ne.ch/ogc-sitn-poi/wms?SERVICE=WMS&VERSION=1.1.1&REQUEST=GetMap&SRS=EPSG:21781&LAYERS=en07_canepo_accidents,en07_canepo_entreprises,en07_canepo_decharges&BBOX=559150,203560,559750,203960&WIDTH=600&HEIGHT=400&FORMAT=image/png
-    #~ wms3 = WebMapService('http://wms.geo.admin.ch/', version='1.1.1')
-    #~ img3 = wms3.getmap(   
-        #~ layers=layers3,
+    #~ wms2 = WebMapService(crdppf_wms, version='1.1.1')
+    #~ img2 = wms2.getmap(   
+        #~ layers=layers2,
         #~ srs='EPSG:21781',
-        #~ bbox=(640000, 200000,750000,280000),
-        #~ size=(800,582),
+        #~ bbox=(559150,203560,559750,203960),
+        #~ size=(bbox['width'], bbox['height']),
+        #~ #bbox=(640000, 200000,750000,280000),
+        #~ #size=(800,582),
         #~ format='image/png',
         #~ transparent=False
     #~ )
 
-    #~ out3 = open(pdfpath+ pdf_name+'3.png', 'wb')
-    #~ out3.write(img3.read())
-    #~ out3.close()
+    #~ out2 = open(pdfpath+ pdf_name+'2.png', 'wb')
+    #~ out2.write(img2.read())
+    #~ out2.close()
     
     # PAGE 2 
     pdf.add_page()
@@ -499,11 +552,11 @@ def create_extrait(request):
     pdf.multi_cell(0,3.9,unicode('Plan d\'affectation Quartier Nord du 21 décembre 1975\nValable jusqu\'au 31.12.2013','utf-8').encode('iso-8859-1'),0,1,'L')
     
     # Thematic map
-    pdf.add_page(str(pdf_format.orientation + ','+pdf_format.format))
+    pdf.add_page(str(pdf_format['orientation'] + ','+pdf_format['format']))
     pdf.set_font('Arial','B',16)
     pdf.multi_cell(0,6,'73 - Plan d\'affectation')
     y = pdf.get_y()
-    pdf.image(pdfpath+pdf_name+'.jpg',10,y+5,277,160)
+    pdf.image(pdfpath+pdf_name+str(result['map'])+'.png',10,y+5,pdf_format['width'] ,pdf_format['height'] )
     pdf.ln()
 
     # PAGE 3
@@ -531,3 +584,39 @@ def create_extrait(request):
     )
     response. content_disposition='attachment; filename='+ pdf_name +'.pdf'
     return response
+    
+def dummyFunctionForUnusedCode():
+  
+    #~ conn = httplib.HTTPConnection("wms.geo.admin.ch")
+    #~ filter1 = '/?lang=fr&QUERY_LAYERS=ch.bazl.projektierungszonen-flughafenanlagen&LAYERS=ch.bazl.projektierungszonen-flughafenanlagen&VERSION=1.1.1&SERVICE=WMS&REQUEST=GetFeatureInfo&SRS=EPSG%3A21781&INFO_FORMAT=text/plain&BBOX=680153.65034247,256316,684977.65034247,257741&WIDTH=2412&HEIGHT=712&X=1206&Y=355'
+    #~ conn.request("GET",filter1)
+    #~ r1 = conn.getresponse()
+    #~ query = r1.read()
+
+
+    #~ layers3= [
+        #~ 'ch.bazl.segelflugkarte',
+        #~ 'ch.bazl.projektierungszonen-flughafenanlage'
+    #~ ]
+    
+    #~ #http://sitn.ne.ch/ogc-sitn-poi/wms?SERVICE=WMS&VERSION=1.1.1&REQUEST=GetMap&SRS=EPSG:21781&LAYERS=en07_canepo_accidents,en07_canepo_entreprises,en07_canepo_decharges&BBOX=559150,203560,559750,203960&WIDTH=600&HEIGHT=400&FORMAT=image/png
+    #~ wms3 = WebMapService('http://wms.geo.admin.ch/', version='1.1.1')
+    #~ img3 = wms3.getmap(   
+        #~ layers=layers3,
+        #~ srs='EPSG:21781',
+        #~ bbox=(640000, 200000,750000,280000),
+        #~ size=(800,582),
+        #~ format='image/png',
+        #~ transparent=False
+    #~ )
+
+    #~ out3 = open(pdfpath+ pdf_name+'3.png', 'wb')
+    #~ out3.write(img3.read())
+    #~ out3.close()
+
+    #~ toto = 'ola'
+
+    #~ if toto == 'ola' :
+        #~ return HTTPBadRequest(detail='C\'est faux, car:'+toto)
+        
+    return true
