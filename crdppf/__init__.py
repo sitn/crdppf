@@ -30,7 +30,7 @@ def main(global_config, **settings):
     # ROUTES
     config.add_route('home', '/')
     config.add_route('images', '/static/images/')
-    config.add_route('create_extrait', 'create_extrait')
+    config.add_route('create_extract', 'create_extract')
     config.add_route('get_features', 'get_features')
     config.add_route('set_language', 'set_language')
     config.add_route('get_language', 'get_language')
