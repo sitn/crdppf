@@ -31,16 +31,36 @@ Base = sqlahelper.get_base()
 class Topics(Base):
     __tablename__ = 'topic'
     __table_args__ = {'schema': 'crdppf', 'autoload': True}
-    layers = relationship("Layers")
+    layers = relationship("Layers", backref=backref("layers"),lazy="joined")
+    authorityfk = Column(Integer, ForeignKey('crdppf.authority.authorityid'))
+    authority = relationship("Authority", backref=backref("authority"),lazy="joined")
+    legalbases = relationship("LegalBases", backref=backref("legalbases"),lazy="joined")
+    legalprovisions = relationship("LegalProvisions", backref=backref("legalprovisions"),lazy="joined")
+    temporaryprovisions = relationship("TemporaryProvisions", backref=backref("temporaryprovisions"),lazy="joined")
     
 class Layers(Base):
     __tablename__ = 'layers'
     __table_args__ = {'schema': 'crdppf', 'autoload': True}
-    topicsfk = Column(String(10), ForeignKey('crdppf.topic.topicid'))
+    topicfk = Column(String(10), ForeignKey('crdppf.topic.topicid'))
     
 class Authority(Base):
     __tablename__ = 'authority'
     __table_args__ = {'schema': 'crdppf', 'autoload': True}
+    
+class LegalBases(Base):
+    __tablename__ = 'legalbases'
+    __table_args__ = {'schema': 'crdppf', 'autoload': True}
+    topicfk = Column(String(10), ForeignKey('crdppf.topic.topicid'))
+    
+class LegalProvisions(Base):
+    __tablename__ = 'legalprovision'
+    __table_args__ = {'schema': 'crdppf', 'autoload': True}
+    topicfk = Column(String(10), ForeignKey('crdppf.topic.topicid')) 
+    
+class TemporaryProvisions(Base):
+    __tablename__ = 'temporaryprovision'
+    __table_args__ = {'schema': 'crdppf', 'autoload': True}
+    topicfk = Column(String(10), ForeignKey('crdppf.topic.topicid'))
     
 class PaperFormats(Base):
     __tablename__ = 'paperformats'
