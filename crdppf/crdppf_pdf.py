@@ -8,6 +8,7 @@ from datetime import datetime
 import httplib
 from owslib.wms import WebMapService
 import get_features
+import urllib
 
 import pkg_resources
 from geojson import Feature, FeatureCollection, dumps, loads as gloads
@@ -17,7 +18,6 @@ from geoalchemy import *
 from crdppf.models import *
 
 # FUNCTIONS
-# initialisation
 # getFeatureInfoByXY
 # getFeatureInfoByID
 # getFeatureInfoByAdresse
@@ -28,33 +28,6 @@ from crdppf.models import *
 # getComplemantaryInformation
 # writePDF
 # getTitlePage
-
-
-# Creates empty arrays for the get parameters
-def initialisation(self):
-    """Sets the default type and values of the global variables"""
-    # Creation d'un tableau vide qui accueillit le(s) parametre(s) passé(s) en get
-    parametres = {}
-    parametres['numcom'] = None
-    parametres['numcad'] = None
-    parametres['bien_fonds'] = None
-    parametres['X'] = None
-    parametres['Y'] = None
-    
-    parcelInfo = {}
-    parcelInfo['nummai'] = None
-    parcelInfo['idemai'] = None
-    parcelInfo['lieu_dit'] = None
-    parcelInfo['adresses'] = None
-    parcelInfo['numcad'] = None
-    parcelInfo['nomcad'] = None
-    parcelInfo['numcom'] = None
-    parcelInfo['nomcom'] = None
-    parcelInfo['nufeco'] = None
-    parcelInfo['centerX'] = None
-    parcelInfo['centerY'] = None
-    parcelInfo['BBOX'] = None
-    parcelInfo['geom'] = None
     
     
 # Returns the BBOX coordinates of an rectangle
@@ -137,7 +110,7 @@ def getFeatureInfo(request):
         X =int(request.params.get('X'))
         Y =int(request.params.get('Y'))
     else :
-        raise Exception('Aucun bien-fonds répondant à vos critères a pû être trouvé.')
+        raise Exception('Aucun immeuble répondant à vos critères a pû être trouvé.')
 
     if parcelInfo['idemai'] is not None :
         queryresult =DBSession.query(ImmeublesCanton).filter_by(idemai=parcelInfo['idemai']).first()
@@ -150,9 +123,10 @@ def getFeatureInfo(request):
         parcelInfo['idemai']  = queryresult.idemai
     else : 
         # to define
-        return HTTPBadRequest('Aucun bien-fonds n\'a pu être identifié')
+        return HTTPBadRequest('Aucun immeuble n\'a pu être identifié')
         
     parcelInfo['geom'] = queryresult.geom
+    parcelInfo['area'] = int(DBSession.scalar(queryresult.geom.area))
 
     queryresult1= DBSession.query(NomLocalLieuDit).filter(NomLocalLieuDit.geom.intersects(parcelInfo['geom'])).first()
     queryresult2= DBSession.query(Cadastre).filter(Cadastre.geom.gcontains(parcelInfo['geom'])).first()
@@ -183,11 +157,11 @@ def getRestrictions(parcelInfo) :
     return restrictionInfo
 
 
-def getMap(restriction_layers,crdppf_wms,map_params,pdf_format):
+def getMap(restriction_layers,topicid,crdppf_wms,map_params,pdf_format):
  
     # http://sitn.ne.ch/dev_crdppf/wmscrdppf?SERVICE=WMS&VERSION=1.1.1&REQUEST=GetMap&SRS=EPSG:21781&LAYERS=etat_mo,la3_limites_communales,mo22_batiments,at14_zones_communales&BBOX=559150,203560,559750,203960&WIDTH=600&HEIGHT=400&FORMAT=image/jpeg
     # Creates the pdf file
-    pdf_name = 'extrait'
+    pdf_name = 'extract'
     pdf_name='crdppf_'+pdf_name
     pdfpath = pkg_resources.resource_filename('crdppf','static\public\pdf\\')
     scale = pdf_format['scale']
@@ -200,28 +174,40 @@ def getMap(restriction_layers,crdppf_wms,map_params,pdf_format):
         'ag1_parcellaire_provisoire',
         'mo9_immeubles',
         'mo5_point_de_detail',
-        'mo14_servitudes_g_surf',
-        'mo14_servitudes_g_lig',
-        'mo14_servitudes_g_pts',
-        'mo14_servitudes_a_surf',
-        'mo14_servitudes_a_lig',
-        'mo14_servitudes_c_surf',
-        'mo14_servitudes_c_surf_autre',
-        'mo14_servitudes_c_lig',
+        #~ 'mo14_servitudes_g_surf',
+        #~ 'mo14_servitudes_g_lig',
+        #~ 'mo14_servitudes_g_pts',
+        #~ 'mo14_servitudes_a_surf',
+        #~ 'mo14_servitudes_a_lig',
+        #~ 'mo14_servitudes_c_surf',
+        #~ 'mo14_servitudes_c_surf_autre',
+        #~ 'mo14_servitudes_c_lig',
         'mo7_obj_divers_lineaire',
         'mo7_obj_divers_couvert',
         'mo7_obj_divers_piscine',
         'mo7_obj_divers_cordbois',
         'mo4_pfa_1',
         'mo4_pfp_3',
-#        'mo9_immeubles_txt_rappel',
+        #'mo9_immeubles_txt_rappel',
         'mo4_pfp_1_2',  
-        'etat_mo',
         'la3_limites_communales',
-        'mo22_batiments',
-        restriction_layers
+        'mo22_batiments'
     ]
+    
+    legend_layers = []
+    legend_path = []
 
+    for layer in restriction_layers:
+        # Compile the layer list for the wms
+        layers.append(layer.layername)
+        
+        #~ # in the same time create the legend graphic for each layer
+        #~ legend = open(pdfpath+str('legend_')+str(layer.layername)+'.png', 'wb')
+        #~ img = urllib.urlopen(crdppf_wms +str('?TRANSPARENT=TRUE&SERVICE=WMS&VERSION=1.1.1&REQUEST=GetLegendGraphic&FORMAT=image%2Fpng&LAYER='+str(layer.layername)))
+        #~ legend.write(img.read())
+        #~ legend.close()
+        #~ legend_path.append(pdfpath+str('legend_')+str(layer.layername))
+    
     #to recenter the map on the bbox of the feature, with the right scale and add at least 10% of space we calculate a wmsBBOX
     wmsBBOX = {}
     wmsBBOX['centerY'] =  int(map_params['bboxCenterY'])
@@ -232,347 +218,692 @@ def getMap(restriction_layers,crdppf_wms,map_params,pdf_format):
     wmsBBOX['maxY'] = int(wmsBBOX['centerY']+(pdf_format['height']*scale/1000/2))
     
     
-    i = 0
     wms = WebMapService(crdppf_wms, version='1.1.1')
     
-    for layer in restriction_layers:
-        img = wms.getmap(   
-            layers=layers,
-            srs='EPSG:21781',
-            bbox=(wmsBBOX['minX'],wmsBBOX['minY'],wmsBBOX['maxX'],wmsBBOX['maxY']),
-            size=(map_params['width'], map_params['height']),
-            format='image/png',
-            transparent=False
-        )
+    map = wms.getmap(   
+        layers=layers,
+        srs='EPSG:21781',
+        bbox=(wmsBBOX['minX'],wmsBBOX['minY'],wmsBBOX['maxX'],wmsBBOX['maxY']),
+        size=(map_params['width'], map_params['height']),
+        format='image/png',
+        transparent=False
+    )
+    
+    out = open(pdfpath+pdf_name+str(topicid)+'.png', 'wb')
+    out.write(map.read())
+    out.close()
+    mappath = pdfpath+pdf_name+str(topicid)+'.png'
+  
         
-        out = open(pdfpath+pdf_name+str(i)+'.png', 'wb')
-        out.write(img.read())
-        out.close()
+    return mappath,legend_path
 
-    return i
-    
-    
-class ExtraitPDF(FPDF):
+class Objectify:
+    def __init__(self, **kwds):
+        self.__dict__.update(kwds)
 
+
+class ExtractPDF(FPDF):
+    # =============================
+    # VARIABLES :
+    # extract  = principal array holding all the data needed to create the pdf extract converted to an object to simplify the acces to the nested data
+    # extract.featureInfo
+    # extract.topicList
+    # extract.pdfFormat
+    # extract.mapFormat
+    # =============================
+    #~ def alias_title(self,i, alias='{title}'):
+        #~ "Define an alias for total number of pages"
+        #~ self.str_alias_title[i]=alias
+        #~ return alias
+        
+    def __init__(self):
+        FPDF.__init__(self)
+        self.toc_entries = []
+        self.appendix_entries = []
+
+    def alias_nomcom(self, alias='{nomcom}'):
+        "Define an alias for the county name"
+        self.str_alias_nomcom=alias
+        return alias
+        
+    def alias_no_page(self, alias='{no_pg}'):
+        "Define an alias for total number of pages"
+        self.str_alias_no_page=alias
+        return alias
+        
     def header(self):
-
-        path = pkg_resources.resource_filename('crdppf','utils\\')
+        path = pkg_resources.resource_filename('crdppf','static\images\\')
         
         no_page = self.page_no()
+        nb_pages = self.alias_nb_pages()
+        nomcom = self.alias_nomcom()
 
-        if no_page == 1:
-            self.image(path+"Canepo2.jpg",0,0,210,30)
-            self.set_y(45)
-            self.set_x(149)
-            self.image(path+"06ne_ch_RVB.jpg",150,30,43.4,13.8)
-            self.set_font('Arial','B',8)
-            self.multi_cell(0,3.9,unicode('DEPARTEMENT DE LA GESTION\nDU TERRITOIRE', 'utf-8').encode('iso-8859-1'))
-            self.set_font('Arial','',8)
-            self.set_x(149)
-            self.multi_cell(0,3.9,unicode('SERVICE DE LA GÉOMATIQUE ET\nDU REGISTRE FONCIER', 'utf-8').encode('iso-8859-1'))
+        self.set_line_width(0.3)
+        self.line(105,5,105,34)
+        self.line(165,5,165,34)
+        self.image(path+"ecussons\logoCH.png",10,8,55,31.03)
+        self.image(path+"06ne_ch_RVB.jpg",108,8,43.4,13.8)
+        self.image(path+'ecussons\Neuchatel.jpg',170,8,10,10.7)
+        self.set_xy(170,19.5)
+        self.set_font('Helvetica','',7)
+        self.cell(30,3,unicode(nomcom,'utf-8').encode('iso-8859-1'),0,0,'L')
+
             
     def footer(self):
-        # position footer at 15mm from the bottom
+        # position footer at 15mm from the bottom     
         self.set_y(-20)
-        self.set_font('Arial','',7);
-        self.cell(0,10,'RUE DE TIVOLI 22, CH-2003 NEUCHATEL 3   TEL. 032 889 67 50   FAX 032 889 61 21   SGRF@NE.CH  WWW.NE.CH/SGRF',0,0,'C');
+        self.set_font('Helvetica','',7);
+        self.cell(0,10,unicode('Date d\'établissement :         ID Nr : 123456789           Page : ','utf-8').encode('iso-8859-1')+str(self.alias_no_page())+str('/')+str(self.alias_nb_pages()),0,0,'C');
 
-#~ def getTitlePage(request):
-    #~ return
+
+    def add_toc_entry(self,num,label,r,g,b):
+        self.toc_entries.append({'no_page':num,'title':label,'r':int(r),'g':int(g),'b':int(b)})
+
+    def add_appendix(self,num,label):
+        self.appendix_entries.append({'no_page':num,'title':label})
+        
+#~ class PDFExtract(extract):
+
+    #~ toclist ={}
     
-@view_config(route_name='create_extrait')
-def create_extrait(request):
-    # to get vars defined in the buildout  use : request.registry.settings['key']
-    crdppf_wms = request.registry.settings['crdppf_wms']
-    sld_url = request.registry.settings['sld_url']
+    #~ # Add a line in the Table of Content
+    #~ def addTOCEntry(count,title,page_no):
+        #~ toclist[count] = {'title':title,'page':page_no}
+        #~ return toclist   
+     
+    #~ # Creates the title page of the extract
+    #~ def createTitlePage(featureInfo):
+
+        #~ # Create PDF extract
+        #~ title_page = ExtractPDF()
+        
+        #~ # START TITLEPAGE
+        #~ title_page.add_page()
+        #~ title_page.set_margins(25,25,25)
+        #~ title_page = pkg_resources.resource_filename('crdppf','utils\\')
+
+        #~ # PageTitle
+        #~ title_page.set_y(70)
+        #~ title_page.set_font('Helvetica','B',28)
+        #~ title_page.multi_cell(0,12,unicode('Extrait ' , 'utf-8').encode('iso-8859-1'))
+        #~ title_page.set_font('Helvetica','B',22)
+        #~ title_page.multi_cell(0,12,unicode('du cadastre des restrictions de\ndroit public à la propriété foncière', 'utf-8').encode('iso-8859-1'))
+        #~ title_page.ln()
+        #~ title_page.ln()
+        
+        #~ return title_page
+        
+    #~ # Creates the 
+    #~ def createTOC(titles):
+        
+        #~ if titles :
+            #~ for title in titles:
+                #~ toc_page.cell(37,5,title['title'].encode('iso-8859-1'),0,0,'L')
+                #~ toc_page.cell(3,5,unicode(" ", 'utf-8').encode('iso-8859-1'),0,0,'L')
+                #~ toc_page.cell(50,5,title['page'].encode('iso-8859-1'),0,1,'R')
+        #~ else :
+                #~ toc_page.cell(37,5,'Document vide!'.encode('iso-8859-1'),0,0,'L')
+                #~ toc_page.cell(3,5,unicode(" ", 'utf-8').encode('iso-8859-1'),0,0,'L')
+                #~ toc_page.cell(50,5,'... 0',0,1,'R')
+        #~ return toc_page
+
+    #~ def createThematicPages(extract):
+        
+        #~ # Thematic pages
+        #~ for crdppfTopic in extract.topicList :
+            #~ if crdppfTopic.layers :
+                #~ layers = []    
+                #~ for layer in crdppfTopic.layers:
+                    #~ layers.append(layer.layername)          
+                #~ if isinstance(layers, list):
+                    #~ for sublayer in layers:
+                        #~ params ={'id':featureInfo['idemai'],'layerList':str(sublayer)}
+                        #~ extract.restrictionList = get_features.get_features_function(params)
+                #~ else:
+                    #~ params = {'id':featureInfo['idemai'],'layerList':str(layers)}
+                    #~ extract.restrictionList = get_features.get_features_function(params)
+            #~ else : 
+                #~ extract.restrictionList = None
+
+           #~ # PAGE X 
+            #~ thematic_pages.add_page()
+            #~ thematic_pages.set_y(55)
+            #~ thematic_pages.set_font('Helvetica','B',16)
+            #~ thematic_pages.multi_cell(0,6,str(crdppfTopic.topicid) +' - '+str(crdppfTopic.topicname.encode('iso-8859-1')),0,1,'L')
+                
+            #~ # Create entry in TOC
+            #~ toclist = addTOCEntry(i,crdppfTopic.topicname,thematic_page.page_no())
+
+            #~ if extract.restrictionList :
+                #~ y = thematic_pages.get_y()
+                #~ thematic_pages.set_y(y+10)
+                #~ thematic_pages.set_font('Helvetica','B',12)
+                #~ thematic_pages.cell(50,6,unicode('Restriction(s) touchant l\'immeuble', 'utf-8').encode('iso-8859-1'),0,1,'L')
+                
+                #~ y = thematic_pages.get_y()
+                #~ thematic_pages.set_y(y+5)
+
+                #~ for feature in extract.restrictionList:
+                    #~ if feature['properties'] :
+                        
+                        #~ if feature['properties']['layerName']:
+                            #~ thematic_pages.set_font('Helvetica','B',11)
+                            #~ thematic_pages.cell(100,6,unicode('Nom de la donnée : ','utf-8').encode('iso-8859-1') +feature['properties']['layerName'].encode('iso-8859-1'),0,1,'L') 
+
+                        #~ if feature['properties']['featureClass']:
+                            #~ thematic_pages.set_font('Helvetica','I',10)
+                            #~ thematic_pages.cell(100,6,unicode('Type d\'interaction : ','utf-8').encode('iso-8859-1') + feature['properties']['featureClass'].encode('iso-8859-1'),0,1,'L') 
+                            
+                        #~ # Attributes of topic layers intersection
+                        #~ for key,value in feature['properties'].iteritems():
+                            #~ if value is not None :
+                                #~ if key !='layerName' and key != 'featureClass':
+                                    #~ thematic_pages.set_font('Helvetica','B',10)
+                                    #~ thematic_pages.cell(60,4.5,key.encode('iso-8859-1'),0,0,'L')
+                                    #~ thematic_pages.set_font('Helvetica','',10)
+                                    #~ if isinstance(value, float) or isinstance(value, int):
+                                        #~ value = str(value)
+                                    #~ thematic_pages.multi_cell(0,4.5,value.encode('iso-8859-1'),0,1,'L')
+                    #~ y =thematic_pages.get_y()
+                    #~ thematic_pages.set_y(y+5)
+                    
+            #~ else :
+                #~ y = thematic_pages.get_y()
+                #~ thematic_pages.set_y(y+10)
+                #~ thematic_pages.set_font('Helvetica','B',12)
+                #~ thematic_pages.cell(50,6,unicode('Aucune restriction pour ce thème', 'utf-8').encode('iso-8859-1'),0,1,'L')
+                #~ y = thematic_pages.get_y()            
+                #~ thematic_pages.set_y(y+5)
+                
+            #~ # Legal Provisions
+            #~ y = thematic_pages.get_y()
+            #~ thematic_pages.set_y(y+5)
+            #~ thematic_pages.set_font('Helvetica','B',10)
+            #~ thematic_pages.cell(50,6,unicode('Dispositions juridiques', 'utf-8').encode('iso-8859-1'),0,0,'L')
+            #~ thematic_pages.set_font('Helvetica','',10)
+            #~ thematic_pages.multi_cell(0,6,unicode(':  Le règlement de construction est donné à l\'annexe 1','utf-8').encode('iso-8859-1'),0,1,'L')
+        
+        #~ return thematic_pages
+
+    #~ featureInfo = 'bla'
+    #~ extract = createTitlePage(featureInfo)
+    #~ #extract.update(createTitlePage())
+    
+    #~ extract.output(pdfpath+'extract.pdf','F')
+    
+    #~ response = FileResponse(
+        #~ pdfpath + 'extract.pdf',
+        #~ request,
+        #~ None,
+        #~ 'application/pdf'
+    #~ )
+    #~ response. content_disposition='attachment; filename='+ 'extract.pdf'
+    #~ return response
+    
+def getAppendices():
+
+    appendix_pages = ExtractPDF()
+    
+    # START APPENDIX
+    appendix_pages.add_page()
+    appendix_pages.set_margins(25,25,25)
+    appendix_pages.set_y(55)
+    appendix_pages.set_font('Helvetica','B',16)
+    appendix_pages.multi_cell(0,12,unicode('Liste des annexes', 'utf-8').encode('iso-8859-1'))
+    
+    appendix_pages.set_font('Helvetica','B',11)
+    appendix_pages.cell(15,6,str('Page'),0,0,'L')
+    appendix_pages.cell(135,6,str('Titre de l\'annexe').encode('iso-8859-1'),0,1,'L')
+    
+    return appendix_pages
+    
+def getTOC():
+
+    toc_pages = ExtractPDF()
+    
+    # START TOC
+    toc_pages.add_page()
+    toc_pages.set_margins(25,25,25)
+    toc_pages.set_y(55)
+    toc_pages.set_font('Helvetica','B',16)
+    toc_pages.multi_cell(0,12,unicode('Table des matières', 'utf-8').encode('iso-8859-1'))
+
+    toc_pages.set_font('Helvetica','B',10)
+    toc_pages.cell(12,35,str('Page'),'RB',0,'L')
+    toc_pages.cell(118,35,str('Restriction').encode('iso-8859-1'),'LBR',0,'L')
+    toc_pages.cell(15,35,str('Disp.j.'),'LBR',0,'C')
+    toc_pages.cell(15,35,str('Renvois'),'LB',1,'C')
+
+    return toc_pages
+
+
+def getTitlePage(feature_info,crdppf_wms,pdf_path,nomcom):
 
     # the dictionnary for the document
     reportInfo = {}
     reportInfo['type'] = '[officiel]'
     
     # the dictionnary for the parcel
-    featureInfo = {}
-    featureInfo['no_EGRID'] = 'xxxxx'
-    featureInfo['CoordSys'] = 'MN03'
-    featureInfo['lastUpdate'] = datetime.now()
-    featureInfo['operator'] = 'F.Voisard - SITN'
+    feature_info['no_EGRID'] = 'Placeholder'
+    feature_info['lastUpdate'] = datetime.now()
+    feature_info['operator'] = 'F.Voisard - SITN'
 
-    # If the ID of the parcel is set get the basic attributs else get the ID (idemai) of the selected parcel first using X/Y coordinates of the center 
-    featureInfo.update(getFeatureInfo(request)) # '1_14127' # test parcel or '1_11340'
+    today= datetime.now()
     
-    # temporary variables for developping purposes - will be assigned by DB requests
-    restriction_layers = ['affectation','canepo','foret']
+    # Create PDF extract
+    pdf = ExtractPDF()
+    
+    # START TITLEPAGE
+    pdf.add_page()
+    pdf.set_margins(25,55,25)
+    path = pkg_resources.resource_filename('crdppf','utils\\')
 
- 
+    # PageTitle
+    pdf.set_y(55)
+    pdf.set_font('Helvetica','B',24)
+    pdf.multi_cell(0,10,unicode('Extrait '+reportInfo['type'] , 'utf-8').encode('iso-8859-1'))
+    pdf.set_font('Helvetica','B',20)
+    pdf.multi_cell(0,8,unicode('du cadastre des restrictions de\ndroit public à la propriété foncière', 'utf-8').encode('iso-8859-1'))
+    pdf.ln()
+    
+    layers = [
+        'parcelles',
+        'mo22_batiments',
+        'mo21_batiments_provisoires',
+        'mo23_batiments_projetes',
+        'ag1_parcellaire_provisoire',
+        'mo9_immeubles',
+        'mo5_point_de_detail',
+        'mo7_obj_divers_lineaire',
+        'mo7_obj_divers_couvert',
+        'mo7_obj_divers_piscine',
+        'mo7_obj_divers_cordbois',
+        'mo4_pfa_1',
+        'mo4_pfp_3',
+        'mo4_pfp_1_2',  
+        'la3_limites_communales',
+        'mo22_batiments'
+    ]
+    
+    scale = feature_info['printFormat']['scale']*2
+    # SitePlan/Plan de situation/Situationsplan
+    map_params = {'width':feature_info['printFormat']['mapWidth'],'height':feature_info['printFormat']['mapHeight']}
+    map_params['bboxCenterX'] = (feature_info['BBOX']['maxX']+feature_info['BBOX']['minX'])/2
+    map_params['bboxCenterY'] = (feature_info['BBOX']['maxY']+feature_info['BBOX']['minY'])/2
+    #to recenter the map on the bbox of the feature, with the right scale and add at least 10% of space we calculate a wmsBBOX
+    wmsBBOX = {}
+    wmsBBOX['centerY'] =  int(map_params['bboxCenterY'])
+    wmsBBOX['centerX'] =  int(map_params['bboxCenterX'])
+    wmsBBOX['minX'] = int(wmsBBOX['centerX']-(160*scale/1000/2))
+    wmsBBOX['maxX'] = int(wmsBBOX['centerX']+(160*scale/1000/2))
+    wmsBBOX['minY'] = int(wmsBBOX['centerY']-(90*scale/1000/2))
+    wmsBBOX['maxY'] = int(wmsBBOX['centerY']+(90*scale/1000/2))
+    
+    #wms = WebMapService('http://sitn.ne.ch/mapproxy/service', version='1.1.1')
+    wms = WebMapService(crdppf_wms, version='1.1.1')
+    #layers = 'plan_ville_c2c'
+
+    map = wms.getmap(   
+        layers=layers,
+        srs='EPSG:21781',
+        bbox=(wmsBBOX['minX'],wmsBBOX['minY'],wmsBBOX['maxX'],wmsBBOX['maxY']),
+        size=(1600,900),
+        format='image/png',
+        transparent=False
+    )
+    
+    out = open(pdf_path+'siteplan.png', 'wb')
+    out.write(map.read())
+    out.close()
+
+    mappath = pdf_path+'siteplan.png'
+
+    map = pdf.image(pdf_path+'siteplan.png',25,90,160,90)
+
+    y=pdf.get_y()
+    pdf.rect(25,90,160,90,'')
+    pdf.set_y(y+100)
+    # First infoline
+    pdf.set_font('Helvetica','B',10)
+    pdf.cell(45,5,unicode("Immeuble n°", 'utf-8').encode('iso-8859-1'),0,0,'L')
+    # ADD immeuble Type !!!!!!!
+    pdf.set_font('Helvetica','',10)
+    if feature_info['nomcad'] is not None:
+        pdf.cell(50,5,feature_info['nummai'].encode('iso-8859-1')+str(' (')+feature_info['nomcad'].encode('iso-8859-1')+str(') '),0,1,'L')
+    else : 
+        pdf.cell(50,5,feature_info['nummai'].encode('iso-8859-1'),0,1,'L')
+    
+     # Second infoline : Area and EGRID
+    pdf.set_font('Helvetica','B',10)
+    pdf.cell(45,5,unicode('Surface de l\'immeuble', 'utf-8').encode('iso-8859-1'),0,0,'L')
+    pdf.set_font('Helvetica','',10)
+    pdf.cell(50,5,str(feature_info['area'])+str(' m2').encode('iso-8859-1'),0,0,'L')
+    pdf.set_font('Helvetica','B',10)
+    pdf.cell(35,5,unicode("N° EGRID", 'utf-8').encode('iso-8859-1'),0,0,'L')
+    pdf.set_font('Helvetica','',10)
+    pdf.cell(50,5,feature_info['no_EGRID'].encode('iso-8859-1'),0,1,'L')      
+
+     # Third infoline : Adresse/localisation
+    pdf.set_font('Helvetica','B',10)
+    pdf.cell(45,5,unicode('Adresse/Nom local', 'utf-8').encode('iso-8859-1'),0,0,'L')
+    pdf.set_font('Helvetica','',10)
+    pdf.cell(50,5,str('Placeholder').encode('iso-8859-1'),0,1,'L')   
+    
+     # Fourth infoline : County and BFS number
+    pdf.set_font('Helvetica','B',10)
+    pdf.cell(45,5,unicode('Commune', 'utf-8').encode('iso-8859-1')+str(' (')+unicode('N° OFS', 'utf-8').encode('iso-8859-1')+str(')'),0,0,'L')
+    pdf.set_font('Helvetica','',10)
+    pdf.cell(50,5,feature_info['nomcom'].encode('iso-8859-1')+str(' (')+str(feature_info['nufeco']).encode('iso-8859-1')+str(')'),0,0,'L')
+    
+    # Creation date and operator
+    y= pdf.get_y()
+    pdf.set_y(y+10)
+    pdf.set_font('Helvetica','B',10)
+    pdf.cell(45,5,unicode('Extrait établi le', 'utf-8').encode('iso-8859-1'),0,0,'L')
+    pdf.set_font('Helvetica','',10)
+    pdf.cell(70,5, today.strftime('%d.%m.%Y - %Hh%M'),0,1,'L')
+    pdf.set_font('Helvetica','B',10)
+    pdf.cell(45,5,unicode('Editeur de l\'extrait', 'utf-8').encode('iso-8859-1'),0,0,'L')
+    pdf.set_font('Helvetica','',10)
+    pdf.cell(70,5,feature_info['operator'].encode('iso-8859-1'),0,1,'L')
+
+    y= pdf.get_y()
+    pdf.set_y(y+10)
+    pdf.set_font('Helvetica','B',10)
+    pdf.cell(0,5,unicode('Signature', 'utf-8').encode('iso-8859-1'),0,0,'L')
+
+    pdf.set_y(250)
+    pdf.set_font('Helvetica','B',10)
+    pdf.cell(0,5,unicode('Indications générales', 'utf-8').encode('iso-8859-1'),0,1,'J')
+    pdf.set_font('Helvetica','',10)
+    pdf.multi_cell(0,5,unicode('Mise en garde : Le canton de Neuchâtel n\'engage pas sa responsabilité sur l\'exactitude ou la fiabilité des documents législatifs dans leur version électronique. Ces documents ne créent aucun autre droit ou obligation que ceux qui découlent des textes légalement adoptés et publiés, qui font seuls foi.', 'utf-8').encode('iso-8859-1'),0,1,'L')
+
+    # END TITLEPAGE
+    
+    return pdf
+    
+@view_config(route_name='create_extract')
+def create_extract(request):
+    # to get vars defined in the buildout  use : request.registry.settings['key']
+    crdppf_wms = request.registry.settings['crdppf_wms']
+    sld_url = request.registry.settings['sld_url']
+
+    # other basic parameters
+    extract = Objectify()
+    pdf_name = 'extract'
+    pdf_name='crdppf_'+pdf_name
+    pdfpath = pkg_resources.resource_filename('crdppf','static\public\pdf\\')
+    extract.today= datetime.now()
+
+    
+# *************************
+# MAIN PROGRAM PART
+#=========================
+
+    # 1) If the ID of the parcel is set get the basic attributs 
+    # else get the ID (idemai) of the selected parcel first using X/Y coordinates of the center 
+    #----------------------------------------------------------------------------------------------------
+    extract.featureInfo = getFeatureInfo(request) # '1_14127' # test parcel or '1_11340'
+    featureInfo = extract.featureInfo
+    
+    # 2) Get the parameters for the paper format and the map based on the feature's geometry
+    #---------------------------------------------------------------------------------------------------
     map_params = {'width':featureInfo['printFormat']['mapWidth'],'height':featureInfo['printFormat']['mapHeight']}
     map_params['bboxCenterX'] = (featureInfo['BBOX']['maxX']+featureInfo['BBOX']['minX'])/2
     map_params['bboxCenterY'] = (featureInfo['BBOX']['maxY']+featureInfo['BBOX']['minY'])/2
 
-    pdf_format = featureInfo['printFormat']
+    pdf_format = extract.featureInfo['printFormat']
     
-    # Creates the pdf file
-    pdf_name = 'extrait'
-    pdf_name='crdppf_'+pdf_name
-    pdfpath = pkg_resources.resource_filename('crdppf','static\public\pdf\\')
+    # 3) Get the list of all the restrictions
+    #-------------------------------------------
+    extract.topicList = DBSession.query(Topics).order_by(Topics.topicorder).all()
+
+    # 4) Create the title page for the pdf extract
+    #--------------------------------------------------
+    pdf = getTitlePage(extract.featureInfo,crdppf_wms,pdfpath,featureInfo['nomcom'])
+
+    # 5) Create an empty pdf for the table of content
+    #--------------------------------------------------
+    #pdf.add_page()
+    toc = getTOC()
     
-    today= datetime.now()
-
-    competentAuthority = DBSession.query(Authority).all()
-    crdppfTopics = DBSession.query(Topics).all()
-
-    result = {}
-    params = {'id':featureInfo['idemai'],'layerList':'at14_zones_communales'}
-    for crdppfTopic in crdppfTopics :
-        result['restriction'] = get_features.get_features_function(params)
-        if crdppfTopic.topicid == '73':
-            result['map'] = getMap(params['layerList'],crdppf_wms,map_params,pdf_format)
-        # getLegalBases()
-        # getLegalProvisions()
-        # getComplemantaryInformation()
-
-
-    # Create order PDF
-    pdf = ExtraitPDF()
-    #pdf=FPDF(format='A4')    
+    # 6) Create an empty pdf for the ?annexes?
+    #-------------------------------------------------- 
+    appendices = getAppendices()
     
-    # START TITLEPAGE
-    pdf.add_page()
-    pdf.set_margins(25,25,25)
-    path = pkg_resources.resource_filename('crdppf','utils\\')
-
-    # PageTitle
-    pdf.set_y(70)
-    pdf.set_font('Arial','B',28)
-    pdf.multi_cell(0,12,unicode('Extrait '+reportInfo['type'] , 'utf-8').encode('iso-8859-1'))
-    pdf.set_font('Arial','B',22)
-    pdf.multi_cell(0,12,unicode('du cadastre des restrictions de\ndroit public à la propriété foncière', 'utf-8').encode('iso-8859-1'))
-    pdf.ln()
-    pdf.ln()
+    # 7) Create the pages of the extract for each topic in the list
+    #---------------------------------------------------
+    # Thematic pages
     
-    # First infoline
-    pdf.set_font('Arial','B',12)
-    pdf.cell(37,5,unicode("Bien-fonds n°", 'utf-8').encode('iso-8859-1'),0,0,'L')
-    pdf.cell(3,5,unicode(": ", 'utf-8').encode('iso-8859-1'),0,0,'L')
-    pdf.cell(50,5,featureInfo['nummai'].encode('iso-8859-1'),0,0,'L')
-    pdf.cell(37,5,unicode("N° EGRID", 'utf-8').encode('iso-8859-1'),0,0,'L')
-    pdf.cell(3,5,unicode(": ", 'utf-8').encode('iso-8859-1'),0,0,'L')
-    pdf.cell(50,5,featureInfo['no_EGRID'].encode('iso-8859-1'),0,1,'L')
+    # Loop on each topic
+    for crdppfTopic in extract.topicList :
+        if crdppfTopic.layers :
+            layers = []    
+            for layer in crdppfTopic.layers:
+                layers.append(layer.layername)          
+            if isinstance(layers, list):
+                for sublayer in layers:
+                    params ={'id':featureInfo['idemai'],'layerList':str(sublayer)}
+                    extract.restrictionList = get_features.get_features_function(params)
+            else:
+                params = {'id':featureInfo['idemai'],'layerList':str(layers)}
+                extract.restrictionList = get_features.get_features_function(params)
+        else : 
+            extract.restrictionList = None
+            
+        if extract.restrictionList :
+
+           # PAGE X 
+            pdf.add_page()
+            pdf.set_y(55)
+            pdf.set_font('Helvetica','B',16)
+            pdf.multi_cell(0,6,str(crdppfTopic.topicname.encode('iso-8859-1')),0,1,'L')
+        
+            y = pdf.get_y()
+            pdf.set_y(y+10)
+
+            for feature in extract.restrictionList:
+                if feature['properties'] :
+                    if feature['properties']['layerName']:
+                        pdf.set_font('Helvetica','B',11)
+                        pdf.cell(100,6,unicode('Nom de la donnée : ','utf-8').encode('iso-8859-1') +feature['properties']['layerName'].encode('iso-8859-1'),0,1,'L') 
+
+                    if feature['properties']['featureClass']:
+                        pdf.set_font('Helvetica','I',10)
+                        pdf.cell(100,6,unicode('Type d\'interaction : ','utf-8').encode('iso-8859-1') + feature['properties']['featureClass'].encode('iso-8859-1'),0,1,'L') 
+                        
+                    # Attributes of topic layers intersection
+                    for key,value in feature['properties'].iteritems():
+                        if value is not None :
+                            if key !='layerName' and key != 'featureClass':
+                                pdf.set_font('Helvetica','B',10)
+                                pdf.cell(60,4.5,unicode('Caractéristique:','utf-8').encode('iso-8859-1'),0,0,'L')
+                                pdf.set_font('Helvetica','',10)
+                                if isinstance(value, float) or isinstance(value, int):
+                                    value = str(value)
+                                pdf.cell(60,4.5,value.encode('iso-8859-1'),0,1,'L')
+                
+                y = pdf.get_y()
+                pdf.set_y(y+5)
+            
+            # Legal Provisions/Dispositions légales/Gesetzliche Bestimmungen
+            y = pdf.get_y()
+            pdf.set_y(y+5)
+            pdf.set_font('Helvetica','B',10)
+            pdf.cell(55,6,unicode('Dispositions juridiques', 'utf-8').encode('iso-8859-1'),0,0,'L')
+            pdf.set_font('Helvetica','',10)
+            if crdppfTopic.legalprovisions:
+                for provision in crdppfTopic.legalprovisions:
+                    pdf.add_appendix('A',unicode(provision.officialtitle).encode('iso-8859-1'))
+            #~ else:
+                    #~ pdf.add_appendix(unicode('Pas de réglement dans la base de données','utf-8').encode('iso-8859-1'))
+
+            # ?Annotations? and complementary information/Renvois et informations supplémentaires/Verweise und Zusatzinformationen
+            y = pdf.get_y()
+            pdf.set_y(y+5)
+            pdf.set_font('Helvetica','B',10)
+            pdf.cell(55,6,unicode('Renvois et informations compl.', 'utf-8').encode('iso-8859-1'),0,0,'L')
+            pdf.set_font('Helvetica','',10)
+            if crdppfTopic.temporaryprovisions:
+                for provision in crdppfTopic.temporaryprovisions:
+                    pdf.multi_cell(0,6,str(crdppfTopic.temporaryprovisions).encode('iso-8859-1'))
+            else:
+                    pdf.multi_cell(0,6,unicode('Temporary provisions placeholder','utf-8').encode('iso-8859-1')) 
+
+            # Temporary provisions/Dispositions transitoires et renvois supplémentaires/Übergangsbestimmungen und Zusatzinformationen
+            y = pdf.get_y()
+            pdf.set_y(y+5)
+            pdf.set_font('Helvetica','B',10)
+            pdf.cell(55,6,unicode('Dispositions transitoires', 'utf-8').encode('iso-8859-1'),0,0,'L')
+            pdf.set_font('Helvetica','',10)
+            if crdppfTopic.temporaryprovisions:
+                for provision in crdppfTopic.temporaryprovisions:
+                    pdf.multi_cell(0,6,str(crdppfTopic.temporaryprovisions).encode('iso-8859-1'),0,1,'L')
+            else:
+                    pdf.multi_cell(0,6,unicode('Temporary provisions placeholder','utf-8').encode('iso-8859-1'),0,1,'L')
+
+            #~ # Competent Authority/Service competent/Zuständige Behörde
+            y = pdf.get_y()
+            pdf.set_y(y+5)
+            pdf.set_font('Helvetica','B',10)
+            pdf.cell(55,3.9,unicode('Service compétent', 'utf-8').encode('iso-8859-1'),0,0,'L')
+            pdf.set_font('Helvetica','',10)
+            
+            if crdppfTopic.authority.authorityname is not None:
+                pdf.cell(120,3.9,crdppfTopic.authority.authorityname.encode('iso-8859-1'),0,1,'L')
+            if crdppfTopic.authority.authoritydepartment is not None:
+                pdf.cell(55,3.9,str(' '),0,0,'L')
+                pdf.cell(120,3.9,crdppfTopic.authority.authoritydepartment.encode('iso-8859-1'),0,1,'L')
+            if crdppfTopic.authority.authorityphone1 is not None:
+                pdf.cell(55,3.9,str(' '),0,0,'L')
+                pdf.cell(120,3.9,unicode('Tél: ','utf-8').encode('iso-8859-1')+crdppfTopic.authority.authorityphone1.encode('iso-8859-1'),0,1,'L')
+            if crdppfTopic.authority.authoritywww is not None:
+                pdf.cell(55,3.9,str(' '),0,0,'L')
+                pdf.cell(120,3.9,str('Web: ').encode('iso-8859-1')+crdppfTopic.authority.authoritywww.encode('iso-8859-1'),0,1,'L')        
+            #~ if crdppfTopic.authority.authoritystreet1 is not None:
+                #~ pdf.cell(55,3.9,str(' '),0,0,'L')
+                #~ pdf.cell(120,3.9,crdppfTopic.authority.authoritystreet1.encode('iso-8859-1'),0,1,'L')
+            #~ if crdppfTopic.authority.authoritystreet2 is not None:
+                #~ pdf.cell(55,3.9,str(' '),0,0,'L')
+                #~ pdf.cell(120,3.9,crdppfTopic.authority.authoritystreet2.encode('iso-8859-1'),0,1,'L')
+            #~ if crdppfTopic.authority.authorityzip is not None and crdppfTopic.authority.authoritycity is not None :
+                #~ pdf.cell(55,3.9,str(' '),0,0,'L')
+                #~ pdf.cell(120,3.9,str(crdppfTopic.authority.authorityzip).encode('iso-8859-1') +str(' ') +crdppfTopic.authority.authoritycity.encode('iso-8859-1'),0,1,'L')
+            
+            # Legal bases/Bases légales/Gesetzliche Grundlagen
+            y = pdf.get_y()
+            pdf.set_y(y+5)
+            pdf.set_font('Helvetica','B',10)
+            pdf.cell(55,6,unicode('Base(s) légale(s)', 'utf-8').encode('iso-8859-1'),0,0,'L')
+            pdf.set_font('Helvetica','',10)
+            if crdppfTopic.legalbases:
+                for legalbase in crdppfTopic.legalbases:
+                    pdf.multi_cell(0,6,str(crdppfTopic.legalbases).encode('iso-8859-1'))
+            else:
+                pdf.multi_cell(0,6,unicode('Legal base(s) placeholder','utf-8').encode('iso-8859-1'))
+            
+            #~ # TemporaryProvisions/Dispositions transitoires/Übergangsbestimmungen
+            #~ y = pdf.get_y()
+            #~ pdf.set_y(y+5)
+            #~ pdf.set_font('Helvetica','B',10)
+            #~ pdf.cell(47,6,unicode('Dispositions transitoires', 'utf-8').encode('iso-8859-1'),0,0,'L')
+            #~ pdf.cell(3,6,unicode(': ', 'utf-8').encode('iso-8859-1'),0,0,'L')
+            #~ pdf.set_font('Helvetica','',10)
+            #~ pdf.multi_cell(0,3.9,unicode('Plan d\'affectation Quartier Nord du 21 décembre 1975\nValable jusqu\'au 31.12.2013','utf-8').encode('iso-8859-1'),0,1,'L')
+
+            # Thematic map/Carte thématique/Thematische Karte
+            if crdppfTopic.layers :
+                crdppfTopic.mappath,crdppfTopic.legendpath = getMap(crdppfTopic.layers,crdppfTopic.topicid,crdppf_wms,map_params,pdf_format)
+                pdf.add_page(str(pdf_format['orientation'] + ','+pdf_format['format']))
+                pdf.set_font('Helvetica','B',11)
+                pdf.set_xy(10,25)
+                pdf.multi_cell(140,5,crdppfTopic.topicname.encode('iso-8859-1'))
+                y = pdf.get_y()
+                map = pdf.image(crdppfTopic.mappath,10,y+5,pdf_format['width'] ,pdf_format['height'] )
+                pdf.set_y(y+5)
+                pdf.set_x(10)
+                pdf.cell(pdf_format['width'],pdf_format['height'] ,'',1,1,'L')
+                y = pdf.get_y()
+                pdf.set_y(y+5)
+                pdf.cell(50,6,unicode('Légende', 'utf-8').encode('iso-8859-1'),0,1,'L')
+                pdf.set_font('Helvetica','',10)
+                pdf.cell(50,6,unicode('Legend placeholder', 'utf-8').encode('iso-8859-1'),0,1,'L')
+                
+                try: 
+                    for graphic in crdppfTopic.legendpath:
+                        legend = pdf.image(crdppfTopic.legendpath,10,y+20,50,50)
+                except:
+                    pass
+                pdf.rect(10,y,pdf_format['width'],50,'')
+                
+            else : 
+                y = pdf.get_y()
+                pdf.multi_cell(0,6,'Pas de carte.')
+                pdf.ln()
+
+                
+        # Set the titles
+        if crdppfTopic.layers :
+            if extract.restrictionList :
+                pdf.add_toc_entry(pdf.page_no(),str(crdppfTopic.topicname.encode('iso-8859-1')),0,0,0)
+            else : 
+                pdf.add_toc_entry('',str(crdppfTopic.topicname.encode('iso-8859-1')),0,180,0)
+        else:
+            pdf.add_toc_entry('',str(crdppfTopic.topicname.encode('iso-8859-1')),180,0,0)
+
+    # Get the page count of all the chapters
+    nb_pages_pdf =  len(pdf.pages)
+    nb_pages_toc =  len(toc.pages)
+    nb_pages_appendix =  len(appendices.pages)
+
+    nb_pages_total = nb_pages_pdf + nb_pages_toc + nb_pages_appendix
+    delta = nb_pages_toc + nb_pages_appendix
+
+    if pdf.toc_entries :
+        pdf.add_page()
+        for entry in pdf.toc_entries :
+            toc.set_font('Helvetica','B',11)
+            toc.set_text_color(entry['r'],entry['g'],entry['b'])
+            toc.cell(12,6,str(entry['no_page']),'TRB',0,'L')
+            toc.cell(118,6,str(entry['title']),1,0,'L')
+            toc.cell(15,6,str(''),1,0,'L')
+            toc.cell(15,6,str(''),'LB',1,'L')
+            toc.set_text_color(0,0,0)
+        toc.ln()
+        toc.ln()
+        toc.set_text_color(0,0,180)
+        toc.cell(120,5,unicode('L\'information n\'est pas contraignante.', 'utf-8').encode('iso-8859-1'),0,1,'L')
+        toc.set_text_color(0,180,0)
+        toc.cell(120,5,unicode('L\'immeuble n\'est pas touché par cette restriction.', 'utf-8').encode('iso-8859-1'),0,1,'L')
+        toc.set_text_color(180,0,0)
+        toc.cell(120,5,unicode('La restriction n\'est pas disponible.', 'utf-8').encode('iso-8859-1'),0,1,'L')
+        toc.set_text_color(0,0,0)
+        toc.ln()
+        toc.cell(120,5,unicode('1 Les indications font référence à la position des annexes.', 'utf-8').encode('iso-8859-1'),0,1,'L')
+
+    if pdf.appendix_entries :
+        pdf.add_page()
+        for appendix in pdf.appendix_entries:
+            appendices.cell(20,6,str(appendix['no_page']),0,0,'L')
+            appendices.cell(120,6,str(appendix['title']),0,0,'L')        
+        
+    # Make room for the toc anc annexes pushing the content
+    for i in range((nb_pages_total+1),(delta),-1):
+        pdf.pages[int(i)]=str(pdf.pages[int(i-delta)])
+
+    # Insert the TOC after the title page
+    pdf.pages[int(2)]=str(toc.pages[int(1)])
     
-     # Second infoline   
-    pdf.cell(37,5,unicode("Cadastre", 'utf-8').encode('iso-8859-1'),0,0,'L')
-    pdf.cell(3,5,unicode(": ", 'utf-8').encode('iso-8859-1'),0,0,'L')
-    pdf.cell(50,5,featureInfo['nomcad'].encode('iso-8859-1'),0,1,'L')
+    # Insert the annexes after the toc
+    for k in range(1,nb_pages_appendix+1):
+        pdf.pages[int(nb_pages_toc+1+k)]=str(appendices.pages[int(k)])
+
+    for p in range(1,len(pdf.pages)+1):
+        pdf.pages[int(p)] = str(pdf.pages[int(p)]).replace('{no_pg}',str(int(p)))
     
-    # Third infoline
-    pdf.cell(37,5,unicode('Commune', 'utf-8').encode('iso-8859-1'),0,0,'L')
-    pdf.cell(3,5,unicode(": ", 'utf-8').encode('iso-8859-1'),0,0,'L')
-    pdf.cell(50,5,featureInfo['nomcom'].encode('iso-8859-1'),0,0,'L')
-    pdf.cell(37,5,unicode('N° OFS', 'utf-8').encode('iso-8859-1'),0,0,'L')
-    pdf.cell(3,5,unicode(": ", 'utf-8').encode('iso-8859-1'),0,0,'L')
-    pdf.cell(50,5,str(featureInfo['nufeco']).encode('iso-8859-1'),0,1,'L')
+    for l in range(1,len(pdf.pages)):
+         pdf.pages[int(l)] = str(pdf.pages[int(l)].replace('{nomcom}',featureInfo['nomcom'].encode('iso-8859-1')))
 
-    pdf.set_y(165)
-    pdf.set_font('Arial','B',10)
-    pdf.cell(65,5,unicode('Extrait établi le', 'utf-8').encode('iso-8859-1'),0,0,'L')
-    pdf.cell(40,5, ': '+today.strftime('%d.%m.%Y - %Hh%M'),0,1,'L')
-    pdf.cell(65,5,unicode('Dernière mise à jour des données', 'utf-8').encode('iso-8859-1'),0,0,'L')
-    pdf.cell(40,5,': '+featureInfo['lastUpdate'].strftime('%d.%m.%Y'),0,1,'L')
-    pdf.cell(65,5,unicode('Editeur de l\'extrait', 'utf-8').encode('iso-8859-1'),0,0,'L')
-    pdf.cell(40,5,': '+featureInfo['operator'].encode('iso-8859-1'),0,1,'L')
-
-    pdf.set_y(190)
-    pdf.cell(65,5,unicode('Etat des données de la MO', 'utf-8').encode('iso-8859-1'),0,0,'L')
-    pdf.cell(40,5,unicode(':', 'utf-8').encode('iso-8859-1'),0,1,'L')
-    pdf.cell(65,5,unicode('Cadre de référence', 'utf-8').encode('iso-8859-1'),0,0,'L')
-    pdf.cell(40,5,': '+featureInfo['CoordSys'].encode('iso-8859-1'),0,1,'L')
-
-
-    pdf.image(path+"Neuchatel.jpg",180,180,20,22)
-
-    pdf.set_y(215)
-    pdf.set_font('Arial','',10)
-    pdf.cell(0,5,unicode('Signature', 'utf-8').encode('iso-8859-1'),0,0,'L')
-
-    pdf.set_y(240)
-    pdf.set_font('Arial','B',10)
-    pdf.cell(0,5,unicode('Indications générales', 'utf-8').encode('iso-8859-1'),0,1,'J')
-    pdf.set_font('Arial','',10)
-    pdf.multi_cell(0,5,unicode('Mise en garde : Le canton de Neuchâtel n\'engage pas sa responsabilité sur l\'exactitude ou la fiabilité des documents législatifs dans leur version électronique. Ces documents ne créent aucun autre droit ou obligation que ceux qui découlent des textes légalement adoptés et publiés, qui font seuls foi.', 'utf-8').encode('iso-8859-1'),0,1,'L')
-
-    # END TITLEPAGE
-
-    layers= [    
-        'la3_limites_communales',
-        'at14_zones_communales',
-        'at08_zones_cantonales',
-        'mo22_batiments',
-        'mo21_batiments_provisoires',
-        'mo9_immeubles',
-        'ag1_parcellaire_provisoire'
-    ]
-
-    wms = WebMapService(crdppf_wms, version='1.1.1')
-    img = wms.getmap(   
-        layers=layers,
-        srs='EPSG:21781',
-        bbox=(559150,203560,559750,203960),
-        size=(map_params['width'], map_params['height']),
-        format='image/jpeg',
-        transparent=False
-    )
-
-    out = open(pdfpath+pdf_name+'.jpg', 'wb')
-    out.write(img.read())
-    out.close()
-
-    layers2= [
-        'parcelles',
-        'en07_canepo_accidents',
-        'en07_canepo_entreprises',
-        'en07_canepo_decharges'
-    ]    
-    #~ layers2= [
-        #~ 'ch.bazl.segelflugkarte',
-        #~ 'ch.bazl.projektierungszonen-flughafenanlage'
-    #~ ]
-    
-    #http://sitn.ne.ch/ogc-sitn-poi/wms?SERVICE=WMS&VERSION=1.1.1&REQUEST=GetMap&SRS=EPSG:21781&LAYERS=en07_canepo_accidents,en07_canepo_entreprises,en07_canepo_decharges&BBOX=559150,203560,559750,203960&WIDTH=600&HEIGHT=400&FORMAT=image/png
-    #wms2 = WebMapService('http://wms.geo.admin.ch/', version='1.1.1')
-    #~ wms2 = WebMapService(crdppf_wms, version='1.1.1')
-    #~ img2 = wms2.getmap(   
-        #~ layers=layers2,
-        #~ srs='EPSG:21781',
-        #~ bbox=(559150,203560,559750,203960),
-        #~ size=(bbox['width'], bbox['height']),
-        #~ #bbox=(640000, 200000,750000,280000),
-        #~ #size=(800,582),
-        #~ format='image/png',
-        #~ transparent=False
-    #~ )
-
-    #~ out2 = open(pdfpath+ pdf_name+'2.png', 'wb')
-    #~ out2.write(img2.read())
-    #~ out2.close()
-    
-    # PAGE 2 
-    pdf.add_page()
-    pdf.set_y(25)
-    pdf.set_font('Arial','B',16)
-    pdf.multi_cell(0,6,'73 - Plan d\'affectation')
-    
-    # Attributes of topic layers intersection
-    pdf.set_y(35)
-    pdf.set_font('Arial','B',10)
-    pdf.cell(50,6,unicode('Nom de la zone', 'utf-8').encode('iso-8859-1'),0,0,'L')
-    pdf.set_font('Arial','',10)
-    pdf.multi_cell(0,3.9,unicode(':  Zone d\'habitation / secteur d\'ordre non-contigu 1.2','utf-8').encode('iso-8859-1'),0,1,'L')
-    pdf.set_font('Arial','B',10)
-    pdf.cell(50,6,unicode('Surface', 'utf-8').encode('iso-8859-1'),0,0,'L')
-    pdf.set_font('Arial','',10)
-    pdf.multi_cell(0,6,unicode(':  712 m2','utf-8').encode('iso-8859-1'),0,1,'L')
-    
-    pdf.set_draw_color(200,200,200)
-    pdf.set_line_width(0.4)
-    y = pdf.get_y()
-    pdf.line(25,y+1,185,y+1)
-    
-    # Legal Provisions
-    pdf.set_y(y+5)
-    pdf.set_font('Arial','B',10)
-    pdf.cell(50,6,unicode('Dispositions juridiques', 'utf-8').encode('iso-8859-1'),0,0,'L')
-    pdf.set_font('Arial','',10)
-    pdf.multi_cell(0,6,unicode(':  Le règlement de construction est donné à l\'annexe 1','utf-8').encode('iso-8859-1'),0,1,'L')
-
-
-    pdf.set_draw_color(200,200,200)
-    pdf.set_line_width(0.4)
-    y = pdf.get_y()
-    pdf.line(25,y+1,185,y+1)
-
-    # Assent date
-    pdf.set_y(y+5)
-    pdf.set_font('Arial','B',10)
-    pdf.cell(47,6,unicode('Sanction par le Conseil d\'Etat', 'utf-8').encode('iso-8859-1'),0,0,'L')
-    pdf.cell(3,6,unicode(':', 'utf-8').encode('iso-8859-1'),0,0,'L')
-    pdf.set_font('Arial','',10)
-    pdf.cell(3,6,unicode('5 juillet 1999 et 13 juin 2001', 'utf-8').encode('iso-8859-1'),0,1,'L')
-
-    pdf.set_draw_color(200,200,200)
-    y = pdf.get_y()
-    pdf.line(25,y+1,185,y+1)
-
-    # Complementary provisions and information
-    pdf.set_y(y+5)
-    pdf.set_font('Arial','B',10)
-    pdf.cell(0,6,unicode('Infos et renvois supplémentaires', 'utf-8').encode('iso-8859-1'),0,1,'L')
-    pdf.set_font('Arial','',10)
-    pdf.set_x(35)
-    pdf.multi_cell(0,6,unicode('-  Plan spécial \"Gare Nord\"\n-  Plan de quartier \"Les Fahys\"','utf-8').encode('iso-8859-1'),0,1,'L')
-
-    pdf.set_draw_color(200,200,200)
-    y = pdf.get_y()
-    pdf.line(25,y+1,185,y+1)
-
-    # Competent Authority
-    y = pdf.get_y()
-    pdf.set_y(y+5)
-    pdf.set_font('Arial','B',10)
-    pdf.cell(47,3.9,unicode('Service compétent', 'utf-8').encode('iso-8859-1'),0,0,'L')
-    pdf.cell(3,3.9,unicode(': ', 'utf-8').encode('iso-8859-1'),0,0,'L')
-    pdf.set_font('Arial','',10)
-    pdf.multi_cell(120,3.9,unicode('Commune de Neuchâtel\nENVIRONNEMENT - Service de l\'aménagement urbain\nFbg du Lac 3\n2000 Neuchâtel\nTél: 032 717\'76\'61\nE-Mail: urbanisme.neuchatel@ne.ch', 'utf-8').encode('iso-8859-1'),0,1,'L')
-    pdf.set_font('Arial','B',10)
-    pdf.cell(47,6,unicode('Personne de contact', 'utf-8').encode('iso-8859-1'),0,0,'L')
-    pdf.cell(3,6,unicode(': ', 'utf-8').encode('iso-8859-1'),0,0,'L')
-    pdf.set_font('Arial','',10)
-    pdf.cell(120,6,unicode('Fabien Coquillat', 'utf-8').encode('iso-8859-1'),0,1,'L')
-    
-    pdf.set_draw_color(200,200,200)
-    y = pdf.get_y()
-    pdf.line(25,y+1,185,y+1)
-
-    # Legal bases
-    pdf.set_y(y+5)
-    pdf.set_font('Arial','B',10)
-    pdf.cell(47,6,unicode('Base(s) légale(s)', 'utf-8').encode('iso-8859-1'),0,0,'L')
-    pdf.cell(3,6,unicode(': ', 'utf-8').encode('iso-8859-1'),0,0,'L')
-    pdf.set_font('Arial','',10)
-    pdf.multi_cell(0,3.9,unicode('RS 700 Loi fédérale sur l\'aménagement du territoire (art. 14, 26)\nRSN 701.0 Loi cantonale sur l\'aménagement du territoire (art. 43 al. 2 lit a, 45-64a)','utf-8').encode('iso-8859-1'),0,1,'L')
-    
-    pdf.set_draw_color(200,200,200)
-    pdf.set_line_width(0.4)
-    y = pdf.get_y()
-    pdf.line(25,y+1,185,y+1)
-
-    pdf.set_y(y+5)
-    pdf.set_font('Arial','B',10)
-    pdf.cell(47,6,unicode('Dispositions transitoires', 'utf-8').encode('iso-8859-1'),0,0,'L')
-    pdf.cell(3,6,unicode(': ', 'utf-8').encode('iso-8859-1'),0,0,'L')
-    pdf.set_font('Arial','',10)
-    pdf.multi_cell(0,3.9,unicode('Plan d\'affectation Quartier Nord du 21 décembre 1975\nValable jusqu\'au 31.12.2013','utf-8').encode('iso-8859-1'),0,1,'L')
-    
-    # Thematic map
-    pdf.add_page(str(pdf_format['orientation'] + ','+pdf_format['format']))
-    pdf.set_font('Arial','B',16)
-    pdf.multi_cell(0,6,'73 - Plan d\'affectation')
-    y = pdf.get_y()
-    pdf.image(pdfpath+pdf_name+str(result['map'])+'.png',10,y+5,pdf_format['width'] ,pdf_format['height'] )
-    pdf.ln()
-
-    # PAGE 3
-    pdf.add_page()
-    pdf.set_y(25)
-    pdf.set_font('Arial','B',16)
-    pdf.multi_cell(0,6,unicode('116 Cadastre des sites pollués','utf-8').encode('iso-8859-1'))
-    pdf.ln()
-    
-    # PAGE 4
-    pdf.add_page()
-    pdf.set_font('Arial','B',16)
-    pdf.multi_cell(0,6,unicode('131 Zones de protection des eaux souterraines','utf-8').encode('iso-8859-1'))
-    #pdf.image(pdf_name+'2.png',20,35,90,70)
-    pdf.ln()
-    
     # Write pdf file to disc
     pdf.output(pdfpath+pdf_name+'.pdf','F')
     
@@ -585,38 +916,3 @@ def create_extrait(request):
     response. content_disposition='attachment; filename='+ pdf_name +'.pdf'
     return response
     
-def dummyFunctionForUnusedCode():
-  
-    #~ conn = httplib.HTTPConnection("wms.geo.admin.ch")
-    #~ filter1 = '/?lang=fr&QUERY_LAYERS=ch.bazl.projektierungszonen-flughafenanlagen&LAYERS=ch.bazl.projektierungszonen-flughafenanlagen&VERSION=1.1.1&SERVICE=WMS&REQUEST=GetFeatureInfo&SRS=EPSG%3A21781&INFO_FORMAT=text/plain&BBOX=680153.65034247,256316,684977.65034247,257741&WIDTH=2412&HEIGHT=712&X=1206&Y=355'
-    #~ conn.request("GET",filter1)
-    #~ r1 = conn.getresponse()
-    #~ query = r1.read()
-
-
-    #~ layers3= [
-        #~ 'ch.bazl.segelflugkarte',
-        #~ 'ch.bazl.projektierungszonen-flughafenanlage'
-    #~ ]
-    
-    #~ #http://sitn.ne.ch/ogc-sitn-poi/wms?SERVICE=WMS&VERSION=1.1.1&REQUEST=GetMap&SRS=EPSG:21781&LAYERS=en07_canepo_accidents,en07_canepo_entreprises,en07_canepo_decharges&BBOX=559150,203560,559750,203960&WIDTH=600&HEIGHT=400&FORMAT=image/png
-    #~ wms3 = WebMapService('http://wms.geo.admin.ch/', version='1.1.1')
-    #~ img3 = wms3.getmap(   
-        #~ layers=layers3,
-        #~ srs='EPSG:21781',
-        #~ bbox=(640000, 200000,750000,280000),
-        #~ size=(800,582),
-        #~ format='image/png',
-        #~ transparent=False
-    #~ )
-
-    #~ out3 = open(pdfpath+ pdf_name+'3.png', 'wb')
-    #~ out3.write(img3.read())
-    #~ out3.close()
-
-    #~ toto = 'ola'
-
-    #~ if toto == 'ola' :
-        #~ return HTTPBadRequest(detail='C\'est faux, car:'+toto)
-        
-    return true
