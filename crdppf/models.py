@@ -62,6 +62,11 @@ class TemporaryProvisions(Base):
     __table_args__ = {'schema': 'crdppf', 'autoload': True}
     topicfk = Column(String(10), ForeignKey('crdppf.topic.topicid'))
     
+class References(Base):
+    __tablename__ = 'references'
+    __table_args__ = {'schema': 'crdppf', 'autoload': True}
+    topicfk = Column(String(10), ForeignKey('crdppf.topic.topicid'))
+    
 class PaperFormats(Base):
     __tablename__ = 'paperformats'
     __table_args__ = {'schema': 'crdppf', 'autoload': True}
