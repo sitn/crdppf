@@ -7,5 +7,5 @@ Crdppf.getFeatureUrl = "${request.route_url('get_features')}";
 Crdppf.setLanguageUrl = "${request.route_url('set_language')}";
 Crdppf.getLanguageUrl = "${request.route_url('get_language')}";
 Crdppf.ogcproxyUrl = "${request.route_url('ogcproxy')}";
-Crdppf.printUrl = "${request.route_url('create_extrait')}";
+Crdppf.printUrl = "${request.route_url('create_extract')}";
 
