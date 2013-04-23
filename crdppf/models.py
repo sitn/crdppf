@@ -37,6 +37,7 @@ class Topics(Base):
     legalbases = relationship("LegalBases", backref=backref("legalbases"),lazy="joined")
     legalprovisions = relationship("LegalProvisions", backref=backref("legalprovisions"),lazy="joined")
     temporaryprovisions = relationship("TemporaryProvisions", backref=backref("temporaryprovisions"),lazy="joined")
+    references = relationship("References", backref=backref("references"),lazy="joined")
     
 class Layers(Base):
     __tablename__ = 'layers'
