@@ -27,7 +27,8 @@ setup(
         'GeoAlchemy',
         'OWSLib',
         'fpdf',
-        'httplib2'
+        'httplib2',
+        'pil'
     ],
     packages=find_packages(exclude=['ez_setup']),
     include_package_data=True,
