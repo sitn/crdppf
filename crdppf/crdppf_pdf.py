@@ -741,6 +741,7 @@ def create_extract(request):
     # Thematic pages
     
     # Loop on each topic
+    extract.restrictionList = []
     for crdppfTopic in extract.topicList :
         # if geographic layers are defined for the topic, get the information
         if crdppfTopic.layers :
@@ -751,14 +752,21 @@ def create_extract(request):
                 for sublayer in layers:
                     params ={'id':featureInfo['idemai'],'layerList':str(sublayer)}
                     extract.restrictionList = get_features.get_features_function(params)
-                    #~ if str(sublayer) == 'at14_zones_communales':
-                        #~ sdf
+                    #~ for feature in get_features.get_features_function(params):
+                        #~ if extract.restrictionList is not None:
+                            #~ extract.restrictionList.append(feature)
+                        #~ else:
+                            #~ extract.restrictionList = feature
             else:
                 params = {'id':featureInfo['idemai'],'layerList':str(layers)}
                 extract.restrictionList = get_features.get_features_function(params)
+                #~ for feature in get_features.get_features_function(params):
+                    #~ extract.restrictionList.append(feature)
         else : 
             extract.restrictionList = None
 
+        #~ if crdppfTopic.topicid == '73':
+            #~ sdf
             
         if extract.restrictionList :
 
@@ -790,7 +798,10 @@ def create_extract(request):
                         y = pdf.get_y()
                         legend = Image.open(pdfpath+str('legend_')+str(layer.layername)+'.png')
                         legend_width, legend_height = legend.size
-                        legend = pdf.image(graphic+'.png',26,y,38)
+                        if layer.layername == 'at14_zones_communales':
+                            legend = pdf.image(graphic+'.png',26,50)
+                        else:
+                            legend = pdf.image(graphic+'.png',26,y,38)
                 #~ else:
                     #~ y = pdf.get_y()
                     #~ legend = pdf.image(crdppfTopic.legendpath,10,y+20,50,50)
@@ -837,7 +848,6 @@ def create_extract(request):
                             pdf.set_font('Arial','',10)
                             pdf.cell(60,5,feature['properties']['categorie'] .encode('iso-8859-1'),0,1,'L')
                             
-                     
                         elif feature['properties']['layerName'] == 'clo_couloirs':
                             pdf.set_font('Arial','B',10)
                             pdf.cell(55,5,unicode('Caractéristique:','utf-8').encode('iso-8859-1'),0,0,'L')
@@ -858,7 +868,6 @@ def create_extract(request):
             # it has been decided that only restrictions that interact with the selected parcel are mentionned
                     #~ elif feature['properties']['featureClass'] == 'adjacent':
                         #~ neighborhood = 'true'
-                
             #~ if neighborhood == 'true':
                 #~ pdf.set_font('Arial','B',11)
                 #~ pdf.cell(100,6,unicode('Nom de la donnée : ','utf-8').encode('iso-8859-1') +feature['properties']['layerName'].encode('iso-8859-1'),0,1,'L') 
