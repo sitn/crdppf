@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 from pyramid.config import Configurator
 from sqlalchemy import engine_from_config
 import sqlahelper
@@ -43,10 +44,10 @@ def main(global_config, **settings):
     config.add_route('ogcproxy', '/ogcproxy')
 
     # VIEWS
-    config.add_view('crdppf.entry.Entry', route_name = 'home')
-    config.add_view('crdppf.entry.Entry', route_name = 'images')
-    config.add_view('crdppf.entry.Entry', route_name='crdppf')
-    config.add_view('crdppf.entry.Entry', route_name='test')
+    config.add_view('crdppf.views.entry.Entry', route_name = 'home')
+    config.add_view('crdppf.views.entry.Entry', route_name = 'images')
+    config.add_view('crdppf.views.entry.Entry', route_name='crdppf')
+    config.add_view('crdppf.views.entry.Entry', route_name='test')
 
     config.scan()
 
