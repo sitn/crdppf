@@ -162,7 +162,10 @@ def getMap(restriction_layers,topicid,crdppf_wms,map_params,pdf_format):
     # Name of the pdf file - should be individualized with a timestamp or ref number
     pdf_name = 'extract'
     # Path to the output folder of the pdf
-    pdfpath = pkg_resources.resource_filename('crdppf','static\public\pdf\\')
+    temp_path = pkg_resources.resource_filename('crdppf', 'static/public/temp_files/')
+
+    #pdf_path = pkg_resources.resource_filename('crdppf','static\public\pdf\\')
+
     # Map scale
     scale = pdf_format['scale']
 
@@ -206,14 +209,14 @@ def getMap(restriction_layers,topicid,crdppf_wms,map_params,pdf_format):
         layers.append(layer.layername)
 
         # in the same time create the legend graphic for each layer and write it to disk
-        legend = open(pdfpath+str('legend_')+str(layer.layername)+'.png', 'wb')
+        legend = open(temp_path+str('legend_')+str(layer.layername)+'.png', 'wb')
         img = urllib.urlopen(crdppf_wms+ \
             str('?TRANSPARENT=TRUE&SERVICE=WMS&VERSION=1.1.1&REQUEST=GetLegendGraphic&FORMAT=image%2Fpng&LAYER=' \
             +str(layer.layername)))
 
         legend.write(img.read())
         legend.close()
-        legend_path.append(pdfpath+str('legend_')+str(layer.layername))
+        legend_path.append(temp_path+str('legend_')+str(layer.layername))
 
     # to recenter the map on the bbox of the feature, compute the best scale and add at least 10% of space we calculate a wmsBBOX
     wmsBBOX = {}
@@ -237,10 +240,10 @@ def getMap(restriction_layers,topicid,crdppf_wms,map_params,pdf_format):
         transparent=False
     )
 
-    out = open(pdfpath+pdf_name+str(topicid)+'.png', 'wb')
+    out = open(temp_path+pdf_name+str(topicid)+'.png', 'wb')
     out.write(map.read())
     out.close()
-    mappath = pdfpath + pdf_name + str(topicid) + '.png'
+    mappath = temp_path + pdf_name + str(topicid) + '.png'
         
     return mappath, legend_path
 
@@ -295,6 +298,8 @@ def SetTextRotation(degrees):
         ' '+sprintf('%.2f',math.cos(radians))+' '
 
 def getTitlePage(feature_info, crdppf_wms, sld_url, pdf_path, nomcom, commune):
+
+    temp_path = pkg_resources.resource_filename('crdppf', 'static/public/temp_files/')
 
     # the dictionnary for the document
     reportInfo = {}
@@ -367,8 +372,8 @@ def getTitlePage(feature_info, crdppf_wms, sld_url, pdf_path, nomcom, commune):
 </sld:NamedLayer>
 </sld:StyledLayerDescriptor>"""
 
-    sldpath = pkg_resources.resource_filename('crdppf', 'static\public\pdf\sld')
-    sldfile = open(pdf_path+'sld_'+'siteplan'+'.xml', 'w')
+
+    sldfile = open(temp_path+'sld_'+'siteplan'+'.xml', 'w')
     sldfile.write(sld)
     sldfile.close()
 
@@ -419,13 +424,13 @@ def getTitlePage(feature_info, crdppf_wms, sld_url, pdf_path, nomcom, commune):
         transparent=False
     )
 
-    out = open(pdf_path+'siteplan.png', 'wb')
+    out = open(temp_path+'siteplan.png', 'wb')
     out.write(map.read())
     out.close()
 
-    mappath = pdf_path + 'siteplan.png'
+    mappath = temp_path + 'siteplan.png'
 
-    map = pdf.image(pdf_path+'siteplan.png', 25, 80, 160, 90)
+    map = pdf.image(temp_path+'siteplan.png', 25, 80, 160, 90)
 
     y=pdf.get_y()
     pdf.rect(25, 80, 160, 90, '')
