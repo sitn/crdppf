@@ -13,6 +13,7 @@ from crdppf.models import *
 import csv
 from sqlalchemy import or_
 from papyrus.geojsonencoder import dumps
+import math
 
 
 @view_config(route_name='get_features', renderer='json')
@@ -71,27 +72,34 @@ def get_features_function(params):
                 geometryType = DBSession.scalar(feature.geom.geometry_type())
                 geomType = ''
                 featureClass = ''
-                featureMeasure = -9991
+                featureMeasure = -9999
+                intersectionMeasure = -9999
+                intersectionMeasureTxt = ''
                 if geometryType == 'ST_Polygon' or geometryType == 'ST_MultiPolygon':
-                    intersectionArea = DBSession.scalar(feature.geom.intersection(parcelGeom).area())
-                    featureMeasure = 100 * intersectionArea / DBSession.scalar(parcelGeom.area())
+                    intersectionMeasure = DBSession.scalar(feature.geom.intersection(parcelGeom).area())
+                    intersectionMeasureTxt = ' - ' + str(math.ceil(intersectionMeasure*10)/10) + ' [m2]'
+                    featureMeasure = 100 * intersectionMeasure / DBSession.scalar(parcelGeom.area())
                     geomType = 'Polygone'
                     if featureMeasure >= 99:
                         featureClass = 'within'
-                    elif featureMeasure < 99 and featureMeasure > 1:
+                    elif featureMeasure < 99 and featureMeasure >= 0:
                         featureClass = 'intersects'
-                    elif featureMeasure <= 1:
+                    elif featureMeasure < 0:
                         featureClass = 'adjacent'
 
-                elif geometryType == 'ST_Line' or geometryType == 'ST_MultiLineString':
-                    featureMeasure = -9999
+                elif geometryType == 'ST_Line' or geometryType == 'ST_MultiLineString' or geometryType == 'ST_LineString':
+                    intersectionMeasure = intersectionMeasure = DBSession.scalar(feature.geom.intersection(parcelGeom).length())
+                    intersectionMeasureTxt = ' - ' + str(math.ceil(intersectionMeasure*10)/10) + ' [m]'
                     geomType = 'Ligne'
                 elif geometryType == 'ST_Point' or geometryType == 'ST_MultiPoint':
                     featureMeasure = -9999
                     geomType = 'Point'
+                    intersectionMeasureTxt = ' - point'
+                    
                 jsonFeature = sloads(dumps(feature))
                 jsonFeature['properties']['layerName'] = layer
                 jsonFeature['properties']['featureClass'] = featureClass
+                jsonFeature['properties']['intersectionMeasure'] = intersectionMeasureTxt
                 featureList.append(jsonFeature)
 
     return featureList

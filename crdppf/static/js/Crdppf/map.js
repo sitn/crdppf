@@ -137,7 +137,7 @@ var setInfoControl = function setInfoControl(){
                                         singleClickExpand: true,
                                         attributes: jsonData[j],
                                         cls: nodeCss,
-                                        text: labels.restrictionFoundTxt + (j+1),
+                                        text: labels.restrictionFoundTxt + (j+1) + String(jsonData[j].data.intersectionMeasure),
                                         draggable:false,
                                         leaf: false,
                                         expanded: false,
