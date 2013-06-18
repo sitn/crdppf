@@ -12,9 +12,13 @@ development.ini
 production.ini
 mapserver/crdppf.map
 *.egg-info/
-sitn/static/build/*.js
-sitn/static/build/*.css
+crdppf/static/build/*.js
+crdppf/static/build/*.css
 buildout_olivier.cfg
 buildout_nesitnd1.cfg
 buildout_michael.cfg
 buildout_francois.cfg
+crdppf/static/public/temp_files/*.png
+crdppf/static/public/temp_files/*.xml
+crdppf/static/public/pdf/*.pdf
+MANIFEST
