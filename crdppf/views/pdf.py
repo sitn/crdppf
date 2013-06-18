@@ -39,13 +39,13 @@ from crdppf.views.get_features import get_features, get_features_function
 def create_extract(request):
     # to get vars defined in the buildout  use : request.registry.settings['key']
     crdppf_wms = request.registry.settings['crdppf_wms']
-    sld_url = request.registry.settings['sld_url']
+    sld_url = request.static_url('crdppf:static/public/temp_files/')
 
     # other basic parameters
     extract = Objectify()
     pdf_name = 'extract'
     pdf_name = 'crdppf_' + pdf_name
-    pdfpath = pkg_resources.resource_filename('crdppf', 'static\public\pdf\\')
+    pdfpath = pkg_resources.resource_filename('crdppf', 'static/public/pdf/')
     extract.today = datetime.now()
 
     # PDF Margins
