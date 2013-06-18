@@ -26,6 +26,7 @@ Ext.onReady(function() {
         lang = request.responseText;
     }
     layerList = Crdppf.layerListFr;
+
     if(lang=='Fr'){
         labels = Crdppf.labelsFr;
         layerList = Crdppf.layerListFr;
@@ -210,7 +211,7 @@ Ext.onReady(function() {
             infoButton,
             printButton,
             zoomInButton,
-            zoomOutButton,
+            zoomOutButton
             // frButton,
             // deButton
             ]
