@@ -6,7 +6,7 @@ from pyramid.view import view_config
 
 
 
-from datetime import datetime
+from datetime import datetime, time
 import httplib
 import pkg_resources
 from geojson import Feature, FeatureCollection, dumps, loads as gloads
@@ -35,25 +35,40 @@ from crdppf.views.get_features import get_features, get_features_function
 # writePDF
 # getTitlePage
 
+
 @view_config(route_name='create_extract')
 def create_extract(request):
+    """Writes the pdf file."""
+
     # to get vars defined in the buildout  use : request.registry.settings['key']
     crdppf_wms = request.registry.settings['crdppf_wms']
     sld_url = request.static_url('crdppf:static/public/temp_files/')
 
     # other basic parameters
     extract = Objectify()
-    pdf_name = 'extract'
-    pdf_name = 'crdppf_' + pdf_name
+    timestamp = datetime.now().strftime("%Y%m%d%H%M%S")
+    pdf_name = str(timestamp) + '_ExtraitCRDPPF'
     pdfpath = pkg_resources.resource_filename('crdppf', 'static/public/pdf/')
     extract.today = datetime.now()
+    fontfamily = 'Arial'
+    text_styles = {'title1':[fontfamily, 'B', 22],
+        'title2':[fontfamily, 'B', 16],
+        'normal':[fontfamily, '', 10],
+        'bold':[fontfamily,'B',10]
+        }
 
     # PDF Margins
-    leftopmargin = 25 # left margin
-    rightopmargin = 25 # right margin
+    leftmargin = 25 # left margin
+    rightmargin = 25 # right margin
     topmargin = 55 # top margin for text
     headermargin = 50 # margin from header for the map placement
-    
+    basepagemargins = [leftmargin, topmargin, rightmargin]
+
+    # Multilingual labels
+    LegendLabel = unicode('Légende', 'utf-8')
+    contentlabel = unicode('Caractéristique :','utf-8')
+
+
 # *************************
 # MAIN PROGRAM PART
 #=========================
@@ -63,12 +78,24 @@ def create_extract(request):
     #----------------------------------------------------------------------------------------------------
     extract.featureInfo = getFeatureInfo(request) # '1_14127' # test parcel or '1_11340'
     featureInfo = extract.featureInfo
-    
-    # As we do not want to modify the fpdf.header() function from the FPDF library neither add an image on each page seperately 
-    # this global var seems the simplest way to insert the logo of the community in the header of each page - maby not the most
-    # elegant way but it definitly works
 
-    commune = extract.featureInfo['nomcom']
+    # 2) Get the parameters for the paper format and the map based on the feature's geometry
+    #---------------------------------------------------------------------------------------------------
+    map_params = {'width':featureInfo['printFormat']['mapWidth'], 'height':featureInfo['printFormat']['mapHeight']}
+    map_params['bboxCenterX'] = (featureInfo['BBOX']['maxX']+featureInfo['BBOX']['minX'])/2
+    map_params['bboxCenterY'] = (featureInfo['BBOX']['maxY']+featureInfo['BBOX']['minY'])/2
+
+    pdf_format = extract.featureInfo['printFormat']
+
+    # 3) Get the list of all the restrictions
+    #-------------------------------------------
+    extract.topicList = DBSession.query(Topics).order_by(Topics.topicorder).all()
+
+    # 4) Create the title page for the pdf extract
+    #--------------------------------------------------
+
+    # Get the community name and escape special chars to place the logo in the header of the title page
+    commune = featureInfo['nomcom']
     
     # AS does the german language, the french contains a few accents we have to replace to fetch the banner which has no accents in its pathname...
     conversion = [
@@ -93,21 +120,7 @@ def create_extract(request):
 
     for char in conversion:
         commune = commune.replace(char[0], char[1])
-
-    # 2) Get the parameters for the paper format and the map based on the feature's geometry
-    #---------------------------------------------------------------------------------------------------
-    map_params = {'width':featureInfo['printFormat']['mapWidth'], 'height':featureInfo['printFormat']['mapHeight']}
-    map_params['bboxCenterX'] = (featureInfo['BBOX']['maxX']+featureInfo['BBOX']['minX'])/2
-    map_params['bboxCenterY'] = (featureInfo['BBOX']['maxY']+featureInfo['BBOX']['minY'])/2
-
-    pdf_format = extract.featureInfo['printFormat']
-
-    # 3) Get the list of all the restrictions
-    #-------------------------------------------
-    extract.topicList = DBSession.query(Topics).order_by(Topics.topicorder).all()
-
-    # 4) Create the title page for the pdf extract
-    #--------------------------------------------------
+    
     pdf = getTitlePage(extract.featureInfo, crdppf_wms, sld_url, pdfpath, featureInfo['nomcom'], commune)
 
     # 5) Create an empty pdf for the table of content
@@ -153,7 +166,7 @@ def create_extract(request):
 
            # PAGE X 
             pdf.add_page(str(pdf_format['orientation']+','+pdf_format['format']))
-            pdf.set_margins(leftopmargin, topmargin, rightopmargin)
+            pdf.set_margins(leftmargin, topmargin, rightmargin)
 
             # Thematic map/Carte thématique/Thematische Karte
             if crdppfTopic.layers:
@@ -169,14 +182,14 @@ def create_extract(request):
                 legendbox_proportion = float(legendbox_width-4) / float(legendbox_height-20)
                 
                 # draw the legend container
-                pdf.rect(leftopmargin, headermargin, legendbox_width, legendbox_height, '')
+                pdf.rect(leftmargin, headermargin, legendbox_width, legendbox_height, '')
                 
                 # define cells with border for the legend and the map
                 pdf.set_xy(28, headermargin+3)
-                pdf.set_font('Arial', 'B', 10)
-                pdf.cell(50, 6, unicode('Légende', 'utf-8').encode('iso-8859-1'), 0, 1, 'L')
+                pdf.set_font(*text_styles['bold'])
+                pdf.cell(50, 6, LegendLabel.encode('iso-8859-1'), 0, 1, 'L')
                 y= pdf.get_y()
-                pdf.set_font('Arial', '', 10)
+                pdf.set_font(*text_styles['normal'])
                 if  len(crdppfTopic.legendpath) > 0:
                     max_legend_width_px = 0
                     tot_legend_height_px = 0
@@ -237,40 +250,40 @@ def create_extract(request):
                             # !!! TO BE REPLACED BY THE TRANSFERT/EXTRACT MODEL MAPPING               !!!
                             # !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
                             if feature['properties']['layerName'] == 'at14_zones_communales':
-                                pdf.set_font('Arial', 'B', 10)
-                                pdf.cell(55, 5, unicode('Caractéristique :','utf-8').encode('iso-8859-1'),0,0,'L')
+                                pdf.set_font(*text_styles['bold'])
+                                pdf.cell(55, 5, contentlabel.encode('iso-8859-1'),0,0,'L')
                                 pdf.set_font('Arial','',10)
                                 pdf.multi_cell(0,5,feature['properties']['nom_communal'] .encode('iso-8859-1').strip(),0,1,'L')
                                 
                             elif feature['properties']['layerName'] == 'en05_degres_sensibilite_bruit':
                                 pdf.set_font('Arial','B',10)
-                                pdf.cell(55,5,unicode('Teneur :','utf-8').encode('iso-8859-1'),0,0,'L')
+                                pdf.cell(55,5,contentlabel.encode('iso-8859-1'),0,0,'L')
                                 pdf.set_font('Arial','',10)
                                 pdf.cell(60,5,feature['properties']['type_ds'] .encode('iso-8859-1'),0,1,'L')
                            
                             elif feature['properties']['layerName'] == 'en01_zone_sect_protection_eaux':
                                 pdf.set_font('Arial','B',10)
-                                pdf.cell(55,5,unicode('Teneur :','utf-8').encode('iso-8859-1'),0,0,'L')
+                                pdf.cell(55,5,contentlabel.encode('iso-8859-1'),0,0,'L')
                                 pdf.set_font('Arial','',10)
                                 pdf.cell(60,5,feature['properties']['categorie'] .encode('iso-8859-1'),0,1,'L')
                                 
                             elif feature['properties']['layerName'] == 'clo_couloirs':
                                 pdf.set_font('Arial','B',10)
-                                pdf.cell(55,5,unicode('Teneur :','utf-8').encode('iso-8859-1'),0,0,'L')
+                                pdf.cell(55,5,contentlabel.encode('iso-8859-1'),0,0,'L')
                                 pdf.set_font('Arial','',10)
                                 pdf.cell(60,5,feature['properties']['type'] .encode('iso-8859-1'),0,1,'L')
                                 
                             elif feature['properties']['layerName'] == 'clo_cotes_altitude_surfaces':
                                 pdf.set_font('Arial','B',10)
-                                pdf.cell(55,5,unicode('Teneur :','utf-8').encode('iso-8859-1'),0,0,'L')
+                                pdf.cell(55,5,contentlabel.encode('iso-8859-1'),0,0,'L')
                                 pdf.set_font('Arial','',10)
                                 pdf.cell(60,5,str(feature['properties']['cote_alt_obstacles_minimum'] ).encode('iso-8859-1'),0,1,'L')
                                 
                             elif feature['properties']['layerName'] in ['en07_canepo_accidents','en07_canepo_decharges_points','en07_canepo_decharges_polygones','en07_canepo_entreprises_points']:
                                 pdf.set_font('Arial','B',10)
-                                pdf.cell(55,5,unicode('Teneur :','utf-8').encode('iso-8859-1'),0,0,'L')
+                                pdf.cell(55,5,contentlabel.encode('iso-8859-1'),0,0,'L')
                                 pdf.set_font('Arial','',10)
-                                pdf.cell(60,5,str(feature['properties']['statut_osi'] ).encode('iso-8859-1'),0,1,'L')
+                                pdf.cell(60,5,unicode(feature['properties']['statut_osi'] ).encode('iso-8859-1'),0,1,'L')
                                 
                             else: 
                                 # Attributes of topic layers intersection
@@ -278,7 +291,7 @@ def create_extract(request):
                                     if value is not None :
                                         if key !='layerName' and key != 'featureClass':
                                             pdf.set_font('Arial','B',10)
-                                            pdf.cell(55,5,unicode('Teneur :','utf-8').encode('iso-8859-1'),0,0,'L')
+                                            pdf.cell(55,5,contentlabel.encode('iso-8859-1'),0,0,'L')
                                             pdf.set_font('Arial','',10)
                                             if isinstance(value, float) or isinstance(value, int):
                                                 value = str(value)
@@ -298,9 +311,9 @@ def create_extract(request):
                 # Legal Provisions/Dispositions juridiques/Gesetzliche Bestimmungen
                 y = pdf.get_y()
                 pdf.set_y(y+5)
-                pdf.set_font('Arial', 'B', 10)
+                pdf.set_font(*text_styles['bold'])
                 pdf.cell(55, 6, unicode('Dispositions juridiques', 'utf-8').encode('iso-8859-1'), 0, 0, 'L')
-                pdf.set_font('Arial', '', 10)
+                pdf.set_font(*text_styles['normal'])
                 if crdppfTopic.legalprovisions:
                     for provision in crdppfTopic.legalprovisions:
                         pdf.add_appendix('A', unicode(provision.officialtitle).encode('iso-8859-1'),unicode(provision.legalprovisionurl).encode('iso-8859-1'))
@@ -315,9 +328,9 @@ def create_extract(request):
             # References and complementary information/Informations et renvois supplémentaires/Verweise und Zusatzinformationen
             y = pdf.get_y()
             pdf.set_y(y+5)
-            pdf.set_font('Arial', 'B', 10)
+            pdf.set_font(*text_styles['bold'])
             pdf.cell(55, 6, unicode('Informations et renvois suppl.', 'utf-8').encode('iso-8859-1'), 0, 0, 'L')
-            pdf.set_font('Arial', '', 10)
+            pdf.set_font(*text_styles['normal'])
             if crdppfTopic.references:
                 for reference in crdppfTopic.references:
                     pdf.multi_cell(0,6,unicode(reference.officialtitle).encode('iso-8859-1'))
