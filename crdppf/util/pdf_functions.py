@@ -130,14 +130,15 @@ def getFeatureInfo(request):
     queryresult2 = DBSession.query(Cadastre).filter(Cadastre.geom.buffer(1).gcontains(parcelInfo['geom'])).first()
 
     parcelInfo['nummai'] = queryresult.nummai # Parcel number
+    parcelInfo['type'] = queryresult.typimm # Parcel type
     parcelInfo['lieu_dit'] = queryresult1.nomloc # Flurname
-    # parcelInfo['numcad'] = queryresult2.numcad  # cadaster number
     parcelInfo['nomcad'] = queryresult2.cadnom
     parcelInfo['numcom'] = queryresult.numcom
     parcelInfo['nomcom'] = queryresult2.comnom
     parcelInfo['nufeco'] = queryresult2.nufeco
     parcelInfo['centerX'], parcelInfo['centerY'] = DBSession.scalar(queryresult.geom.centroid.x),DBSession.scalar(queryresult.geom.centroid.y)
     parcelInfo['BBOX'] = getBBOX(DBSession.scalar(queryresult.geom.envelope.wkt))
+
     # the getPrintFormat function is not needed any longer as the paper size has been fixed to A4 by the cantons
     parcelInfo['printFormat'] = getPrintFormat(parcelInfo['BBOX'])
 
@@ -248,30 +249,37 @@ def getMap(restriction_layers,topicid,crdppf_wms,map_params,pdf_format):
     return mappath, legend_path
 
 def getAppendices(commune):
+    # Multilingual params:
+    page_label = str('Page')
+    appendices_list_label = str('Titre de l\'annexe')
+    appendices_title = str('Titre de l\'annexe')
+    basepagemargins = [25, 50, 25]
 
     appendix_pages = ExtractPDF(commune)
 
     # START APPENDIX
     appendix_pages.add_page()
-    appendix_pages.set_margins(25, 55, 25)
+    appendix_pages.set_margins(*basepagemargins)
     appendix_pages.set_y(40)
     appendix_pages.set_font('Arial', 'B', 16)
-    appendix_pages.multi_cell(0, 12, unicode('Liste des annexes', 'utf-8').encode('iso-8859-1'))
+    appendix_pages.multi_cell(0, 12, appendices_list_label.encode('iso-8859-1'))
 
     appendix_pages.set_y(60)
     appendix_pages.set_font('Arial', 'B', 10)
-    appendix_pages.cell(15, 6, str('Page'), 0, 0, 'L')
-    appendix_pages.cell(135, 6, str('Titre de l\'annexe').encode('iso-8859-1'), 0, 1, 'L')
+    appendix_pages.cell(15, 6, page_label, 0, 0, 'L')
+    appendix_pages.cell(135, 6, appendices_title.encode('iso-8859-1'), 0, 1, 'L')
 
     return appendix_pages
 
 def getTOC(commune):
-
+    # Multilingual params:
+    
+    
     toc_pages = ExtractPDF(commune)
 
     # START TOC
     toc_pages.add_page()
-    toc_pages.set_margins(25, 55, 25)
+    toc_pages.set_margins(25, 50, 25)
     toc_pages.set_y(40)
     toc_pages.set_font('Arial', 'B', 16)
     toc_pages.multi_cell(0, 12, unicode('Table des matières', 'utf-8').encode('iso-8859-1'))
@@ -309,7 +317,7 @@ def getTitlePage(feature_info, crdppf_wms, sld_url, pdf_path, nomcom, commune):
     feature_info['no_EGRID'] = 'Placeholder'
     feature_info['lastUpdate'] = datetime.now()
     feature_info['operator'] = 'F.Voisard - SITN'
-
+    basepagemargins = '25, 50, 25'
     today= datetime.now()
 
     # Create PDF extract
@@ -317,7 +325,7 @@ def getTitlePage(feature_info, crdppf_wms, sld_url, pdf_path, nomcom, commune):
 
     # START TITLEPAGE
     pdf.add_page()
-    pdf.set_margins(25, 55, 25)
+    pdf.set_margins(25, 50, 25)
     path = pkg_resources.resource_filename('crdppf', 'utils\\')
 
     # PageTitle
@@ -441,7 +449,7 @@ def getTitlePage(feature_info, crdppf_wms, sld_url, pdf_path, nomcom, commune):
     # ADD immeuble Type !!!!!!!
     pdf.set_font('Arial', '', 10)
     if feature_info['nomcad'] is not None:
-        pdf.cell(50, 5, feature_info['nummai'].encode('iso-8859-1')+str(' (')+feature_info['nomcad'].encode('iso-8859-1')+str(') '), 0, 1, 'L')
+        pdf.cell(50, 5, feature_info['nummai'].encode('iso-8859-1')+str(' (')+feature_info['nomcad'].encode('iso-8859-1')+str(') ')+str(' - ')+feature_info['type'].encode('iso-8859-1'), 0, 1, 'L')
     else : 
         pdf.cell(50, 5, feature_info['nummai'].encode('iso-8859-1'), 0, 1, 'L')
     
