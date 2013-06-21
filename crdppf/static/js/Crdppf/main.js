@@ -21,7 +21,6 @@ Ext.onReady(function() {
     Ext.Ajax.request({
         url: Crdppf.getLanguageUrl,
         success: function(response) {
-            //console.log(response.responseText)
             var lang_json = Ext.decode(response.responseText);
             lang = lang_json['lang'];
             init_main(lang);
