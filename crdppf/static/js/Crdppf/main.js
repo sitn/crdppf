@@ -12,6 +12,7 @@
 // VARIABLES
 var mapPanel;
 var winWait;
+var layerList
 // MAIN USER INTERFACE
 
 Ext.onReady(function() {
@@ -23,7 +24,7 @@ Ext.onReady(function() {
         success: function(response) {
             var lang_json = Ext.decode(response.responseText);
             lang = lang_json['lang'];
-            init_main(lang);
+            Crdppf.init_main(lang);
         },
         method: 'POST',
         failure: function () {
@@ -32,9 +33,11 @@ Ext.onReady(function() {
     });
 });
 
-var init_main = function(lang) {
+Ext.namespace('Crdppf');
 
-    var layerList = Crdppf.layerListFr;
+Crdppf.init_main = function(lang) {
+
+    layerList = Crdppf.layerListFr;
 
     if(lang=='Fr'){
         labels = Crdppf.labelsFr;
