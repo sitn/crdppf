@@ -41,8 +41,8 @@
                 <a class="banner2" href="http://sitn.ne.ch/mobile" target="_blank">Géoportail mobile</a> - 
                 <a class="banner2" href="http://sitn.ne.ch/sitn_php/divers/liens_cartographiques.html" target="_blank">Liens cartographiques</a> - 
                 <a class="banner2" href="mailto:sitn@ne.ch?subject=Nouveau Geoportail SITN" target="_blank">Contact</a> - 
-                <a class="banner2" href="" id="frLink" target="_self">Fr</a> /
-                <a class="banner2" href="" id="deLink" target="_self">De</a>
+                <a class="banner2" href="" id="frLink">Fr</a> /
+                <a class="banner2" href="" id="deLink">De</a>
         </span>
         </td>
           </tr>
