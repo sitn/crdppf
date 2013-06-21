@@ -16,16 +16,27 @@ var winWait;
 
 Ext.onReady(function() {
     // set the application language to the user session settings
-    lang = '';
-    var request = OpenLayers.Request.GET({
-                    url: Crdppf.getLanguageUrl,
-                    callback: defineLanguage,
-                    async: false
+    var lang = '';
+
+    Ext.Ajax.request({
+        url: Crdppf.getLanguageUrl,
+        async: false,
+        success: function(response) {
+            //console.log(response.responseText)
+            var lang_json = Ext.decode(response.responseText);
+            lang = lang_json['lang'];
+            init_main(lang);
+        },
+        method: 'POST',
+        failure: function () {
+            Ext.Msg.alert('Error', 'The request failed, please contact the administrator!');
+        }
     });
-    function defineLanguage(request){
-        lang = request.responseText;
-    }
-    layerList = Crdppf.layerListFr;
+});
+
+var init_main = function(lang) {
+
+    var layerList = Crdppf.layerListFr;
 
     if(lang=='Fr'){
         labels = Crdppf.labelsFr;
@@ -38,16 +49,13 @@ Ext.onReady(function() {
     Ext.QuickTips.init();
     
     // add onclick event to the Fr/De links
-    
-    frLink = document.getElementById('frLink');
-    frLink.onclick = function() {
+    Ext.get('frLink').on('click',function() {
         setLanguage('Fr');
-    };
-    deLink = document.getElementById('deLink');
-    deLink.onclick = function() {
+    });
+    Ext.get('deLink').on('click',function() {
         setLanguage('De');
-    };
-    
+    });
+
     // create map
     var mapOptions = {
         divMousePosition: 'mousepos'
@@ -67,8 +75,8 @@ Ext.onReady(function() {
         iconCls: 'crdppf_infobutton',
         listeners:{
             click: function (){
-                        MapO.setInfoControl();
-                    }                  
+                MapO.setInfoControl();
+            }                  
         }
     });
     
@@ -104,8 +112,8 @@ Ext.onReady(function() {
         iconCls: 'crdppf_panbutton',
         listeners:{
             click: function (){
-                        MapO.disableInfoControl();
-                    }  
+                MapO.disableInfoControl();
+            }  
         }
     });
     
@@ -122,8 +130,8 @@ Ext.onReady(function() {
         iconCls: 'crdppf_zoominbutton',
         listeners:{
             click: function (){
-                        MapO.map.zoomIn();
-                    }  
+                MapO.map.zoomIn();
+            }  
         }
     });
     
@@ -140,8 +148,8 @@ Ext.onReady(function() {
         iconCls: 'crdppf_zoomoutbutton',
         listeners:{
             click: function (){
-                        MapO.map.zoomOut();
-                    }  
+                MapO.map.zoomOut();
+            }  
         }
     });
     
@@ -191,15 +199,16 @@ Ext.onReady(function() {
     
     // set the lang parameter in session when selected through the language buttons
     function setLanguage(value){
-         var request = OpenLayers.Request.GET({
-                            url: Crdppf.setLanguageUrl,
-                            params: {
-                                lang:value
-                            },
-                            proxy: null,
-                            async: false
-            });
-         window.location.reload();
+        var request = OpenLayers.Request.GET({
+            url: Crdppf.setLanguageUrl,
+            params: {
+                lang:value,
+                randomkey: Math.random()
+            },
+            proxy: null,
+            async: false
+        });
+        window.location.reload();
     }
     
     // create the mapPanel toolbar
@@ -208,13 +217,13 @@ Ext.onReady(function() {
     height: 20,
     cls: 'map-toolbar',
     items: [panButton,
-            infoButton,
-            printButton,
-            zoomInButton,
-            zoomOutButton
-            // frButton,
-            // deButton
-            ]
+        infoButton,
+        printButton,
+        zoomInButton,
+        zoomOutButton
+        // frButton,
+        // deButton
+        ]
    });
    
    // create the mapPanel
@@ -314,7 +323,8 @@ Ext.onReady(function() {
     root = new Ext.tree.TreeNode({
         text: 'Thèmes',
         draggable:false,
-        id:'rootNode'});
+        id:'rootNode'
+    });
     featureTree.setRootNode(root);
     var layerStore = new GeoExt.data.LayerStore({
         map: MapO.map
@@ -347,10 +357,10 @@ Ext.onReady(function() {
         });
 
     centerPanel = new Ext.TabPanel({
-            region: 'center',
-            activeTab: 0, // index or id
-            items:[
-                mapContainer,
+        region: 'center',
+        activeTab: 0, // index or id
+        items:[
+            mapContainer,
             {
                 title: labels.legalBasisTab,
                 autoLoad : {
@@ -367,10 +377,9 @@ Ext.onReady(function() {
             },{
                 title: labels.additionnalInfoTab,
                 html: 'une information complémentaire'
-            }]
-        });
+        }]
+    });
  
-      
     var southPanel = new Ext.Panel({
         region: 'south',
         title: 'Disclaimer',
@@ -381,7 +390,6 @@ Ext.onReady(function() {
         minHeight: 70
     });
 
-    
     var crdppf = new Ext.Viewport({
         layout: 'border',
         renderTo:'main',
@@ -398,4 +406,4 @@ Ext.onReady(function() {
 	//pass along browser window resize events to the panel
 	Ext.EventManager.onWindowResize(crdppf.doLayout,crdppf);
     
-});
+};
