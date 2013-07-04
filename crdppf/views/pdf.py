@@ -89,23 +89,23 @@ def create_extract(request):
     
     # AS does the german language, the french contains a few accents we have to replace to fetch the banner which has no accents in its pathname...
     conversion = [
-        [u'â','a'],
-        [u'ä','a'],
-        [u'à','a'],
-        [u'ô','o'],
-        [u'ö','o'],
-        [u'ò','o'],
-        [u'û','u'],
-        [u'ü','u'],
-        [u'ù','u'],
-        [u'î','i'],
-        [u'ï','i'],
-        [u'ì','i'],
-        [u'ê','e'],
-        [u'ë','e'],
-        [u'è','e'],
-        [u'é','e'],
-        [u' (NE)','']
+        [u'â', 'a'],
+        [u'ä' ,'a'],
+        [u'à', 'a'],
+        [u'ô', 'o'],
+        [u'ö', 'o'],
+        [u'ò', 'o'],
+        [u'û', 'u'],
+        [u'ü', 'u'],
+        [u'ù', 'u'],
+        [u'î', 'i'],
+        [u'ï', 'i'],
+        [u'ì', 'i'],
+        [u'ê', 'e'],
+        [u'ë', 'e'],
+        [u'è', 'e'],
+        [u'é', 'e'],
+        [u'(NE)', '']
     ]
 
     for char in conversion:
@@ -174,7 +174,7 @@ def create_extract(request):
                 pdf.rect(pdfconfig.leftmargin, pdfconfig.headermargin, legendbox_width, legendbox_height, '')
                 
                 # define cells with border for the legend and the map
-                pdf.set_xy(28, pdfconfig.headermargin + 3)
+                pdf.set_xy(28, pdfconfig.headermargin+3)
                 pdf.set_font(*pdfconfig.textstyles['bold'])
                 pdf.cell(50, 6, translations['legendlabel'], 0, 1, 'L')
                 y= pdf.get_y()
