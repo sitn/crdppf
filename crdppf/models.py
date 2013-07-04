@@ -27,7 +27,6 @@ from geoalchemy import (
 Base = sqlahelper.get_base()
 
 # START models used for static extraction and general models
-
 class Topics(Base):
     __tablename__ = 'topic'
     __table_args__ = {'schema': 'crdppf', 'autoload': True}
@@ -43,35 +42,39 @@ class Layers(Base):
     __tablename__ = 'layers'
     __table_args__ = {'schema': 'crdppf', 'autoload': True}
     topicfk = Column(String(10), ForeignKey('crdppf.topic.topicid'))
-    
+
 class Authority(Base):
     __tablename__ = 'authority'
     __table_args__ = {'schema': 'crdppf', 'autoload': True}
-    
+
 class LegalBases(Base):
     __tablename__ = 'legalbases'
     __table_args__ = {'schema': 'crdppf', 'autoload': True}
     topicfk = Column(String(10), ForeignKey('crdppf.topic.topicid'))
-    
+
 class LegalProvisions(Base):
     __tablename__ = 'legalprovision'
     __table_args__ = {'schema': 'crdppf', 'autoload': True}
     topicfk = Column(String(10), ForeignKey('crdppf.topic.topicid')) 
-    
+
 class TemporaryProvisions(Base):
     __tablename__ = 'temporaryprovision'
     __table_args__ = {'schema': 'crdppf', 'autoload': True}
     topicfk = Column(String(10), ForeignKey('crdppf.topic.topicid'))
-    
+
 class References(Base):
     __tablename__ = 'references'
     __table_args__ = {'schema': 'crdppf', 'autoload': True}
     topicfk = Column(String(10), ForeignKey('crdppf.topic.topicid'))
-    
+
 class PaperFormats(Base):
     __tablename__ = 'paperformats'
     __table_args__ = {'schema': 'crdppf', 'autoload': True}
-    
+
+class Translations(Base):
+    __tablename__ = 'translations'
+    __table_args__ = {'schema': 'crdppf', 'autoload': True}
+
 class Cadastre(GeoInterface,Base):
     __tablename__ = 'la02_cadastres'
     __table_args__ = {'schema': 'general', 'autoload': True}
@@ -89,7 +92,7 @@ class NomLocalLieuDit(GeoInterface,Base):
     __table_args__ = {'schema': 'public', 'autoload': True}
     idcnlo = Column(String(30), primary_key=True)
     geom =GeometryColumn(Geometry(2,srid=21781))
-    
+
 class Zoneprotection(GeoInterface,Base):
     __tablename__ = 'en01_zone_sect_protection_eaux'
     __table_args__ = {'schema': 'environnement', 'autoload': True}
