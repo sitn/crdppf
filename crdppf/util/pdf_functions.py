@@ -27,6 +27,21 @@ def getBBOX(geometry):
 
     return bbox
 
+def getTranslations(lang):
+    """Loads the translations for all the multilingual labels
+    """
+    locals = {}
+    lang_dict = {
+        'fr': Translations.fr,
+        'de': Translations.de,
+        'it': Translations.it,
+        'en': Translations.en
+    }
+    translations = DBSession.query(Translations.varstr, lang_dict[lang]).all()
+    for key, value in translations :
+        locals[str(key)] = value
+
+    return locals
 
 def getPrintFormat(bbox):
     """Detects the best paper format and scale in function of the general form and size of the parcel
@@ -50,10 +65,10 @@ def getPrintFormat(bbox):
     ratioW = 0
     ratioH = 0
     # Attention X and Y are standard carthesian and inverted in comparison to the Swiss Coordinate System 
-    deltaX = bbox['maxX']-bbox['minX']
-    deltaY = bbox['maxY']-bbox['minY']
-    resolution = 96
-    ratioInchMM =25.4
+    deltaX = bbox['maxX'] - bbox['minX']
+    deltaY = bbox['maxY'] - bbox['minY']
+    resolution = 150
+    ratioInchMM = 25.4
 
     # Decides what parcel orientation 
     if deltaX >= deltaY :
@@ -80,19 +95,15 @@ def getPrintFormat(bbox):
     return printFormat
 
 
-def getFeatureInfo(request):
+def getFeatureInfo(request, translations):
     """The function gets the geometry of a parcel by it's ID and does an overlay 
     with other administrative layers to get the basic parcelInfo and attribute 
-    information of the parcel : County, local names, and so on
+    information of the parcel : municipality, local names, and so on
     
     hint:
     for debbuging the query use str(query) in the console/browser window
     to visualize geom.wkt use session.scalar(geom.wkt)
     """
-
-    # Multilingualvars configuration
-    HTTPBadRequestMsg = 'Aucun immeuble n\'a pu être identifié'
-    NoPropertyFoundMsg = 'Aucun immeuble répondant à vos critères a pû être trouvé.'
 
     SRS = 21781
 
@@ -107,7 +118,7 @@ def getFeatureInfo(request):
         X = int(request.params.get('X'))
         Y = int(request.params.get('Y'))
     else :
-        raise Exception(NoPropertyFoundMsg)
+        raise Exception(translations[''])
 
     if parcelInfo['idemai'] is not None:
         queryresult = DBSession.query(ImmeublesCanton).filter_by(idemai=parcelInfo['idemai']).first()
@@ -121,7 +132,7 @@ def getFeatureInfo(request):
         parcelInfo['idemai'] = queryresult.idemai
     else : 
         # to define
-        return HTTPBadRequest(HTTPBadRequestMsg)
+        return HTTPBadRequest(translations['HTTPBadRequestMsg'])
 
     parcelInfo['geom'] = queryresult.geom
     parcelInfo['area'] = int(DBSession.scalar(queryresult.geom.area))
@@ -248,64 +259,56 @@ def getMap(restriction_layers,topicid,crdppf_wms,map_params,pdf_format):
         
     return mappath, legend_path
 
-def getAppendices(commune):
-    # Multilingual params:
-    page_label = str('Page')
-    appendices_list_label = str('Titre de l\'annexe')
-    appendices_title = str('Titre de l\'annexe')
-    basepagemargins = [25, 50, 25]
+def getAppendices(commune, pdfconfig, translations):
 
-    appendix_pages = ExtractPDF(commune)
+    appendix_pages = ExtractPDF(commune, pdfconfig, translations)
 
     # START APPENDIX
     appendix_pages.add_page()
-    appendix_pages.set_margins(*basepagemargins)
+    appendix_pages.set_margins(*pdfconfig.pdfmargins)
     appendix_pages.set_y(40)
-    appendix_pages.set_font('Arial', 'B', 16)
-    appendix_pages.multi_cell(0, 12, appendices_list_label.encode('iso-8859-1'))
+    appendix_pages.set_font(*pdfconfig.textstyles['title3'])
+    appendix_pages.multi_cell(0, 12, translations['appendiceslistlabel'])
 
     appendix_pages.set_y(60)
-    appendix_pages.set_font('Arial', 'B', 10)
-    appendix_pages.cell(15, 6, page_label, 0, 0, 'L')
-    appendix_pages.cell(135, 6, appendices_title.encode('iso-8859-1'), 0, 1, 'L')
+    appendix_pages.set_font(*pdfconfig.textstyles['bold'])
+    appendix_pages.cell(15, 6, translations['pagelabel'], 0, 0, 'L')
+    appendix_pages.cell(135, 6, translations['appendicestitlelabel'], 0, 1, 'L')
 
     return appendix_pages
 
-def getTOC(commune):
-    # Multilingual params:
-    
-    
-    toc_pages = ExtractPDF(commune)
+def getTOC(commune, pdfconfig, translations):
+
+    toc_pages = ExtractPDF(commune, pdfconfig, translations)
 
     # START TOC
     toc_pages.add_page()
-    toc_pages.set_margins(25, 50, 25)
+    toc_pages.set_margins(*pdfconfig.pdfmargins)
     toc_pages.set_y(40)
-    toc_pages.set_font('Arial', 'B', 16)
-    toc_pages.multi_cell(0, 12, unicode('Table des matières', 'utf-8').encode('iso-8859-1'))
+    toc_pages.set_font(*pdfconfig.textstyles['title3'])
+    toc_pages.multi_cell(0, 12, translations['toclabel'])
 
     toc_pages.set_y(60)
-    toc_pages.set_font('Arial', 'B', 10)
-    toc_pages.cell(12, 15, str(''), '', 0, 'L')
-    toc_pages.cell(118, 15, str(''), 'L', 0, 'L')
-    toc_pages.cell(15, 15, str(''), 'L', 0, 'C')
-    toc_pages.cell(15, 15, str(''), 'L', 1, 'C')
+    toc_pages.set_font(*pdfconfig.textstyles['bold'])
+    toc_pages.cell(12, 15, '', '', 0, 'L')
+    toc_pages.cell(118, 15, '', 'L', 0, 'L')
+    toc_pages.cell(15, 15, '', 'L', 0, 'C')
+    toc_pages.cell(15, 15, '', 'L', 1, 'C')
 
-    toc_pages.cell(12, 5, str('Page'), 'B', 0, 'L')
-    toc_pages.cell(118 ,5, str('Restriction').encode('iso-8859-1'), 'LB', 0, 'L')
-    toc_pages.cell(15, 5, str('Disp.jur.'), 'LB', 0, 'C')
-    toc_pages.cell(15, 5, str('Renvois'), 'LB', 1, 'C')
+    toc_pages.cell(12, 5, translations['pagelabel'], 'B', 0, 'L')
+    toc_pages.cell(118 ,5, translations['toclabel'], 'LB', 0, 'L')
+    y = toc_pages.get_y()
+    x = toc_pages.get_x()
+    toc_pages.rotate(90)
+    toc_pages.text(x-4, y+8, translations['legalprovisionslabel'].replace(' ', '\n'))
+    toc_pages.text(x-4, y+23, translations['referenceslabel'])
+    toc_pages.rotate(0)
+    toc_pages.cell(15, 5, '', 'LB', 0, 'L')
+    toc_pages.cell(15, 5, '', 'LB', 1, 'L')
 
     return toc_pages
 
-def SetTextRotation(degrees):
-    self.TextRotation = degrees
-    #radians = deg2rad((float)degrees)   
-    self.TextRotationMatrix = sprintf('%.2f',math.cos(radians))+' '+ \
-        sprintf('%.2f',(math.sin(radians)*-1.0))+' '+sprintf('%.2f',math.sin(radians))+ \
-        ' '+sprintf('%.2f',math.cos(radians))+' '
-
-def getTitlePage(feature_info, crdppf_wms, sld_url, pdf_path, nomcom, commune):
+def getTitlePage(feature_info, crdppf_wms, nomcom, commune, pdfconfig, translations):
 
     temp_path = pkg_resources.resource_filename('crdppf', 'static/public/temp_files/')
 
@@ -314,29 +317,12 @@ def getTitlePage(feature_info, crdppf_wms, sld_url, pdf_path, nomcom, commune):
     reportInfo['type'] = '[officiel]'
 
     # the dictionnary for the parcel
-    feature_info['no_EGRID'] = 'Placeholder'
-    feature_info['lastUpdate'] = datetime.now()
+    feature_info['no_EGRID'] = 'to be defined'
+    #feature_info['lastUpdate'] = datetime.now()
     feature_info['operator'] = 'F.Voisard - SITN'
-    basepagemargins = '25, 50, 25'
     today= datetime.now()
 
-    # Create PDF extract
-    pdf = ExtractPDF(commune)
-
-    # START TITLEPAGE
-    pdf.add_page()
-    pdf.set_margins(25, 50, 25)
-    path = pkg_resources.resource_filename('crdppf', 'utils\\')
-
-    # PageTitle
-    pdf.set_y(45)
-    pdf.set_font('Arial', 'B', 22)
-    pdf.multi_cell(0, 9, unicode('Extrait '+reportInfo['type'] , 'utf-8').encode('iso-8859-1'))
-    pdf.set_font('Arial', 'B', 18)
-    pdf.multi_cell(0, 7, unicode('du cadastre des restrictions de\ndroit public à la propriété foncière', 'utf-8').encode('iso-8859-1'))
-    pdf.ln()
-  
-    # Create order sld
+    # Create property highlight sld
     sld = u"""<?xml version="1.0" encoding="UTF-8"?>
 <sld:StyledLayerDescriptor version="1.0.0" xmlns="http://www.opengis.net/ogc" xmlns:sld="http://www.opengis.net/sld" xmlns:ogc="http://www.opengis.net/ogc" xmlns:gml="http://www.opengis.net/gml" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.opengis.net/sld http://schemas.opengis.net/sld/1.0.0/StyledLayerDescriptor.xsd">
 <sld:NamedLayer>
@@ -345,7 +331,7 @@ def getTitlePage(feature_info, crdppf_wms, sld_url, pdf_path, nomcom, commune):
 <sld:Name>propertyIsEqualTo</sld:Name>
 <sld:Title>propertyIsEqualTo</sld:Title>
 <sld:FeatureTypeStyle>
-<sld:Rule>	
+<sld:Rule>
 <ogc:Filter>
 <ogc:PropertyIsEqualTo>
 <ogc:PropertyName>idemai</ogc:PropertyName>
@@ -366,7 +352,7 @@ def getTitlePage(feature_info, crdppf_wms, sld_url, pdf_path, nomcom, commune):
 <ogc:PropertyName>nummai</ogc:PropertyName>
 </sld:Label> 
 <sld:Font>
-<sld:CssParameter name="font-family">Arial</sld:CssParameter> 
+<sld:CssParameter name="font-family">pdfconfig.fontfamily</sld:CssParameter> 
 <sld:CssParameter name="font-weight">bold</sld:CssParameter> 
 <sld:CssParameter name="font-size">8</sld:CssParameter> 
 </sld:Font>
@@ -424,7 +410,7 @@ def getTitlePage(feature_info, crdppf_wms, sld_url, pdf_path, nomcom, commune):
 
     map = wms.getmap(
         layers=layers,
-        sld = sld_url +'/sld_'+ 'siteplan'+'.xml',
+        sld = pdfconfig.sld_url +'/sld_'+ 'siteplan'+'.xml',
         srs='EPSG:21781',
         bbox=(wmsBBOX['minX'],wmsBBOX['minY'],wmsBBOX['maxX'],wmsBBOX['maxY']),
         size=(1600,900),
@@ -438,61 +424,85 @@ def getTitlePage(feature_info, crdppf_wms, sld_url, pdf_path, nomcom, commune):
 
     mappath = temp_path + 'siteplan.png'
 
+    # Create PDF extract
+    pdf = ExtractPDF(commune, pdfconfig, translations) 
+
+    # START TITLEPAGE
+    pdf.add_page()
+    pdf.set_margins(*pdfconfig.pdfmargins)
+    path = pkg_resources.resource_filename('crdppf', 'utils\\')
+
+    # PageTitle
+    pdf.set_y(45)
+    pdf.set_font(*pdfconfig.textstyles['title1'])
+    if reportInfo['type'] =='certified':
+        pdf.multi_cell(0, 9, translations["certifiedextracttitlelabel"])
+    elif reportInfo['type'] =='reduced':
+        pdf.multi_cell(0, 9, translations['reducedextracttitlelabel'])
+    elif reportInfo['type'] =='reducedcertified':
+        pdf.multi_cell(0, 9, translations['reducedcertifiedextracttitlelabel'])
+    else:
+        pdf.multi_cell(0, 9, translations['normalextracttitlelabel'])
+    pdf.set_font(*pdfconfig.textstyles['title2'])
+    #pdf.multi_cell(0, 7, translations['extractsubtitlelabel'])
+    pdf.multi_cell(0, 7, translations['extractsubtitlelabel'])
+    pdf.ln()
+    
     map = pdf.image(temp_path+'siteplan.png', 25, 80, 160, 90)
 
     y=pdf.get_y()
     pdf.rect(25, 80, 160, 90, '')
     pdf.set_y(y+105)
     # First infoline
-    pdf.set_font('Arial', 'B', 10)
-    pdf.cell(45,5,unicode("Immeuble n°", 'utf-8').encode('iso-8859-1'), 0, 0, 'L')
-    # ADD immeuble Type !!!!!!!
-    pdf.set_font('Arial', '', 10)
+    pdf.set_font(*pdfconfig.textstyles['bold'])
+    pdf.cell(45, 5, translations['propertylabel'], 0, 0, 'L')
+
+    pdf.set_font(*pdfconfig.textstyles['normal'])
     if feature_info['nomcad'] is not None:
         pdf.cell(50, 5, feature_info['nummai'].encode('iso-8859-1')+str(' (')+feature_info['nomcad'].encode('iso-8859-1')+str(') ')+str(' - ')+feature_info['type'].encode('iso-8859-1'), 0, 1, 'L')
     else : 
         pdf.cell(50, 5, feature_info['nummai'].encode('iso-8859-1'), 0, 1, 'L')
     
      # Second infoline : Area and EGRID
-    pdf.set_font('Arial', 'B', 10)
-    pdf.cell(45, 5, unicode('Surface de l\'immeuble', 'utf-8').encode('iso-8859-1'), 0, 0, 'L')
-    pdf.set_font('Arial', '', 10)
+    pdf.set_font(*pdfconfig.textstyles['bold'])
+    pdf.cell(45, 5, translations['propertyarealabel'], 0, 0, 'L')
+    pdf.set_font(*pdfconfig.textstyles['normal'])
     pdf.cell(50, 5, str(feature_info['area'])+str(' m2').encode('iso-8859-1'), 0, 0, 'L')
-    pdf.set_font('Arial', 'B', 10)
-    pdf.cell(35, 5, unicode("N° EGRID", 'utf-8').encode('iso-8859-1'), 0, 0, 'L')
-    pdf.set_font('Arial', '', 10)
+    pdf.set_font(*pdfconfig.textstyles['bold'])
+    pdf.cell(35, 5, translations['EGRIDlabel'], 0, 0, 'L')
+    pdf.set_font(*pdfconfig.textstyles['normal'])
     pdf.cell(50, 5, feature_info['no_EGRID'].encode('iso-8859-1'), 0, 1, 'L')
 
     # Third infoline : Adresse/localisation
-    pdf.set_font('Arial', 'B', 10)
-    pdf.cell(45, 5, unicode('Adresse/Nom local', 'utf-8').encode('iso-8859-1'), 0, 0, 'L')
-    pdf.set_font('Arial', '', 10)
+    pdf.set_font(*pdfconfig.textstyles['bold'])
+    pdf.cell(45, 5, translations['addresslabel'], 0, 0, 'L')
+    pdf.set_font(*pdfconfig.textstyles['normal'])
     pdf.cell(50, 5, str('Placeholder').encode('iso-8859-1'), 0, 1, 'L')
 
-     # Fourth infoline : County and BFS number
-    pdf.set_font('Arial', 'B', 10)
-    pdf.cell(45, 5, unicode('Commune', 'utf-8').encode('iso-8859-1')+str(' (')+unicode('N° OFS', 'utf-8').encode('iso-8859-1')+str(')'), 0, 0, 'L')
-    pdf.set_font('Arial','',10)
+     # Fourth infoline : municipality and BFS number
+    pdf.set_font(*pdfconfig.textstyles['bold'])
+    pdf.cell(45, 5,  translations['municipalitylabel']+str(' (')+translations['federalmunicipalitynumberlabel']+str(')'), 0, 0, 'L')
+    pdf.set_font(*pdfconfig.textstyles['normal'])
     pdf.cell(50, 5, feature_info['nomcom'].encode('iso-8859-1')+str(' (')+str(feature_info['nufeco']).encode('iso-8859-1')+str(')'), 0, 0, 'L')
 
     # Creation date and operator
     y= pdf.get_y()
     pdf.set_y(y+10)
-    pdf.set_font('Arial', 'B', 10)
-    pdf.cell(45, 5, unicode('Editeur de l\'extrait', 'utf-8').encode('iso-8859-1'), 0, 0, 'L')
-    pdf.set_font('Arial', '', 10)
+    pdf.set_font(*pdfconfig.textstyles['bold'])
+    pdf.cell(45, 5, translations['extractoperatorlabel'], 0, 0, 'L')
+    pdf.set_font(*pdfconfig.textstyles['normal'])
     pdf.cell(70, 5, feature_info['operator'].encode('iso-8859-1'), 0, 1, 'L')
 
     y= pdf.get_y()
     pdf.set_y(y+5)
-    pdf.set_font('Arial', 'B', 10)
-    pdf.cell(0, 5, unicode('Signature', 'utf-8').encode('iso-8859-1'), 0, 0, 'L')
+    pdf.set_font(*pdfconfig.textstyles['bold'])
+    pdf.cell(0, 5, translations['signaturelabel'], 0, 0, 'L')
 
     pdf.set_y(250)
-    pdf.set_font('Arial', 'B', 10)
-    pdf.cell(0, 5, unicode('Indications générales ou plutôt résérves?', 'utf-8').encode('iso-8859-1'), 0, 1, 'L')
-    pdf.set_font('Arial', '', 10)
-    pdf.multi_cell(0, 5, unicode('Mise en garde : Le canton de Neuchâtel n\'engage pas sa responsabilité sur l\'exactitude ou la fiabilité des documents législatifs dans leur version électronique. Ces documents ne créent aucun autre droit ou obligation que ceux qui découlent des textes légalement adoptés et publiés, qui font seuls foi.', 'utf-8').encode('iso-8859-1'), 0, 1, 'L')
+    pdf.set_font(*pdfconfig.textstyles['bold'])
+    pdf.cell(0, 5, translations['disclaimerlabel'], 0, 1, 'L')
+    pdf.set_font(*pdfconfig.textstyles['normal'])
+    pdf.multi_cell(0, 5, translations['disclaimer'], 0, 1, 'L')
 
     # END TITLEPAGE
 
