@@ -399,7 +399,7 @@ def getTitlePage(feature_info, crdppf_wms, nomcom, commune, pdfconfig, translati
     wmsBBOX = {}
     wmsBBOX['centerY'] =  int(map_params['bboxCenterY'])
     wmsBBOX['centerX'] =  int(map_params['bboxCenterX'])
-    wmsBBOX['minX'] = int(wmsBBOX['centerX']-(160*scale/1000/2))
+    wmsBBOX['minX'] = int(wmsBBOX['centerX'] - (160*scale/1000/2))
     wmsBBOX['maxX'] = int(wmsBBOX['centerX']+(160*scale/1000/2))
     wmsBBOX['minY'] = int(wmsBBOX['centerY']-(90*scale/1000/2))
     wmsBBOX['maxY'] = int(wmsBBOX['centerY']+(90*scale/1000/2))
@@ -410,7 +410,7 @@ def getTitlePage(feature_info, crdppf_wms, nomcom, commune, pdfconfig, translati
 
     map = wms.getmap(
         layers=layers,
-        sld = pdfconfig.sld_url +'/sld_'+ 'siteplan'+'.xml',
+        sld = pdfconfig.sld_url + '/sld_' + 'siteplan' + '.xml',
         srs='EPSG:21781',
         bbox=(wmsBBOX['minX'],wmsBBOX['minY'],wmsBBOX['maxX'],wmsBBOX['maxY']),
         size=(1600,900),
@@ -418,7 +418,7 @@ def getTitlePage(feature_info, crdppf_wms, nomcom, commune, pdfconfig, translati
         transparent=False
     )
 
-    out = open(temp_path+'siteplan.png', 'wb')
+    out = open(temp_path + 'siteplan.png', 'wb')
     out.write(map.read())
     out.close()
 
