@@ -22,7 +22,8 @@ class PDFConfig:
     pdfmargins = [leftmargin, topmargin, rightmargin]
 
     fontfamily = 'Arial'
-    textstyles = {'title1':[fontfamily, 'B', 22],
+    textstyles = {
+        'title1':[fontfamily, 'B', 22],
         'title2':[fontfamily, 'B', 18],
         'title3':[fontfamily, 'B', 16],
         'normal':[fontfamily, '', 10],
@@ -89,9 +90,7 @@ class ExtractPDF(FPDF):
         
     def header(self):
         """Creates the document header with the logos and vertical lines."""
-        
-        # no_page = self.page_no()
-        # nb_pages = self.alias_nb_pages()
+
         nomcom = self.alias_nomcom()
 
         # Add the vertical lines
@@ -99,12 +98,12 @@ class ExtractPDF(FPDF):
         self.line(105, 0, 105, 35)
         self.line(165, 0, 165, 35)
         # Add the logos if existing else put a placeholder
-        self.image(self.imagebasepath+self.CHlogopath, 10, 8, 55, 31.03)
-        self.image(self.imagebasepath+self.cantonlogopath, 110, 8, 43.4, 13.8)
+        self.image(self.imagebasepath + self.CHlogopath, 10, 8, 55, 31.03)
+        self.image(self.imagebasepath + self.cantonlogopath, 110, 8, 43.4, 13.8)
         try:
-            self.image(self.imagebasepath+self.communelogopath, 170, 8, 10, 10.7)
+            self.image(self.imagebasepath + self.communelogopath, 170, 8, 10, 10.7)
         except:
-            self.image(self.imagebasepath+'ecussons\Placeholder.jpg', 170, 8, 10, 10.7)
+            self.image(self.imagebasepath + 'ecussons\Placeholder.jpg', 170, 8, 10, 10.7)
         # This lines are not necessary if the community name is already contained in the 
         # logo
         self.set_xy(170, 19.5)
@@ -117,13 +116,13 @@ class ExtractPDF(FPDF):
         # position footer at 15mm from the bottom
         self.set_y(-20)
         self.set_font(*self.pdfconfig.textstyles['small'])
-        self.cell(55, 5, self.translations['creationdatelabel']+str(' ')+self.creationdate, 0, 0, 'L')
-        self.cell(60, 5, self.translations['signaturelabel']+str(' ')+self.signatureid, 0, 0, 'C')
-        self.cell(55, 5, self.translations['pagelabel']+str(self.alias_no_page())+str('/')+ \
+        self.cell(55, 5, self.translations['creationdatelabel'] + str(' ')+self.creationdate, 0, 0, 'L')
+        self.cell(60, 5, self.translations['signaturelabel'] + str(' ')+self.signatureid, 0, 0, 'C')
+        self.cell(55, 5, self.translations['pagelabel'] + str(self.alias_no_page())+str('/')+ \
             str(self.alias_nb_pages()), 0, 0, 'R')
 
-    def add_toc_entry(self,topicid,num,label,categorie,appendices):
-        self.toc_entries.append({'topicid':topicid,'no_page':num, 'title':label, 'categorie':int(categorie), 'appendices':[]})
+    def add_toc_entry(self, topicid, num, label, categorie, appendices):
+        self.toc_entries.append({'topicid':topicid, 'no_page':num, 'title':label, 'categorie':int(categorie), 'appendices':[]})
 
     def TOC(self):
         """Adding a table of content (TOC) to the document."""
@@ -135,15 +134,15 @@ class ExtractPDF(FPDF):
 
         toc_pages.set_y(60)
         toc_pages.set_font(*pdfconfig.textstyles['bold'])
-        toc_pages.cell(12, 15, str(''), '', 0, 'L')
-        toc_pages.cell(118, 15, str(''), 'L', 0, 'L')
-        toc_pages.cell(15, 15, str(''), 'L', 0, 'C')
-        toc_pages.cell(15, 15, str(''), 'L', 1, 'C')
+        toc_pages.cell(12, 15, '', '', 0, 'L')
+        toc_pages.cell(118, 15, '', 'L', 0, 'L')
+        toc_pages.cell(15, 15, '', 'L', 0, 'C')
+        toc_pages.cell(15, 15, '', 'L', 1, 'C')
 
         toc_pages.cell(12, 5, translations['pagelabel'], 'B', 0, 'L')
         toc_pages.cell(118 ,5, translations['toclabel'], 'LB', 0, 'L')
         toc_pages.cell(15, 5, translations['legalprovisionslabel'], 'LB', 0, 'C')
         toc_pages.cell(15, 5, translations['referenceslabel'], 'LB', 1, 'C')
 
-    def add_appendix(self,topicid,num,label,url):
+    def add_appendix(self, topicid, num, label,url):
         self.appendix_entries.append({'topicid':topicid, 'no_page':num, 'title':label, 'url':url})

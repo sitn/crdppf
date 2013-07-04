@@ -65,8 +65,8 @@ def getPrintFormat(bbox):
     ratioW = 0
     ratioH = 0
     # Attention X and Y are standard carthesian and inverted in comparison to the Swiss Coordinate System 
-    deltaX = bbox['maxX']-bbox['minX']
-    deltaY = bbox['maxY']-bbox['minY']
+    deltaX = bbox['maxX'] - bbox['minX']
+    deltaY = bbox['maxY'] - bbox['minY']
     resolution = 150
     ratioInchMM = 25.4
 
@@ -95,7 +95,7 @@ def getPrintFormat(bbox):
     return printFormat
 
 
-def getFeatureInfo(request):
+def getFeatureInfo(request, translations):
     """The function gets the geometry of a parcel by it's ID and does an overlay 
     with other administrative layers to get the basic parcelInfo and attribute 
     information of the parcel : municipality, local names, and so on
@@ -104,11 +104,6 @@ def getFeatureInfo(request):
     for debbuging the query use str(query) in the console/browser window
     to visualize geom.wkt use session.scalar(geom.wkt)
     """
-
-    # Multilingualvars configuration
-    HTTPBadRequestMsg = 'Aucun immeuble n\'a pu être identifié'
-    NoPropertyFoundMsg = 'Aucun immeuble répondant à vos critères a pû être trouvé.'
-    propertyLayer = 'ImmeublesCanton'
 
     SRS = 21781
 
@@ -123,7 +118,7 @@ def getFeatureInfo(request):
         X = int(request.params.get('X'))
         Y = int(request.params.get('Y'))
     else :
-        raise Exception(NoPropertyFoundMsg)
+        raise Exception(translations[''])
 
     if parcelInfo['idemai'] is not None:
         queryresult = DBSession.query(ImmeublesCanton).filter_by(idemai=parcelInfo['idemai']).first()
@@ -137,7 +132,7 @@ def getFeatureInfo(request):
         parcelInfo['idemai'] = queryresult.idemai
     else : 
         # to define
-        return HTTPBadRequest(HTTPBadRequestMsg)
+        return HTTPBadRequest(translations['HTTPBadRequestMsg'])
 
     parcelInfo['geom'] = queryresult.geom
     parcelInfo['area'] = int(DBSession.scalar(queryresult.geom.area))
@@ -283,7 +278,6 @@ def getAppendices(commune, pdfconfig, translations):
     return appendix_pages
 
 def getTOC(commune, pdfconfig, translations):
-    # Multilingual params:
 
     toc_pages = ExtractPDF(commune, pdfconfig, translations)
 
@@ -296,17 +290,17 @@ def getTOC(commune, pdfconfig, translations):
 
     toc_pages.set_y(60)
     toc_pages.set_font(*pdfconfig.textstyles['bold'])
-    toc_pages.cell(12, 15, str(''), '', 0, 'L')
-    toc_pages.cell(118, 15, str(''), 'L', 0, 'L')
-    toc_pages.cell(15, 15, str(''), 'L', 0, 'C')
-    toc_pages.cell(15, 15, str(''), 'L', 1, 'C')
+    toc_pages.cell(12, 15, '', '', 0, 'L')
+    toc_pages.cell(118, 15, '', 'L', 0, 'L')
+    toc_pages.cell(15, 15, '', 'L', 0, 'C')
+    toc_pages.cell(15, 15, '', 'L', 1, 'C')
 
     toc_pages.cell(12, 5, translations['pagelabel'], 'B', 0, 'L')
     toc_pages.cell(118 ,5, translations['toclabel'], 'LB', 0, 'L')
     y = toc_pages.get_y()
     x = toc_pages.get_x()
     toc_pages.rotate(90)
-    toc_pages.text(x-4, y+8, translations['legalprovisionslabel'].replace(' ','\n'))
+    toc_pages.text(x-4, y+8, translations['legalprovisionslabel'].replace(' ', '\n'))
     toc_pages.text(x-4, y+23, translations['referenceslabel'])
     toc_pages.rotate(0)
     toc_pages.cell(15, 5, '', 'LB', 0, 'L')

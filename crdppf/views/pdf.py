@@ -50,8 +50,6 @@ def create_extract(request):
     
     # GET the PDF Configuration parameters
     pdfconfig = PDFConfig(request)
-    # >> à mettre dans pdfconfig
-    #sld_url = request.static_url('crdppf:static/public/temp_files/')
 
     # GET Multilingual labels for the selected language
     if 'lang' not in session:
@@ -68,7 +66,7 @@ def create_extract(request):
     # 1) If the ID of the parcel is set get the basic attributs 
     # else get the ID (idemai) of the selected parcel first using X/Y coordinates of the center 
     #----------------------------------------------------------------------------------------------------
-    extract.featureInfo = getFeatureInfo(request) # '1_14127' # test parcel or '1_11340'
+    extract.featureInfo = getFeatureInfo(request, translations) # '1_14127' # test parcel or '1_11340'
     featureInfo = extract.featureInfo
 
     # 2) Get the parameters for the paper format and the map based on the feature's geometry
@@ -117,14 +115,11 @@ def create_extract(request):
 
     # 5) Create an empty pdf for the table of content
     #--------------------------------------------------
-    #pdf.add_page()
     toc = getTOC(commune, pdfconfig, translations)
-    #pdf.TOC()
 
     # 6) Create an empty pdf for the ?annexes?
     #-------------------------------------------------- 
     appendices = getAppendices(commune, pdfconfig, translations)
-    #pdf.Appendices()
 
     # 7) Create the pages of the extract for each topic in the list
     #---------------------------------------------------
@@ -159,7 +154,7 @@ def create_extract(request):
             neighborhood = False
 
            # PAGE X 
-            pdf.add_page(str(pdf_format['orientation']+','+pdf_format['format']))
+            pdf.add_page(str(pdf_format['orientation'] + ',' + pdf_format['format']))
             pdf.set_margins(*pdfconfig.pdfmargins)
 
             # Thematic map/Carte thématique/Thematische Karte
@@ -179,7 +174,7 @@ def create_extract(request):
                 pdf.rect(pdfconfig.leftmargin, pdfconfig.headermargin, legendbox_width, legendbox_height, '')
                 
                 # define cells with border for the legend and the map
-                pdf.set_xy(28, pdfconfig.headermargin+3)
+                pdf.set_xy(28, pdfconfig.headermargin + 3)
                 pdf.set_font(*pdfconfig.textstyles['bold'])
                 pdf.cell(50, 6, translations['legendlabel'], 0, 1, 'L')
                 y= pdf.get_y()
