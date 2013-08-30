@@ -24,9 +24,10 @@ Bootstrap and buildout
         http://pypi.camptocamp.net/distribute-0.6.22_fix-issue-227/distribute_setup.py
 
 Create your own buildout file
+
     $ buildout_<user>.cfg
 
-Overwrite all the vars which equal to $ overwrite
+Overwrite all the vars which equal to "overwrite"
 
 Run buildout
 
