@@ -1,3 +1,9 @@
+/*
+- * @requires GeoExt/data/FeatureStore.js
+- * @requires GeoExt/data/FeatureReader.js
+- * @include Crdppf/searcher/GroupComboBox.js
+- * @include Crdppf/searcher/GroupingView.js
+- */
 
 Ext.namespace('Crdppf');
 
