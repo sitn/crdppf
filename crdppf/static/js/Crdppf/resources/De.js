@@ -47,3 +47,19 @@ Crdppf.labelsDe  ={
     'zoomInButtonTlp':'Zoom avant',
     'zoomOutButtonTlp':'Zoom arrière',
 };
+
+OpenLayers.Util.extend(OpenLayers.Lang.de, {
+    'adresses_sitn':'Adressen',
+    'axe_rue':'TODO',
+    'nom_local_lieu_dit':'TODO',
+    'search_arrets_tp':'TODO',
+    'search_cours_eau':'TODO',
+    'search_axes_rtes':'TODO',
+    'search_satac':'TODO',
+    'search_uap_publique':'TODO',
+    'search_fo_administrations':'TODO',
+    'ImmeublesCanton':'TODO',
+    'ImmeublesCantonHistorique':'TODO',
+    'batiments_ofs':'TODO',
+    'point_interet':'TODO'
+});
