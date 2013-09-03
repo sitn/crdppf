@@ -279,7 +279,8 @@ Crdppf.init_main = function(lang) {
     
     // create the CGPX searchbox
     var searcher = new Crdppf.SearchBox({
-        map: mapPanel.map
+        map: mapPanel.map,
+        url: Crdppf.fulltextsearchUrl
     });
     
     // Add the searchBox to an Ext.Panel
