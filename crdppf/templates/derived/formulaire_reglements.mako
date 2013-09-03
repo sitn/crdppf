@@ -1,0 +1,24 @@
+<%inherit file="/base/index.mako"/>
+
+    <script type="text/javascript">
+        var OLImgPath = "${request.static_url('crdppf:static/images/ol/')}";
+    </script>
+
+% if debug:
+    <!-- GENERAL LIBRARIES -->
+    <script type="text/javascript" src="${request.static_url('crdppf:static/lib/openlayers/lib/OpenLayers.js')}"></script>
+    <script type="text/javascript" src="${request.static_url('crdppf:static/lib/openlayers/lib/Openlayers/Lang/fr.js')}"></script>
+    <script type="text/javascript" src="${request.static_url('crdppf:static/lib/geoext/lib/GeoExt.js')}"></script>
+    <script type="text/javascript" src="${request.static_url('crdppf:static/lib/ext/resources/ux/statusbar/StatusBar.js')}"></script>
+    
+    <!-- CUSTOM CRDPPF STUFF -->
+    <script type="text/javascript" src="${request.static_url('crdppf:static/js/Crdppf/resources/Fr.js')}"></script>
+    <script type="text/javascript" src="${request.static_url('crdppf:static/js/Crdppf/resources/De.js')}"></script>
+    <script type="text/javascript" src="${request.static_url('crdppf:static/js/Crdppf/formulaire.js')}"></script>
+% else:
+    <script type="text/javascript" src="${request.static_url('crdppf:static/js/Crdppf/formulaire.js')}"></script>
+% endif
+
+    
+    
+<div id="form"></div>

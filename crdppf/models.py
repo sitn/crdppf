@@ -42,7 +42,12 @@ class Layers(Base):
     __tablename__ = 'layers'
     __table_args__ = {'schema': 'crdppf', 'autoload': True}
     topicfk = Column(String(10), ForeignKey('crdppf.topic.topicid'))
+    topic = relationship("Topics", backref=backref("topic"),lazy="joined")
 
+class Documents(Base):
+    __tablename__ = 'documents_saisies'
+    __table_args__ = {'schema': 'crdppf', 'autoload': True}
+    
 class Authority(Base):
     __tablename__ = 'authority'
     __table_args__ = {'schema': 'crdppf', 'autoload': True}
