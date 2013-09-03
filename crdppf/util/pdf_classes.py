@@ -4,6 +4,20 @@ from fpdf import FPDF
 import pkg_resources
 from datetime import datetime
 
+
+class Restriction:
+    """Representation of a restriction in the transfert model structure."""
+    tenor = ''
+    theme = ''
+    typecode = 0
+    typecodelist = []
+    legalstate = ''
+    publicationdate = ''
+
+    def __init__(self, **kwds):
+        self.__dict__.update(kwds)
+
+
 class PDFConfig:
     """A class to define the configuration of the PDF extract to simplify changes.
     """
@@ -41,12 +55,13 @@ class PDFConfig:
     siteplanname = str(timestamp) + '_siteplan'
     pdfpath = pkg_resources.resource_filename('crdppf', 'static/public/pdf/')
 
-class Objectify:
-    """A helper class to create an object from a dict for lazy programmers 
-    who do not like dict in dict in dict...
+class Extract:
+    """A helper class for lazy programmers to create an object for the main data arrays used in the PDF extract.
     """
+
     def __init__(self, **kwds):
         self.__dict__.update(kwds)
+
 
 class ExtractPDF(FPDF):
     # =============================
@@ -71,8 +86,9 @@ class ExtractPDF(FPDF):
 
     def __init__(self, nomcom, pdfconfig, translations):
         FPDF.__init__(self)
-        self.toc_entries = []
+        self.toc_entries = {}
         self.appendix_entries = []
+        self.reference_entries = []
         self.commune = nomcom
         self.translations = translations
         self.pdfconfig = pdfconfig
@@ -122,27 +138,26 @@ class ExtractPDF(FPDF):
             str(self.alias_nb_pages()), 0, 0, 'R')
 
     def add_toc_entry(self, topicid, num, label, categorie, appendices):
-        self.toc_entries.append({'topicid':topicid, 'no_page':num, 'title':label, 'categorie':int(categorie), 'appendices':[]})
+        self.toc_entries[str(topicid)]={'no_page':num, 'title':label, 'categorie':int(categorie), 'appendices':set()}
 
     def TOC(self):
         """Adding a table of content (TOC) to the document."""
-        toc_pages.add_page()
-        toc_pages.set_margins(*pdfconfig.pdfmargins)
-        toc_pages.set_y(40)
-        toc_pages.set_font(*pdfconfig.textstyles['title3'])
-        toc_pages.multi_cell(0, 12, translations['toclabel'])
-
-        toc_pages.set_y(60)
-        toc_pages.set_font(*pdfconfig.textstyles['bold'])
-        toc_pages.cell(12, 15, '', '', 0, 'L')
-        toc_pages.cell(118, 15, '', 'L', 0, 'L')
-        toc_pages.cell(15, 15, '', 'L', 0, 'C')
-        toc_pages.cell(15, 15, '', 'L', 1, 'C')
-
-        toc_pages.cell(12, 5, translations['pagelabel'], 'B', 0, 'L')
-        toc_pages.cell(118 ,5, translations['toclabel'], 'LB', 0, 'L')
-        toc_pages.cell(15, 5, translations['legalprovisionslabel'], 'LB', 0, 'C')
-        toc_pages.cell(15, 5, translations['referenceslabel'], 'LB', 1, 'C')
+        return self.toc_entries
 
     def add_appendix(self, topicid, num, label,url):
         self.appendix_entries.append({'topicid':topicid, 'no_page':num, 'title':label, 'url':url})
+        if self.toc_entries[str(topicid)] :
+            self.toc_entries[topicid]['appendices'].add(num)
+        else:
+            pass
+
+    def add_reference(self, topicid, num, label,url):
+        self.reference_entries.append({'topicid':topicid, 'no_page':num, 'title':label, 'url':url})
+        if self.toc_entries[str(topicid)] :
+            self.toc_entries[topicid]['reference'].add(num)
+        else:
+            pass
+
+    def Appendices(self):
+        """Adding a list of appendix to the document."""
+        return self.appendix_entries

@@ -7,7 +7,7 @@ from pyramid.view import view_config
 
 
 from datetime import datetime, time
-import httplib
+import httplib, urllib2
 import pkg_resources
 from geojson import Feature, FeatureCollection, dumps, loads as gloads
 from simplejson import loads as sloads,dumps as sdumps
@@ -19,7 +19,7 @@ from crdppf.util.pdf_functions import getBBOX, getTranslations, getPrintFormat, 
 from crdppf.util.pdf_functions import getRestrictions, getMap, getAppendices
 from crdppf.util.pdf_functions import getTOC, getTitlePage
 
-from crdppf.util.pdf_classes import PDFConfig, Objectify
+from crdppf.util.pdf_classes import PDFConfig, Extract
 from crdppf.views.get_features import get_features, get_features_function
 
 
@@ -45,11 +45,12 @@ def create_extract(request):
     crdppf_wms = request.registry.settings['crdppf_wms']
 
     # other basic parameters
-    extract = Objectify()
+    extract = Extract()
     extract.today = datetime.now()
     
     # GET the PDF Configuration parameters
-    pdfconfig = PDFConfig(request)
+    extract.pdfconfig = PDFConfig(request)
+    pdfconfig = extract.pdfconfig
 
     # GET Multilingual labels for the selected language
     if 'lang' not in session:
@@ -57,7 +58,8 @@ def create_extract(request):
     else : 
         lang = session['lang'].lower()
 
-    translations = getTranslations(lang)
+    extract.translations = getTranslations(lang)
+    translations = extract.translations
 
 # *************************
 # MAIN PROGRAM PART
@@ -79,7 +81,9 @@ def create_extract(request):
 
     # 3) Get the list of all the restrictions
     #-------------------------------------------
-    extract.topicList = DBSession.query(Topics).order_by(Topics.topicorder).all()
+    extract.topics = DBSession.query(Topics).order_by(Topics.topicorder).all()
+
+    #topiclist = DBSession.query(Topics).order_by(Topics.topicorder).all()
 
     # 4) Create the title page for the pdf extract
     #--------------------------------------------------
@@ -127,41 +131,59 @@ def create_extract(request):
 
     # Loop on each topic
     extract.restrictionList = []
-
-    for topic in extract.topicList:
+    
+    for topic in extract.topics:
         # if geographic layers are defined for the topic, get the information
         if topic.layers :
-            layers = []
-            for layer in topic.layers:
-                layers.append(layer.layername)
-            if isinstance(layers, list):
-                for sublayer in layers:
-                    params = {'id':featureInfo['idemai'], 'layerList':str(sublayer)}
-                    features = get_features_function(params)
-                    if features :
-                        extract.restrictionList.append(features)
-                        features = None
+            if topic.topicid == '103':
+                chdata = urllib2.urlopen('https://api.geo.admin.ch/feature/search?lang=en&layers=ch.bazl.projektierungszonen-flughafenanlagen&bbox=680585,255022,686695,259951&no_geom=true')
+                json = chdata.read()
+                features = sloads(json)
+                if features['features'] :
+                    for feature in features['features']:
+                        feature['properties']['layerName'] = feature['properties']['layer_id'] 
+                        feature['properties']['featureClass'] = 'intersects'
+                    extract.restrictionList.append(features['features'])
             else:
-                params = {'id':featureInfo['idemai'], 'layerList':str(layers)}
-                extract.restrictionList = get_features_function(params)
+                layers = []
+                for layer in topic.layers:
+                    layers.append(layer.layername)
+                if isinstance(layers, list):
+                    for sublayer in layers:
+                        params = {
+                            'id':featureInfo['idemai'],
+                            'layerList':str(sublayer)
+                            }
+                        features = get_features_function(params)
+                        if features :
+                            extract.restrictionList.append(features)
+                            features = None
+                else:
+                    params = {
+                        'id':featureInfo['idemai'],
+                        'layerList':str(layers)
+                        }
+                    extract.restrictionList = get_features_function(params)
 
         else : 
             extract.restrictionList = []
 
         if len(extract.restrictionList) > 0 :
-
-            # Parameter to set to 'true' if restrictions in the neighborhood are to be mentioned alsocon
+            # Parameter to set to 'true' if restrictions in the neighborhood are to be mentioned also
             neighborhood = False
 
-           # PAGE X 
+           # PAGE X !!! > à pousser plus loin ; d'abord remplir un tableau avec toutes les valeurs puis créer extrait en boucle page par page
             pdf.add_page(str(pdf_format['orientation'] + ',' + pdf_format['format']))
             pdf.set_margins(*pdfconfig.pdfmargins)
 
             # Thematic map/Carte thématique/Thematische Karte
             if topic.layers:
+
+                #set the title for the restrictions
+                pdf.add_toc_entry(topic.topicid, pdf.page_no(), str(topic.topicname.encode('iso-8859-1')), 1, '')
+
                 # Get the map and the legend
                 topic.mappath, topic.legendpath = getMap(topic.layers, topic.topicid, crdppf_wms, map_params, pdf_format)
-
                 # Place the map
                 map = pdf.image(topic.mappath, 65, pdfconfig.headermargin, pdf_format['width'], pdf_format['height'])
                 pdf.rect(65, pdfconfig.headermargin, pdf_format['width'], pdf_format['height'], '')
@@ -212,6 +234,9 @@ def create_extract(request):
                         pdf.set_y(y+(float(height)/limit_proportion))
 
             else : 
+                if topic.layers :
+                    pdf.add_toc_entry(topic.topicid,'', str(topic.topicname.encode('iso-8859-1')), 0,'')
+                
                 y = pdf.get_y()
                 pdf.multi_cell(0, 6, translations['maperrorlabel'])
                 pdf.ln()
@@ -240,40 +265,46 @@ def create_extract(request):
                             # !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
                             if feature['properties']['layerName'] == 'at14_zones_communales':
                                 pdf.set_font(*pdfconfig.textstyles['bold'])
-                                pdf.cell(55, 5, translations['contentlabel'].encode('iso-8859-1'),0,0,'L')
+                                pdf.cell(55, 5, translations['contentlabel'].encode('iso-8859-1'), 0, 0, 'L')
                                 pdf.set_font(*pdfconfig.textstyles['normal'])
-                                pdf.multi_cell(0,5,feature['properties']['nom_communal'] .encode('iso-8859-1').strip(),0,1,'L')
-                                
+                                pdf.multi_cell(0, 5, feature['properties']['nom_communal'] .encode('iso-8859-1').strip(), 0, 1, 'L')
+
                             elif feature['properties']['layerName'] == 'en05_degres_sensibilite_bruit':
                                 pdf.set_font(*pdfconfig.textstyles['bold'])
-                                pdf.cell(55,5,translations['contentlabel'].encode('iso-8859-1'),0,0,'L')
+                                pdf.cell(55, 5, translations['contentlabel'].encode('iso-8859-1'), 0, 0, 'L')
                                 pdf.set_font(*pdfconfig.textstyles['normal'])
-                                pdf.cell(60,5,feature['properties']['type_ds'] .encode('iso-8859-1'),0,1,'L')
-                           
+                                pdf.cell(60, 5, feature['properties']['type_ds'] .encode('iso-8859-1'), 0, 1, 'L')
+
                             elif feature['properties']['layerName'] == 'en01_zone_sect_protection_eaux':
                                 pdf.set_font(*pdfconfig.textstyles['bold'])
-                                pdf.cell(55,5,translations['contentlabel'].encode('iso-8859-1'),0,0,'L')
+                                pdf.cell(55, 5, translations['contentlabel'].encode('iso-8859-1'), 0, 0, 'L')
                                 pdf.set_font(*pdfconfig.textstyles['normal'])
-                                pdf.cell(60,5,feature['properties']['categorie'] .encode('iso-8859-1'),0,1,'L')
-                                
+                                pdf.cell(60, 5, feature['properties']['categorie'] .encode('iso-8859-1'), 0, 1, 'L')
+
                             elif feature['properties']['layerName'] == 'clo_couloirs':
                                 pdf.set_font(*pdfconfig.textstyles['bold'])
-                                pdf.cell(55,5,translations['contentlabel'].encode('iso-8859-1'),0,0,'L')
+                                pdf.cell(55, 5, translations['contentlabel'].encode('iso-8859-1'), 0, 0, 'L')
                                 pdf.set_font(*pdfconfig.textstyles['normal'])
-                                pdf.cell(60,5,feature['properties']['type'] .encode('iso-8859-1'),0,1,'L')
-                                
+                                pdf.cell(60, 5, feature['properties']['type'] .encode('iso-8859-1'), 0, 1, 'L')
+
                             elif feature['properties']['layerName'] == 'clo_cotes_altitude_surfaces':
                                 pdf.set_font(*pdfconfig.textstyles['bold'])
-                                pdf.cell(55,5,translations['contentlabel'].encode('iso-8859-1'),0,0,'L')
+                                pdf.cell(55, 5, translations['contentlabel'].encode('iso-8859-1'), 0, 0, 'L')
                                 pdf.set_font(*pdfconfig.textstyles['normal'])
-                                pdf.cell(60,5,str(feature['properties']['cote_alt_obstacles_minimum'] ).encode('iso-8859-1'),0,1,'L')
-                                
+                                pdf.cell(60, 5, str(feature['properties']['cote_alt_obstacles_minimum'] ).encode('iso-8859-1'), 0, 1, 'L')
+
                             elif feature['properties']['layerName'] in ['en07_canepo_accidents','en07_canepo_decharges_points','en07_canepo_decharges_polygones','en07_canepo_entreprises_points']:
                                 pdf.set_font(*pdfconfig.textstyles['bold'])
-                                pdf.cell(55,5,translations['contentlabel'].encode('iso-8859-1'),0,0,'L')
+                                pdf.cell(55, 5, translations['contentlabel'].encode('iso-8859-1'), 0, 0, 'L')
                                 pdf.set_font(*pdfconfig.textstyles['normal'])
-                                pdf.cell(60,5,unicode(feature['properties']['statut_osi'] ).encode('iso-8859-1'),0,1,'L')
-                                
+                                pdf.cell(60, 5, unicode(feature['properties']['statut_osi'] ).encode('iso-8859-1'), 0, 1, 'L')
+
+                            elif feature['properties']['layerName'] == 'ch.bazl.projektierungszonen-flughafenanlagen':
+                                pdf.set_font(*pdfconfig.textstyles['bold'])
+                                pdf.cell(55, 5, translations['contentlabel'].encode('iso-8859-1'), 0, 0, 'L')
+                                pdf.set_font(*pdfconfig.textstyles['normal'])
+                                pdf.cell(60, 5, unicode(feature['properties']['layer_id'] ).encode('iso-8859-1'), 0, 1, 'L')
+
                             else: 
                                 # Attributes of topic layers intersection
                                 for key, value in feature['properties'].iteritems():
@@ -306,13 +337,12 @@ def create_extract(request):
                 if topic.legalprovisions:
                     count = 0 
                     for provision in topic.legalprovisions:
-                        pdf.add_appendix(topic.topicid, count+1, unicode(provision.officialtitle).encode('iso-8859-1'), unicode(provision.legalprovisionurl).encode('iso-8859-1'))
-                        # update toc
+                        pdf.add_appendix(topic.topicid, 'A'+str(count+1), unicode(provision.officialtitle).encode('iso-8859-1'), unicode(provision.legalprovisionurl).encode('iso-8859-1'))
                         pdf.cell(0, 5, unicode(provision.officialtitle).encode('iso-8859-1'), 0, 1, 'L')
-                        #pdf.set_text_color(0, 0, 255)
+                        pdf.set_text_color(0, 0, 255)
                         pdf.set_x(80)
                         pdf.multi_cell(0, 6, unicode(provision.legalprovisionurl).encode('iso-8859-1'))
-                        #pdf.set_text_color(0, 0, 0)
+                        pdf.set_text_color(0, 0, 0)
                 else:
                         pdf.multi_cell(0, 6, unicode('None').encode('iso-8859-1'))
 
@@ -398,14 +428,15 @@ def create_extract(request):
             #~ pdf.multi_cell(0, 6, translations['placeholderlabel'])
 
         # Set the titles
-        if topic.layers :
-            if extract.restrictionList :
-                pdf.add_toc_entry(topic.topicid, pdf.page_no(), str(topic.topicname.encode('iso-8859-1')), 1, '')
-            else : 
-                pdf.add_toc_entry(topic.topicid,'', str(topic.topicname.encode('iso-8859-1')), 0,'')
-        else:
+        if not topic.layers and not extract.restrictionList :
             pdf.add_toc_entry(topic.topicid,'', str(topic.topicname.encode('iso-8859-1')), 2,'')
-
+                #~ pass
+                #~ #pdf.add_toc_entry(topic.topicid, pdf.page_no(), str(topic.topicname.encode('iso-8859-1')), 1, '')
+            #~ else : 
+                #~ pdf.add_toc_entry(topic.topicid,'', str(topic.topicname.encode('iso-8859-1')), 0,'')
+        #~ else:
+            #~ pdf.add_toc_entry(topic.topicid,'', str(topic.topicname.encode('iso-8859-1')), 2,'')
+    
     # Get the page count of all the chapters
     nb_pages_pdf =  len(pdf.pages)
     nb_pages_toc =  len(toc.pages)
@@ -420,13 +451,17 @@ def create_extract(request):
         pdf.set_margins(*pdfconfig.pdfmargins)
 
         # List of all topics with a restriction for the selected parcel 
-        for entry in pdf.toc_entries :
-            if entry['categorie'] == 1 :
+        for entry, column in pdf.toc_entries.iteritems() :
+            if column['categorie'] == 1 :
                 toc.set_font(*pdfconfig.textstyles['bold'])
-                toc.cell(12, 6, str(entry['no_page']), 'B', 0, 'L')
-                toc.cell(118, 6, str(entry['title']), 'LB', 0, 'L')
-                toc.cell(15, 6, str(''), 'LB', 0, 'L')
-                toc.cell(15, 6, str(''), 'LB', 1, 'L')
+                toc.cell(12, 6, str(column['no_page']), 'B', 0, 'L')
+                toc.cell(118, 6, str(column['title']), 'LB', 0, 'L')
+                if len(column['appendices']) > 0:
+                    appendices_list = set(column['appendices'])
+                    toc.cell(15, 6, ', '.join(appendices_list), 'LB', 0, 'C')
+                else:
+                    toc.cell(15, 6, '', 'LB', 0, 'L')
+                toc.cell(15, 6, '', 'LB', 1, 'L')
 
         toc.ln()
         toc.ln()
@@ -434,24 +469,24 @@ def create_extract(request):
         toc.multi_cell(0, 5, translations['notconcerndbyrestrictionlabel'], 'B', 1, 'L')
         toc.ln()
 
-        for entry in pdf.toc_entries :
-            if entry['categorie'] == 0 :
+        for entry, column in pdf.toc_entries.iteritems() :
+            if column['categorie'] == 0 :
                 toc.set_font(*pdfconfig.textstyles['tocbold'])
-                toc.cell(118, 6, str(entry['title']), '', 0, 'L')
-                toc.cell(15, 6, str(''), '', 0, 'L')
-                toc.cell(15, 6, str(''), '', 1, 'L')
+                toc.cell(118, 6, str(column['title']), '', 0, 'L')
+                toc.cell(15, 6, '', '', 0, 'L')
+                toc.cell(15, 6, '', '', 1, 'L')
                 
         toc.ln()
         toc.set_font(*pdfconfig.textstyles['tocbold'])
         toc.multi_cell(0, 5, translations['restrictionnotavailablelabel'], 'B', 1, 'L')
         toc.ln()
         
-        for entry in pdf.toc_entries :
-            if entry['categorie'] == 2 :
+        for entry, column in pdf.toc_entries.iteritems() :
+            if column['categorie'] == 2 :
                 toc.set_font(*pdfconfig.textstyles['tocbold'])
-                toc.cell(118,6,str(entry['title']),0,0,'L')
-                toc.cell(15,6,str(''),0,0,'L')
-                toc.cell(15,6,str(''),0,1,'L')
+                toc.cell(118,6,str(column['title']),0,0,'L')
+                toc.cell(15,6,'',0,0,'L')
+                toc.cell(15,6,'',0,1,'L')
 
         toc.ln()
         toc.set_font(*pdfconfig.textstyles['tocbold'])
@@ -462,6 +497,9 @@ def create_extract(request):
         toc.cell(15, 6, str(''), 0, 0, 'L')
         toc.cell(15, 6, str(''), 0, 1, 'L')
         #toc.cell(120,5,unicode('1 Les indications font référence à la position des annexes.', 'utf-8').encode('iso-8859-1'),0,1,'L')
+
+    tt = pdf.TOC()
+    ttt = pdf.Appendices()
 
     if pdf.appendix_entries :
         pdf.add_page()
@@ -474,7 +512,7 @@ def create_extract(request):
             appendices.set_x(40)
             appendices.set_font(*pdfconfig.textstyles['tocurl'])
             appendices.set_text_color(*pdfconfig.urlcolor)
-            appendices.multi_cell(0, 6, str(appendix['url']))
+            appendices.multi_cell(0, 5, str(appendix['url']))
             appendices.set_text_color(*pdfconfig.defaultcolor)
             index += index
 
