@@ -1,9 +1,10 @@
- /*
- * @requires GeoExt/data/FeatureStore.js
- * @requires GeoExt/data/FeatureReader.js
- * @include Crdppf/searcher/GroupComboBox.js
- * @include Crdppf/searcher/GroupingView.js
- */
+/*
+- * @requires GeoExt/data/FeatureStore.js
+- * @requires GeoExt/data/FeatureReader.js
+- * @include Crdppf/searcher/GroupComboBox.js
+- * @include Crdppf/searcher/GroupingView.js
+- */
+
 Ext.namespace('Crdppf');
 
 Crdppf.SearchBox = function(options) {
@@ -31,19 +32,19 @@ Crdppf.SearchBox = function(options) {
 
     var store = new FeatureGroupingStore({
         proxy: new Ext.data.ScriptTagProxy({
-            url: 'http://sitn.ne.ch/mapfish/search',
+            url: 'http://sitn.ne.ch/production/wsgi/fulltextsearch',
             callbackParam: 'callback'
         }),
         reader: new Crdppf.FeatureReader({
             format: new OpenLayers.Format.GeoJSON()
         }, [
-            { name: 'source' },
-            { name: 'searchfield' }
+            { name: 'layer_name' },
+            { name: 'label' }
         ]),
-        fields: ['source', 'searchfield'],
-        sortInfo: {field: 'source', direction: 'ASC'},
+        fields: ['layer_name', 'label'],
+        sortInfo: {field: 'layer_name', direction: 'ASC'},
         groupOnSort: true,
-        groupField: 'source',
+        groupField: 'layer_name',
         baseParams: baseParams
     }); 
 
@@ -55,11 +56,11 @@ Crdppf.SearchBox = function(options) {
         enableKeyEvents: true,
         minChars: 3,
         queryDelay: 50, 
-        emptyText: labels['searchBoxEmptyTxt'],
+        emptyText: OpenLayers.i18n('Rechercher...'),
         loadingText: OpenLayers.i18n('loadingText'),
-        displayField: 'searchfield',
-        groupingField: 'source',
-        width:250
+        displayField: 'label',
+        groupingField: 'layer_name',
+        width: 200 
     }); 
 
     var onBeforeLoadStore = function(store, options) {
@@ -112,7 +113,6 @@ Crdppf.SearchBox = function(options) {
             map.zoomToExtent(bbox);
             if (map.getScale() < 400) {
                 map.setCenter(bbox.getCenterLonLat(), 12);
-                centerPanel.setActiveTab(0);
             }
         }
     };

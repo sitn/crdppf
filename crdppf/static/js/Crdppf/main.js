@@ -24,6 +24,7 @@ Ext.onReady(function() {
         success: function(response) {
             var lang_json = Ext.decode(response.responseText);
             lang = lang_json['lang'];
+            OpenLayers.Lang.setCode(lang);
             Crdppf.init_main(lang);
         },
         method: 'POST',

@@ -49,3 +49,19 @@ Crdppf.labelsFr  ={
     'zoomInButtonTlp':'Zoom avant',
     'zoomOutButtonTlp':'Zoom arrière',
     };
+
+OpenLayers.Util.extend(OpenLayers.Lang.fr, {
+    'adresses_sitn':'Adresses',
+    'axe_rue':'Axes et rues',
+    'nom_local_lieu_dit':'Noms locaux et lieux-dits',
+    'search_arrets_tp':'Arrêts transports publics',
+    'search_cours_eau':'Cours d\'eau',
+    'search_axes_rtes':'Routes et axes',
+    'search_satac':'N° SATAC',
+    'search_uap_publique':'Unité d\'aménagement publique',
+    'search_fo_administrations':'Administrations forestières',
+    'ImmeublesCanton':'Biens-fonds',
+    'ImmeublesCantonHistorique':'Biens-fonds historiques',
+    'batiments_ofs':'Bâtiments regBL et n° egid',
+    'point_interet':'Points d\'intérêt'
+});
