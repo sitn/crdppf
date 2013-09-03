@@ -4,7 +4,7 @@ Ext.form.GroupingView = Ext.extend(Ext.DataView, {
     /**
      * @cfg {String} groupTextTpl The template used to render the group text
      */
-    groupTextTpl : '{text}',
+    groupTextTpl : '{[OpenLayers.i18n(values.text)]}',
     groupTpl: null,
     itemTpl: null,
     

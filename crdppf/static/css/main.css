@@ -308,6 +308,11 @@ body {
 .legendPanelCls .x-panel-body {
 }
 
-
+/*fulltextsearch group */
+.x-combo-list-group {
+    background-color: #DFDFDF;
+    font-weight: bold;
+    padding: 4px 0;
+}
 
 
