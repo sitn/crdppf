@@ -1,4 +1,4 @@
-﻿Ext.namespace('Crdppf');
+Ext.namespace('Crdppf');
 
 // Themes structure and content definition
 Crdppf.layerListDe = {
@@ -50,16 +50,16 @@ Crdppf.labelsDe  ={
 
 OpenLayers.Util.extend(OpenLayers.Lang.de, {
     'adresses_sitn':'Adressen',
-    'axe_rue':'TODO',
-    'nom_local_lieu_dit':'TODO',
-    'search_arrets_tp':'TODO',
-    'search_cours_eau':'TODO',
-    'search_axes_rtes':'TODO',
-    'search_satac':'TODO',
-    'search_uap_publique':'TODO',
-    'search_fo_administrations':'TODO',
-    'ImmeublesCanton':'TODO',
-    'ImmeublesCantonHistorique':'TODO',
-    'batiments_ofs':'TODO',
-    'point_interet':'TODO'
+    'axe_rue':'Strassennamen',
+    'nom_local_lieu_dit':'Flurname, Geländename',
+    'search_arrets_tp':'Haltestellen ÖV',
+    'search_cours_eau':'Flüsse, Bäche',
+    'search_axes_rtes':'Verkehrsachsen',
+    'search_satac':'Baubewilligungen',
+    'search_uap_publique':'Öffentliche Forsteinheiten',
+    'search_fo_administrations':'Forstverwaltungen',
+    'ImmeublesCanton':'Grundstücke',
+    'ImmeublesCantonHistorique':'Historische Grundstücke',
+    'batiments_ofs':'BFS-Gebäudenummern',
+    'point_interet':'Öffentl. Gebäude, Sehenswürdigkeiten'
 });
