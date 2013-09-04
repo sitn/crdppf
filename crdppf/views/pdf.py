@@ -368,10 +368,8 @@ def create_extract(request):
                 for temp_provision in topic.temporaryprovisions:
                     pdf.multi_cell(0, 6, unicode(temp_provision.officialtitle).encode('iso-8859-1'), 0, 1, 'L')
                     if temp_provision.temporaryprovisionurl :
-                        #pdf.set_text_color(0, 0, 255)
                         pdf.set_x(80)
                         pdf.multi_cell(0, 6, unicode(temp_provision.temporaryprovisionurl).encode('iso-8859-1'))
-                        #pdf.set_text_color(0, 0, 0)
             else:
                     pdf.multi_cell(0, 6, unicode('None','utf-8').encode('iso-8859-1'), 0, 1, 'L')
 
@@ -393,15 +391,6 @@ def create_extract(request):
             if topic.authority.authoritywww is not None:
                 pdf.cell(55, 3.9, str(' '), 0, 0, 'L')
                 pdf.cell(120, 3.9, translations['webadresslabel']+topic.authority.authoritywww.encode('iso-8859-1'),0,1,'L')        
-            #~ if topic.authority.authoritystreet1 is not None:
-                #~ pdf.cell(55,3.9,str(' '),0,0,'L')
-                #~ pdf.cell(120,3.9,topic.authority.authoritystreet1.encode('iso-8859-1'),0,1,'L')
-            #~ if topic.authority.authoritystreet2 is not None:
-                #~ pdf.cell(55,3.9,str(' '),0,0,'L')
-                #~ pdf.cell(120,3.9,topic.authority.authoritystreet2.encode('iso-8859-1'),0,1,'L')
-            #~ if topic.authority.authorityzip is not None and topic.authority.authoritycity is not None :
-                #~ pdf.cell(55,3.9,str(' '),0,0,'L')
-                #~ pdf.cell(120,3.9,str(topic.authority.authorityzip).encode('iso-8859-1') +str(' ') +topic.authority.authoritycity.encode('iso-8859-1'),0,1,'L')
             
             # Legal bases/Bases légales/Gesetzliche Grundlagen
             y = pdf.get_y()
@@ -415,27 +404,9 @@ def create_extract(request):
             else:
                 pdf.multi_cell(0, 6, translations['placeholderlabel'])
 
-            #~ # Transitional provisions/Dispositions transitoires/Übergangsbestimmungen
-            #~ y = pdf.get_y()
-            #~ pdf.set_y(y+5)
-            #~ pdf.set_font(*pdfconfig.textstyles['bold'])
-            #~ pdf.cell(55, 6, translations['transitionalprovisionslabel'], 0, 0, 'L')
-            #~ pdf.set_font(*pdfconfig.textstyles['normal'])
-            #~ if topic.transitionalprovisions:
-            #~     for transitionalprovision in topic.transitionalprovisions:
-            #~         pdf.multi_cell(0, 6, str(topic.transitionalprovisions).encode('iso-8859-1')), 0, 1, 'L')
-            #~    else:
-            #~ pdf.multi_cell(0, 6, translations['placeholderlabel'])
-
         # Set the titles
         if not topic.layers and not extract.restrictionList :
             pdf.add_toc_entry(topic.topicid,'', str(topic.topicname.encode('iso-8859-1')), 2,'')
-                #~ pass
-                #~ #pdf.add_toc_entry(topic.topicid, pdf.page_no(), str(topic.topicname.encode('iso-8859-1')), 1, '')
-            #~ else : 
-                #~ pdf.add_toc_entry(topic.topicid,'', str(topic.topicname.encode('iso-8859-1')), 0,'')
-        #~ else:
-            #~ pdf.add_toc_entry(topic.topicid,'', str(topic.topicname.encode('iso-8859-1')), 2,'')
     
     # Get the page count of all the chapters
     nb_pages_pdf =  len(pdf.pages)
@@ -496,7 +467,6 @@ def create_extract(request):
         toc.cell(118, 6, translations['norestrictionlabel'], 0, 0, 'L')
         toc.cell(15, 6, str(''), 0, 0, 'L')
         toc.cell(15, 6, str(''), 0, 1, 'L')
-        #toc.cell(120,5,unicode('1 Les indications font référence à la position des annexes.', 'utf-8').encode('iso-8859-1'),0,1,'L')
 
     tt = pdf.TOC()
     ttt = pdf.Appendices()
