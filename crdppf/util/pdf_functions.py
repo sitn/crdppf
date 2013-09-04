@@ -4,8 +4,9 @@ from owslib.wms import WebMapService
 import pkg_resources
 from datetime import datetime
 import urllib
+from PIL import Image
 
-from crdppf.util.pdf_classes import Objectify, ExtractPDF
+from crdppf.util.pdf_classes import ExtractPDF
 
 from crdppf.models import *
 
@@ -171,6 +172,10 @@ def getMap(restriction_layers,topicid,crdppf_wms,map_params,pdf_format):
     """Produces the map and the legend for each layer of an restriction theme
     """
 
+    # API GEO ADMIN EXAMPLE:
+    # https://api.geo.admin.ch/feature/search?lang=en&layers=ch.bazl.projektierungszonen-flughafenanlagen&bbox=680585,255022,686695,259952&cb=Ext.ux.JSONP.callback
+
+
     # Name of the pdf file - should be individualized with a timestamp or ref number
     pdf_name = 'extract'
     # Path to the output folder of the pdf
@@ -215,20 +220,37 @@ def getMap(restriction_layers,topicid,crdppf_wms,map_params,pdf_format):
     # temp var for the path to the created legend
     legend_path = []
 
+    if topicid == '103':
+        # store the cadastral plan WMS parameters to overlay with federal data further on
+        baselayers = layers
+        baseurl = crdppf_wms
+
+        layers = [
+            'ch.bazl.projektierungszonen-flughafenanlagen',
+            'ch.bazl.sachplan-infrastruktur-luftfahrt_kraft'
+        ]
+        crdppf_wms = 'http://wms.geo.admin.ch/'
+
     # Adding each layer of the restriction to the WMS
     for layer in restriction_layers:
         # Compile the layer list for the wms
         layers.append(layer.layername)
 
         # in the same time create the legend graphic for each layer and write it to disk
-        legend = open(temp_path+str('legend_')+str(layer.layername)+'.png', 'wb')
+        if topicid == '103':
+            legend = open(temp_path+str('legend_')+str('103')+'.png', 'wb')
+        else:
+            legend = open(temp_path+str('legend_')+str(layer.layername)+'.png', 'wb')
         img = urllib.urlopen(crdppf_wms+ \
-            str('?TRANSPARENT=TRUE&SERVICE=WMS&VERSION=1.1.1&REQUEST=GetLegendGraphic&FORMAT=image%2Fpng&LAYER=' \
+            str('?TRANSPARENT=TRUE&SERVICE=WMS&VERSION=1.1.1&REQUEST=GetLegendGraphic&FORMAT=image%2Fpng; mode=8bit&LAYER=' \
             +str(layer.layername)))
 
         legend.write(img.read())
         legend.close()
-        legend_path.append(temp_path+str('legend_')+str(layer.layername))
+        if topicid == '103':
+            legend_path.append(temp_path+str('legend_')+str('103'))
+        else:
+            legend_path.append(temp_path+str('legend_')+str(layer.layername))
 
     # to recenter the map on the bbox of the feature, compute the best scale and add at least 10% of space we calculate a wmsBBOX
     wmsBBOX = {}
@@ -239,25 +261,65 @@ def getMap(restriction_layers,topicid,crdppf_wms,map_params,pdf_format):
     wmsBBOX['maxX'] = int(wmsBBOX['centerX']+(pdf_format['width']*scale/1000/2))
     wmsBBOX['minY'] = int(wmsBBOX['centerY']-(pdf_format['height']*scale/1000/2))
     wmsBBOX['maxY'] = int(wmsBBOX['centerY']+(pdf_format['height']*scale/1000/2))
+    wmsbbox = [wmsBBOX['minX'], wmsBBOX['minY'], wmsBBOX['maxX'], wmsBBOX['maxY']]
 
     # call the WMS and write the map to file
     wms = WebMapService(crdppf_wms, version='1.1.1')
+    imgformat = 'image/png; mode=24bit'
 
-    map = wms.getmap(
-        layers=layers,
-        srs='EPSG:21781',
-        bbox=(wmsBBOX['minX'],wmsBBOX['minY'],wmsBBOX['maxX'],wmsBBOX['maxY']),
-        size=(map_params['width'], map_params['height']),
-        format='image/png',
-        transparent=False
-    )
+    if topicid == '103':
+        basewms = WebMapService(baseurl, version='1.1.1')
+        #~ # BBOX Airport ZH Kloten
+        #~ wmsbbox = [680585, 255022, 686695, 259952]
+        basemap = basewms.getmap(
+            layers = baselayers,
+            srs = 'EPSG:21781',
+            bbox = (wmsBBOX['minX'], wmsBBOX['minY'], wmsBBOX['maxX'], wmsBBOX['maxY']),
+            size = (map_params['width'], map_params['height']),
+            format = 'image/png',
+            transparent = False
+        )
+        out1 = open(temp_path+pdf_name+str('baselayer')+'.png', 'wb')
+        out1.write(basemap.read())
+        out1.close()
 
-    out = open(temp_path+pdf_name+str(topicid)+'.png', 'wb')
-    out.write(map.read())
-    out.close()
+        overlay = wms.getmap(
+            layers = layers,
+            srs = 'EPSG:21781',
+            bbox = (wmsBBOX['minX'], wmsBBOX['minY'], wmsBBOX['maxX'], wmsBBOX['maxY']),
+            size = (map_params['width'], map_params['height']),
+            format = 'image/png; mode=24bit',
+            transparent = True
+        )
+        out2 = open(temp_path+pdf_name+str('overlay')+'.png', 'wb')
+        out2.write(overlay.read())
+        out2.close()
+
+        background = Image.open(temp_path+pdf_name+str('baselayer')+'.png')
+        foreground = Image.open(temp_path+pdf_name+str('overlay')+'.png')
+
+        background.paste(foreground, (0, 0), foreground)
+        background.convert('RGB').convert('P', colors=256, palette=Image.ADAPTIVE)
+        background.save(temp_path + pdf_name + str(topicid) + '.png')
+
+    else:
+        map = wms.getmap(
+            layers = layers,
+            srs = 'EPSG:21781',
+            bbox = (wmsBBOX['minX'], wmsBBOX['minY'], wmsBBOX['maxX'], wmsBBOX['maxY']),
+            size = (map_params['width'], map_params['height']),
+            format = imgformat,
+            transparent = False
+        )
+
+        out = open(temp_path+pdf_name+str(topicid)+'.png', 'wb')
+        out.write(map.read())
+        out.close()
+
     mappath = temp_path + pdf_name + str(topicid) + '.png'
-        
+
     return mappath, legend_path
+    
 
 def getAppendices(commune, pdfconfig, translations):
 
@@ -300,7 +362,7 @@ def getTOC(commune, pdfconfig, translations):
     y = toc_pages.get_y()
     x = toc_pages.get_x()
     toc_pages.rotate(90)
-    toc_pages.text(x-4, y+8, translations['legalprovisionslabel'].replace(' ', '\n'))
+    toc_pages.text(x-4, y+8, translations['legalprovisionslabel'])
     toc_pages.text(x-4, y+23, translations['referenceslabel'])
     toc_pages.rotate(0)
     toc_pages.cell(15, 5, '', 'LB', 0, 'L')
@@ -314,7 +376,7 @@ def getTitlePage(feature_info, crdppf_wms, nomcom, commune, pdfconfig, translati
 
     # the dictionnary for the document
     reportInfo = {}
-    reportInfo['type'] = '[officiel]'
+    reportInfo['type'] = '[reducedcertified]'
 
     # the dictionnary for the parcel
     feature_info['no_EGRID'] = 'to be defined'
