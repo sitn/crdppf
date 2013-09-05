@@ -35,8 +35,10 @@ def main(global_config, **settings):
     config.add_route('get_features', 'get_features')
     config.add_route('set_language', 'set_language')
     config.add_route('get_language', 'get_language')
-    config.add_route('crdppf', 'crdppf')
     config.add_route('test', 'test')
+    config.add_route('formulaire_reglements', 'formulaire_reglements')
+    config.add_route('getCadastreList', 'getCadastreList')
+    config.add_route('createNewDocEntry', 'createNewDocEntry')
     config.add_route('map', 'map')
 
     config.add_route('globalsjs', '/globals.js')
@@ -46,7 +48,7 @@ def main(global_config, **settings):
     # VIEWS
     config.add_view('crdppf.views.entry.Entry', route_name = 'home')
     config.add_view('crdppf.views.entry.Entry', route_name = 'images')
-    config.add_view('crdppf.views.entry.Entry', route_name='crdppf')
+    config.add_view('crdppf.views.entry.Entry', route_name='formulaire_reglements')
     config.add_view('crdppf.views.entry.Entry', route_name='test')
 
     config.scan()
