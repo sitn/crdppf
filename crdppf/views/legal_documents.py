@@ -34,15 +34,10 @@ def getCadastreList(request):
 
 @view_config(route_name='createNewDocEntry', renderer='json')
 def createNewDocEntry(request):
-    # Attention il faut que www-data puisse écrire dans la table et d'1, mais aussi que l'utilisateur a le droit sur la SEQUENCE dans PG
+    # Attention il faut que l'utilisateur puisse écrire dans la table et d'1, mais aussi qu'il ait le droit sur la SEQUENCE dans PG
     # Généralement si erreur 'waitress' > problème avec PG/droits dans PG
     session = request.session
-    #~ try:
-        #~ session['role']
-    #~ except KeyError :
-        #~ return HTTPForbidden()
-    #~ if int(session['role']) != 1 or session['login'] == False:
-        #~ return HTTPForbidden()
+    #~ Add login to check user
     data = sloads(request.POST['data'])
     
     document = Documents()

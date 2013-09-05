@@ -1,13 +1,3 @@
-/*!
- * Ext JS Library 3.4.0
- * Copyright(c) 2006-2011 Sencha Inc.
- * licensing@sencha.com
- * http://www.sencha.com/license
- */
-
-//
-// This is the main layout definition.
-//
 Ext.onReady(function(){
 	
 	Ext.QuickTips.init();
@@ -18,7 +8,7 @@ Ext.onReady(function(){
     
      var fillform = function(response) {
         var results = Ext.decode(response.responseText);
-        combostore.add(results) 
+        combostore.add(results); 
     };
  
     var combostore = new Ext.data.JsonStore({
@@ -26,10 +16,6 @@ Ext.onReady(function(){
         autoLoad: true,
         url: 'getCadastreList',
         idProperty: 'idobj',
-      /*  sortInfo: {
-            field: 'geom_description',
-            direction: 'ASC'
-        },*/
         fields:[
             {name: 'idobj'},
             {name: 'numcad', type:'integer'},
@@ -169,7 +155,7 @@ Ext.onReady(function(){
                         ['En cours de modification']
                     ]
                 }),
-                displayField: 'status',   // what the user sees in the popup
+                displayField: 'status',   
                 selectOnFocus: true,
                 mode: 'local',
                 triggerAction: 'all',
@@ -227,15 +213,11 @@ Ext.onReady(function(){
 
         buttons: [{
             text: 'Enregistrer',
-            //formBind:true,
             handler: function(){
-                //~ if (Ext.getCmp('numcad').getValue()==0) {
-                    //~ alert('Les adresses email sont différentes!');
-                    //~ return;
-                //~ }
+                //~ add form validation
                 var formvalues =formulaire.getForm().getValues();
                 winWait.show();
-                var ttt=Ext.Ajax.request({
+                var transaction =Ext.Ajax.request({
                     url: 'createNewDocEntry',
                     method: 'POST',
                     params:{
@@ -243,11 +225,11 @@ Ext.onReady(function(){
                     },
                     success:function(result,request) {
                         winWait.hide();
-                        alert('Les données ont été enregistrées');
+                        Ext.Msg.alert('Confirmation','Les données ont été enregistrées');
                     },
                     failure: function () {
                         winWait.hide();
-                        alert('Problème de serveur, veuillez contacter l\'administrateur.');
+                        Ext.Msg.alert('Error','Problème de serveur, veuillez contacter l\'administrateur.');
                     }
                 });
             }
