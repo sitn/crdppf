@@ -10,20 +10,20 @@ class Entry(object):
         self.settings = request.registry.settings
         self.request = request
     
-    @view_config(route_name='home', renderer = '/base/index.mako')
+    @view_config(route_name='home', renderer = '/derived/crdppf.mako')
     def home(self):
         d = {
             'debug': self.debug
         }
         return d
 
-    @view_config(route_name='crdppf',renderer = '/derived/crdppf.mako')
-    def crdppf(self):
+    @view_config(route_name='formulaire_reglements',renderer = '/derived/formulaire_reglements.mako')
+    def formulaire_reglements(self):
         d = {
             'debug': self.debug
         }
-        return d    
-    
+        return d
+
     @view_config(route_name='test',renderer = '/derived/test.mako')
     def test(self):
         d = {
