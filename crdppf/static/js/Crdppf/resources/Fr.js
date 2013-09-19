@@ -24,7 +24,7 @@ Crdppf.labelsFr  ={
     'legalBasisTab':'Bases légales',
     'layerTreeTitle':'Arbre des couches',
     'selectAllLayerLabel':'Sélectionner toutes les couches',
-    'lawTabLabel':'Dispositions légales',
+    'lawTabLabel':'Dispositions juridiques',
     'additionnalInfoTab':'Informations et renvois supplémentaires',
     'infoTabLabel':'Informations',
     'legendPanelTitle':'Légende',
