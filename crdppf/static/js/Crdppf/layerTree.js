@@ -133,7 +133,7 @@ var makeLayerTree = function makeLayertree(){
     
     // create nodes for base layers
     
-    var baseLayers = Crdppf.baseLayersFr.baseLayers;
+    var baseLayers = baseLayersList.baseLayers;
     
     // iterate over base layers and create nodes
     for (i=0;i<baseLayers.length;i++){

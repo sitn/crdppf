@@ -15,6 +15,14 @@ Crdppf.layerListDe = {
         ]
     };
     
+Crdppf.baseLayersDe = { 
+        'baseLayers':[
+            {'id': '1', 'image': 'plan_cadastral.png', 'name': 'Plan cadastral', 'wmtsname': 'plan_cadastral_c2c'},
+            {'id': '2', 'image': 'plan_cadastral.png', 'name': 'Orthophoto', 'wmtsname': 'ortho2011'},
+            {'id': '3', 'image': 'plan_cadastral.png', 'name': 'Plan de ville', 'wmtsname': 'plan_ville_c2c'}
+        ]
+};
+    
 // Application labels text values for french
 Crdppf.labelsDe  ={
     'navPanelLabel':'Navigation',

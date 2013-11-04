@@ -43,9 +43,11 @@ Crdppf.init_main = function(lang) {
     if(lang=='Fr'){
         labels = Crdppf.labelsFr;
         layerList = Crdppf.layerListFr;
+        baseLayersList = Crdppf.baseLayersFr;
     }else if(lang=='De'){
         labels = Crdppf.labelsDe;
         layerList = Crdppf.layerListDe;
+        baseLayersList = Crdppf.baseLayersDe;
     }
     
     Ext.QuickTips.init();
