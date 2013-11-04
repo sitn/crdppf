@@ -25,6 +25,11 @@ Crdppf.SearchBox = function(options) {
         var el = options.div;
         delete options.div;
     }
+    if (options.url) {
+        var url = options.url;
+        delete options.url;
+    }
+
     // extending GroupingStore with FeatureStoreMixin to get grouping/sorting
     // with a featureStore
     var FeatureGroupingStore = Ext.extend(
@@ -32,7 +37,7 @@ Crdppf.SearchBox = function(options) {
 
     var store = new FeatureGroupingStore({
         proxy: new Ext.data.ScriptTagProxy({
-            url: 'http://sitn.ne.ch/production/wsgi/fulltextsearch',
+            url: url,
             callbackParam: 'callback'
         }),
         reader: new Crdppf.FeatureReader({

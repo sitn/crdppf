@@ -14,6 +14,7 @@ sqlalchemy.url = postgresql://${vars:dbuser}:${vars:dbpassword}@${vars:dbhost}:$
 
 crdppf_wms = ${vars:crdppf_wms}
 default_language = ${vars:default_language}
+fulltextsearch_url = ${vars:fulltextsearch_url}
 
 [server:main]
 use = egg:waitress#main
