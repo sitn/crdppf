@@ -82,6 +82,25 @@ Crdppf.init_main = function(lang) {
         }
     });
     
+    // clearSelection button: empty the current selection
+    var clearSelectionButton = new Ext.Button({
+        xtype: 'button',
+        tooltip: labels.infoButtonTlp,
+        margins: '0 0 0 20',
+        id: 'clearSelectionButton',
+        width: 40,
+        enableToggle: false,
+        iconCls: 'crdppf_clearselectionbutton',
+        listeners:{
+            click: function (){
+                var selectionLayer = MapO.map.getLayer('selectionLayer');
+                selectionLayer.removeAllFeatures();
+                MapO.disableInfoControl();
+                infoButton.toggle(false);
+            }                  
+        }
+    });
+    
     // generate the pdf file of the current map
     var printButton = new Ext.Button({
         xtype: 'button',
@@ -95,7 +114,7 @@ Crdppf.init_main = function(lang) {
                     window.open(Crdppf.printUrl + '?id=' + select.features[0].attributes.idemai);
                 }
                 else {
-                    alert(labels.noSelectedParcelMessage);
+                    Ext.Msg.alert(labels.infoMsgTitle, labels.noSelectedParcelMessage);
                 }
             }
         }
@@ -220,6 +239,7 @@ Crdppf.init_main = function(lang) {
     cls: 'map-toolbar',
     items: [panButton,
         infoButton,
+        clearSelectionButton,
         printButton,
         zoomInButton,
         zoomOutButton
@@ -299,6 +319,7 @@ Crdppf.init_main = function(lang) {
         split: true,
         collapseMode: 'mini',
         width: 250,
+        boxMinWidth: 225,
         items:[searchPanel,themeSelector,layerTree],
         layoutConfig: {
             align: 'stretch'
@@ -328,7 +349,9 @@ Crdppf.init_main = function(lang) {
         draggable:false,
         id:'rootNode'
     });
+    
     featureTree.setRootNode(root);
+    
     var layerStore = new GeoExt.data.LayerStore({
         map: MapO.map
     });
@@ -338,6 +361,8 @@ Crdppf.init_main = function(lang) {
         map: MapO.map,
         cls:'legendPanelCls',
         title: labels.legendPanelTitle,
+        height: 400,
+        autoScroll: true,
         defaults: {
             style: 'padding:5px',
             baseParams: {

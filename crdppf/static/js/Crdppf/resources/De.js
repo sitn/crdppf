@@ -18,8 +18,10 @@ Crdppf.layerListDe = {
 // Application labels text values for french
 Crdppf.labelsDe  ={
     'navPanelLabel':'Navigation',
+    'infoMsgTitle': 'Info',
     'searchBoxTxt':'Suche...',
     'themeSelectorLabel':'Themenwahl',
+    'waitMessage': 'Daten werden geladen...',
     'mapContainerTab':'Karte',
     'legalBasisTab':'Gesetzliche Grundlagen',
     'layerTreeTitle':'Daten',
@@ -46,6 +48,8 @@ Crdppf.labelsDe  ={
     'panButtonTlp':'Déplacement de la carte',
     'zoomInButtonTlp':'Zoom avant',
     'zoomOutButtonTlp':'Zoom arrière',
+    'infoButtonTlp': 'Auswahl löschen',
+    'baseLayerGroup': 'Grundkarte'
 };
 
 OpenLayers.Util.extend(OpenLayers.Lang.de, {

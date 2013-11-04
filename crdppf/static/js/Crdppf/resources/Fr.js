@@ -15,15 +15,25 @@ Crdppf.layerListFr = {
         ]
     };
     
+Crdppf.baseLayersFr = { 
+        'baseLayers':[
+            {'id': '1', 'image': 'plan_cadastral.png', 'name': 'Plan cadastral', 'wmtsname': 'plan_cadastral_c2c'},
+            {'id': '2', 'image': 'plan_cadastral.png', 'name': 'Orthophoto', 'wmtsname': 'ortho2011'},
+            {'id': '3', 'image': 'plan_cadastral.png', 'name': 'Plan de ville', 'wmtsname': 'plan_ville_c2c'}
+        ]
+};
+ 
 // Application labels text values for french  
 Crdppf.labelsFr  ={
     'navPanelLabel':'Navigation',
+    'infoMsgTitle': 'Info',
     'searchBoxTxt':'Rechercher...',
-    'themeSelectorLabel':'Sélection des thèmes',
+    'themeSelectorLabel':'Thématique CRDPFF',
+    'waitMessage': 'Chargement des données...',
     'mapContainerTab':'Carte',
     'legalBasisTab':'Bases légales',
     'layerTreeTitle':'Arbre des couches',
-    'selectAllLayerLabel':'Sélectionner toutes les couches',
+    'selectAllLayerLabel':'Restrictions',
     'lawTabLabel':'Dispositions juridiques',
     'additionnalInfoTab':'Informations et renvois supplémentaires',
     'infoTabLabel':'Informations',
@@ -42,13 +52,16 @@ Crdppf.labelsFr  ={
     'withinToolTipMessage':'Relation spatiale: à l\'intérieur de',
     'adjacentToolTipMessage':'Relation spatiale: touche',
     'printPdfWindowsTitle': 'Extraction au format pdf',
-    'noSelectedParcelMessage': 'Sélectionner d\'abord une parcelle !',
+    'noSelectedParcelMessage': 'Sélectionnez d\'abord une parcelle !',
     'printButtonTlp':'Générer l\'extrait',
     'infoButtonTlp':'Interroger les restrictions',
     'panButtonTlp':'Déplacement de la carte',
     'zoomInButtonTlp':'Zoom avant',
     'zoomOutButtonTlp':'Zoom arrière',
+    'infoButtonTlp': 'Effacer la sélection actuelle',
+    'baseLayerGroup': 'Fonds de plan'
     };
+   
 
 OpenLayers.Util.extend(OpenLayers.Lang.fr, {
     'adresses_sitn':'Adresses',

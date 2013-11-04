@@ -9,7 +9,6 @@ var makeThemeSelector = function makeThemeSelector(){
     var myReader = new Ext.data.JsonReader({
         idProperty: 'id',
         root: 'themes',
-        //Ext.data.DataReader.messageProperty: 'msg',
         fields: [
             {name: 'name', mapping: 'name'},
             {name: 'image', mapping: 'image'}
@@ -26,22 +25,24 @@ var makeThemeSelector = function makeThemeSelector(){
         store: myStore,
         hideHeaders: true,
         autoWidth: true,
+        boxMinWidth: 100,
         expanded: true,
         singleSelect : true,
         flex: 1.0,
         emptyText: 'No images to display',
         reserveScrollOffset: true,
         columns: [
-            {header:'icon',
-             width: 0.15,
-             dataIndex: 'image',
-             tpl: '<img src=' + Crdppf.imagesDir + '/themes/{image}'+ ' width=50 height=25></img>'
+            {
+                header:'icon',
+                width: 0.25,
+                dataIndex: 'image',
+                tpl: '<img src=' + Crdppf.imagesDir + '/themes/{image}'+ ' width=50 height=25></img>'
             },
             {
-            header: 'Thèmes',
-            width: 0.85,
-            dataIndex: 'name',
-            tpl: '<p style="padding-top:6px">{name}</p>'
+                header: 'Thèmes',
+                width: 0.75,
+                dataIndex: 'name',
+                tpl: '<p style="padding-top:6px">{name}</p>'
             }
             ],
         listeners:{
