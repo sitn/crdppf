@@ -133,7 +133,6 @@ var setInfoControl = function setInfoControl(){
                                     var sameLayerNode = new Ext.tree.TreeNode({
                                         singleClickExpand: true,
                                         attributes: jsonData[j],
-                                        // cls: nodeCss,
                                         text: labels.restrictionFoundTxt + (j+1) + String(jsonData[j].data.intersectionMeasure),
                                         draggable:false,
                                         leaf: false,
