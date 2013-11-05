@@ -451,9 +451,11 @@ Crdppf.init_main = function(lang) {
             mapContainer,
             {
                 title: labels.legalBasisTab,
+                autoScroll: true,
+                /*html: Crdppf.legalDocuments() */
                 autoLoad : {
                     tag: 'iframe',
-                    url : 'http://www.geobasisdaten.ch/index.php?lang=fr&loc=CH&s=data&data=73/'
+                    url : 'static/public/bases_legales.html'
                 }
             }]
     });

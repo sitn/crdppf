@@ -326,7 +326,8 @@ class Extract(FPDF):
             'mo4_pfp_3',
             'mo4_pfp_1_2',
             'la3_limites_communales',
-            'mo22_batiments'
+            'mo22_batiments',
+            'r157_lim_foret'
         ]
 
         scale = self.printformat['scale']*2

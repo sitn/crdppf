@@ -32,7 +32,9 @@ def get_features_function(params):
         'en07_canepo_entreprises_polygones': PollutedSitesCompaniesPoly,
         'at28_limites_constructions': ConstructionsLimits,
         'en05_degres_sensibilite_bruit': RoadNoise,
-        'en01_zone_sect_protection_eaux': Zoneprotection
+        'en01_zone_sect_protection_eaux': Zoneprotection,
+        'r157_lim_foret':ForestLimits,
+        #'r159_dist_foret':ForestDistances
     }
 
     parcelId = params['id']

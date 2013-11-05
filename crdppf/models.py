@@ -97,12 +97,6 @@ class NomLocalLieuDit(GeoInterface,Base):
     __table_args__ = {'schema': 'public', 'autoload': True}
     idcnlo = Column(String(30), primary_key=True)
     geom =GeometryColumn(Geometry(2,srid=21781))
-
-class Zoneprotection(GeoInterface,Base):
-    __tablename__ = 'en01_zone_sect_protection_eaux'
-    __table_args__ = {'schema': 'environnement', 'autoload': True}
-    idobj = Column(String(40), primary_key=True)
-    geom = GeometryColumn(Geometry(srid=21781))
     
 # STOP models used for static extraction and general models
 
@@ -138,6 +132,12 @@ class ConstructionsLimits(GeoInterface,Base):
     
 class ForestLimits(GeoInterface,Base):
     __tablename__ = 'r157_lim_foret'
+    __table_args__ = {'schema': 'crdppf_minimal', 'autoload': True}
+    idobj = Column(Integer, primary_key=True)
+    geom =GeometryColumn(Geometry(2,srid=21781))
+    
+class ForestDistances(GeoInterface,Base):
+    __tablename__ = 'r159_dist_foret'
     __table_args__ = {'schema': 'crdppf_minimal', 'autoload': True}
     idobj = Column(Integer, primary_key=True)
     geom =GeometryColumn(Geometry(2,srid=21781))
@@ -201,9 +201,23 @@ class PollutedSitesCompaniesPoly(GeoInterface,Base):
     geom =GeometryColumn(Geometry(2,srid=21781))
     
 class RoadNoise(GeoInterface,Base):
-    __tablename__ = 'en05_degres_sensibilite_bruit'
-    __table_args__ = {'schema': 'environnement', 'autoload': True}
+    __tablename__ = 'r145_sens_bruit'
+    __table_args__ = {'schema': 'crdppf_minimal', 'autoload': True}
     idobj = Column(Integer, primary_key=True)
     geom =GeometryColumn(Geometry(2,srid=21781))
+
+# models for water protection
+
+class Zoneprotection(GeoInterface,Base):
+    __tablename__ = 'en01_zone_sect_protection_eaux'
+    __table_args__ = {'schema': 'environnement', 'autoload': True}
+    idobj = Column(String(40), primary_key=True)
+    geom = GeometryColumn(Geometry(srid=21781))
     
+class WaterProtectionPerimeters(GeoInterface,Base):
+    __tablename__ = 'r132_perimetre_prot_eau'
+    __table_args__ = {'schema': 'crdppf_minimal', 'autoload': True}
+    idobj = Column(String(40), primary_key=True)
+    geom = GeometryColumn(Geometry(srid=21781))
+
 # STOP models used for GetFeature queries
