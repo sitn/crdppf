@@ -166,6 +166,10 @@ var setInfoControl = function setInfoControl(){
                     }               
             }
             // define an request object to the interection route
+            
+            var featureMask = new Ext.LoadMask(featureTree.body, {msg: labels.restrictionLoadingMsg});
+            featureMask.show();
+            
             var request = OpenLayers.Request.GET({
                 url: Crdppf.getFeatureUrl,
                 params: {
@@ -173,6 +177,12 @@ var setInfoControl = function setInfoControl(){
                     layerList: overlaysList
                 },
                 callback: handler,
+                success: function(){
+                    featureMask.hide();
+                },
+                failure: function(){
+                    featureMask.hide();
+                },
                 proxy: null
             });
         }       
