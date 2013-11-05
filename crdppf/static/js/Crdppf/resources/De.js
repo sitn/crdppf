@@ -15,11 +15,21 @@ Crdppf.layerListDe = {
         ]
     };
     
+Crdppf.baseLayersDe = { 
+        'baseLayers':[
+            {'id': '1', 'image': 'plan_cadastral.png', 'name': 'Plan cadastral', 'wmtsname': 'plan_cadastral_c2c'},
+            {'id': '2', 'image': 'plan_cadastral.png', 'name': 'Orthophoto', 'wmtsname': 'ortho2011'},
+            {'id': '3', 'image': 'plan_cadastral.png', 'name': 'Plan de ville', 'wmtsname': 'plan_ville_c2c'}
+        ]
+};
+    
 // Application labels text values for french
 Crdppf.labelsDe  ={
     'navPanelLabel':'Navigation',
+    'infoMsgTitle': 'Info',
     'searchBoxTxt':'Suche...',
     'themeSelectorLabel':'Themenwahl',
+    'waitMessage': 'Daten werden geladen...',
     'mapContainerTab':'Karte',
     'legalBasisTab':'Gesetzliche Grundlagen',
     'layerTreeTitle':'Daten',
@@ -46,6 +56,13 @@ Crdppf.labelsDe  ={
     'panButtonTlp':'Déplacement de la carte',
     'zoomInButtonTlp':'Zoom avant',
     'zoomOutButtonTlp':'Zoom arrière',
+    'infoButtonTlp': 'Auswahl löschen',
+    'baseLayerGroup': 'Grundkarte',
+    'chooseExtractMsg': 'Welchen Auszugstyp möchten Sie ?',
+    'chooseExtractMsgTitle':'Auszugstyp Wahl',
+    'reducedExtract': 'Extrait réduit',
+    'extendedExtract': 'Extrait complet',
+    'cancelExtract': 'Annuler'
 };
 
 OpenLayers.Util.extend(OpenLayers.Lang.de, {

@@ -43,9 +43,11 @@ Crdppf.init_main = function(lang) {
     if(lang=='Fr'){
         labels = Crdppf.labelsFr;
         layerList = Crdppf.layerListFr;
+        baseLayersList = Crdppf.baseLayersFr;
     }else if(lang=='De'){
         labels = Crdppf.labelsDe;
         layerList = Crdppf.layerListDe;
+        baseLayersList = Crdppf.baseLayersDe;
     }
     
     Ext.QuickTips.init();
@@ -82,6 +84,25 @@ Crdppf.init_main = function(lang) {
         }
     });
     
+    // clearSelection button: empty the current selection
+    var clearSelectionButton = new Ext.Button({
+        xtype: 'button',
+        tooltip: labels.infoButtonTlp,
+        margins: '0 0 0 20',
+        id: 'clearSelectionButton',
+        width: 40,
+        enableToggle: false,
+        iconCls: 'crdppf_clearselectionbutton',
+        listeners:{
+            click: function (){
+                var selectionLayer = MapO.map.getLayer('selectionLayer');
+                selectionLayer.removeAllFeatures();
+                MapO.disableInfoControl();
+                infoButton.toggle(false);
+            }                  
+        }
+    });
+    
     // generate the pdf file of the current map
     var printButton = new Ext.Button({
         xtype: 'button',
@@ -93,9 +114,14 @@ Crdppf.init_main = function(lang) {
             click: function (){
                 if(select.features.length == 1){
                     window.open(Crdppf.printUrl + '?id=' + select.features[0].attributes.idemai);
+                    // var chooseExtract = new Ext.window({
+                        // title: 
+                    // });
+                      // buttonText: {ok: labels.reducedExtract, no: labels.extendedExtract, cancel: labels.cancelExtract }
+
                 }
                 else {
-                    alert(labels.noSelectedParcelMessage);
+                    Ext.Msg.alert(labels.infoMsgTitle, labels.noSelectedParcelMessage);
                 }
             }
         }
@@ -220,6 +246,7 @@ Crdppf.init_main = function(lang) {
     cls: 'map-toolbar',
     items: [panButton,
         infoButton,
+        clearSelectionButton,
         printButton,
         zoomInButton,
         zoomOutButton
@@ -242,17 +269,18 @@ Crdppf.init_main = function(lang) {
         tbar: mapToolbar
     });
     
-    // create the status bar
-    statusbar = new Ext.ux.StatusBar({
-        id: 'statusbar',
-        defaultText: labels.mapBottomTxt
-    });   
-    statusbar.add({
-        xtype: 'tbtext',
-        text: '<span id="mousepos" style="padding: 0 20px;"></span>'
-    });
+    // Status & disclaimer bar visible at the bottom of the map panel
+    var bottomToolBarHtml = '<span style="padding: 0 20px;">' + labels.mapBottomTxt + '</span>';
+    bottomToolBarHtml += '<span id="mousepos" style="padding: 0 20px;"></span>';
+    bottomToolBarHtml += '<div style="padding: 0 20px; margin-top: 3px;">'+ labels.disclaimerTxt + '</div>';
     
-    // create the mapContaine: one Ext.Panel with a map & a toolbar
+    var bottomToolBar = new Ext.Toolbar({
+        autoWidth: true,
+        height: 50,
+        html: bottomToolBarHtml
+    });
+
+    // create the mapContainer: one Ext.Panel with a map & a toolbar
    var mapContainer = new Ext.Panel({
         region: "center",
         title: labels.mapContainerTab,
@@ -261,7 +289,7 @@ Crdppf.init_main = function(lang) {
         items: [
             mapPanel   
         ],
-        bbar: statusbar
+        bbar: bottomToolBar
     }); 
     
     // create the header panel containing the page banner
@@ -299,6 +327,7 @@ Crdppf.init_main = function(lang) {
         split: true,
         collapseMode: 'mini',
         width: 250,
+        boxMinWidth: 225,
         items:[searchPanel,themeSelector,layerTree],
         layoutConfig: {
             align: 'stretch'
@@ -328,7 +357,9 @@ Crdppf.init_main = function(lang) {
         draggable:false,
         id:'rootNode'
     });
+    
     featureTree.setRootNode(root);
+    
     var layerStore = new GeoExt.data.LayerStore({
         map: MapO.map
     });
@@ -338,6 +369,8 @@ Crdppf.init_main = function(lang) {
         map: MapO.map,
         cls:'legendPanelCls',
         title: labels.legendPanelTitle,
+        height: 400,
+        autoScroll: true,
         defaults: {
             style: 'padding:5px',
             baseParams: {
@@ -370,27 +403,7 @@ Crdppf.init_main = function(lang) {
                     tag: 'iframe',
                     url : 'http://www.geobasisdaten.ch/index.php?lang=fr&loc=CH&s=data&data=73/'
                 }
-            },{
-                title: labels.lawTabLabel,
-                autoEl: {
-                    tag: 'iframe',
-                    style: 'height: 100%; width: 100%',
-                    src: 'http://sitn.ne.ch/web/reglements/Regl_Amenagement/recupere/01_Regl_Amenagement.pdf'
-                }
-            },{
-                title: labels.additionnalInfoTab,
-                html: 'une information complémentaire'
-        }]
-    });
- 
-    var southPanel = new Ext.Panel({
-        region: 'south',
-        title: 'Disclaimer',
-        collapsible: true,
-        html: labels.disclaimerTxt,
-        split: true,
-        height: 70,
-        minHeight: 70
+            }]
     });
 
     var crdppf = new Ext.Viewport({
@@ -401,8 +414,7 @@ Crdppf.init_main = function(lang) {
         items: [headerPanel,
             navigationPanel,
             infoPanel, 
-            centerPanel,
-            southPanel]
+            centerPanel]
     });
     mapPanel = Ext.getCmp('mappanel');    
 	// Refait la mise en page si la fenêtre change de taille

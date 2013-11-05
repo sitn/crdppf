@@ -11,6 +11,11 @@ body {
     height:26px !important;
     width:26px !important;
 }
+
+.crdppf_clearselectionbutton {
+    height:26px !important;
+    width:26px !important;
+}
 .crdppf_panbutton {
     height:26px !important;
     width:26px !important;
@@ -44,6 +49,17 @@ body {
 }
 .x-btn-pressed .crdppf_infobutton {
     background-image:url(../images/ui_buttons/on/icon_querybypoint_on.gif) !important;
+}
+
+.crdppf_clearselectionbutton {
+    background:url(../images/ui_buttons/normal/icon_clearquerybypoint.gif);
+	height:26px !important;
+}
+.x-btn-over .crdppf_clearselectionbutton {
+    background:url(../images/ui_buttons/over/icon_clearquerybypoint_over.gif);
+}
+.x-btn-pressed .crdppf_clearselectionbutton {
+    background-image:url(../images/ui_buttons/on/icon_clearquerybypoint_on.gif) !important;
 }
 .crdppf_printbutton {
     background:url(../images/ui_buttons/normal/icon_report_selection.gif);
@@ -286,6 +302,29 @@ body {
 .layerNodeCls{
     padding-left:10px;
 }
+.baseLayerNodeCls{
+    padding-left:10px;
+}
+
+.checkAllNodeCls{
+    font-weight: bold;
+    background-color: #A3E0FF;
+}
+
+.checkAllNodeCls:hover{
+    font-weight: bold;
+    background-color: #66CCFF !important;
+}
+
+.baseLayersNodeCls{
+    font-weight: bold;
+    background-color: #A3E0FF;
+}
+
+.baseLayersNodeCls:hover{
+    font-weight: bold;
+    background-color: #66CCFF !important;
+}
 
 .featureAttributeStyle{
     text-align:left;
@@ -299,13 +338,6 @@ body {
 /*infoPanel*/
 .infoPanelCls{
 
-}
-
-/*legendPanel*/
-.legendPanelCls{
-    
-}
-.legendPanelCls .x-panel-body {
 }
 
 /*fulltextsearch group */

@@ -10,6 +10,7 @@
  * @requires OpenLayers/Control/OverViewMap.js
  * @requires OpenLayers/Control/PanZoomBar.js
  * @requires OpenLayers/Control/GetFeature.js
+ * @requires OpenLayers/Control/ScaleBar.js
  * @requires OpenLayers/Util.js 
  * @requires OpenLayers/Control/Navigation.js
  * @include OpenLayers/Layer/WMS.js
@@ -45,7 +46,7 @@ var setInfoControl = function setInfoControl(){
     
     // remove all features in featureTree rootNode
     root.removeAll(true);
-    
+
     OpenLayers.ProxyHost= Crdppf.ogcproxyUrl;
     // create OL WFS protocol
     var protocol = new OpenLayers.Protocol.WFS({
@@ -60,7 +61,7 @@ var setInfoControl = function setInfoControl(){
     });
     
     // create infoControl with our WFS protocol
-    control = new OpenLayers.Control.GetFeature({
+   var control = new OpenLayers.Control.GetFeature({
         protocol: protocol,
         id: 'infoControl001',
         box: false,
@@ -193,7 +194,7 @@ var setInfoControl = function setInfoControl(){
 function makeMap(mapOptions){
     // base layer: topographic layer
     var layer = new OpenLayers.Layer.WMTS({
-        name: "Plan cadastral",
+        name: "Base layer",
         url: 'http://sitn.ne.ch/mapproxy/wmts',
         layer: 'plan_cadastral_c2c',
         matrixSet: 'swiss_grid_new',
@@ -202,34 +203,47 @@ function makeMap(mapOptions){
         style: 'default',
         fixedLayer: true,
         requestEncoding: 'REST'
+    }); 
+    layer.id = 'baseLayer'   
+    
+    
+    var selectStyle = new OpenLayers.Style({
+        'strokeColor':'#00ff00',
+        'fillOpacity': '0.5',
+        'fillColor': '#00ff00',
+        'strokeWidth':'3',
+        'pointRadius': '20'
     });    
     
     // selection layer: display selected features
     select = new OpenLayers.Layer.Vector(
         "Selection",
         {
-            styleMap: new OpenLayers.Style(OpenLayers.Feature.Vector.style.select),
+            styleMap: selectStyle,
             fixedLayer: true, 
             displayInLayerSwitcher: false
-        });
-        select.id = 'selectionLayer';
-        var intersectStyle = new OpenLayers.Style({
+    });
+    
+    select.id = 'selectionLayer';
+    
+    var intersectStyle = new OpenLayers.Style({
             'strokeColor':'#ff0000',
             'fillOpacity': '0.5',
             'fillColor': '#ff0000',
             'strokeWidth':'2',
             'pointRadius': '20'
-            
         });
-        intersect = new OpenLayers.Layer.Vector(
-        "intersection result",
-        {
-            styleMap: intersectStyle,
-            fixedLayer: true, 
-            displayInLayerSwitcher: false
-        });
-        intersect.id='intersectLayer';
         
+    intersect = new OpenLayers.Layer.Vector(
+            "intersection result",
+            {
+                styleMap: intersectStyle,
+                fixedLayer: true, 
+                displayInLayerSwitcher: false
+            }
+        );
+    intersect.id='intersectLayer';
+    
     // THE OL map object
     var map = new OpenLayers.Map({
         projection: new OpenLayers.Projection('EPSG:21781'),
@@ -244,10 +258,11 @@ function makeMap(mapOptions){
                 zoomWorldIcon: true,
                 panIcons: false
             }),
-            new OpenLayers.Control.Navigation()   
+            new OpenLayers.Control.Navigation(),
+            new OpenLayers.Control.ScaleBar()            
         ]
     });
-    
+        
     // Event registering & Control setting on the Map Object
     map.events.register("mousemove", map, function(e) {
                 var pixel = new OpenLayers.Pixel(e.xy.x,e.xy.y);
@@ -255,12 +270,9 @@ function makeMap(mapOptions){
                 OpenLayers.Util.getElement(mapOptions.divMousePosition).innerHTML = labels.olCoordinates + ' (ch1903) - Y : ' + Math.round(lonlat.lon) + '  X : ' + Math.round(lonlat.lat) + 'm';
     });
     // add base layers & selection layers
+
     map.addLayers([intersect,select, layer]);
-    // load all specifics layers
-    var ls= new OpenLayers.Control.LayerSwitcher(); 
-    map.addControl(ls); 
-    ls.minimizeControl(); 
-    
+
     // create an overview map control and customize it
     var overviewMap = new OpenLayers.Control.OverviewMap({
             layers: [
@@ -298,6 +310,7 @@ var disableInfoControl = function disableInfoControl(){
     var selectionLayer = this.map.getLayer('selectionLayer');
     selectionLayer.removeAllFeatures();
     infoControl = this.map.getControl('infoControl001');
+    
     if(infoControl){
         infoControl.destroy();
     }
@@ -311,10 +324,7 @@ var disableInfoControl = function disableInfoControl(){
 * none
 */ 
 var setOverlays = function() {
-    if(!this.map){
-        console.log('error: undefined map object !');
-        return;
-    }
+
     // remove existing infoControl
     infoControl = this.map.getControl('infoControl001');
     if(infoControl){
@@ -331,19 +341,25 @@ var setOverlays = function() {
     }
     // add new overlays
     if(overlaysList.length > 0){
-        overlays = new OpenLayers.Layer.WMS(
+        var overlays = new OpenLayers.Layer.WMS(
                 layerName, 
                 Crdppf.wmsUrl,
-                {layers: overlaysList,
-                format: 'image/png',
-                singleTile: true,
-                transparent: 'true'},
-                {fixedLayer: false,
-                singleTile: true}
-                );
+                {
+                    layers: overlaysList,
+                    format: 'image/png',
+                    singleTile: true,
+                    transparent: 'true'
+                }, {
+                    singleTile: true,
+                    isBaseLayer: false
+                }
+            );
         overlays.id = 'overlayLayer';
         this.map.addLayer(overlays);
+        this.map.raiseLayer(this.map.getLayersBy('id', 'selectionLayer')[0], this.map.layers.length);
+
     }
+    
 };
 
 // helping functions

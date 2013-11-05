@@ -15,15 +15,25 @@ Crdppf.layerListFr = {
         ]
     };
     
+Crdppf.baseLayersFr = { 
+        'baseLayers':[
+            {'id': '1', 'image': 'plan_cadastral.png', 'name': 'Plan cadastral', 'wmtsname': 'plan_cadastral_c2c'},
+            {'id': '2', 'image': 'plan_cadastral.png', 'name': 'Orthophoto', 'wmtsname': 'ortho2011'},
+            {'id': '3', 'image': 'plan_cadastral.png', 'name': 'Plan de ville', 'wmtsname': 'plan_ville_c2c'}
+        ]
+};
+ 
 // Application labels text values for french  
 Crdppf.labelsFr  ={
     'navPanelLabel':'Navigation',
+    'infoMsgTitle': 'Info',
     'searchBoxTxt':'Rechercher...',
-    'themeSelectorLabel':'Sélection des thèmes',
+    'themeSelectorLabel':'Thématique CRDPFF',
+    'waitMessage': 'Chargement des données...',
     'mapContainerTab':'Carte',
     'legalBasisTab':'Bases légales',
     'layerTreeTitle':'Arbre des couches',
-    'selectAllLayerLabel':'Sélectionner toutes les couches',
+    'selectAllLayerLabel':'Restrictions',
     'lawTabLabel':'Dispositions juridiques',
     'additionnalInfoTab':'Informations et renvois supplémentaires',
     'infoTabLabel':'Informations',
@@ -34,7 +44,7 @@ Crdppf.labelsFr  ={
     'restrictionPanelTxt':'Restrictions affectant la parcelle n° ',
     'noActiveLayertxt':'Aucune couche active',
     'restrictionFoundTxt':'Restriction n° ',
-    'disclaimerTxt':'Mise en garde : Le canton de Neuchâtel n\'engage pas sa responsabilité sur l\'exactitude ou la fiabilité des documents législatifs dans leur version électronique. Ces documents ne créent aucun autre droit ou obligation que ceux qui découlent des textes légalement adoptés et publiés, qui font seuls foi.',
+    'disclaimerTxt':'Mise en garde : Le canton de Neuchâtel n\'engage pas sa responsabilité sur l\'exactitude ou la fiabilité des documents législatifs dans leur version électronique. <br>Ces documents ne créent aucun autre droit ou obligation que ceux qui découlent des textes légalement adoptés et publiés, qui font seuls foi.',
     'mapBottomTxt':'<b>Informations dépourvues de foi publique, <a style="color:#660000;" href="http://sitn.ne.ch/web/conditions_utilisation/contrat_SITN_MO.htm" target="_new">&copy; SITN</a></b>',
     'maxTitleOverviewMap':'Afficher la carte de situation',
     'minTitleOverviewMap':'Masquer la carte de situation',
@@ -42,13 +52,21 @@ Crdppf.labelsFr  ={
     'withinToolTipMessage':'Relation spatiale: à l\'intérieur de',
     'adjacentToolTipMessage':'Relation spatiale: touche',
     'printPdfWindowsTitle': 'Extraction au format pdf',
-    'noSelectedParcelMessage': 'Sélectionner d\'abord une parcelle !',
+    'noSelectedParcelMessage': 'Sélectionnez d\'abord une parcelle !',
     'printButtonTlp':'Générer l\'extrait',
     'infoButtonTlp':'Interroger les restrictions',
     'panButtonTlp':'Déplacement de la carte',
     'zoomInButtonTlp':'Zoom avant',
     'zoomOutButtonTlp':'Zoom arrière',
+    'infoButtonTlp': 'Effacer la sélection actuelle',
+    'baseLayerGroup': 'Fonds de plan',
+    'chooseExtractMsg': 'Quel type d\'extrait souhaitez-vous imprimer ?',
+    'chooseExtractMsgTitle': 'Choix du type d\'extrait',
+    'reducedExtract': 'Extrait réduit',
+    'extendedExtract': 'Extrait complet',
+    'cancelExtract': 'Annuler'
     };
+   
 
 OpenLayers.Util.extend(OpenLayers.Lang.fr, {
     'adresses_sitn':'Adresses',
