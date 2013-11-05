@@ -11,7 +11,7 @@ Crdppf.layerListDe = {
                         {'id':'116','image':'sites_pollues.gif','name':'Belastete Standorte','layers':{'en07_canepo_accidents':'Belastete Standorte: Unfälle','en07_canepo_decharges':'Belastete Standorte: Deponien','en07_canepo_decharges_points':'Belastete Standorte: Deponien (punkte)','en07_canepo_decharges_polygones':'Belastete Standorte: Deponien (polygon)', 'en07_canepo_entreprises':'Belastete Standorte: Deponien', 'en07_canepo_entreprises_points':'Belastete Standorte: Unternehmen (Punkte)', 'en07_canepo_entreprises_polygones':'Belastete Standorte: Unternehmen (Polygon)'}},
                         {'id':'997','image':'protection_eaux.gif','name':'Grundwasserschutz','layers':{'en01_zone_sect_protection_eaux':'Grundwasserschutz'}},
                         {'id':'996','image':'bruit.gif','name':'Lärm','layers':{'en05_degres_sensibilite_bruit':'Lärm'}},
-                        {'id':'999','image':'foret.gif','name':'Wald','layers':{'at39_itineraires_pedestres':'Fusswege'}}
+                        {'id':'999','image':'foret.gif','name':'Wald','layers':{'r157_lim_foret':'Waldgrenzen'}}
         ]
     };
     
@@ -31,7 +31,7 @@ Crdppf.labelsDe  ={
     'themeSelectorLabel':'Themenwahl',
     'waitMessage': 'Daten werden geladen...',
     'mapContainerTab':'Karte',
-    'legalBasisTab':'Gesetzliche Grundlagen',
+    'legalBasisTab':'Gesetzestexte',
     'layerTreeTitle':'Daten',
     'selectAllLayerLabel':'Alle Ebenen auswählen',
     'lawTabLabel':'Rechtsvorschriften',
@@ -51,19 +51,20 @@ Crdppf.labelsDe  ={
     'adjacentToolTipMessage':'Räumliche Beziehungen: benachbarte',
     'printPdfWindowsTitle': 'PDF',
     'noSelectedParcelMessage': 'Wählen Sie zuerst ein Grundstück !',
-    'printButtonTlp':'Générer l\'extrait',
-    'infoButtonTlp':'Sélectionner une parcelle et ses restrictions',
-    'panButtonTlp':'Déplacement de la carte',
-    'zoomInButtonTlp':'Zoom avant',
-    'zoomOutButtonTlp':'Zoom arrière',
+    'printButtonTlp':'Auszug erstellen',
+    'infoButtonTlp':'Eine Parzelle und Eigentumsbeschränkungen wählen',
+    'panButtonTlp':'Kartenausschnitt verschieben',
+    'zoomInButtonTlp':'Kartenausschnitt vergrössern',
+    'zoomOutButtonTlp':'Kartenausschnitt verkleinern',
     'infoButtonTlp': 'Auswahl löschen',
     'baseLayerGroup': 'Grundkarte',
     'chooseExtractMsg': 'Welchen Auszugstyp möchten Sie ?',
-    'chooseExtractTypeMsg':'Auszugstyp Wahl',
-    'reducedExtract': 'Extrait réduit',
-    'extendedExtract': 'Extrait complet',
-    'cancelExtract': 'Annuler',
-    'generateExtract': 'Générer l\'extrait'
+    'chooseExtractMsgTitle':'Auszugstyp Wahl',
+    'reducedExtract': 'Reduzierter Auszug',
+    'extendedExtract': 'Konpletter Auszug',
+    'cancelExtract': 'Abbrechen',
+    'generateExtract': 'Auszug erstellen'
+
 };
 
 OpenLayers.Util.extend(OpenLayers.Lang.de, {
