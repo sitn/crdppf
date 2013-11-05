@@ -113,7 +113,7 @@ Crdppf.init_main = function(lang) {
         listeners:{
             click: function (){
                 if(select.features.length == 1){
-                    //window.open(Crdppf.printUrl + '?id=' + select.features[0].attributes.idemai);
+                    window.open(Crdppf.printUrl + '?id=' + select.features[0].attributes.idemai);
                     // var chooseExtract = new Ext.window({
                         // title: 
                     // });
