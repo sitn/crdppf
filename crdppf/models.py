@@ -58,12 +58,12 @@ class LegalBases(Base):
     topicfk = Column(String(10), ForeignKey('crdppf.topic.topicid'))
 
 class LegalProvisions(Base):
-    __tablename__ = 'legalprovision'
+    __tablename__ = 'legalprovisions'
     __table_args__ = {'schema': 'crdppf', 'autoload': True}
     topicfk = Column(String(10), ForeignKey('crdppf.topic.topicid')) 
 
 class TemporaryProvisions(Base):
-    __tablename__ = 'temporaryprovision'
+    __tablename__ = 'temporaryprovisions'
     __table_args__ = {'schema': 'crdppf', 'autoload': True}
     topicfk = Column(String(10), ForeignKey('crdppf.topic.topicid'))
 
@@ -119,8 +119,8 @@ class PedestrianWays(GeoInterface,Base):
 # models for theme: allocation plan
 
 class CommunalArea(GeoInterface,Base):
-    __table_args__ = {'schema': 'amenagement', 'autoload': True}
-    __tablename__ = 'at14_zones_communales'
+    __table_args__ = {'schema': 'crdppf_minimal', 'autoload': True}
+    __tablename__ = 'r73_plan_affectation'
     idobj = Column(Integer, primary_key=True)
     geom =GeometryColumn(Geometry(2,srid=21781))
     
@@ -135,7 +135,13 @@ class ConstructionsLimits(GeoInterface,Base):
     __table_args__ = {'schema': 'amenagement', 'autoload': True}
     idobj = Column(Integer, primary_key=True)
     geom =GeometryColumn(Geometry(2,srid=21781))
-
+    
+class ForestLimits(GeoInterface,Base):
+    __tablename__ = 'r157_dist_foret'
+    __table_args__ = {'schema': 'crdppf_minimal', 'autoload': True}
+    idobj = Column(Integer, primary_key=True)
+    geom =GeometryColumn(Geometry(2,srid=21781))
+    
 # models for obstacles to navigation
 
 class Corridors(GeoInterface,Base):
