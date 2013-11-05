@@ -9,6 +9,8 @@ Crdppf.getLanguageUrl = "${request.route_url('get_language')}";
 Crdppf.ogcproxyUrl = "${request.route_url('ogcproxy')}";
 Crdppf.printUrl = "${request.route_url('create_extract')}";
 Crdppf.fulltextsearchUrl = "${request.registry.settings['fulltextsearch_url']}";
+Crdppf.mapproxyUrl = [${request.registry.settings['mapproxyurl']|n}];
+
 Crdppf.tileNames = {
     'plan_ville_name': 'plan_ville_${request.tile_date[1]}',
     'plan_cadastral_name': 'plan_cadastral_${request.tile_date[0]}'

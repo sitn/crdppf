@@ -59,10 +59,11 @@ Crdppf.labelsDe  ={
     'infoButtonTlp': 'Auswahl löschen',
     'baseLayerGroup': 'Grundkarte',
     'chooseExtractMsg': 'Welchen Auszugstyp möchten Sie ?',
-    'chooseExtractMsgTitle':'Auszugstyp Wahl',
+    'chooseExtractTypeMsg':'Auszugstyp Wahl',
     'reducedExtract': 'Extrait réduit',
     'extendedExtract': 'Extrait complet',
-    'cancelExtract': 'Annuler'
+    'cancelExtract': 'Annuler',
+    'generateExtract': 'Générer l\'extrait'
 };
 
 OpenLayers.Util.extend(OpenLayers.Lang.de, {

@@ -250,55 +250,6 @@ body {
 }
 
 /*featureTree*/
-
-.sameLayerNodeAdjacentCls .x-tree-elbow-end-plus{
-    background-image:url(../images/featureTree/expand_green_s.png)!important;
-    background-repeat:no-repeat;
-}
-.sameLayerNodeAdjacentCls .x-tree-elbow-plus{
-    background-image:url(../images/featureTree/expand_green_s.png)!important;
-    background-repeat:no-repeat;
-}
-.sameLayerNodeAdjacentCls .x-tree-elbow-end-minus{
-    background-image:url(../images/featureTree/collapse_green_s.png)!important;
-    background-repeat:no-repeat;
-}
-.sameLayerNodeAdjacentCls .x-tree-elbow-minus{
-    background-image:url(../images/featureTree/collapse_green_s.png)!important;
-    background-repeat:no-repeat;
-}
-.sameLayerNodeIntersectsCls .x-tree-elbow-end-plus{
-    background-image:url(../images/featureTree/expand_yellow_s.png)!important;
-    background-repeat:no-repeat;
-}
-.sameLayerNodeIntersectsCls .x-tree-elbow-plus{
-    background-image:url(../images/featureTree/expand_yellow_s.png)!important;
-    background-repeat:no-repeat;
-}
-.sameLayerNodeIntersectsCls .x-tree-elbow-end-minus{
-    background-image:url(../images/featureTree/collapse_yellow_s.png)!important;
-    background-repeat:no-repeat;
-}
-.sameLayerNodeIntersectsCls .x-tree-elbow-minus{
-    background-image:url(../images/featureTree/collapse_yellow_s.png)!important;
-    background-repeat:no-repeat;
-}
-.sameLayerNodeWithinCls .x-tree-elbow-end-plus{
-    background-image:url(../images/featureTree/expand_red_s.png)!important;
-    background-repeat:no-repeat;
-}
-.sameLayerNodeWithinCls .x-tree-elbow-plus{
-    background-image:url(../images/featureTree/expand_red_s.png)!important;
-    background-repeat:no-repeat;
-}
-.sameLayerNodeWithinCls .x-tree-elbow-end-minus{
-    background-image:url(../images/featureTree/collapse_red_s.png)!important;
-    background-repeat:no-repeat;
-}
-.sameLayerNodeWithintCls .x-tree-elbow-minus{
-    background-image:url(../images/featureTree/collapse_red_s.png)!important;
-    background-repeat:no-repeat;
-}
 .layerNodeCls{
     padding-left:10px;
 }
@@ -347,4 +298,16 @@ body {
     padding: 4px 0;
 }
 
+.radioExtractCls {
+    margin-left: 10px;
+}
 
+.textExtractCls{
+    margin-left: 10px;
+    margin-top: 10px !important;
+    margin-bottom: 10px !important;
+}
+
+.extractButtonCls{
+    margin-left: 10px;
+}
