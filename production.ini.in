@@ -16,6 +16,7 @@ tile_date_file = %(here)s/tile_date.yaml
 crdppf_wms = ${vars:crdppf_wms}
 default_language = ${vars:default_language}
 fulltextsearch_url = ${vars:fulltextsearch_url}
+mapproxyurl = ${vars:mapproxyurl}
 
 [server:main]
 use = egg:waitress#main

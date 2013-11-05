@@ -161,7 +161,7 @@ var makeLayerTree = function makeLayertree(){
                                      // base layer: topographic layer
                                 var layer = new OpenLayers.Layer.WMTS({
                                     name: "Base layer",
-                                    url: 'http://sitn.ne.ch/mapproxy/wmts',
+                                    url: Crdppf.mapproxyUrl,
                                     layer: node.id,
                                     matrixSet: 'swiss_grid_new',
                                     format: 'image/png',

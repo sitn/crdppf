@@ -192,10 +192,11 @@ var setInfoControl = function setInfoControl(){
 
 // Create OL map object, add base layer & zoom to max extent
 function makeMap(mapOptions){
+
     // base layer: topographic layer
     var layer = new OpenLayers.Layer.WMTS({
         name: "Base layer",
-        url: 'http://sitn.ne.ch/mapproxy/wmts',
+        url: Crdppf.mapproxyUrl,
         layer: 'plan_cadastral_c2c',
         matrixSet: 'swiss_grid_new',
         format: 'image/png',
