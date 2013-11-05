@@ -120,7 +120,7 @@ class PedestrianWays(GeoInterface,Base):
 
 class CommunalArea(GeoInterface,Base):
     __table_args__ = {'schema': 'crdppf_minimal', 'autoload': True}
-    __tablename__ = 'at73_plan_affectation'
+    __tablename__ = 'r73_plan_affectation'
     idobj = Column(Integer, primary_key=True)
     geom =GeometryColumn(Geometry(2,srid=21781))
     
@@ -137,7 +137,7 @@ class ConstructionsLimits(GeoInterface,Base):
     geom =GeometryColumn(Geometry(2,srid=21781))
     
 class ForestLimits(GeoInterface,Base):
-    __tablename__ = 'r157_dist_foret'
+    __tablename__ = 'r157_lim_foret'
     __table_args__ = {'schema': 'crdppf_minimal', 'autoload': True}
     idobj = Column(Integer, primary_key=True)
     geom =GeometryColumn(Geometry(2,srid=21781))

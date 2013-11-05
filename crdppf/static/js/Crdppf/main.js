@@ -113,10 +113,62 @@ Crdppf.init_main = function(lang) {
         listeners:{
             click: function (){
                 if(select.features.length == 1){
-                    window.open(Crdppf.printUrl + '?id=' + select.features[0].attributes.idemai);
-                    // var chooseExtract = new Ext.window({
-                        // title: 
-                    // });
+                    var chooseExtract = new Ext.Window({
+                        title: labels.chooseExtractTypeMsg,
+                        width: 300,
+                        height: 110,
+                        items: [
+                            {
+                                xtype: 'spacer',
+                                height: 5
+                            },{
+                                xtype: 'label',
+                                text: labels.chooseExtractMsg,
+                                cls: 'textExtractCls'
+                            },{
+                                xtype: 'spacer',
+                                height: 5
+                            },{
+                                xtype: 'radiogroup',
+                                id: 'extractRadioGroup',
+                                fieldLabel: 'Auto Layout',
+                                items: [
+                                    {boxLabel: labels.reducedExtract, name: 'rb-auto', inputValue: 'reduced',  cls: 'radioExtractCls', checked: true},
+                                    {boxLabel: labels.extendedExtract, name: 'rb-auto', inputValue: 'certified',  cls: 'radioExtractCls'}
+                                ]
+                            },{
+                                xtype: 'buttongroup',
+                                cls: 'extractButtonCls',
+                                fieldLabel: 'Auto Layout',
+                                items: [
+                                    {
+                                        xtype: 'button',
+                                        text: labels.generateExtract,                                        
+                                        listeners: {
+                                            click: function(){
+                                                urlToOpen = Crdppf.printUrl + '?id=' + select.features[0].attributes.idemai;
+                                                selectedRadio = Ext.getCmp('extractRadioGroup').getValue();
+                                                urlToOpen += '&type=' + selectedRadio.inputValue;
+                                                window.open(urlToOpen);
+                                            }
+                                        }
+                                    },{
+                                        xtype: 'button',
+                                        text: labels.cancelExtract,
+                                        listeners: {
+                                            click: function(){
+                                                chooseExtract.destroy();
+                                            }
+                                            
+                                        }
+                                    }
+                                ]
+                            }
+                            
+                        ]
+                        
+                    });
+                    chooseExtract.show();
                       // buttonText: {ok: labels.reducedExtract, no: labels.extendedExtract, cancel: labels.cancelExtract }
 
                 }

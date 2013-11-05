@@ -61,10 +61,11 @@ Crdppf.labelsFr  ={
     'infoButtonTlp': 'Effacer la sélection actuelle',
     'baseLayerGroup': 'Fonds de plan',
     'chooseExtractMsg': 'Quel type d\'extrait souhaitez-vous imprimer ?',
-    'chooseExtractMsgTitle': 'Choix du type d\'extrait',
+    'chooseExtractTypeMsg': 'Choix du type d\'extrait',
     'reducedExtract': 'Extrait réduit',
     'extendedExtract': 'Extrait complet',
-    'cancelExtract': 'Annuler'
+    'cancelExtract': 'Annuler',
+    'generateExtract': 'Générer l\'extrait'
     };
    
 
