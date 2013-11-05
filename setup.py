@@ -28,7 +28,8 @@ setup(
         'OWSLib',
         'fpdf',
         'httplib2',
-        'pil'
+        'pil',
+        'pyyaml'
     ],
     packages=find_packages(exclude=['ez_setup']),
     include_package_data=True,
