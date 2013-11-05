@@ -11,6 +11,8 @@ pyramid.includes =
 
 sqlalchemy.url = postgresql://${vars:dbuser}:${vars:dbpassword}@${vars:dbhost}:${vars:dbport}/${vars:db}
 
+tile_date_file = %(here)s/tile_date.yaml
+
 crdppf_wms = ${vars:crdppf_wms}
 default_language = ${vars:default_language}
 fulltextsearch_url = ${vars:fulltextsearch_url}
