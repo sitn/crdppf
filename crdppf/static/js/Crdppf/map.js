@@ -267,7 +267,8 @@ function makeMap(mapOptions){
             new OpenLayers.Control.Navigation(),
             new OpenLayers.Control.ScaleBar()            
         ]
-    });
+    });   
+
         
     // Event registering & Control setting on the Map Object
     map.events.register("mousemove", map, function(e) {
