@@ -2146,7 +2146,7 @@ LAYER
   CONNECTIONTYPE POSTGIS
   CONNECTION "user=${vars:dbuser} password=${vars:dbpassword} dbname=${vars:db} host=${vars:dbhost} port=${vars:dbport}"
   PROCESSING "CLOSE_CONNECTION=DEFER"
-  DATA "geom from crdpff_minimal.r157_lim_foret using unique idobj using srid=21781"
+  DATA "geom from crdppf_minimal.r157_lim_foret using unique idobj using srid=21781"
   STATUS ON
   TEMPLATE "ttt"
   TOLERANCE 5
