@@ -120,7 +120,7 @@ class PedestrianWays(GeoInterface,Base):
 
 class CommunalArea(GeoInterface,Base):
     __table_args__ = {'schema': 'crdppf_minimal', 'autoload': True}
-    __tablename__ = 'r73_plan_affectation'
+    __tablename__ = 'at73_plan_affectation'
     idobj = Column(Integer, primary_key=True)
     geom =GeometryColumn(Geometry(2,srid=21781))
     

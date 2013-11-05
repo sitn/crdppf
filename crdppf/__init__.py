@@ -7,6 +7,23 @@ from pyramid.mako_templating import renderer_factory as mako_renderer_factory
 from papyrus.renderers import GeoJSON
 import papyrus
 
+import os
+import yaml
+
+def read_tile_date(request):
+    """
+    Read the tile date from tile date file. Return "c2c", "c2c"
+    if there's no tile date file. "c2c" corresponds to a static
+    tile set that is always exists on the server.
+    """
+
+    tile_date_file = request.registry.settings['tile_date_file']
+    if os.path.exists(tile_date_file):
+        tile_date = yaml.load(file(tile_date_file))
+        return tile_date['plan_cadastral'], tile_date['plan_ville']
+    return 'c2c', 'c2c'
+
+
 def main(global_config, **settings):
     """ This function returns a Pyramid WSGI application.
     """
@@ -26,6 +43,9 @@ def main(global_config, **settings):
     config.include(papyrus.includeme)
     config.add_renderer('.js', mako_renderer_factory)
     config.add_renderer('geojson', GeoJSON())
+
+    config.set_request_property(read_tile_date, name='tile_date', reify=True)
+
     config.add_static_view('static', 'crdppf:static', cache_max_age=3600)
 
     # ROUTES
