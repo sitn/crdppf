@@ -22,3 +22,4 @@ crdppf/static/public/temp_files/*.png
 crdppf/static/public/temp_files/*.xml
 crdppf/static/public/pdf/*.pdf
 MANIFEST
+tile_date.yaml
