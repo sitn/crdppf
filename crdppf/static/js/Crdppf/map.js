@@ -10,6 +10,7 @@
  * @requires OpenLayers/Control/OverViewMap.js
  * @requires OpenLayers/Control/PanZoomBar.js
  * @requires OpenLayers/Control/GetFeature.js
+ * @requires OpenLayers/Control/ScaleBar.js
  * @requires OpenLayers/Util.js 
  * @requires OpenLayers/Control/Navigation.js
  * @include OpenLayers/Layer/WMS.js
@@ -45,7 +46,7 @@ var setInfoControl = function setInfoControl(){
     
     // remove all features in featureTree rootNode
     root.removeAll(true);
-    
+
     OpenLayers.ProxyHost= Crdppf.ogcproxyUrl;
     // create OL WFS protocol
     var protocol = new OpenLayers.Protocol.WFS({
@@ -203,8 +204,8 @@ function makeMap(mapOptions){
         fixedLayer: true,
         requestEncoding: 'REST'
     }); 
-
-    layer.id = 'baseLayer'    
+    layer.id = 'baseLayer'   
+    
     
     var selectStyle = new OpenLayers.Style({
         'strokeColor':'#00ff00',
@@ -257,7 +258,8 @@ function makeMap(mapOptions){
                 zoomWorldIcon: true,
                 panIcons: false
             }),
-            new OpenLayers.Control.Navigation()   
+            new OpenLayers.Control.Navigation(),
+            new OpenLayers.Control.ScaleBar()            
         ]
     });
     

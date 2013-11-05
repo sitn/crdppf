@@ -57,7 +57,12 @@ Crdppf.labelsDe  ={
     'zoomInButtonTlp':'Zoom avant',
     'zoomOutButtonTlp':'Zoom arrière',
     'infoButtonTlp': 'Auswahl löschen',
-    'baseLayerGroup': 'Grundkarte'
+    'baseLayerGroup': 'Grundkarte',
+    'chooseExtractMsg': 'Welchen Auszugstyp möchten Sie ?',
+    'chooseExtractMsgTitle':'Auszugstyp Wahl',
+    'reducedExtract': 'Extrait réduit',
+    'extendedExtract': 'Extrait complet',
+    'cancelExtract': 'Annuler'
 };
 
 OpenLayers.Util.extend(OpenLayers.Lang.de, {

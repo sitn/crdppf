@@ -9,6 +9,7 @@
     <link rel="stylesheet" href="${request.static_url('crdppf:static/lib/ext/resources/css/ext-all.css')}" type="text/css" media="screen" charset="utf-8" />
     <link rel="stylesheet" href="${request.static_url('crdppf:static/lib/ext/resources/css/xtheme-gray.css')}" type="text/css" media="screen" charset="utf-8" />
     <link rel="stylesheet" href="${request.static_url('crdppf:static/css/main.css')}" type="text/css" media="screen" charset="utf-8" />
+    <link rel="stylesheet" href="${request.static_url('crdppf:static/css/scalebar-thin.css')}" type="text/css" media="screen" charset="utf-8" />
     <link rel="stylesheet" href="${request.static_url('crdppf:static/css/banner.css')}" type="text/css" media="screen" charset="utf-8" />
     <link rel="stylesheet" href="${request.static_url('crdppf:static/lib/ext/resources/ux/gridfilters/css/GridFilters.css')}" type="text/css" media="screen" charset="utf-8" />
     <link rel="stylesheet" href="${request.static_url('crdppf:static/lib/ext/resources/ux/gridfilters/css/RangeMenu.css')}" type="text/css" media="screen" charset="utf-8" />

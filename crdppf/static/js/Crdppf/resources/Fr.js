@@ -44,7 +44,7 @@ Crdppf.labelsFr  ={
     'restrictionPanelTxt':'Restrictions affectant la parcelle n° ',
     'noActiveLayertxt':'Aucune couche active',
     'restrictionFoundTxt':'Restriction n° ',
-    'disclaimerTxt':'Mise en garde : Le canton de Neuchâtel n\'engage pas sa responsabilité sur l\'exactitude ou la fiabilité des documents législatifs dans leur version électronique. Ces documents ne créent aucun autre droit ou obligation que ceux qui découlent des textes légalement adoptés et publiés, qui font seuls foi.',
+    'disclaimerTxt':'Mise en garde : Le canton de Neuchâtel n\'engage pas sa responsabilité sur l\'exactitude ou la fiabilité des documents législatifs dans leur version électronique. <br>Ces documents ne créent aucun autre droit ou obligation que ceux qui découlent des textes légalement adoptés et publiés, qui font seuls foi.',
     'mapBottomTxt':'<b>Informations dépourvues de foi publique, <a style="color:#660000;" href="http://sitn.ne.ch/web/conditions_utilisation/contrat_SITN_MO.htm" target="_new">&copy; SITN</a></b>',
     'maxTitleOverviewMap':'Afficher la carte de situation',
     'minTitleOverviewMap':'Masquer la carte de situation',
@@ -59,7 +59,12 @@ Crdppf.labelsFr  ={
     'zoomInButtonTlp':'Zoom avant',
     'zoomOutButtonTlp':'Zoom arrière',
     'infoButtonTlp': 'Effacer la sélection actuelle',
-    'baseLayerGroup': 'Fonds de plan'
+    'baseLayerGroup': 'Fonds de plan',
+    'chooseExtractMsg': 'Quel type d\'extrait souhaitez-vous imprimer ?',
+    'chooseExtractMsgTitle': 'Choix du type d\'extrait',
+    'reducedExtract': 'Extrait réduit',
+    'extendedExtract': 'Extrait complet',
+    'cancelExtract': 'Annuler'
     };
    
 
