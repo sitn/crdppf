@@ -2137,6 +2137,34 @@ LAYER
 END
 
 LAYER
+  NAME "r157_lim_foret"
+  TYPE LINE
+  METADATA
+       "ows_title" "r157_lim_foret"
+       " wms_srs" "epsg:21781"
+  END
+  CONNECTIONTYPE POSTGIS
+  CONNECTION "user=${vars:dbuser} password=${vars:dbpassword} dbname=${vars:db} host=${vars:dbhost} port=${vars:dbport}"
+  PROCESSING "CLOSE_CONNECTION=DEFER"
+  DATA "geom from crdppf_minimal.r157_lim_foret using unique idobj using srid=21781"
+  STATUS ON
+  TEMPLATE "ttt"
+  TOLERANCE 5
+  TOLERANCEUNITS pixels
+  CLASSITEM "teneur"
+  CLASS
+    NAME "Forêt"
+    EXPRESSION /forêt/
+    STYLE
+        PATTERN 4 4 END
+        WIDTH 2	
+        COLOR 0 140 0
+    END
+  END
+  MAXSCALEDENOM 20000
+END
+
+LAYER
   NAME "at29_exploitations_materiaux"
   TYPE POINT
   METADATA
