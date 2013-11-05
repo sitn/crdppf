@@ -4423,6 +4423,83 @@ END
 
 
 LAYER
+    NAME "mo6_couverture_sol_nb_1"
+    METADATA
+        "wms_title" "Couverture du sol noir-blanc"
+        "wms_srs" "EPSG:21781"
+    END
+    GROUP "mo6_couverture_sol_nb"
+    TYPE POLYGON
+    STATUS ON
+    CONNECTIONTYPE POSTGIS
+    CONNECTION "user=${vars:dbuser} password=${vars:dbpassword} dbname=${vars:db} host=${vars:dbhost} port=${vars:dbport}"
+    PROCESSING "CLOSE_CONNECTION=DEFER"
+    DATA "geom from mensuration.mo6_couverture_du_sol_surf_tot using unique idobj using srid=21781"
+    PROJECTION
+        "init=epsg:21781"
+    END
+    TEMPLATE "ttt"
+    CLASSITEM "typcou"
+    CLASS
+        NAME "Bois"
+        EXPRESSION /bois/
+        STYLE
+            COLOR 255 255 255
+        END
+        STYLE
+            SYMBOL "bois"
+            COLOR 150 150 150
+            OUTLINECOLOR 0 0 0
+            SIZE 15
+        END
+    END
+    CLASS
+        EXPRESSION /./
+        COLOR 255 255 255
+        OUTLINECOLOR 0 0 0
+    END
+    MINSCALEDENOM 0
+    MAXSCALEDENOM 15000
+END
+
+LAYER
+    NAME "mo6_couverture_sol_nb_2"
+    METADATA
+        "wms_title" "Couverture du sol noir-blanc 2"
+        "wms_srs" "EPSG:21781"
+    END
+    GROUP "mo6_couverture_sol_nb"
+    TYPE POLYGON
+    STATUS ON
+    CONNECTIONTYPE POSTGIS
+    CONNECTION "user=${vars:dbuser} password=${vars:dbpassword} dbname=${vars:db} host=${vars:dbhost} port=${vars:dbport}"
+    PROCESSING "CLOSE_CONNECTION=DEFER"
+    DATA "geom from mensuration.mo6_couverture_du_sol_surf_tot using unique idobj using srid=21781"
+    PROJECTION
+        "init=epsg:21781"
+    END
+    TEMPLATE "ttt"
+    CLASSITEM "desnat"
+    CLASS
+        NAME "Vigne"
+        EXPRESSION /vigne/
+        SYMBOL "vigne"
+        COLOR 150 150 150
+        OUTLINECOLOR 0 0 0
+        SIZE 10
+    END
+    CLASS
+        NAME "Sans végétation"
+        EXPRESSION /rocher|éboulis|gravière|décharge|enrochement|inculte/
+        STYLE
+            SYMBOL "IcePack"
+        END
+    END
+    MINSCALEDENOM 0
+    MAXSCALEDENOM 15000
+END
+
+LAYER
   NAME "mo9_immeubles_txt_rappel"
   TYPE LINE
   METADATA

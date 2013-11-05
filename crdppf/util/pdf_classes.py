@@ -138,7 +138,7 @@ class Extract(FPDF):
         self.image(self.appconfig.imagesbasedir + self.appconfig.CHlogopath, 10, 8, 55, 31.03)
         self.image(self.appconfig.imagesbasedir + self.appconfig.cantonlogopath, 110, 8, 43.4, 13.8)
         try:
-        self.image(self.municipalitylogopath, 170, 8, 10, 10.7)
+            self.image(self.municipalitylogopath, 170, 8, 10, 10.7)
         except:
             self.image(self.appconfig.imagesbasedir + 'ecussons\Placeholder.jpg', 170, 8, 10, 10.7)
         # This lines are not necessary if the community name is already contained in the 
