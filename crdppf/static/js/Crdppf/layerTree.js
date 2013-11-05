@@ -159,12 +159,22 @@ var makeLayerTree = function makeLayertree(){
                                  }
                                  
                                      // base layer: topographic layer
+                                     
+                                var format = "image/png";
+                                var formatSuffixMap = {'image/png':'png'};
+                                
+                                if (node.id == 'ortho2011'){
+                                    format = "image/jpeg";
+                                    formatSuffixMap = {'image/jpeg':'jpeg'};
+                                }
+                                
                                 var layer = new OpenLayers.Layer.WMTS({
                                     name: "Base layer",
                                     url: Crdppf.mapproxyUrl,
                                     layer: node.id,
                                     matrixSet: 'swiss_grid_new',
-                                    format: 'image/png',
+                                    format: format,
+                                    formatSuffixMap: formatSuffixMap,
                                     isBaseLayer: true,
                                     style: 'default',
                                     fixedLayer: true,

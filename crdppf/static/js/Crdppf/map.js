@@ -119,9 +119,6 @@ var setInfoControl = function setInfoControl(){
                             for (j=0; j<jsonData.length; j++) {
                                 if (jsonData[j].attributes.layerName ==lName){
                                     featureClass = jsonData[j].attributes.featureClass;
-                                    var out = switchClass(featureClass);
-                                    var nodeCss = out.outCss;
-                                    var toolTip = out.outToolTip;
                                     html = '';
                                     stop = 0;
                                     for (var value in jsonData[j].attributes){
@@ -134,10 +131,9 @@ var setInfoControl = function setInfoControl(){
                                     html += '';
                                     // create 1 node for each restriction (level 2)
                                     var sameLayerNode = new Ext.tree.TreeNode({
-                                        qtip:toolTip,
                                         singleClickExpand: true,
                                         attributes: jsonData[j],
-                                        cls: nodeCss,
+                                        // cls: nodeCss,
                                         text: labels.restrictionFoundTxt + (j+1) + String(jsonData[j].data.intersectionMeasure),
                                         draggable:false,
                                         leaf: false,
@@ -197,7 +193,7 @@ function makeMap(mapOptions){
     var layer = new OpenLayers.Layer.WMTS({
         name: "Base layer",
         url: Crdppf.mapproxyUrl,
-        layer: 'plan_cadastral_c2c',
+        layer: Crdppf.tileNames.plan_cadastral_name,
         matrixSet: 'swiss_grid_new',
         format: 'image/png',
         isBaseLayer: true,
@@ -373,29 +369,6 @@ function s4() {
 function guid() {
   return s4() + s4() + '-' + s4() + '-' + s4() + '-' +
          s4() + '-' + s4() + s4() + s4();
-}
-
-function switchClass(featureClass){
-    var outCss ='';
-    var outToolTip = '';
-    switch(featureClass){
-        case 'intersects':
-            outCss = 'sameLayerNodeIntersectsCls';
-            outToolTip = labels.intersectToolTipMessage;
-        break;
-        case 'within':
-            outCss = 'sameLayerNodeWithinCls';
-            outToolTip = labels.withinToolTipMessage;
-        break;
-        case 'adjacent':
-             outCss = 'sameLayerNodeAdjacentCls';
-             outToolTip = labels.adjacentToolTipMessage;
-        break;
-        default:
-        break;
-    }
-    var out = {'outCss':outCss, 'outToolTip':outToolTip};
-    return out;
 }
 
 // check if an element belongs to a list
