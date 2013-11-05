@@ -403,17 +403,7 @@ Crdppf.init_main = function(lang) {
                     tag: 'iframe',
                     url : 'http://www.geobasisdaten.ch/index.php?lang=fr&loc=CH&s=data&data=73/'
                 }
-            },{
-                title: labels.lawTabLabel,
-                autoEl: {
-                    tag: 'iframe',
-                    style: 'height: 100%; width: 100%',
-                    src: 'http://sitn.ne.ch/web/reglements/Regl_Amenagement/recupere/01_Regl_Amenagement.pdf'
-                }
-            },{
-                title: labels.additionnalInfoTab,
-                html: 'une information complémentaire'
-        }]
+            }]
     });
 
     var crdppf = new Ext.Viewport({

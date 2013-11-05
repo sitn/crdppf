@@ -262,9 +262,7 @@ function makeMap(mapOptions){
             new OpenLayers.Control.ScaleBar()            
         ]
     });
-    
-    // the waiter to be use while refreshing the map
-    
+        
     // Event registering & Control setting on the Map Object
     map.events.register("mousemove", map, function(e) {
                 var pixel = new OpenLayers.Pixel(e.xy.x,e.xy.y);

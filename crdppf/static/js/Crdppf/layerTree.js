@@ -68,19 +68,19 @@ var makeLayerTree = function makeLayertree(){
         // fill tree with nodes relative to themes (level 1)
         var themeNode =  new Ext.tree.TreeNode({
             text: ll[i].name,
-            draggable:false,
+            draggable: false,
             id: ll[i].id,
             leaf: false,
-            checked:false,
+            checked: false,
             listeners: {
                 'checkchange': function(node, checked){
                     MapO.disableInfoControl();
-                    if(checked){
+                    if (checked){
                         node.expand();
                         for (k=0; k < node.childNodes.length; k++){
                             node.childNodes[k].getUI().toggleCheck(true);
                         }
-                    }else{ 
+                    } else { 
                         node.collapse();
                         for (k=0; k < node.childNodes.length; k++){
                             node.childNodes[k].getUI().toggleCheck(false);
@@ -136,7 +136,7 @@ var makeLayerTree = function makeLayertree(){
     var baseLayers = baseLayersList.baseLayers;
     
     // iterate over base layers and create nodes
-    for (i=0;i<baseLayers.length;i++){
+    for (var i=0;i<baseLayers.length;i++){
         // fill tree with nodes relative to baseLayers
         var baseLayerItem =  new Ext.tree.TreeNode({
             text: baseLayers[i].name,
@@ -148,7 +148,7 @@ var makeLayerTree = function makeLayertree(){
             listeners: {
                 'checkchange': function(node, checked){
                     if(checked){
-                        for (k=0; k < node.parentNode.childNodes.length; k++){
+                        for (var k=0; k < node.parentNode.childNodes.length; k++){
                             if(node.parentNode.childNodes[k].id != node.id){
                                 node.parentNode.childNodes[k].getUI().toggleCheck(false);
                             } else {
@@ -174,8 +174,6 @@ var makeLayerTree = function makeLayertree(){
                                 layer.id = 'baseLayer';
                                 MapO.map.addLayers([layer]);
                                 layer.redraw();
-                                
-  
                             }
                         }
                     }
