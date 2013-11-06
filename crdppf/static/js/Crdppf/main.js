@@ -12,7 +12,7 @@
 // VARIABLES
 var mapPanel;
 var winWait;
-var layerList
+var layerList;
 // MAIN USER INTERFACE
 
 Ext.onReady(function() {
