@@ -816,13 +816,13 @@ class Extract(FPDF):
                                 self.set_font(*pdfconfig.textstyles['bold'])
                                 self.cell(55, 5, translations['contentlabel'].encode('iso-8859-1'), 0, 0, 'L')
                                 self.set_font(*pdfconfig.textstyles['normal'])
-                                self.multi_cell(100, 5, feature['categorie'] .encode('iso-8859-1'), 0, 1, 'L')
+                                self.multi_cell(100, 5, feature['categorie'].encode('iso-8859-1'), 0, 1, 'L')
 
                             elif self.topiclist[topic]['layers'][layer]['layername'] == 'clo_couloirs':
                                 self.set_font(*pdfconfig.textstyles['bold'])
                                 self.cell(55, 5, translations['contentlabel'].encode('iso-8859-1'), 0, 0, 'L')
                                 self.set_font(*pdfconfig.textstyles['normal'])
-                                self.multi_cell(100, 5, feature['type'] .encode('iso-8859-1'), 0, 1, 'L')
+                                self.multi_cell(100, 5, feature['type'].encode('iso-8859-1'), 0, 1, 'L')
 
                             elif self.topiclist[topic]['layers'][layer]['layername'] == 'clo_cotes_altitude_surfaces':
                                 self.set_font(*pdfconfig.textstyles['bold'])
