@@ -810,7 +810,7 @@ class Extract(FPDF):
                                 self.set_font(*pdfconfig.textstyles['bold'])
                                 self.cell(55, 5, translations['contentlabel'].encode('iso-8859-1'), 0, 0, 'L')
                                 self.set_font(*pdfconfig.textstyles['normal'])
-                                self.multi_cell(100, 5, unicode(feature['statut_osi'] ).encode('iso-8859-1'), 0, 1, 'L')
+                                self.multi_cell(100, 5, unicode(feature['statut_osi']).encode('iso-8859-1'), 0, 1, 'L')
                                 
                             elif self.topiclist[topic]['layers'][layer]['layername'] == 'en01_zone_sect_protection_eaux':
                                 self.set_font(*pdfconfig.textstyles['bold'])
@@ -828,7 +828,7 @@ class Extract(FPDF):
                                 self.set_font(*pdfconfig.textstyles['bold'])
                                 self.cell(55, 5, translations['contentlabel'].encode('iso-8859-1'), 0, 0, 'L')
                                 self.set_font(*pdfconfig.textstyles['normal'])
-                                self.multi_cell(100, 5, str(feature['cote_alt_obstacles_minimum'] ).encode('iso-8859-1'), 0, 1, 'L')
+                                self.multi_cell(100, 5, str(feature['cote_alt_obstacles_minimum']).encode('iso-8859-1'), 0, 1, 'L')
                                 
                             else:
                                 for property,value in feature.iteritems():
