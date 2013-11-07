@@ -2154,7 +2154,7 @@ LAYER
   CLASSITEM "teneur"
   CLASS
     NAME "Forêt"
-    EXPRESSION /forêt/
+    EXPRESSION /./
     STYLE
         PATTERN 4 4 END
         WIDTH 2	
