@@ -806,6 +806,30 @@ class Extract(FPDF):
                                 self.multi_cell(100, 5, feature['teneur'].encode('iso-8859-1') \
                                     +'\t('+feature['intersectionMeasure'].replace(' - ','').encode('iso-8859-1')+')', 0, 1, 'L')
 
+                            elif self.topiclist[topic]['layers'][layer]['layername'] in ['en07_canepo_accidents','en07_canepo_decharges_points','en07_canepo_decharges_polygones','en07_canepo_entreprises_points']:
+                                self.set_font(*pdfconfig.textstyles['bold'])
+                                self.cell(55, 5, translations['contentlabel'].encode('iso-8859-1'), 0, 0, 'L')
+                                self.set_font(*pdfconfig.textstyles['normal'])
+                                self.multi_cell(100, 5, unicode(feature['statut_osi']).encode('iso-8859-1'), 0, 1, 'L')
+                                
+                            elif self.topiclist[topic]['layers'][layer]['layername'] == 'en01_zone_sect_protection_eaux':
+                                self.set_font(*pdfconfig.textstyles['bold'])
+                                self.cell(55, 5, translations['contentlabel'].encode('iso-8859-1'), 0, 0, 'L')
+                                self.set_font(*pdfconfig.textstyles['normal'])
+                                self.multi_cell(100, 5, feature['categorie'].encode('iso-8859-1'), 0, 1, 'L')
+
+                            elif self.topiclist[topic]['layers'][layer]['layername'] == 'clo_couloirs':
+                                self.set_font(*pdfconfig.textstyles['bold'])
+                                self.cell(55, 5, translations['contentlabel'].encode('iso-8859-1'), 0, 0, 'L')
+                                self.set_font(*pdfconfig.textstyles['normal'])
+                                self.multi_cell(100, 5, feature['type'].encode('iso-8859-1'), 0, 1, 'L')
+
+                            elif self.topiclist[topic]['layers'][layer]['layername'] == 'clo_cotes_altitude_surfaces':
+                                self.set_font(*pdfconfig.textstyles['bold'])
+                                self.cell(55, 5, translations['contentlabel'].encode('iso-8859-1'), 0, 0, 'L')
+                                self.set_font(*pdfconfig.textstyles['normal'])
+                                self.multi_cell(100, 5, str(feature['cote_alt_obstacles_minimum']).encode('iso-8859-1'), 0, 1, 'L')
+                                
                             else:
                                 for property,value in feature.iteritems():
                                     if value is not None and property != 'featureClass':
