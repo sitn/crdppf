@@ -29,7 +29,7 @@ def getCadastreList(request):
             'cadnom':cadastre.cadnom, 
             'nufeco':cadastre.nufeco
         })
-    
+
     return list
 
 @view_config(route_name='createNewDocEntry', renderer='json')
@@ -63,3 +63,64 @@ def createNewDocEntry(request):
     DBSession.flush()
 
     return {'success':True}
+
+@view_config(route_name='getLegalDocuments', renderer='json')
+def getLegalDocuments(request):
+    """Gets all the legal documents related to a feature.
+    """
+    legalbases = {}
+    legalbases = DBSession.query(LegalBases).order_by(LegalBases.legalbaseid.asc()).all()
+
+    list = []
+    for legalbase in legalbases :
+        list.append({
+            'legalbaseid':legalbase.legalbaseid, 
+            'numcom':legalbase.topicfk, 
+            'topicfk':legalbase.title, 
+            'officialtitle':legalbase.officialtitle, 
+            'abreviation':legalbase.abreviation, 
+            'officialnb':legalbase.officialnb,
+            'canton':legalbase.canton,
+            'commune':legalbase.commune,
+            'legalbaseurl':legalbase.legalbaseurl,
+            'legalstate':legalbase.legalstate,
+            'publishedsince':legalbase.publishedsince.isoformat()
+        })
+
+    legalbases = {}
+    legalbases = DBSession.query(LegalBases).order_by(LegalBases.legalbaseid.asc()).all()
+
+    list = []
+    for legalbase in legalbases :
+        list.append({
+            'legalbaseid':legalbase.legalbaseid, 
+            'numcom':legalbase.topicfk, 
+            'topicfk':legalbase.title, 
+            'officialtitle':legalbase.officialtitle, 
+            'abreviation':legalbase.abreviation, 
+            'officialnb':legalbase.officialnb,
+            'canton':legalbase.canton,
+            'commune':legalbase.commune,
+            'legalbaseurl':legalbase.legalbaseurl,
+            'legalstate':legalbase.legalstate,
+            'publishedsince':legalbase.publishedsince.isoformat()
+        })
+    legalbases = {}
+    legalbases = DBSession.query(LegalBases).order_by(LegalBases.legalbaseid.asc()).all()
+
+    list = []
+    for legalbase in legalbases :
+        list.append({
+            'legalbaseid':legalbase.legalbaseid, 
+            'numcom':legalbase.topicfk, 
+            'topicfk':legalbase.title, 
+            'officialtitle':legalbase.officialtitle, 
+            'abreviation':legalbase.abreviation, 
+            'officialnb':legalbase.officialnb,
+            'canton':legalbase.canton,
+            'commune':legalbase.commune,
+            'legalbaseurl':legalbase.legalbaseurl,
+            'legalstate':legalbase.legalstate,
+            'publishedsince':legalbase.publishedsince.isoformat()
+        })    
+    return list
