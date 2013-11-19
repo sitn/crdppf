@@ -29,7 +29,7 @@ def getCadastreList(request):
             'cadnom':cadastre.cadnom, 
             'nufeco':cadastre.nufeco
         })
-    
+
     return list
 
 @view_config(route_name='createNewDocEntry', renderer='json')
@@ -63,3 +63,67 @@ def createNewDocEntry(request):
     DBSession.flush()
 
     return {'success':True}
+
+@view_config(route_name='getLegalDocuments', renderer='json')
+def getLegalDocuments(request):
+    """Gets all the legal documents related to a feature.
+    """
+    legalbases = {}
+    legalbases = DBSession.query(LegalBases).order_by(LegalBases.legalbaseid.asc()).all()
+
+    list = []
+    for legalbase in legalbases :
+        list.append({
+            'documentid':legalbase.legalbaseid, 
+            'numcom':legalbase.topicfk, 
+            'topicfk':legalbase.title, 
+            'title':legalbase.title, 
+            'officialtitle':legalbase.officialtitle, 
+            'abreviation':legalbase.abreviation, 
+            'officialnb':legalbase.officialnb,
+            'canton':legalbase.canton,
+            'commune':legalbase.commune,
+            'documenturl':legalbase.legalbaseurl,
+            'legalstate':legalbase.legalstate,
+            'publishedsince':legalbase.publishedsince.isoformat()
+        })
+
+    legalprovisions = {}
+    legalprovisions = DBSession.query(LegalProvisions).order_by(LegalProvisions.legalprovisionid.asc()).all()
+
+    for legalprovision in legalprovisions :
+        list.append({
+            'documentid':legalprovision.legalprovisionid, 
+            'numcom':legalprovision.topicfk, 
+            'topicfk':legalprovision.title, 
+            'title':legalprovision.title, 
+            'officialtitle':legalprovision.officialtitle, 
+            'abreviation':legalprovision.abreviation, 
+            'officialnb':legalprovision.officialnb,
+            'canton':legalprovision.canton,
+            'commune':legalprovision.commune,
+            'documenturl':legalprovision.legalprovisionurl,
+            'legalstate':legalprovision.legalstate,
+            'publishedsince':legalprovision.publishedsince.isoformat()
+        })
+
+    temporaryprovisions = {}
+    temporaryprovisions = DBSession.query(TemporaryProvisions).order_by(TemporaryProvisions.temporaryprovisionid.asc()).all()
+
+    for temporaryprovision in temporaryprovisions :
+        list.append({
+            'documentid':temporaryprovision.temporaryprovisionid, 
+            'numcom':temporaryprovision.topicfk, 
+            'topicfk':temporaryprovision.title, 
+            'title':temporaryprovision.title, 
+            'officialtitle':temporaryprovision.officialtitle, 
+            'abreviation':temporaryprovision.abreviation, 
+            'officialnb':temporaryprovision.officialnb,
+            'canton':temporaryprovision.canton,
+            'commune':temporaryprovision.commune,
+            'documenturl':temporaryprovision.temporaryprovisionurl,
+            'legalstate':temporaryprovision.legalstate,
+            'publishedsince':temporaryprovision.publishedsince.isoformat()
+        })
+
+    return list

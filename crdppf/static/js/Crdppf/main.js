@@ -7,6 +7,7 @@
  * @include OpenLayers/Control/MousePosition.js
  * @include Crdppf/searcher/searcher.js
  * @include Crdppf/themeSelector.js
+ * @include Crdppf/legalDocuments.js
  */
 
 // VARIABLES
@@ -386,8 +387,7 @@ Crdppf.init_main = function(lang) {
         }
       });
       
-   // featureTree diplayed in infoPanel as a global view 
-          
+   // featureTree displayed in infoPanel as a global view 
     featureTree = new Ext.tree.TreePanel({
         title: labels.restrictionPanelTitle,
         cls: 'featureTreeCls',
@@ -431,33 +431,27 @@ Crdppf.init_main = function(lang) {
             }
         }
     });
-    infoPanel = new Ext.Panel({
-            header:false,
-            width: 250,
-            region: 'east',
-            title: labels.infoTabLabel,
-            collapseMode: 'mini',
-            id: 'infoPanel',
-            cls: 'infoPanelCls',
-            collapsible: true,
-            split: true,
-            items:[featureTree, legendPanel]
-        });
 
+    infoPanel = new Ext.Panel({
+        header: false,
+        width: 250,
+        region: 'east',
+        title: labels.infoTabLabel,
+        collapseMode: 'mini',
+        id: 'infoPanel',
+        cls: 'infoPanelCls',
+        collapsible: true,
+        split: true,
+        items:[featureTree, legendPanel]
+    });
+    
     centerPanel = new Ext.TabPanel({
         region: 'center',
         activeTab: 0, // index or id
         items:[
             mapContainer,
-            {
-                title: labels.legalBasisTab,
-                autoScroll: true,
-                /*html: Crdppf.legalDocuments() */
-                autoLoad : {
-                    tag: 'iframe',
-                    url : 'static/public/bases_legales.html'
-                }
-            }]
+            Crdppf.legalDocuments()
+        ]
     });
 
     var crdppf = new Ext.Viewport({
