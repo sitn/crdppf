@@ -1,26 +1,27 @@
 ﻿Ext.namespace('Crdppf');
 
-// create layer tree and append nodes & subnodes to it
 Crdppf.legalDocuments = function() {
 /*
-Function to collect all legal documents related to a selection of restrictions
+Function to collect all legal documents related to a selection of restrictions from the db
+and create a data view applying a template to format the page layout
 TODO: pass topic and layerfk to the function to request only related docs
 */
         var legaldocs = new Ext.data.JsonStore({
         autoDestroy: true,
         autoLoad: true,
         url: 'getLegalDocuments',
-        idProperty: 'legalbaseid',
+        //idProperty: 'documentid',
         fields:[
-            {name: 'legalbaseid', type:'integer'},
+            {name: 'documentid', type:'integer'},
             {name: 'numcom'},
             {name: 'topicfk'},
+            {name: 'title'},
             {name: 'officialtitle'},
             {name: 'abreviation'}, 
             {name: 'officialnb'},
             {name: 'canton'},
             {name: 'commune'},
-            {name: 'legalbaseurl'},
+            {name: 'documenturl'},
             {name: 'legalstate'},
             {name: 'publishedsince', type:'date'}
         ]
@@ -32,11 +33,11 @@ TODO: pass topic and layerfk to the function to request only related docs
     '<tpl for=".">',
         '<div style="padding:3px">',
         '<h2 class="doctitle">{officialnb} - {officialtitle}</h2>',
-        '<p class="docurl"><b>URL:</b> <a href="{legalbaseurl}" target="_blank">{legalbaseurl}</a></p>',
+        '<p class="docurl"><b>URL:</b> <a href="{documenturl}" target="_blank">{documenturl}</a></p>',
+        '<br />',
         '</div>',
     '</tpl>',
-    '</div>',
-    '<div class="x-clear"></div>'
+    '</div>'
     );
 
     // Create the legal information container
@@ -44,10 +45,9 @@ TODO: pass topic and layerfk to the function to request only related docs
         title: labels.legalBasisTab,
         store: legaldocs,
         tpl: templates,
-        autoHeight:true,
+        autoHeight: true,
         multiSelect: true,
-        overClass:'x-view-over',
-        itemSelector:'div.thumb-wrap',
+        //overClass: 'x-view-over', - not used yet, might be nice so I leave it for now
         emptyText: 'No legal documents to display'
     });
     

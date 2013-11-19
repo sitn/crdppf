@@ -387,8 +387,7 @@ Crdppf.init_main = function(lang) {
         }
       });
       
-   // featureTree diplayed in infoPanel as a global view 
-          
+   // featureTree displayed in infoPanel as a global view 
     featureTree = new Ext.tree.TreePanel({
         title: labels.restrictionPanelTitle,
         cls: 'featureTreeCls',
@@ -434,7 +433,7 @@ Crdppf.init_main = function(lang) {
     });
 
     infoPanel = new Ext.Panel({
-        header:false,
+        header: false,
         width: 250,
         region: 'east',
         title: labels.infoTabLabel,
