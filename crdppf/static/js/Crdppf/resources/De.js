@@ -56,15 +56,16 @@ Crdppf.labelsDe  ={
     'panButtonTlp':'Kartenausschnitt verschieben',
     'zoomInButtonTlp':'Kartenausschnitt vergrössern',
     'zoomOutButtonTlp':'Kartenausschnitt verkleinern',
-    'infoButtonTlp': 'Auswahl löschen',
+    'clearSelectionButtonTlp': 'Auswahl löschen',
     'baseLayerGroup': 'Grundkarte',
     'chooseExtractMsg': 'Welchen Auszugstyp möchten Sie ?',
+    'restrictionLoadingMsg': 'Bearbeitung...',
+    'chooseExtractTypeMsg':'Auszugstyp Wahl',
     'chooseExtractMsgTitle':'Auszugstyp Wahl',
     'reducedExtract': 'Reduzierter Auszug',
     'extendedExtract': 'Kompletter Auszug',
     'cancelExtract': 'Abbrechen',
     'generateExtract': 'Auszug erstellen'
-
 };
 
 OpenLayers.Util.extend(OpenLayers.Lang.de, {

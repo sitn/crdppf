@@ -65,7 +65,8 @@ Crdppf.labelsFr  ={
     'reducedExtract': 'Extrait réduit',
     'extendedExtract': 'Extrait complet',
     'cancelExtract': 'Annuler',
-    'generateExtract': 'Générer l\'extrait'
+    'generateExtract': 'Générer l\'extrait',
+    'restrictionLoadingMsg': 'Calcul...'
     };
    
 

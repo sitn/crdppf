@@ -65,36 +65,35 @@ def get_features_function(params):
             for feature in intersectResult:
                 geometryType = DBSession.scalar(feature.geom.geometry_type())
                 geomType = ''
-                featureClass = ''
-                featureMeasure = -9999
                 intersectionMeasure = -9999
                 intersectionMeasureTxt = ''
                 if geometryType == 'ST_Polygon' or geometryType == 'ST_MultiPolygon':
                     intersectionMeasure = DBSession.scalar(feature.geom.intersection(parcelGeom).area())
-                    intersectionMeasureTxt = ' - ' + str(math.ceil(intersectionMeasure*10)/10) + ' [m2]'
-                    featureMeasure = 100 * intersectionMeasure / DBSession.scalar(parcelGeom.area())
-                    geomType = 'Polygone'
-                    if featureMeasure >= 99:
-                        featureClass = 'within'
-                    elif featureMeasure < 99 and featureMeasure >= 0:
-                        featureClass = 'intersects'
-                    elif featureMeasure < 0:
-                        featureClass = 'adjacent'
+                    if intersectionMeasure >= 1:
+                        intersectionMeasureTxt = ' : ' + str(math.ceil(intersectionMeasure*10)/10) + ' [m2]'
+                        geomType = 'Polygone'
+                        jsonFeature = sloads(dumps(feature))
+                        jsonFeature['properties']['layerName'] = layer
+                        jsonFeature['properties']['intersectionMeasure'] = intersectionMeasureTxt
+                        featureList.append(jsonFeature)
 
                 elif geometryType == 'ST_Line' or geometryType == 'ST_MultiLineString' or geometryType == 'ST_LineString':
                     intersectionMeasure = intersectionMeasure = DBSession.scalar(feature.geom.intersection(parcelGeom).length())
-                    intersectionMeasureTxt = ' - ' + str(math.ceil(intersectionMeasure*10)/10) + ' [m]'
-                    geomType = 'Ligne'
+                    if intersectionMeasure >= 1:
+                        intersectionMeasureTxt = ' : ' + str(math.ceil(intersectionMeasure*10)/10) + ' [m]'
+                        geomType = 'Ligne'
+                        jsonFeature = sloads(dumps(feature))
+                        jsonFeature['properties']['layerName'] = layer
+                        jsonFeature['properties']['intersectionMeasure'] = intersectionMeasureTxt
+                        featureList.append(jsonFeature)
                 elif geometryType == 'ST_Point' or geometryType == 'ST_MultiPoint':
                     featureMeasure = -9999
                     geomType = 'Point'
-                    intersectionMeasureTxt = ' - point'
-                    
-                jsonFeature = sloads(dumps(feature))
-                jsonFeature['properties']['layerName'] = layer
-                jsonFeature['properties']['featureClass'] = featureClass
-                jsonFeature['properties']['intersectionMeasure'] = intersectionMeasureTxt
-                featureList.append(jsonFeature)
+                    intersectionMeasureTxt = ' : point'
+                    jsonFeature = sloads(dumps(feature))
+                    jsonFeature['properties']['layerName'] = layer
+                    jsonFeature['properties']['intersectionMeasure'] = intersectionMeasureTxt
+                    featureList.append(jsonFeature)
 
     return featureList
 

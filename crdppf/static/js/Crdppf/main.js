@@ -88,7 +88,7 @@ Crdppf.init_main = function(lang) {
     // clearSelection button: empty the current selection
     var clearSelectionButton = new Ext.Button({
         xtype: 'button',
-        tooltip: labels.infoButtonTlp,
+        tooltip: labels.clearSelectionButtonTlp,
         margins: '0 0 0 20',
         id: 'clearSelectionButton',
         width: 40,
