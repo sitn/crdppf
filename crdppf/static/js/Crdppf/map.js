@@ -210,7 +210,7 @@ function makeMap(mapOptions){
         fixedLayer: true,
         requestEncoding: 'REST'
     }); 
-    layer.id = 'baseLayer'   
+    layer.id = 'baseLayer';   
     
     
     var selectStyle = new OpenLayers.Style({
