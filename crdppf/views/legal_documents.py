@@ -71,10 +71,11 @@ def getLegalDocuments(request):
     legalbases = {}
     legalbases = DBSession.query(LegalBases).order_by(LegalBases.legalbaseid.asc()).all()
 
-    list = []
+    doclist = []
     for legalbase in legalbases :
-        list.append({
-            'documentid':legalbase.legalbaseid, 
+        doclist.append({
+            'documentid':legalbase.legalbaseid,
+            'doctype':'legalbase',
             'numcom':legalbase.topicfk, 
             'topicfk':legalbase.title, 
             'title':legalbase.title, 
@@ -92,8 +93,9 @@ def getLegalDocuments(request):
     legalprovisions = DBSession.query(LegalProvisions).order_by(LegalProvisions.legalprovisionid.asc()).all()
 
     for legalprovision in legalprovisions :
-        list.append({
-            'documentid':legalprovision.legalprovisionid, 
+        doclist.append({
+            'documentid':legalprovision.legalprovisionid,
+            'doctype':'legalprovision',
             'numcom':legalprovision.topicfk, 
             'topicfk':legalprovision.title, 
             'title':legalprovision.title, 
@@ -111,8 +113,9 @@ def getLegalDocuments(request):
     temporaryprovisions = DBSession.query(TemporaryProvisions).order_by(TemporaryProvisions.temporaryprovisionid.asc()).all()
 
     for temporaryprovision in temporaryprovisions :
-        list.append({
-            'documentid':temporaryprovision.temporaryprovisionid, 
+        doclist.append({
+            'documentid':temporaryprovision.temporaryprovisionid,
+            'doctype':'temporaryprovsion',
             'numcom':temporaryprovision.topicfk, 
             'topicfk':temporaryprovision.title, 
             'title':temporaryprovision.title, 
@@ -126,4 +129,25 @@ def getLegalDocuments(request):
             'publishedsince':temporaryprovision.publishedsince.isoformat()
         })
 
-    return list
+    references = {}
+    references = DBSession.query(References).order_by(References.referenceid.asc()).all()
+
+    for reference in references :
+        doclist.append({
+            'documentid':reference.referenceid,
+            'doctype':'reference',
+            'numcom':reference.topicfk, 
+            'topicfk':reference.title, 
+            'title':reference.title, 
+            'officialtitle':reference.officialtitle, 
+            'abreviation':reference.abreviation, 
+            'officialnb':reference.officialnb,
+            'canton':reference.canton,
+            'commune':reference.commune,
+            'documenturl':reference.referenceurl,
+            'legalstate':reference.legalstate,
+            'publishedsince':reference.publishedsince.isoformat()
+        })
+
+
+    return doclist
