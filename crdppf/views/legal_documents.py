@@ -91,7 +91,7 @@ def getLegalDocuments(request):
 
     legalprovisions = {}
     legalprovisions = DBSession.query(LegalProvisions).order_by(LegalProvisions.legalprovisionid.asc()).all()
-    
+
     for legalprovision in legalprovisions :
         doclist.append({
             'documentid':legalprovision.legalprovisionid,
