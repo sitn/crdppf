@@ -50,6 +50,26 @@ body {
 .x-btn-pressed .crdppf_infobutton {
     background-image:url(../images/ui_buttons/on/icon_querybypoint_on.gif) !important;
 }
+.crdppf_distancebutton {
+    background:url(../images/ui_buttons/normal/icon_distance.gif);
+	height:26px !important;
+}
+.x-btn-over .crdppf_distancebutton {
+    background:url(../images/ui_buttons/over/icon_distance_over.gif);
+}
+.x-btn-pressed .crdppf_distancebutton {
+    background-image:url(../images/ui_buttons/on/icon_distance_on.gif) !important;
+}
+.crdppf_polygonbutton {
+    background:url(../images/ui_buttons/normal/icon_surface.gif);
+	height:26px !important;
+}
+.x-btn-over .crdppf_polygonbutton {
+    background:url(../images/ui_buttons/over/icon_surface_over.gif);
+}
+.x-btn-pressed .crdppf_polygonbutton {
+    background-image:url(../images/ui_buttons/on/icon_surface_on.gif) !important;
+}
 
 .crdppf_clearselectionbutton {
     background:url(../images/ui_buttons/normal/icon_clearquerybypoint.gif);

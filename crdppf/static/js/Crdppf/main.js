@@ -8,6 +8,7 @@
  * @include Crdppf/searcher/searcher.js
  * @include Crdppf/themeSelector.js
  * @include Crdppf/legalDocuments.js
+ * @include Crdppf/measureTools.js
  */
 
 // VARIABLES
@@ -103,6 +104,54 @@ Crdppf.init_main = function(lang) {
             }                  
         }
     });
+
+    measureControlO = new Crdppf.MeasureTool();
+    measureControlO.makeMeasureTool();
+    
+    var lineMeasureButton = new Ext.Button({
+        xtype: 'button',
+        tooltip: labels.infoButtonTlp,
+        text: 'Distance',
+        margins: '0 0 0 20',
+        id: 'distanceButton',
+        width: 40,
+        enableToggle: true,
+        toggleGroup: 'mapTools',
+        iconCls: 'crdppf_distancebutton',
+        listeners:{
+            toggle: function (me, pressed){
+                measureControlO.toggleMeasureControl('line');
+            }                  
+        }
+    });    
+    
+    var polygonMeasureButton = new Ext.Button({
+        xtype: 'button',
+        tooltip: labels.infoButtonTlp,
+        text: 'Surface',
+        margins: '0 0 0 20',
+        id: 'polygonButton',
+        width: 40,
+        enableToggle: true,
+        toggleGroup: 'mapTools',
+        iconCls: 'crdppf_polygonbutton',
+        listeners:{
+            toggle: function (me, pressed){
+                measureControlO.toggleMeasureControl('polygon');
+            }                  
+        }
+    });
+
+    var measureToolsMenu = new Ext.SplitButton({
+        text: 'Mesures',
+        menu: new Ext.menu.Menu({
+            items: [
+                lineMeasureButton,
+                polygonMeasureButton
+            ]
+        })
+    });
+    
     
     // generate the pdf file of the current map
     var printButton = new Ext.Button({
@@ -297,12 +346,14 @@ Crdppf.init_main = function(lang) {
     autoWidth: true,
     height: 20,
     cls: 'map-toolbar',
-    items: [panButton,
+    items: [
+        panButton,
         infoButton,
         clearSelectionButton,
         printButton,
         zoomInButton,
-        zoomOutButton
+        zoomOutButton,
+        measureToolsMenu
         // frButton,
         // deButton
         ]
