@@ -26,6 +26,19 @@ Ext.onReady(function(){
         ]
     }); 
 
+    var topicstore = new Ext.data.JsonStore({
+        autoDestroy: true,
+        autoLoad: true,
+        url: 'getTopicsList',
+        idProperty: 'topicid',
+        fields:[
+            {name: 'topicid'},
+            {name: 'topicname'},
+            {name: 'authorityfk', type:'integer'},
+            {name: 'topicorder',type:'integer'}
+        ]
+    }); 
+
     var cantons = new Ext.data.SimpleStore({
         autoDestroy: true,
         autoLoad: true,
@@ -141,19 +154,22 @@ Ext.onReady(function(){
                 displayField: 'doctype',   
                 selectOnFocus: true,
                 mode: 'local',
-                triggerAction: 'all',
                 labelStyle: 'white-space: nowrap;font-weight: bold;',
                 name: 'doctype',
                 allowBlank: false,
                 width: 250,
                 maxLength: 100
             },{
-                xtype:'textfield',
+                xtype:'combo',
+                store: topicstore,
                 fieldLabel: 'Identifiant du thème',
+                displayField:'topicname',
+                valueField: 'topicid',
+                triggerAction: 'all',
                 labelStyle: 'white-space: nowrap;font-weight: bold;',
                 name: 'topicfk',
                 allowBlank: false,
-                width: 10,
+                width: 500,
                 maxLength: 75
             },{
                 xtype:'textfield',

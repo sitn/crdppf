@@ -58,6 +58,7 @@ def main(global_config, **settings):
     config.add_route('test', 'test')
     config.add_route('formulaire_reglements', 'formulaire_reglements')
     config.add_route('getCadastreList', 'getCadastreList')
+    config.add_route('getTopicsList', 'getTopicsList')
     config.add_route('createNewDocEntry', 'createNewDocEntry')
     config.add_route('getLegalDocuments', 'getLegalDocuments')
     config.add_route('map', 'map')
