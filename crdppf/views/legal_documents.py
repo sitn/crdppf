@@ -56,6 +56,7 @@ def createNewDocEntry(request):
         document.nocad = None
     document.nomcom = data['comnom']
     document.doctype = data['doctype']
+    document.topicfk = data['topicfk']
     document.titre = data['titre']
     document.titreofficiel = data['titreofficiel']
     document.abreviation = data['abreviation']
