@@ -11,7 +11,12 @@
  * @requires OpenLayers/Control/PanZoomBar.js
  * @requires OpenLayers/Control/GetFeature.js
  * @requires OpenLayers/Control/ScaleBar.js
+ * @requires OpenLayers/Control/Measure.js
+ * @requires OpenLayers/Handler/Path.js
+ * @requires OpenLayers/Handler/Polygon.js
+ * @requires OpenLayers/Handler.js
  * @requires OpenLayers/Util.js 
+ * @requires OpenLayers/Rule.js
  * @requires OpenLayers/Control/Navigation.js
  * @include OpenLayers/Layer/WMS.js
  * @include OpenLayers/Layer/Vector.js

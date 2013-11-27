@@ -65,7 +65,10 @@ Crdppf.labelsDe  ={
     'reducedExtract': 'Reduzierter Auszug',
     'extendedExtract': 'Kompletter Auszug',
     'cancelExtract': 'Abbrechen',
-    'generateExtract': 'Auszug erstellen'
+    'generateExtract': 'Auszug erstellen',
+    'measureToolTxt': 'Messung',
+    'measureToolDistanceTxt': 'Lange',
+    'measureToolSurfaceTxt': 'Fläche'
 };
 
 OpenLayers.Util.extend(OpenLayers.Lang.de, {

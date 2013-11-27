@@ -7,8 +7,7 @@ Crdppf.MeasureTool = function createMeasureTool () {
 };
 
 var makeMeasureTool = function makeMeasureTool(){
-                
-            // style the sketch fancy
+            // custom style   
             var sketchSymbolizers = {
                 "Point": {
                     pointRadius: 4,
@@ -33,16 +32,17 @@ var makeMeasureTool = function makeMeasureTool(){
                     fillOpacity: 0.3
                 }
             };
+            
             var style = new OpenLayers.Style();
             style.addRules([
                 new OpenLayers.Rule({symbolizer: sketchSymbolizers})
             ]);
             var styleMap = new OpenLayers.StyleMap({"default": style});
             
-            // allow testing of specific renderers via "?renderer=Canvas", etc
             var renderer = OpenLayers.Util.getParameters(window.location.href).renderer;
             renderer = (renderer) ? [renderer] : OpenLayers.Layer.Vector.prototype.renderers;
-
+            
+            // Define the controls
             measureControls = {
                 line: new OpenLayers.Control.Measure(
                     OpenLayers.Handler.Path, {
@@ -79,14 +79,12 @@ var makeMeasureTool = function makeMeasureTool(){
             }
         };
 
+// Write measurement to Ext Window html
 function handleMeasurements(event) {
     var geometry = event.geometry;
     var units = event.units;
     var order = event.order;
     var measure = event.measure;
-    if (!Ext.getCmp('measureWindow')){
-        createMeasureWindow();
-    }
     var element = document.getElementById('measureOuput');
     var out = "";
     if(order == 1) {
@@ -97,27 +95,13 @@ function handleMeasurements(event) {
     element.innerHTML = out;
 }
 
-var createMeasureWindow = function createMeasureWindow(){
-    var measureWindow = new Ext.Window({
-        title: 'Mesures',
-        width: 100,
-        height: 50,
-        id: 'measureWindow',
-        html: '<div id="measureOuput"></div>'
-    });
-    measureWindow.show();
-}
-
 var toggleMeasureControl = function toggleMeasureControl(type) {
-
     for(key in measureControls) {
         var control = measureControls[key];
         if(type == key) {
             control.activate();
-            console.log('activated: ' + type);
         } else {
             control.deactivate();
-            console.log('desactivated: ' + type);
         }
     }
 };
@@ -126,5 +110,7 @@ var disableMeasureControl = function disableMeasureControl() {
     for(key in measureControls) {
         measureControls[key].deactivate();
     }
-    Ext.getCmp('measureWindow').destroy();
+    
+    var element = document.getElementById('measureOuput');
+    element.innerHTML = '';
 }
