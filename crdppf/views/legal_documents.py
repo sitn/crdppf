@@ -16,12 +16,12 @@ from crdppf.models import *
 def getCadastreList(request):
     """ Loads the list of the cadastres of the Canton."""
     
-    cadastres = {}
-    cadastres = DBSession.query(Cadastre).order_by(Cadastre.numcad.asc()).all()
+    results = {}
+    results = DBSession.query(Cadastre).order_by(Cadastre.numcad.asc()).all()
 
-    list = []
-    for cadastre in cadastres :
-        list.append({
+    cadastres = []
+    for cadastre in results :
+        cadastres.append({
             'idobj':cadastre.idobj, 
             'numcom':cadastre.numcom, 
             'comnom':cadastre.comnom, 
@@ -30,7 +30,26 @@ def getCadastreList(request):
             'nufeco':cadastre.nufeco
         })
 
-    return list
+    return cadastres
+
+@view_config(route_name='getTopicsList', renderer='json')
+def getTopicsList(request):
+    """ Loads the list of the topics."""
+    
+    results = {}
+    results = DBSession.query(Topics).order_by(Topics.topicid.asc()).all()
+
+    topics = []
+    for topic in results :
+        topics.append({
+            'topicid':topic.topicid, 
+            'topicname':topic.topicname, 
+            'authorityfk':topic.authorityfk, 
+            #'publicationdate':topic.publicationdate.isoformat(), 
+            'topicorder':topic.topicorder
+        })
+
+    return topics
 
 @view_config(route_name='createNewDocEntry', renderer='json')
 def createNewDocEntry(request):
@@ -63,10 +82,19 @@ def createNewDocEntry(request):
     document.noofficiel = data['noofficiel']
     document.url = data['url']
     document.statutjuridique = data['statutjuridique']
-    document.datesanction = data['datesanction']
-    document.dateabrogation = data['dateabrogation']
+    if data['datesanction']:
+        document.datesanction = data['datesanction']
+    else:
+        document.datesanction = None
+    if data['dateabrogation']:
+        document.dateabrogation = data['dateabrogation']
+    else:
+        document.dateabrogation = None
     document.operateursaisie = data['operateursaisie']
-    document.datesaisie = data['datesaisie']
+    if data['datesaisie']:
+        document.datesaisie = data['datesaisie']
+    else:
+        document.datesaisie = None
     document.canton = data['canton']
 
     DBSession.add(document)
