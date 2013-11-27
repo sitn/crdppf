@@ -107,7 +107,7 @@ Crdppf.init_main = function(lang) {
         }
     });
 
-    measureControlO = new Crdppf.MeasureTool();
+    var measureControlO = new Crdppf.MeasureTool();
     measureControlO.makeMeasureTool();
     
     var lineMeasureButton = new Ext.Button({
@@ -128,7 +128,7 @@ Crdppf.init_main = function(lang) {
                     measureControlO.disableMeasureControl();
                     infoButton.toggle(true);
                 }
-            }                  
+            }
         }
     });    
     
