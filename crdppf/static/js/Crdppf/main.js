@@ -165,17 +165,6 @@ Crdppf.init_main = function(lang) {
         })
     });
     
-    var btn = new Ext.CycleButton({
-    showText: true,
-    items: [{
-        text:'text only',
-        iconCls:'view-text',
-        checked:true
-    },{
-        text:'HTML',
-        iconCls:'view-html'
-    }]
-});
     // generate the pdf file of the current map
     var printButton = new Ext.Button({
         xtype: 'button',
@@ -375,10 +364,7 @@ Crdppf.init_main = function(lang) {
         {
             xtype: 'label',
             html: '<div id="measureOuput"></div>'
-            
         }
-        // frButton,
-        // deButton
         ]
    });
    
