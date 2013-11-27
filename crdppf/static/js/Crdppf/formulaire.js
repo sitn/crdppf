@@ -1,6 +1,6 @@
 Ext.onReady(function(){
-	
-	Ext.QuickTips.init();
+
+    Ext.QuickTips.init();
     var winWait = new Ext.LoadMask(
         Ext.getBody(),
         {msg:"Veuillez patienter... chargement du formulaire."}
@@ -32,8 +32,30 @@ Ext.onReady(function(){
         fields: [{name:'canton'}],
         data: [
             ['AG'],
+            ['AI'],
+            ['AR'],
+            ['BE'],
+            ['BL'],
+            ['BS'],
+            ['FR'],
+            ['GE'],
+            ['GL'],
+            ['GR'],
             ['JU'],
+            ['LU'],
             ['NE'],
+            ['NW'],
+            ['OW'],
+            ['SH'],
+            ['SZ'],
+            ['SO'],
+            ['SG'],
+            ['TG'],
+            ['TI'],
+            ['UR'],
+            ['VD'],
+            ['VS'],
+            ['ZG'],
             ['ZH']
         ]
     });
@@ -68,7 +90,7 @@ Ext.onReady(function(){
                 triggerAction: 'all',
                 labelStyle: 'white-space: nowrap;font-weight: bold;',
                 name: 'nomcad',
-                allowBlank: false,
+                allowBlank: true,
                 width: 250,
                 maxLength: 75,
                 listeners : {
@@ -86,7 +108,7 @@ Ext.onReady(function(){
                 fieldLabel: 'Numéro de commune cantonal',
                 labelStyle: 'white-space: nowrap;font-weight: bold;',
                 name: 'numcom',
-                allowBlank: false,
+                allowBlank: true,
                 width: 100,
                 maxLength: 2
             },{
@@ -94,7 +116,7 @@ Ext.onReady(function(){
                 fieldLabel: 'Numéro de commune fédéral',
                 labelStyle: 'white-space: nowrap;font-weight: bold;',
                 name: 'nufeco',
-                allowBlank: false,
+                allowBlank: true,
                 width: 100,
                 maxLength: 4
             },{
@@ -102,9 +124,29 @@ Ext.onReady(function(){
                 fieldLabel: 'Nom de la commune',
                 labelStyle: 'white-space: nowrap;font-weight: bold;',
                 name: 'comnom',
-                allowBlank: false,
+                allowBlank: true,
                 width: 250,
                 maxLength: 75
+            },{
+                xtype:'combo',
+                fieldLabel: 'Type de texte légal',
+                store: new Ext.data.SimpleStore({
+                    fields: ['doctype'],
+                    data: [
+                        ['Base légale'],
+                        ['Disposition juridique'],
+                        ['Référence']
+                    ]
+                }),
+                displayField: 'doctype',   
+                selectOnFocus: true,
+                mode: 'local',
+                triggerAction: 'all',
+                labelStyle: 'white-space: nowrap;font-weight: bold;',
+                name: 'doctype',
+                allowBlank: false,
+                width: 250,
+                maxLength: 100
             },{
                 xtype:'textfield',
                 fieldLabel: 'Titre du document légal',
@@ -169,7 +211,7 @@ Ext.onReady(function(){
                 fieldLabel: 'Date de sanction',
                 labelStyle: 'white-space: nowrap;font-weight: bold;',
                 name: 'datesanction',
-                allowBlank: false,
+                allowBlank: true,
                 width: 250,
                 maxLength: 100
             },{
@@ -177,7 +219,7 @@ Ext.onReady(function(){
                 fieldLabel: 'Date d\'abrogation',
                 labelStyle: 'white-space: nowrap;font-weight: bold;',
                 name: 'dateabrogation',
-                allowBlank: false,
+                allowBlank: true,
                 width: 250,
                 maxLength: 100
             },{
@@ -205,7 +247,7 @@ Ext.onReady(function(){
                 name: 'canton',
                 selectOnFocus: true,
                 mode: 'local',
-                allowBlank: false,
+                allowBlank: true,
                 width: 250,
                 maxLength: 100
             },    

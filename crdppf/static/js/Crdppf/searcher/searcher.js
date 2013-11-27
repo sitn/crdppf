@@ -59,13 +59,12 @@ Crdppf.SearchBox = function(options) {
         hideTrigger: true,
         triggerAction: 'all',
         enableKeyEvents: true,
-        minChars: 3,
+        minChars: 1,
         queryDelay: 50, 
         emptyText: OpenLayers.i18n('Rechercher...'),
         loadingText: OpenLayers.i18n('loadingText'),
         displayField: 'label',
-        groupingField: 'layer_name',
-        width: 200 
+        groupingField: 'layer_name'
     }); 
 
     var onBeforeLoadStore = function(store, options) {
