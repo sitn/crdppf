@@ -149,6 +149,14 @@ Ext.onReady(function(){
                 maxLength: 100
             },{
                 xtype:'textfield',
+                fieldLabel: 'Identifiant du thème',
+                labelStyle: 'white-space: nowrap;font-weight: bold;',
+                name: 'topicfk',
+                allowBlank: false,
+                width: 10,
+                maxLength: 75
+            },{
+                xtype:'textfield',
                 fieldLabel: 'Titre du document légal',
                 labelStyle: 'white-space: nowrap;font-weight: bold;',
                 name: 'titre',
