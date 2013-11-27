@@ -8,6 +8,7 @@
  * @include Crdppf/searcher/searcher.js
  * @include Crdppf/themeSelector.js
  * @include Crdppf/legalDocuments.js
+ * @include Crdppf/measureTools.js
  */
 
 // VARIABLES
@@ -79,8 +80,10 @@ Crdppf.init_main = function(lang) {
         toggleGroup: 'mapTools',
         iconCls: 'crdppf_infobutton',
         listeners:{
-            click: function (){
-                MapO.setInfoControl();
+            toggle: function (me, pressed){
+                if (pressed) {
+                    MapO.setInfoControl();
+                }
             }                  
         }
     });
@@ -102,6 +105,64 @@ Crdppf.init_main = function(lang) {
                 infoButton.toggle(false);
             }                  
         }
+    });
+
+    measureControlO = new Crdppf.MeasureTool();
+    measureControlO.makeMeasureTool();
+    
+    var lineMeasureButton = new Ext.Button({
+        xtype: 'button',
+        tooltip: labels.infoButtonTlp,
+        text: labels.measureToolDistanceTxt,
+        margins: '0 0 0 20',
+        id: 'distanceButton',
+        width: 40,
+        enableToggle: true,
+        toggleGroup: 'mapTools',
+        iconCls: 'crdppf_distancebutton',
+        listeners:{
+            toggle: function (me, pressed){
+                if (pressed){
+                    measureControlO.toggleMeasureControl('line');
+                } else if( !pressed && !polygonMeasureButton.pressed) {
+                    measureControlO.disableMeasureControl();
+                    infoButton.toggle(true);
+                }
+            }                  
+        }
+    });    
+    
+    var polygonMeasureButton = new Ext.Button({
+        xtype: 'button',
+        tooltip: labels.infoButtonTlp,
+        text: labels.measureToolSurfaceTxt,
+        margins: '0 0 0 20',
+        id: 'polygonButton',
+        width: 40,
+        enableToggle: true,
+        toggleGroup: 'mapTools',
+        iconCls: 'crdppf_polygonbutton',
+        listeners:{
+            toggle: function (me, pressed){
+                if (pressed) {
+                    measureControlO.toggleMeasureControl('polygon');
+                } else if( !pressed && !lineMeasureButton.pressed) {
+                    measureControlO.disableMeasureControl();
+                    infoButton.toggle(true);
+                }
+            }                  
+        }
+    });
+
+    var measureToolsMenu = new Ext.SplitButton({
+        text: labels.measureToolTxt,
+        showText: true,
+        menu: new Ext.menu.Menu({
+            items: [
+                lineMeasureButton,
+                polygonMeasureButton
+            ]
+        })
     });
     
     // generate the pdf file of the current map
@@ -170,11 +231,10 @@ Crdppf.init_main = function(lang) {
                         
                     });
                     chooseExtract.show();
-                      // buttonText: {ok: labels.reducedExtract, no: labels.extendedExtract, cancel: labels.cancelExtract }
-
                 }
                 else {
                     Ext.Msg.alert(labels.infoMsgTitle, labels.noSelectedParcelMessage);
+                    infoButton.toggle(true);
                 }
             }
         }
@@ -206,8 +266,6 @@ Crdppf.init_main = function(lang) {
         margins: '0 0 0 20',
         width: 40,
         id: 'zoomInButton',
-        enableToggle: true,
-        toggleGroup: 'mapTools',
         iconCls: 'crdppf_zoominbutton',
         listeners:{
             click: function (){
@@ -224,8 +282,6 @@ Crdppf.init_main = function(lang) {
         margins: '0 0 0 20',
         width: 40,
         id: 'zoomOutButton',
-        enableToggle: true,
-        toggleGroup: 'mapTools',
         iconCls: 'crdppf_zoomoutbutton',
         listeners:{
             click: function (){
@@ -297,14 +353,18 @@ Crdppf.init_main = function(lang) {
     autoWidth: true,
     height: 20,
     cls: 'map-toolbar',
-    items: [panButton,
+    items: [
+        panButton,
         infoButton,
         clearSelectionButton,
         printButton,
         zoomInButton,
-        zoomOutButton
-        // frButton,
-        // deButton
+        zoomOutButton,
+        measureToolsMenu,
+        {
+            xtype: 'label',
+            html: '<div id="measureOuput"></div>'
+        }
         ]
    });
    

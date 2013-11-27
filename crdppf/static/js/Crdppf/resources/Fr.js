@@ -66,7 +66,10 @@ Crdppf.labelsFr  ={
     'extendedExtract': 'Extrait complet',
     'cancelExtract': 'Annuler',
     'generateExtract': 'Générer l\'extrait',
-    'restrictionLoadingMsg': 'Calcul...'
+    'restrictionLoadingMsg': 'Calcul...',
+    'measureToolTxt': 'Mesure',
+    'measureToolDistanceTxt': 'Distance',
+    'measureToolSurfaceTxt': 'Surface'
     };
    
 

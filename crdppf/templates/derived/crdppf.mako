@@ -22,6 +22,7 @@
     <script type="text/javascript" src="${request.static_url('crdppf:static/js/Crdppf/searcher/GroupComboBox.js')}"></script>
     <script type="text/javascript" src="${request.static_url('crdppf:static/js/Crdppf/searcher/GroupingView.js')}"></script>
     <script type="text/javascript" src="${request.static_url('crdppf:static/js/Crdppf/legalDocuments.js')}"></script>
+    <script type="text/javascript" src="${request.static_url('crdppf:static/js/Crdppf/measureTools.js')}"></script>
     <script type="text/javascript" src="${request.static_url('crdppf:static/lib/openlayers.addins/lib/OpenLayers/Control/ScaleBar.js')}"></script>
 % else:
     <script type="text/javascript" src="${request.static_url('crdppf:static/build/crdppf.js')}"></script>
