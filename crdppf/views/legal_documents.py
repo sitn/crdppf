@@ -42,10 +42,20 @@ def createNewDocEntry(request):
     
     document = Documents()
     
-    document.nocom = int(data['numcom'])
-    document.nufeco = int(data['nufeco'])
-    document.nocad = int(data['numcad'])
+    if data['numcom']:
+        document.nocom = int(data['numcom'])
+    else:
+        document.nocom = None
+    if data['nufeco']:
+        document.nufeco = int(data['nufeco'])
+    else:
+        document.nufeco = None
+    if data['numcad']:    
+        document.nocad = int(data['numcad'])
+    else:
+        document.nocad = None
     document.nomcom = data['comnom']
+    document.doctype = data['doctype']
     document.titre = data['titre']
     document.titreofficiel = data['titreofficiel']
     document.abreviation = data['abreviation']
@@ -148,6 +158,5 @@ def getLegalDocuments(request):
             'legalstate':reference.legalstate,
             'publishedsince':reference.publishedsince.isoformat()
         })
-
 
     return doclist

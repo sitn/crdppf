@@ -51,9 +51,9 @@ Crdppf.init_main = function(lang) {
         layerList = Crdppf.layerListDe;
         baseLayersList = Crdppf.baseLayersDe;
     }
-    
+
     Ext.QuickTips.init();
-    
+
     // add onclick event to the Fr/De links
     Ext.get('frLink').on('click',function() {
         setLanguage('Fr');
@@ -68,7 +68,7 @@ Crdppf.init_main = function(lang) {
     };
     MapO = new Crdppf.Map(mapOptions);
     var map = MapO.map;
-    
+
     // getFeatureInfo button: activates the Openlayers infoControl
     var infoButton = new Ext.Button({
         xtype: 'button',
@@ -87,7 +87,7 @@ Crdppf.init_main = function(lang) {
             }                  
         }
     });
-    
+
     // clearSelection button: empty the current selection
     var clearSelectionButton = new Ext.Button({
         xtype: 'button',
@@ -239,7 +239,7 @@ Crdppf.init_main = function(lang) {
             }
         }
     });
-    
+
     // activate the standard pan button
     var panButton = new Ext.Button({
         pressed: true,
@@ -257,7 +257,7 @@ Crdppf.init_main = function(lang) {
             }  
         }
     });
-    
+
     // zoom in button
     var zoomInButton = new Ext.Button({
         pressed: false,
@@ -273,7 +273,7 @@ Crdppf.init_main = function(lang) {
             }  
         }
     });
-    
+
     // zoom out Button
         var zoomOutButton = new Ext.Button({
         pressed: false,
@@ -289,7 +289,7 @@ Crdppf.init_main = function(lang) {
             }  
         }
     });
-    
+
     // Create the buttons used to switch language
     var isPressedFr = false;
     var isPressedDe = false;
@@ -301,7 +301,7 @@ Crdppf.init_main = function(lang) {
         isPressedFr = false;
         isPressedDe = true;
     }
-    
+
     // button for french
     var frButton = new Ext.Button({
         pressed: isPressedFr,
@@ -317,7 +317,7 @@ Crdppf.init_main = function(lang) {
             }
         }
     });
-    
+
     // button for german
     var deButton = new Ext.Button({
         pressed: isPressedDe,
@@ -333,7 +333,7 @@ Crdppf.init_main = function(lang) {
             }
         }
     });
-    
+
     // set the lang parameter in session when selected through the language buttons
     function setLanguage(value){
         var request = OpenLayers.Request.GET({
@@ -347,7 +347,7 @@ Crdppf.init_main = function(lang) {
         });
         window.location.reload();
     }
-    
+
     // create the mapPanel toolbar
     var mapToolbar = new Ext.Toolbar({
     autoWidth: true,
@@ -367,7 +367,7 @@ Crdppf.init_main = function(lang) {
         }
         ]
    });
-   
+
    // create the mapPanel
     var mapPanel = new GeoExt.MapPanel({
         id:'mapPanel',
@@ -381,7 +381,7 @@ Crdppf.init_main = function(lang) {
         map: map,
         tbar: mapToolbar
     });
-    
+
     // Status & disclaimer bar visible at the bottom of the map panel
     var bottomToolBarHtml = '<span style="padding: 0 20px;">' + labels.mapBottomTxt + '</span>';
     bottomToolBarHtml += '<span id="mousepos" style="padding: 0 20px;"></span>';
@@ -404,7 +404,7 @@ Crdppf.init_main = function(lang) {
         ],
         bbar: bottomToolBar
     }); 
-    
+
     // create the header panel containing the page banner
     var headerPanel = new Ext.Panel({
         region: 'north',
@@ -417,20 +417,13 @@ Crdppf.init_main = function(lang) {
     layerTree = layerTreeO.makeLayerTree();
     themeSelectorO = new Crdppf.ThemeSelector();
     themeSelector = themeSelectorO.makeThemeSelector();
-    
+
     // create the CGPX searchbox
     var searcher = new Crdppf.SearchBox({
         map: mapPanel.map,
         url: Crdppf.fulltextsearchUrl
     });
-    
-    // Add the searchBox to an Ext.Panel
-    var searchPanel = new Ext.Panel({
-        autoWidth: true,
-        border: false,
-        items: [searcher]
-    });
-    
+
     // Create the navigation panel
     var navigationPanel = new Ext.Panel({
         region: 'west',
@@ -441,12 +434,12 @@ Crdppf.init_main = function(lang) {
         collapseMode: 'mini',
         width: 250,
         boxMinWidth: 225,
-        items:[searchPanel,themeSelector,layerTree],
+        items:[searcher,themeSelector,layerTree],
         layoutConfig: {
             align: 'stretch'
         }
       });
-      
+
    // featureTree displayed in infoPanel as a global view 
     featureTree = new Ext.tree.TreePanel({
         title: labels.restrictionPanelTitle,
@@ -463,19 +456,19 @@ Crdppf.init_main = function(lang) {
         height:300,
         autoScroll: true
     });
-    
+
     root = new Ext.tree.TreeNode({
         text: 'Thèmes',
         draggable:false,
         id:'rootNode'
     });
-    
+
     featureTree.setRootNode(root);
-    
+
     var layerStore = new GeoExt.data.LayerStore({
         map: MapO.map
     });
-    
+
     var legendPanel = new GeoExt.LegendPanel({
         collapsible:true, 
         map: MapO.map,
@@ -504,7 +497,7 @@ Crdppf.init_main = function(lang) {
         split: true,
         items:[featureTree, legendPanel]
     });
-    
+
     centerPanel = new Ext.TabPanel({
         region: 'center',
         activeTab: 0, // index or id
@@ -528,5 +521,5 @@ Crdppf.init_main = function(lang) {
 	// Refait la mise en page si la fenêtre change de taille
 	//pass along browser window resize events to the panel
 	Ext.EventManager.onWindowResize(crdppf.doLayout,crdppf);
-    
+
 };

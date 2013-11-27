@@ -37,7 +37,7 @@ class AppConfig:
     # legaldocsdir : Path to the folder where the legal documents are stored that may or may not be included
     legaldocsdir = pkg_resources.resource_filename('crdppf', 'static/public/reglements/') 
     # CHlogopath : Path to the header logo of the Swiss Confederation
-    CHlogopath = 'ecussons\\logoCH.png'
+    CHlogopath = 'ecussons\\Logo_Schweiz_Eidgen.png'
     # cantonlogopath : Path to the header logo of the canton
     cantonlogopath = 'ecussons\\06ne_ch_RVB.jpg'
     
@@ -47,6 +47,7 @@ class AppConfig:
     defaultfontfamily = 'Arial'
     # defaultfitratio : Default ratio feature bboxsides to mapsides length
 
+    appconfig = DBSession.query(AppConfig).order_by(AppConfig.idparam.asc()).all()
 
 class PDFConfig:
     """A class to define the configuration of the PDF extract to simplify changes.
@@ -119,6 +120,7 @@ class Extract(FPDF):
         """
         self.appconfig = AppConfig()
 
+
     def set_pdf_config(self):
         """Loads the initial configuration of the PDF page.
         """
@@ -135,7 +137,7 @@ class Extract(FPDF):
         self.line(105, 0, 105, 35)
         self.line(165, 0, 165, 35)
         # Add the logos if existing else put a placeholder
-        self.image(self.appconfig.imagesbasedir + self.appconfig.CHlogopath, 10, 8, 55, 31.03)
+        self.image(self.appconfig.imagesbasedir + self.appconfig.CHlogopath, 10, 8, 55, 14.42)
         self.image(self.appconfig.imagesbasedir + self.appconfig.cantonlogopath, 110, 8, 43.4, 13.8)
         try:
             self.image(self.municipalitylogopath, 170, 8, 10, 10.7)

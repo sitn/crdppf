@@ -26,6 +26,11 @@ from geoalchemy import (
 
 Base = sqlahelper.get_base()
 
+# Models for the configuration of the application
+class AppConfig(Base):
+    __tablename__ = 'appconfig'
+    __table_args__ = {'schema': 'crdppf', 'autoload': True}
+    
 # START models used for static extraction and general models
 class Topics(Base):
     __tablename__ = 'topic'
