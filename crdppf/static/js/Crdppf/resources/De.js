@@ -4,14 +4,14 @@ Ext.namespace('Crdppf');
 Crdppf.layerListDe = {
     "type": "ThemesCollection",
         'themes' :[  
-                        {'id':'73','image':'amenagement.gif','name':'Raumplanung', 'layers':{'at14_zones_communales':'Kommunale Raumplanung','at08_zones_cantonales':'Kantonale Raumplanung','at28_limites_constructions':'Bauabstandslinien'}},
-                        {'id':'998','image':'routes_nationales.gif','name':'Nationalstrassen','layers':{'at39_itineraires_pedestres':'Fusswege'}},                        
-                        {'id':'500','image':'chemin_fer.gif','name':'Eisenbahnen','layers':{'at39_itineraires_pedestres':'Fusswege'}},                        
-                        {'id':'108','image':'aeroports.gif','name':'Flughäfen', 'layers':{'clo_couloirs':'Höhenbegrenzungskataster','clo_cotes_altitude_surfaces':'Höhenbegrenzungskataster- Höhen'}},
-                        {'id':'116','image':'sites_pollues.gif','name':'Belastete Standorte','layers':{'en07_canepo_accidents':'Belastete Standorte: Unfälle','en07_canepo_decharges':'Belastete Standorte: Deponien','en07_canepo_decharges_points':'Belastete Standorte: Deponien (punkte)','en07_canepo_decharges_polygones':'Belastete Standorte: Deponien (polygon)', 'en07_canepo_entreprises':'Belastete Standorte: Deponien', 'en07_canepo_entreprises_points':'Belastete Standorte: Unternehmen (Punkte)', 'en07_canepo_entreprises_polygones':'Belastete Standorte: Unternehmen (Polygon)'}},
-                        {'id':'997','image':'protection_eaux.gif','name':'Grundwasserschutz','layers':{'en01_zone_sect_protection_eaux':'Grundwasserschutzzonen und -sektoren'}},
-                        {'id':'996','image':'bruit.gif','name':'Lärm','layers':{'en05_degres_sensibilite_bruit':'Lärmepfindlichkeitsstufen'}},
-                        {'id':'999','image':'foret.gif','name':'Wald','layers':{'r157_lim_foret':'Waldgrenzen'}}
+                        {'id':'73','image':'amenagement.gif','name':'Raumplanung', 'layers':{'r73_affectations_primaires':'Grundnutzungszonen','r73_zones_superposees':'Überlagerte Nutzungszonen','r73_perimetres_superposes':'Überlagerte Perimeter','r73_contenus_lineaires':'Lineare Planungselemente','r73_contenus_ponctuels':'Punktförmige Planungselemente'}},
+                        {'id':'88','image':'routes_nationales.gif','name':'Nationalstrassen','layers':{}},
+                        {'id':'96','image':'chemin_fer.gif','name':'Eisenbahnen','layers':{}},
+                        {'id':'108','image':'aeroports.gif','name':'Flughäfen', 'layers':{'r103_bazl_projektierungszonen_flughafenanlagen':'Projektierungszonen Flughafenanlagen','r108_bazl_sicherheitszonenplan':'Sicherheitszonenplan'}},
+                        {'id':'116','image':'sites_pollues.gif','name':'Belastete Standorte','layers':{'r116_sites_pollues':'Belastete Standorte'}},
+                        {'id':'997','image':'protection_eaux.gif','name':'Grundwasserschutz','layers':{'r131_zone_prot_eau':'Grundwasserschutzzonen','r132_perimetre_prot_eau':'Grundwasserschutzsektoren'}},
+                        {'id':'996','image':'bruit.gif','name':'Lärm','layers':{'r145_sens_bruit':'Lärmepfindlichkeitsstufen'}},
+                        {'id':'999','image':'foret.gif','name':'Wald','layers':{'r157_lim_foret':'Waldgrenzen','r159_dist_foret':'Waldabstandslinien'}}
         ]
     };
     

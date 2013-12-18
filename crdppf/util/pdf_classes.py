@@ -328,8 +328,7 @@ class Extract(FPDF):
             'mo4_pfp_3',
             'mo4_pfp_1_2',
             'la3_limites_communales',
-            'mo22_batiments',
-            'r157_lim_foret'
+            'mo22_batiments'
         ]
 
         scale = self.printformat['scale']*2
@@ -805,6 +804,8 @@ class Extract(FPDF):
                                 self.set_font(*pdfconfig.textstyles['normal'])
                                 if feature['statutjuridique'] is None:
                                     feature['statutjuridique'] = 'None'
+                                if feature['teneur'] is None:
+                                    feature['teneur'] = 'None'
                                 self.multi_cell(100, 5, feature['teneur'].encode('iso-8859-1') \
                                     +'\t('+feature['intersectionMeasure'].replace(' - ','').encode('iso-8859-1')+')', 0, 1, 'L')
 

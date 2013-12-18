@@ -21,7 +21,10 @@ from papyrus.geo_interface import GeoInterface
 from geoalchemy import (
     GeometryColumn, 
     Geometry, 
-    Polygon
+    Polygon,
+    WKTSpatialElement,
+    GeometryDDL#,
+#    WKBSpatialElement
     )
 
 Base = sqlahelper.get_base()
@@ -106,123 +109,118 @@ class NomLocalLieuDit(GeoInterface,Base):
 # STOP models used for static extraction and general models
 
 # START models used for GetFeature queries
-    
-# models for theme: pedestrian ways
-
-class PedestrianWays(GeoInterface,Base):
-    __tablename__ = 'at39_itineraires_pedestres'
-    __table_args__ = {'schema': 'amenagement', 'autoload': True}
-    idobj = Column(Integer, primary_key=True)
-    geom =GeometryColumn(Geometry(2,srid=21781))
 
 # models for theme: allocation plan
 
-class CommunalArea(GeoInterface,Base):
-    __table_args__ = {'schema': 'crdppf_minimal', 'autoload': True}
-    __tablename__ = 'r73_plan_affectation'
+class PrimaryLandUseZones(GeoInterface,Base):
+    __table_args__ = {'schema': 'crdppf', 'autoload': True}
+    __tablename__ = 'r73_affectations_primaires'
     idobj = Column(Integer, primary_key=True)
     geom =GeometryColumn(Geometry(2,srid=21781))
-    
-class StateArea(GeoInterface,Base):
-    __tablename__ = 'at08_zones_cantonales'
-    __table_args__ = {'schema': 'amenagement', 'autoload': True}
-    idobj = Column(Integer, primary_key=True)
-    geom =GeometryColumn(Geometry(2,srid=21781))
-    
-class ConstructionsLimits(GeoInterface,Base):
-    __tablename__ = 'at28_limites_constructions'
-    __table_args__ = {'schema': 'amenagement', 'autoload': True}
-    idobj = Column(Integer, primary_key=True)
-    geom =GeometryColumn(Geometry(2,srid=21781))
-    
-class ForestLimits(GeoInterface,Base):
-    __tablename__ = 'r157_lim_foret'
-    __table_args__ = {'schema': 'crdppf_minimal', 'autoload': True}
-    idobj = Column(Integer, primary_key=True)
-    geom =GeometryColumn(Geometry(2,srid=21781))
-    
-class ForestDistances(GeoInterface,Base):
-    __tablename__ = 'r159_dist_foret'
-    __table_args__ = {'schema': 'crdppf_minimal', 'autoload': True}
-    idobj = Column(Integer, primary_key=True)
-    geom =GeometryColumn(Geometry(2,srid=21781))
-    
-# models for obstacles to navigation
 
-class Corridors(GeoInterface,Base):
-    __tablename__ = 'clo_couloirs'
-    __table_args__ = {'schema': 'amenagement', 'autoload': True}
+class SecondaryLandUseZones(GeoInterface,Base):
+    __table_args__ = {'schema': 'crdppf', 'autoload': True}
+    __tablename__ = 'r73_zones_superposees'
     idobj = Column(Integer, primary_key=True)
     geom =GeometryColumn(Geometry(2,srid=21781))
+
+class ComplementaryLandUsePerimeters(GeoInterface,Base):
+    __table_args__ = {'schema': 'crdppf', 'autoload': True}
+    __tablename__ = 'r73_perimetres_superposes'
+    idobj = Column(Integer, primary_key=True)
+    geom =GeometryColumn(Geometry(2,srid=21781))
+
+class LandUseLinearConstraints(GeoInterface,Base):
+    __tablename__ = 'r73_contenus_lineaires'
+    __table_args__ = {'schema': 'crdppf', 'autoload': True}
+    idobj = Column(Integer, primary_key=True)
+    geom =GeometryColumn(Geometry(2,srid=21781))
+
+class LandUsePointConstraints(GeoInterface,Base):
+    __tablename__ = 'r73_contenus_ponctuels'
+    __table_args__ = {'schema': 'crdppf', 'autoload': True}
+    idobj = Column(Integer, primary_key=True)
+    geom =GeometryColumn(Geometry(2,srid=21781))
+
+# models for the topic national roads
+
+# None yet
+
+# models for the national railways
+
+# None yet
+
+# models for airports
+
+class CHAirportSecurityZones(GeoInterface,Base):
+    __tablename__ = 'r108_bazl_sicherheitszonenplan'
+    __table_args__ = {'schema': 'crdppf', 'autoload': True}
+    idobj = Column(Integer, primary_key=True)
+    geom = GeometryColumn(Geometry(2,srid=21781))
+    # ch.bazl.sicherheitszonenplan.oereb
+
+class CHAirportProjectZones(GeoInterface,Base):
+    __tablename__ = 'r103_bazl_projektierungszonen_flughafenanlagen'
+    __table_args__ = {'schema': 'crdppf', 'autoload': True}
+    idobj = Column(Integer, primary_key=True)
+    geom = GeometryColumn(Geometry(2,srid=21781))
+    # ch.bazl.projektierungszonen-flughafenanlagen.oereb
+
+#~ class Corridors(GeoInterface,Base):
+    #~ __tablename__ = 'clo_couloirs'
+    #~ __table_args__ = {'schema': 'amenagement', 'autoload': True}
+    #~ idobj = Column(Integer, primary_key=True)
+    #~ geom =GeometryColumn(Geometry(2,srid=21781))
     
-class AltitudeRatings(GeoInterface,Base):
-    __tablename__ = 'clo_cotes_altitude_surfaces'
-    __table_args__ = {'schema': 'amenagement', 'autoload': True}
-    idobj = Column(Integer, primary_key=True)
-    geom =GeometryColumn(Geometry(2,srid=21781))
+#~ class AltitudeRatings(GeoInterface,Base):
+    #~ __tablename__ = 'clo_cotes_altitude_surfaces'
+    #~ __table_args__ = {'schema': 'amenagement', 'autoload': True}
+    #~ idobj = Column(Integer, primary_key=True)
+    #~ geom =GeometryColumn(Geometry(2,srid=21781))
 
 # models for theme: register of polluted sites
 
-class PollutedSitesAccidents(GeoInterface,Base):
-    __tablename__ = 'en07_canepo_accidents'
-    __table_args__ = {'schema': 'environnement', 'autoload': True}
-    idobj = Column(Integer, primary_key=True)
-    geom =GeometryColumn(Geometry(2,srid=21781))
-    
-class PollutedSitesLandDumps(GeoInterface,Base):
-    __tablename__ = 'en07_canepo_decharges'
-    __table_args__ = {'schema': 'environnement', 'autoload': True}
-    idobj = Column(Integer, primary_key=True)
-    geom =GeometryColumn(Geometry(2,srid=21781))
-    
-class PollutedSitesLandDumpsPts(GeoInterface,Base):
-    __tablename__ = 'en07_canepo_decharges_points'
-    __table_args__ = {'schema': 'environnement', 'autoload': True}
-    idobj = Column(Integer, primary_key=True)
-    geom =GeometryColumn(Geometry(2,srid=21781))
-    
-class PollutedSitesLandDumpsPoly(GeoInterface,Base):
-    __tablename__ = 'en07_canepo_decharges_polygones'
-    __table_args__ = {'schema': 'environnement', 'autoload': True}
+class PollutedSites(GeoInterface,Base):
+    __tablename__ = 'r116_sites_pollues'
+    __table_args__ = {'schema': 'crdppf', 'autoload': True}
     idobj = Column(Integer, primary_key=True)
     geom =GeometryColumn(Geometry(2,srid=21781))
 
-class PollutedSitesCompanies(GeoInterface,Base):
-    __tablename__ = 'en07_canepo_entreprises'
-    __table_args__ = {'schema': 'environnement', 'autoload': True}
-    idobj = Column(Integer, primary_key=True)
-    geom =GeometryColumn(Geometry(2,srid=21781))
-    
-class PollutedSitesCompaniesPts(GeoInterface,Base):
-    __tablename__ = 'en07_canepo_entreprises_points'
-    __table_args__ = {'schema': 'environnement', 'autoload': True}
-    idobj = Column(Integer, primary_key=True)
-    geom =GeometryColumn(Geometry(2,srid=21781))
-    
-class PollutedSitesCompaniesPoly(GeoInterface,Base):
-    __tablename__ = 'en07_canepo_entreprises_polygones'
-    __table_args__ = {'schema': 'environnement', 'autoload': True}
-    idobj = Column(Integer, primary_key=True)
-    geom =GeometryColumn(Geometry(2,srid=21781))
-    
+# models for the topic noise
+
 class RoadNoise(GeoInterface,Base):
     __tablename__ = 'r145_sens_bruit'
-    __table_args__ = {'schema': 'crdppf_minimal', 'autoload': True}
+    __table_args__ = {'schema': 'crdppf', 'autoload': True}
     idobj = Column(Integer, primary_key=True)
     geom =GeometryColumn(Geometry(2,srid=21781))
 
 # models for water protection
 
 class Zoneprotection(GeoInterface,Base):
-    __tablename__ = 'en01_zone_sect_protection_eaux'
-    __table_args__ = {'schema': 'environnement', 'autoload': True}
+    __tablename__ = 'r131_zone_prot_eau'
+    __table_args__ = {'schema': 'crdppf', 'autoload': True}
     idobj = Column(String(40), primary_key=True)
     geom = GeometryColumn(Geometry(srid=21781))
     
 class WaterProtectionPerimeters(GeoInterface,Base):
     __tablename__ = 'r132_perimetre_prot_eau'
-    __table_args__ = {'schema': 'crdppf_minimal', 'autoload': True}
+    __table_args__ = {'schema': 'crdppf', 'autoload': True}
     idobj = Column(String(40), primary_key=True)
     geom = GeometryColumn(Geometry(srid=21781))
+
+# models for the topic Forest
+class ForestLimits(GeoInterface,Base):
+    __tablename__ = 'r157_lim_foret'
+    __table_args__ = {'schema': 'crdppf', 'autoload': True}
+    idobj = Column(Integer, primary_key=True)
+    geom =GeometryColumn(Geometry(2,srid=21781))
+    
+class ForestDistances(GeoInterface,Base):
+    __tablename__ = 'r159_dist_foret'
+    __table_args__ = {'schema': 'crdppf', 'autoload': True}
+    idobj = Column(Integer, primary_key=True)
+    geom =GeometryColumn(Geometry(2,srid=21781))
+
+GeometryDDL(CHAirportSecurityZones.__table__)
 
 # STOP models used for GetFeature queries

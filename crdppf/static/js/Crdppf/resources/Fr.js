@@ -4,14 +4,14 @@
 Crdppf.layerListFr = {
     "type": "ThemesCollection",
         'themes' :[  
-                        {'id':'73','image':'amenagement.gif','name':'Zones Affectation', 'layers':{'at14_zones_communales':'Zones communales','at08_zones_cantonales':'Zones cantonales','at28_limites_constructions':'Limites constructions'}},
-                        {'id':'998','image':'routes_nationales.gif','name':'Routes nationales','layers':{'at39_itineraires_pedestres':'Itinéraires pédestres'}},   
-                        {'id':'500','image':'chemin_fer.gif','name':'Chemin de fer','layers':{'at39_itineraires_pedestres':'Itinéraires pédestres'}},   
-                        {'id':'108','image':'aeroports.gif','name':'Aéroports', 'layers':{'clo_couloirs':'Couloirs d\'obstacles aériens','clo_cotes_altitude_surfaces':'Cotes d\'altitude des surfaces'}},
-                        {'id':'116','image':'sites_pollues.gif','name':'Cadastre des sites pollués','layers':{'en07_canepo_accidents':'Sites polluées : accidents','en07_canepo_decharges':'Sites pollués : décharges','en07_canepo_decharges_points':'Sites pollués : décharges (points)','en07_canepo_decharges_polygones':'Sites pollués : décharges (polygones)', 'en07_canepo_entreprises':'Sites pollués : entreprises', 'en07_canepo_entreprises_points':'Sites pollués : entreprises (points)', 'en07_canepo_entreprises_polygones':'Sites pollués : entreprises (polygones)'}},
-                        {'id':'997','image':'protection_eaux.gif','name':'Protection des eaux','layers':{'en01_zone_sect_protection_eaux':'Secteurs de protection des eaux'}},
-                        {'id':'996','image':'bruit.gif','name':'Bruit','layers':{'en05_degres_sensibilite_bruit':'Degrés de sensibilité au bruit'}},
-                        {'id':'999','image':'foret.gif','name':'Forêts','layers':{'r157_lim_foret':'Limites légales de la forêt'}}
+                        {'id':'73','image':'amenagement.gif','name':'Plans d\'affectation', 'layers':{'r73_affectations_primaires':'Zones d\'affectation primaire','r73_zones_superposees':'Zones d\'affectation superposées','r73_perimetres_superposes':'Périmètres superposées','r73_contenus_lineaires':'Restrictions linéaires','r73_contenus_ponctuels':'Restrictions ponctuelles'}},
+                        {'id':'88','image':'routes_nationales.gif','name':'Routes nationales','layers':{}},
+                        {'id':'96','image':'chemin_fer.gif','name':'Chemin de fer','layers':{}},
+                        {'id':'108','image':'aeroports.gif','name':'Aéroports', 'layers':{'r103_bazl_projektierungszonen_flughafenanlagen':'Zones réservées des installations aéroportuaires','r108_bazl_sicherheitszonenplan':'Zones de sécurité des aéroports'}},
+                        {'id':'116','image':'sites_pollues.gif','name':'Cadastre des sites pollués','layers':{'r116_sites_pollues':'Sites polluées'}},
+                        {'id':'997','image':'protection_eaux.gif','name':'Protection des eaux','layers':{'r131_zone_prot_eau':'Zones de protection des eaux','r132_perimetre_prot_eau':'Périmètres de protection des eaux'}},
+                        {'id':'996','image':'bruit.gif','name':'Bruit','layers':{'r145_sens_bruit':'Degrés de sensibilité au bruit'}},
+                        {'id':'999','image':'foret.gif','name':'Forêts','layers':{'r157_lim_foret':'Limites légales de la forêt','r159_dist_foret':'Distances légales à la forêt'}}
         ]
     };
     
