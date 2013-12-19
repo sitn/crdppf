@@ -501,6 +501,7 @@ Crdppf.init_main = function(lang) {
     centerPanel = new Ext.TabPanel({
         region: 'center',
         activeTab: 0, // index or id
+        autoScroll: true,
         items:[
             mapContainer,
             Crdppf.legalDocuments()

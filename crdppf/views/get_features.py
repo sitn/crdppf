@@ -18,23 +18,19 @@ import math
 def get_features_function(params):
     # for dev purposes: matching dictionnary model-table name
     table2model = {
-        'at39_itineraires_pedestres':PedestrianWays,
-        'at14_zones_communales': CommunalArea,
-        'at08_zones_cantonales': StateArea,
-        'clo_couloirs': Corridors,
-        'clo_cotes_altitude_surfaces': AltitudeRatings,
-        'en07_canepo_accidents': PollutedSitesAccidents,
-        'en07_canepo_decharges': PollutedSitesLandDumps,
-        'en07_canepo_decharges_points': PollutedSitesLandDumpsPts,
-        'en07_canepo_decharges_polygones': PollutedSitesLandDumpsPoly,
-        'en07_canepo_entreprises': PollutedSitesCompanies,
-        'en07_canepo_entreprises_points': PollutedSitesCompaniesPts,
-        'en07_canepo_entreprises_polygones': PollutedSitesCompaniesPoly,
-        'at28_limites_constructions': ConstructionsLimits,
-        'en05_degres_sensibilite_bruit': RoadNoise,
-        'en01_zone_sect_protection_eaux': Zoneprotection,
-        'r157_lim_foret':ForestLimits,
-        #'r159_dist_foret':ForestDistances
+        'r73_affectations_primaires': PrimaryLandUseZones,
+        'r73_zones_superposees': SecondaryLandUseZones,
+        'r73_perimetres_superposes': ComplementaryLandUsePerimeters,
+        'r73_contenus_lineaires': LandUseLinearConstraints,
+        'r73_contenus_ponctuels': LandUsePointConstraints,
+        'r103_bazl_projektierungszonen_flughafenanlagen': CHAirportProjectZones,
+        'r108_bazl_sicherheitszonenplan': CHAirportSecurityZones,
+        'r116_sites_pollues': PollutedSites,
+        'r131_zone_prot_eau': Zoneprotection,
+        'r132_perimetre_prot_eau': WaterProtectionPerimeters,
+        'r145_sens_bruit': RoadNoise,
+        'r157_lim_foret': ForestLimits,
+        'r159_dist_foret': ForestDistances
     }
 
     parcelId = params['id']

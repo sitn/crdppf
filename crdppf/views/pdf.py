@@ -14,7 +14,7 @@ from geoalchemy import *
 from PIL import Image
 
 from crdppf.models import *
-from crdppf.util.pdf_functions import get_bbox, get_translations, get_feature_info, get_print_format
+from crdppf.util.pdf_functions import get_bbox, get_translations, get_feature_info, get_print_format, get_XML
 
 from crdppf.util.pdf_classes import PDFConfig, Extract
 from crdppf.views.get_features import get_features, get_features_function
@@ -85,6 +85,8 @@ def create_extract(request):
     # extract. It is not needed any longer as the paper size has been fixed to A4 portrait by the cantons
     extract.printformat = get_print_format(featureInfo['BBOX'],pdfconfig.fitratio)
 
+    xml = get_XML(featureInfo['BBOX'])
+    
     # 2) Get the parameters for the paper format and the map based on the feature's geometry
     #---------------------------------------------------------------------------------------------------
     extract.get_map_format()
