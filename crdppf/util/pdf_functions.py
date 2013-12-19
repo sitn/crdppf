@@ -6,7 +6,8 @@ from datetime import datetime
 import urllib
 from PIL import Image
 # geometry related librabries
-from shapely.geometry import Point as splPoint, Polygon as splPolygon, MultiPolygon as splMultiPolygon, LinearRing as splLinearRing
+from shapely.geometry import Point as splPoint, Polygon as splPolygon
+from shapely.geometry import MultiPolygon as splMultiPolygon, LinearRing as splLinearRing
 from shapely.wkb import loads as loads_wkb
 from shapely.wkt import loads as loads_wkt
 
@@ -54,6 +55,7 @@ def validate_XML(xmlparser, xmlfilename):
             #~ xmlvalid = False
 
     return xmlvalid
+
 def get_XML(geometry):
     """Gets the XML extract of the federal data feature service for a given topic
         and validates it against the schema.
@@ -83,14 +85,17 @@ def get_XML(geometry):
     # extract the complete tranfert structure
     transferstructure = xmldoc.getElementsByTagName("OeREBKRM09trsfr.Transferstruktur")
     # Get the competent authority for the legal provisions
-    vsauthority = {'shortname':xmldoc.getElementsByTagName("OeREBKRM09vs.Vorschriften.Amt")[0].getAttributeNode("TID").value, 
+    vsauthority = {
+        'shortname':xmldoc.getElementsByTagName("OeREBKRM09vs.Vorschriften.Amt")[0].getAttributeNode("TID").value, 
         'namede':xmldoc.getElementsByTagName("OeREBKRM09vs.Vorschriften.Amt")[0].getElementsByTagName("Text")[0].firstChild.data,
         'namefr':xmldoc.getElementsByTagName("OeREBKRM09vs.Vorschriften.Amt")[0].getElementsByTagName("Text")[1].firstChild.data,
         'namefr':xmldoc.getElementsByTagName("OeREBKRM09vs.Vorschriften.Amt")[0].getElementsByTagName("Text")[2].firstChild.data,
-        'url':xmldoc.getElementsByTagName("OeREBKRM09vs.Vorschriften.Amt")[0].getElementsByTagName("AmtImWeb")[0].firstChild.data}
+        'url':xmldoc.getElementsByTagName("OeREBKRM09vs.Vorschriften.Amt")[0].getElementsByTagName("AmtImWeb")[0].firstChild.data
+        }
     vslegalprovisions = xmldoc.getElementsByTagName("OeREBKRM09vs.Vorschriften.Dokument")
     # Get the WMS and it's legend
-    xtfwms = {'wmsurl':xmldoc.getElementsByTagName("OeREBKRM09trsfr.Transferstruktur.DarstellungsDienst")[0].getElementsByTagName("VerweisWMS")[0].firstChild.data,
+    xtfwms = {
+        'wmsurl':xmldoc.getElementsByTagName("OeREBKRM09trsfr.Transferstruktur.DarstellungsDienst")[0].getElementsByTagName("VerweisWMS")[0].firstChild.data,
         'wmslegend':xmldoc.getElementsByTagName("OeREBKRM09trsfr.Transferstruktur.DarstellungsDienst")[0].getElementsByTagName("LegendeImWeb")[0].firstChild.data
         }
     # GET restrictions
@@ -99,7 +104,8 @@ def get_XML(geometry):
         restrictions = []
         restriction = {}
         for xtfrestriction in xtfrestrictions:
-            restriction = {'restrictionid':xtfrestriction.getAttributeNode("TID").value,
+            restriction = {
+                'restrictionid':xtfrestriction.getAttributeNode("TID").value,
                 'teneurde':xtfrestriction.getElementsByTagName("Aussage")[0].getElementsByTagName("Text")[0].firstChild.data,
                 'teneurfr':xtfrestriction.getElementsByTagName("Aussage")[0].getElementsByTagName("Text")[1].firstChild.data,
                 'teneurit':xtfrestriction.getElementsByTagName("Aussage")[0].getElementsByTagName("Text")[2].firstChild.data,
@@ -107,46 +113,58 @@ def get_XML(geometry):
                 'legalstate':xtfrestriction.getElementsByTagName("Rechtsstatus")[0].firstChild.data,
                 'publishedsince':xtfrestriction.getElementsByTagName("publiziertAb")[0].firstChild.data,
                 'url':xtfrestriction.getElementsByTagName("DarstellungsDienst")[0].getAttributeNode("REF").value,
-                'authority':xtfrestriction.getElementsByTagName("ZustaendigeStelle")[0].getAttributeNode("REF").value}
+                'authority':xtfrestriction.getElementsByTagName("ZustaendigeStelle")[0].getAttributeNode("REF").value
+                }
             restrictions.append(restriction)
 
     xtfvslinkprovisions = xmldoc.getElementsByTagName("OeREBKRM09trsfr.Transferstruktur.HinweisVorschrift")
     vslinkprovisions = []
     for vslinkprovision in xtfvslinkprovisions:
-        vslinkprovisions.append({'origin':vslinkprovision.getElementsByTagName("Eigentumsbeschraenkung")[0].getAttributeNode("REF").value,
-            'link':vslinkprovision.getElementsByTagName("Vorschrift")[0].getAttributeNode("REF").value})
+        vslinkprovisions.append({
+            'origin':vslinkprovision.getElementsByTagName("Eigentumsbeschraenkung")[0].getAttributeNode("REF").value,
+            'link':vslinkprovision.getElementsByTagName("Vorschrift")[0].getAttributeNode("REF").value
+            })
 
     xtfvslinkreferences = xmldoc.getElementsByTagName("OeREBKRM09vs.Vorschriften.HinweisWeitereDokumente")
     vslinkreferences = []
     for vslinkreference in xtfvslinkreferences:
-        vslinkreferences.append({'origin':vslinkreference.getElementsByTagName("Ursprung")[0].getAttributeNode("REF").value,
-            'link':vslinkreference.getElementsByTagName("Hinweis")[0].getAttributeNode("REF").value})
+        vslinkreferences.append({
+            'origin':vslinkreference.getElementsByTagName("Ursprung")[0].getAttributeNode("REF").value,
+            'link':vslinkreference.getElementsByTagName("Hinweis")[0].getAttributeNode("REF").value
+            })
 
     xtfvslegalprovisions = xmldoc.getElementsByTagName("OeREBKRM09vs.Vorschriften.Rechtsvorschrift")
     vslegalprovisions = []
     for vslegalprovision in xtfvslegalprovisions:
-        vslegalprovisions.append({'provisionid':vslegalprovision.getAttributeNode("TID").value,
+        vslegalprovisions.append({
+            'provisionid':vslegalprovision.getAttributeNode("TID").value,
             'titel':vslegalprovision.getElementsByTagName("Text")[0].firstChild.data,
             'legalstate':vslegalprovision.getElementsByTagName("Rechtsstatus")[0].firstChild.data,
             'publishedsince':vslegalprovision.getElementsByTagName("publiziertAb")[0].firstChild.data,
             'authority':vslegalprovision.getElementsByTagName("ZustaendigeStelle")[0].getAttributeNode("REF").value,
-            'url':vslegalprovision.getElementsByTagName("TextImWeb")[0].firstChild.data})
+            'url':vslegalprovision.getElementsByTagName("TextImWeb")[0].firstChild.data
+            })
 
     xtfvsdocuments = xmldoc.getElementsByTagName("OeREBKRM09vs.Vorschriften.Dokument")
     vsdocuments = []
     for vsdocument in xtfvsdocuments:
-        vsdocuments.append({'provisionid':vsdocument.getAttributeNode("TID").value,
+        vsdocuments.append({
+            'provisionid':vsdocument.getAttributeNode("TID").value,
             'titel':vsdocument.getElementsByTagName("Text")[0].firstChild.data,
             'legalstate':vsdocument.getElementsByTagName("Rechtsstatus")[0].firstChild.data,
             'publishedsince':vsdocument.getElementsByTagName("publiziertAb")[0].firstChild.data,
             'authority':vsdocument.getElementsByTagName("ZustaendigeStelle")[0].getAttributeNode("REF").value,
-            'url':vsdocument.getElementsByTagName("TextImWeb")[0].firstChild.data})
+            'url':vsdocument.getElementsByTagName("TextImWeb")[0].firstChild.data
+            })
             
     #swet
     xtflegalprovisions = xmldoc.getElementsByTagName("OeREBKRM09trsfr.Transferstruktur.HinweisVorschrift")
     feature = []
     for xtflegalprovision in xtflegalprovisions:
-        feature.append({'restrictionid':xtflegalprovision.getElementsByTagName("Eigentumsbeschraenkung")[0].getAttributeNode("REF").value,'provision':xtflegalprovision.getElementsByTagName("Vorschrift")[0].getAttributeNode("REF").value})
+        feature.append({
+            'restrictionid':xtflegalprovision.getElementsByTagName("Eigentumsbeschraenkung")[0].getAttributeNode("REF").value,
+            'provision':xtflegalprovision.getElementsByTagName("Vorschrift")[0].getAttributeNode("REF").value
+            })
 
     xtfreferences = xmldoc.getElementsByTagName("OeREBKRM09vs.Vorschriften.HinweisWeitereDokumente")
 
@@ -165,7 +183,10 @@ def get_XML(geometry):
                         for polyline in polylines:
                             coordlist = []
                             for coords in polyline.childNodes:
-                                coordlist.append((float(coords.getElementsByTagName("C1")[0].firstChild.data), float(coords.getElementsByTagName("C2")[0].firstChild.data)))
+                                coordlist.append((
+                                    float(coords.getElementsByTagName("C1")[0].firstChild.data), 
+                                    float(coords.getElementsByTagName("C2")[0].firstChild.data)
+                                    ))
                             #del coordlist[-1]
                             polygon = splPolygon(coordlist)
                             if len(polylines) > 1:
@@ -174,24 +195,26 @@ def get_XML(geometry):
                             else:
                                 geom = polygon
 
-        geometries.append({'tid':xtfgeom.getAttributeNode("TID").value,
+        geometries.append({
+            'tid':xtfgeom.getAttributeNode("TID").value,
             'restrictionid':xtfgeom.getElementsByTagName("Eigentumsbeschraenkung")[0].getAttributeNode("REF").value,
             'competentAuthority':xtfgeom.getElementsByTagName("ZustaendigeStelle")[0].getAttributeNode("REF").value,
             'legalstate':xtfgeom.getElementsByTagName("Rechtsstatus")[0].firstChild.data,
             'publishedsince':xtfgeom.getElementsByTagName("publiziertAb")[0].firstChild.data,
             'metadata':xtfgeom.getElementsByTagName("MetadatenGeobasisdaten")[0].firstChild.data,
-            'geom':geom.wkt})
+            'geom':geom.wkt
+            })
 
     for geometry in geometries:
         securityzone = CHAirportSecurityZones()
         #securityzone.idobj = geometry['restrictionid']
-        securityzone.theme = u'Plan de la zone de sécurité des aéroports'
+        securityzone.theme = u'Plan de la zone de sécurité des aéroports' # to replace by translations['CHAirportSecurityZonesThemeLabel']
         securityzone.codegenre = None
-        securityzone.teneur = u'Limitation de la hauteur des bâtiments et autres obstacles'
+        securityzone.teneur = u'Limitation de la hauteur des bâtiments et autres obstacles' # to replace by translations['CHAirportSecurityZonesContentLabel']
         if geometry['legalstate'] ==  u'inKraft':
-            securityzone.statutjuridique = u'En vigueur'
+            securityzone.statutjuridique = u'En vigueur' # to replace by translations['legalstateLabelvalid']
         else:
-            securityzone.statutjuridique = u'En cours d\'approbation'
+            securityzone.statutjuridique = u'En cours d\'approbation' # to replace by translations['legalstateLabelmodification']
         if geometry['publishedsince']:
             securityzone.datepublication = geometry['publishedsince']
         else:

@@ -125,7 +125,6 @@ LAYER
        "wms_title"           "${vars:instanceid} WMS Server"
        "wms_onlineresource" "http://${vars:host}/${vars:instanceid}/wmscrdppf"
        "wms_srs"            "EPSG:21781" 
-       "gml_include_items" "theme, teneur, codegenre, statutjuridique, datepublication"
   END
   CONNECTIONTYPE POSTGIS
   CONNECTION "user=${vars:dbuser} password=${vars:dbpassword} dbname=${vars:db} host=${vars:dbhost} port=${vars:dbport}"
@@ -211,7 +210,6 @@ LAYER
        "wms_title"           "${vars:instanceid} WMS Server"
        "wms_onlineresource" "http://${vars:host}/${vars:instanceid}/wmscrdppf"
        "wms_srs"            "EPSG:21781" 
-       "gml_include_items" "theme, teneur, codegenre, statutjuridique, datepublication"
   END
   CONNECTIONTYPE POSTGIS
   CONNECTION "user=${vars:dbuser} password=${vars:dbpassword} dbname=${vars:db} host=${vars:dbhost} port=${vars:dbport}"
@@ -319,7 +317,6 @@ LAYER
        "wms_title"           "${vars:instanceid} WMS Server"
        "wms_onlineresource" "http://${vars:host}/${vars:instanceid}/wmscrdppf"
        "wms_srs"            "EPSG:21781" 
-       "gml_include_items" "theme, teneur, codegenre, statutjuridique, datepublication"
   END
   CONNECTIONTYPE POSTGIS
   CONNECTION "user=${vars:dbuser} password=${vars:dbpassword} dbname=${vars:db} host=${vars:dbhost} port=${vars:dbport}"
@@ -524,7 +521,6 @@ LAYER
        "wms_title"           "${vars:instanceid} WMS Server"
        "wms_onlineresource" "http://${vars:host}/${vars:instanceid}/wmscrdppf"
        "wms_srs"            "EPSG:21781" 
-       "gml_include_items" "theme, teneur, codegenre, statutjuridique, datepublication"
   END
   CONNECTIONTYPE POSTGIS
   CONNECTION "user=${vars:dbuser} password=${vars:dbpassword} dbname=${vars:db} host=${vars:dbhost} port=${vars:dbport}"
@@ -648,7 +644,6 @@ LAYER
        "wms_title"           "${vars:instanceid} WMS Server"
        "wms_onlineresource" "http://${vars:host}/${vars:instanceid}/wmscrdppf"
        "wms_srs"            "EPSG:21781" 
-       "gml_include_items" "theme, teneur, codegenre, statutjuridique, datepublication"
   END
   CONNECTIONTYPE POSTGIS
   CONNECTION "user=${vars:dbuser} password=${vars:dbpassword} dbname=${vars:db} host=${vars:dbhost} port=${vars:dbport}"
@@ -1313,6 +1308,115 @@ LAYER
 END
 
 LAYER
+  NAME "r103_bazl_projektierungszonen_flughafenanlagen"
+  STATUS ON
+  METADATA
+       "ows_title"                      "r103_bazl_projektierungszonen_flughafenanlagen"
+       "wms_srs"                    "epsg:21781"
+       "wms_title"                      "${vars:instanceid} WMS Server"
+       "wms_onlineresource"     "http://${vars:host}/${vars:instanceid}/wmscrdppf"
+       "wms_srs"                    "EPSG:21781" 
+  END
+  CONNECTIONTYPE POSTGIS
+  CONNECTION "user=${vars:dbuser} password=${vars:dbpassword} dbname=${vars:db} host=${vars:dbhost} port=${vars:dbport}"
+  PROCESSING "CLOSE_CONNECTION=DEFER"
+  DATA "geom from crdppf.r103_bazl_projektierungszonen_flughafenanlagen using unique idobj using srid=21781"
+  TYPE POLYGON
+  LABELITEM "teneur"
+  LABELMAXSCALE 12000
+  TEMPLATE "ttt"
+  OPACITY 60
+  CLASS
+    NAME "Zones réservées des installations aéroportuaires"
+    COLOR 200 70 255
+    OUTLINECOLOR 192 0 192
+    LABEL
+      TYPE TRUETYPE
+      FONT verdana
+      SIZE 9
+      ANTIALIAS TRUE
+      COLOR 0 0 0
+      OUTLINECOLOR 255 255 255
+      MINFEATURESIZE 70
+    END
+   END
+END
+
+LAYER
+  NAME "r108_bazl_sicherheitszonenplan"
+  STATUS ON
+  METADATA
+       "ows_title"                      "r108_bazl_sicherheitszonenplan"
+       "wms_srs"                    "epsg:21781"
+       "wms_title"                      "${vars:instanceid} WMS Server"
+       "wms_onlineresource"     "http://${vars:host}/${vars:instanceid}/wmscrdppf"
+       "wms_srs"                    "EPSG:21781" 
+  END
+  CONNECTIONTYPE POSTGIS
+  CONNECTION "user=${vars:dbuser} password=${vars:dbpassword} dbname=${vars:db} host=${vars:dbhost} port=${vars:dbport}"
+  PROCESSING "CLOSE_CONNECTION=DEFER"
+  DATA "geom from crdppf.r108_bazl_sicherheitszonenplan using unique idobj using srid=21781"
+  TYPE POLYGON
+  LABELITEM "teneur"
+  LABELMAXSCALE 12000
+  TEMPLATE "ttt"
+  OPACITY 60
+  CLASS
+    NAME "Zone de sécurité aéroportuaire"
+    COLOR 200 70 255
+    OUTLINECOLOR 192 0 192
+    LABEL
+      TYPE TRUETYPE
+      FONT verdana
+      SIZE 9
+      ANTIALIAS TRUE
+      COLOR 0 0 0
+      OUTLINECOLOR 255 255 255
+      MINFEATURESIZE 70
+    END
+   END
+END
+
+LAYER
+  STATUS ON
+  NAME "r116_sites_pollues"
+  METADATA
+       "ows_title"                      "r116_sites_pollues"
+       "wms_srs"                    "epsg:21781"
+       "wms_title"                      "${vars:instanceid} WMS Server"
+       "wms_onlineresource"     "http://${vars:host}/${vars:instanceid}/wmscrdppf"
+       "wms_srs"                    "EPSG:21781" 
+  END
+  CONNECTIONTYPE POSTGIS
+  CONNECTION "user=${vars:dbuser} password=${vars:dbpassword} dbname=${vars:db} host=${vars:dbhost} port=${vars:dbport}"
+  PROCESSING "CLOSE_CONNECTION=DEFER"
+  DATA "geom from crdppf.r116_sites_pollues using unique idobj using srid=21781"
+  TYPE POLYGON
+  CLASSITEM "codegenre"
+  TEMPLATE "ttt"
+  OPACITY 60
+  CLASS
+    NAME "Sites pollués - accidents "
+    EXPRESSION /9901/
+    COLOR  140 0 0
+    OUTLINECOLOR 140 0 0
+  END
+  CLASS
+    NAME "Sites pollués - décharges"
+    EXPRESSION /9902/
+    COLOR 200 130 0
+    OUTLINECOLOR 200 130 0
+   END
+   CLASS
+    NAME "Sites pollués - entreprises"
+    EXPRESSION /9903/
+    COLOR 0 0 255
+    OUTLINECOLOR 0 0 255
+   END
+  MINSCALEDENOM 200
+END
+
+LAYER
   NAME "r131_zone_prot_eau"
   STATUS ON
   METADATA
@@ -1321,7 +1425,6 @@ LAYER
        "wms_title"                      "${vars:instanceid} WMS Server"
        "wms_onlineresource"     "http://${vars:host}/${vars:instanceid}/wmscrdppf"
        "wms_srs"                    "EPSG:21781" 
-       "gml_include_items" "theme, teneur, codegenre, statutjuridique, datepublication"
   END
   CONNECTIONTYPE POSTGIS
   CONNECTION "user=${vars:dbuser} password=${vars:dbpassword} dbname=${vars:db} host=${vars:dbhost} port=${vars:dbport}"
@@ -1419,7 +1522,6 @@ LAYER
        "wms_title"                      "${vars:instanceid} WMS Server"
        "wms_onlineresource"     "http://${vars:host}/${vars:instanceid}/wmscrdppf"
        "wms_srs"                    "EPSG:21781" 
-       "gml_include_items" "theme, teneur, codegenre, statutjuridique, datepublication"
   END
   CONNECTIONTYPE POSTGIS
   CONNECTION "user=${vars:dbuser} password=${vars:dbpassword} dbname=${vars:db} host=${vars:dbhost} port=${vars:dbport}"
@@ -1448,75 +1550,47 @@ LAYER
 END
 
 LAYER
-  NAME "r103_bazl_projektierungszonen_flughafenanlagen"
-  STATUS ON
-  METADATA
-       "ows_title"                      "r103_bazl_projektierungszonen_flughafenanlagen"
-       "wms_srs"                    "epsg:21781"
-       "wms_title"                      "${vars:instanceid} WMS Server"
-       "wms_onlineresource"     "http://${vars:host}/${vars:instanceid}/wmscrdppf"
-       "wms_srs"                    "EPSG:21781" 
-       "gml_include_items" "theme, teneur, codegenre, statutjuridique, datepublication"
+ NAME "r145_sens_bruit"
+  TYPE POLYGON
+   METADATA
+       "ows_title" "r145_sens_bruit"
+       "wms_srs" "epsg:21781"
+       "wms_title"           "${vars:instanceid} WMS Server"
+       "wms_onlineresource" "http://${vars:host}/${vars:instanceid}/wmscrdppf"
+       "wms_srs"            "EPSG:21781"
   END
   CONNECTIONTYPE POSTGIS
   CONNECTION "user=${vars:dbuser} password=${vars:dbpassword} dbname=${vars:db} host=${vars:dbhost} port=${vars:dbport}"
   PROCESSING "CLOSE_CONNECTION=DEFER"
-  DATA "geom from crdppf.r103_bazl_projektierungszonen_flughafenanlagen using unique idobj using srid=21781"
-  TYPE POLYGON
-  LABELITEM "teneur"
-  LABELMAXSCALE 12000
-  TEMPLATE "ttt"
-  OPACITY 60
-  CLASS
-    NAME "Zones réservées des installations aéroportuaires"
-    COLOR 200 70 255
-    OUTLINECOLOR 192 0 192
-    LABEL
-      TYPE TRUETYPE
-      FONT verdana
-      SIZE 9
-      ANTIALIAS TRUE
-      COLOR 0 0 0
-      OUTLINECOLOR 255 255 255
-      MINFEATURESIZE 70
-    END
-   END
-END
-
-LAYER
-  NAME "r108_bazl_sicherheitszonenplan"
+  DATA "geom from crdppf.r145_sens_bruit using unique idobj using srid=21781"
   STATUS ON
-  METADATA
-       "ows_title"                      "r108_bazl_sicherheitszonenplan"
-       "wms_srs"                    "epsg:21781"
-       "wms_title"                      "${vars:instanceid} WMS Server"
-       "wms_onlineresource"     "http://${vars:host}/${vars:instanceid}/wmscrdppf"
-       "wms_srs"                    "EPSG:21781" 
-       "gml_include_items" "theme, teneur, codegenre, statutjuridique, datepublication"
-  END
-  CONNECTIONTYPE POSTGIS
-  CONNECTION "user=${vars:dbuser} password=${vars:dbpassword} dbname=${vars:db} host=${vars:dbhost} port=${vars:dbport}"
-  PROCESSING "CLOSE_CONNECTION=DEFER"
-  DATA "geom from crdppf.r108_bazl_sicherheitszonenplan using unique idobj using srid=21781"
-  TYPE POLYGON
-  LABELITEM "teneur"
-  LABELMAXSCALE 12000
+  CLASSITEM "teneur" 
+  OPACITY 50
   TEMPLATE "ttt"
-  OPACITY 60
   CLASS
-    NAME "Zone de sécurité aéroportuaire"
-    COLOR 200 70 255
-    OUTLINECOLOR 192 0 192
-    LABEL
-      TYPE TRUETYPE
-      FONT verdana
-      SIZE 9
-      ANTIALIAS TRUE
-      COLOR 0 0 0
-      OUTLINECOLOR 255 255 255
-      MINFEATURESIZE 70
-    END
-   END
+    NAME "IV"
+    EXPRESSION /DS IV/
+    COLOR 0 0 255
+    OUTLINECOLOR 0 0 0
+  END
+  CLASS
+    NAME "III"
+    EXPRESSION /DS III/
+    COLOR 255 0 0
+    OUTLINECOLOR 0 0 0
+  END
+  CLASS
+    NAME "II"
+    EXPRESSION /DS II/
+    COLOR 0 130 0
+    OUTLINECOLOR 0 0 0
+  END
+  CLASS
+    NAME "I"
+    EXPRESSION /DS I/
+    COLOR 255 255 148
+    OUTLINECOLOR 0 0 0
+  END
 END
 
 LAYER
@@ -1528,7 +1602,6 @@ LAYER
        "wms_title"                      "${vars:instanceid} WMS Server"
        "wms_onlineresource"     "http://${vars:host}/${vars:instanceid}/wmscrdppf"
        "wms_srs"                    "EPSG:21781" 
-       "gml_include_items" "theme, teneur, codegenre, statutjuridique, datepublication"
   END
   CONNECTIONTYPE POSTGIS
   CONNECTION "user=${vars:dbuser} password=${vars:dbpassword} dbname=${vars:db} host=${vars:dbhost} port=${vars:dbport}"
@@ -1559,7 +1632,6 @@ LAYER
        "wms_title"                      "${vars:instanceid} WMS Server"
        "wms_onlineresource"     "http://${vars:host}/${vars:instanceid}/wmscrdppf"
        "wms_srs"                    "EPSG:21781" 
-       "gml_include_items" "theme, teneur, codegenre, statutjuridique, datepublication"
   END
   CONNECTIONTYPE POSTGIS
   CONNECTION "user=${vars:dbuser} password=${vars:dbpassword} dbname=${vars:db} host=${vars:dbhost} port=${vars:dbport}"
@@ -1581,391 +1653,9 @@ LAYER
   END
 END
 
-
 #####################
 # RESTRICTIONS CRDPPF - fin
 #####################
-
-
-#####################
-# SITES CONTAMINES - début
-#####################
-
-LAYER
-  STATUS ON
-  NAME "r116_sites_pollues"
-  METADATA
-       "ows_title"                      "r116_sites_pollues"
-       "wms_srs"                    "epsg:21781"
-       "wms_title"                      "${vars:instanceid} WMS Server"
-       "wms_onlineresource"     "http://${vars:host}/${vars:instanceid}/wmscrdppf"
-       "wms_srs"                    "EPSG:21781" 
-       "gml_include_items" "theme, teneur, codegenre, statutjuridique, datepublication"
-  END
-  CONNECTIONTYPE POSTGIS
-  CONNECTION "user=${vars:dbuser} password=${vars:dbpassword} dbname=${vars:db} host=${vars:dbhost} port=${vars:dbport}"
-  PROCESSING "CLOSE_CONNECTION=DEFER"
-  DATA "geom from crdppf.r116_sites_pollues using unique idobj using srid=21781"
-  TYPE POLYGON
-  CLASSITEM "codegenre"
-  TEMPLATE "ttt"
-  OPACITY 60
-  CLASS
-    NAME "Sites pollués - accidents "
-    EXPRESSION /9901/
-    STYLE
-      SYMBOL "circle"
-      SIZE 14
-      COLOR  140 0 0
-  END
-  CLASS
-    NAME "Sites pollués - décharges"
-    EXPRESSION /9902/
-    COLOR 200 130 0
-    OUTLINECOLOR 200 130 0
-   END
-   CLASS
-    NAME "Sites pollués - entreprises"
-    EXPRESSION /9903/
-    COLOR 0 0 255
-    OUTLINECOLOR 0 0 255
-   END
-  MINSCALEDENOM 200
-  MAXSCALEDENOM 24990
-END
-
-
-LAYER
-  NAME "en07_canepo_entreprises"
-  TYPE POINT
-  STATUS ON
-  CONNECTIONTYPE POSTGIS
-  CONNECTION "user=${vars:dbuser} password=${vars:dbpassword} dbname=${vars:db} host=${vars:dbhost} port=${vars:dbport}"
-  PROCESSING "CLOSE_CONNECTION=DEFER"
-  DATA "geom from environnement.en07_canepo_entreprises using unique idobj using srid=21781"
-  LABELITEM "no_canepo"
-  TEMPLATE "ttt"
-  OPACITY 50
-  CLASS
-    NAME "Sites pollués - entreprises (point)"
-    STYLE
-      SYMBOL "circle"
-      SIZE 8
-      COLOR 0 0 255
-    END
-  END  
-  TOLERANCE 8
-  TOLERANCEUNITS pixels
-  MINSCALEDENOM 25000
-  MAXSCALEDENOM 500000
-  METADATA
-    "ows_title" "en07_canepo_entreprises"
-    "wms_srs" "epsg:21781"
-    "wfs_enable_request" "*"
-    "gml_types" "auto"
-    "gml_include_items" "cadastre,nummai,typimm,srfmai,source,url_terris"
-  END
-END
-
-LAYER
-  NAME "en07_canepo_entreprises_points"
-  TYPE POINT
-  STATUS ON
-  CONNECTIONTYPE POSTGIS
-  CONNECTION "user=${vars:dbuser} password=${vars:dbpassword} dbname=${vars:db} host=${vars:dbhost} port=${vars:dbport}"
-  PROCESSING "CLOSE_CONNECTION=DEFER"
-  DATA "geom from environnement.en07_canepo_entreprises_points using unique idobj using srid=21781"
-  TEMPLATE "ttt"
-  OPACITY 60
-  CLASS
-    NAME "Sites pollués - entreprises (point)"
-    STYLE
-      SYMBOL "circle"
-      SIZE 14
-      COLOR 0 0 255
-    END
-  END
-  MINSCALEDENOM 200
-  MAXSCALEDENOM 24990
-  TOLERANCE 8
-  TOLERANCEUNITS pixels
-  METADATA
-    "ows_title" "en07_canepo_entreprises_points"
-    "wms_srs" "epsg:21781"
-    "wfs_enable_request" "*"
-    "gml_types" "auto"
-    "gml_include_items" "cadastre,nummai,typimm,srfmai,source,url_terris"
-  END
-END
-
-LAYER
-  NAME "en07_canepo_entreprises_polygones"
-  STATUS ON
-  TYPE POLYGON
-  CONNECTIONTYPE POSTGIS
-  CONNECTION "user=${vars:dbuser} password=${vars:dbpassword} dbname=${vars:db} host=${vars:dbhost} port=${vars:dbport}"
-  PROCESSING "CLOSE_CONNECTION=DEFER"
-  DATA "geom from environnement.en07_canepo_entreprises_polygones using unique idobj using srid=21781"
-  TEMPLATE "ttt"
-  OPACITY 60
-  CLASS
-    NAME "Sites pollués - entreprises (polygon)"
-    COLOR 0 0 255
-    OUTLINECOLOR 0 0 255
-   END
-  MINSCALEDENOM 200
-  MAXSCALEDENOM 24990
-END
-
-LAYER
-  NAME "en07_canepo_accidents"
-  STATUS ON
-  TYPE POINT
-  CONNECTIONTYPE POSTGIS
-  CONNECTION "user=${vars:dbuser} password=${vars:dbpassword} dbname=${vars:db} host=${vars:dbhost} port=${vars:dbport}"
-  PROCESSING "CLOSE_CONNECTION=DEFER"
-  DATA "geom from environnement.en07_canepo_accidents using unique idobj using srid=21781"
-  TEMPLATE "ttt"
-  OPACITY 75
-  CLASS
-    NAME "Sites pollués - accidents (1:25000)"
-    STYLE
-      SYMBOL "circle"
-      SIZE 14
-      COLOR  140 0 0
-    END
-  MINSCALEDENOM 200
-  MAXSCALEDENOM 24990
-  END 
-  CLASS
-    NAME "Sites pollués - accidents (1:500000)"
-    STYLE
-      SYMBOL "circle"
-      SIZE 8
-      COLOR  140 0 0
-    END
-  MINSCALEDENOM 25000
-  MAXSCALEDENOM 500000
-  END 
-  TOLERANCE 8
-  TOLERANCEUNITS pixels
-END
-
-LAYER
- NAME "en07_canepo_decharges"
-  TYPE POINT
-  STATUS ON
-  CONNECTIONTYPE POSTGIS
-  CONNECTION "user=${vars:dbuser} password=${vars:dbpassword} dbname=${vars:db} host=${vars:dbhost} port=${vars:dbport}"
-  PROCESSING "CLOSE_CONNECTION=DEFER"
-  DATA "geom from environnement.en07_canepo_decharges using unique idobj using srid=21781"
-  TEMPLATE "ttt"
-  OPACITY 60
-  CLASS
-    NAME "Sites pollués - décharges (point)"
-    STYLE
-      SYMBOL "circle"
-      SIZE 8
-      COLOR 200 130 0
-    END
-  END  
-  TOLERANCE 8
-  TOLERANCEUNITS pixels
-  MINSCALEDENOM 25000
-  MAXSCALEDENOM 500000
-END
-
-
-LAYER
-  NAME "en07_canepo_decharges_points"
-  TYPE POINT
-  STATUS ON
-  CONNECTIONTYPE POSTGIS
-  CONNECTION "user=${vars:dbuser} password=${vars:dbpassword} dbname=${vars:db} host=${vars:dbhost} port=${vars:dbport}"
-  PROCESSING "CLOSE_CONNECTION=DEFER"
-  DATA "geom from environnement.en07_canepo_decharges_points using unique idobj using srid=21781"
-  TEMPLATE "ttt"
-  OPACITY 60
-  CLASS
-    NAME "Sites pollués - décharges (point)"
-    STYLE
-      SYMBOL "circle"
-      SIZE 8
-      COLOR 200 130 0
-    END
-  END  
-  MINSCALEDENOM 200
-  MAXSCALEDENOM 24990
-  TOLERANCE 8
-  TOLERANCEUNITS pixels
-END
-
-LAYER
-  NAME "en07_canepo_decharges_polygones"
-  STATUS ON
-  TYPE POLYGON
-  CONNECTIONTYPE POSTGIS
-  CONNECTION "user=${vars:dbuser} password=${vars:dbpassword} dbname=${vars:db} host=${vars:dbhost} port=${vars:dbport}"
-  PROCESSING "CLOSE_CONNECTION=DEFER"
-  DATA "geom from environnement.en07_canepo_decharges_polygones using unique idobj using srid=21781"
-  TEMPLATE "ttt"
-  OPACITY 60
-  CLASS
-    NAME "Sites pollués - décharges (polygone)"
-    COLOR 200 130 0
-    OUTLINECOLOR 200 130 0
-   END
-  MINSCALEDENOM 200
-  MAXSCALEDENOM 24990
-END
-
-
-#####################
-# Environnement
-#####################
-
-LAYER
-  NAME "en01_zone_sect_protection_eaux"
-  TYPE POLYGON
-  CONNECTIONTYPE POSTGIS
-  CONNECTION "user=${vars:dbuser} password=${vars:dbpassword} dbname=${vars:db} host=${vars:dbhost} port=${vars:dbport}"
-  PROCESSING "CLOSE_CONNECTION=DEFER"
-  DATA "geom from environnement.en01_zone_sect_protection_eaux using unique idobj using srid=21781"
-  STATUS ON
-  CLASSITEM "categorie"
-  LABELITEM "categorie"
-  TEMPLATE "ttt"
-  OPACITY 50
-  CLASS
-    NAME "S1"
-    EXPRESSION /Zone S1/
-    COLOR 255 0 0
-    OUTLINECOLOR 255 0 0
-    LABEL
-      TYPE TRUETYPE
-      FONT verdana
-      SIZE 11
-      ANTIALIAS TRUE
-      COLOR 0 0 0
-      OUTLINECOLOR 255 255 255
-      MINFEATURESIZE 50
-    END
-  END
-  CLASS
-    NAME "S2"
-    EXPRESSION /Zone S2/
-    COLOR 255 152 48
-    OUTLINECOLOR 0 0 0
-    LABEL
-      TYPE TRUETYPE
-      FONT verdana
-      SIZE 11
-      ANTIALIAS TRUE
-      COLOR 0 0 0
-      OUTLINECOLOR 255 255 255
-      MINFEATURESIZE 50
-    END
-  END
-  CLASS
-    NAME "S2 EL"
-    EXPRESSION /S2 à efficacité limitée/
-    COLOR 255 196 176
-    OUTLINECOLOR 0 0 0
-    LABEL
-      TYPE TRUETYPE
-      FONT verdana
-      SIZE 11
-      ANTIALIAS TRUE
-      COLOR 0 0 0
-      OUTLINECOLOR 255 255 255
-      MINFEATURESIZE 50
-    END
-  END
-  CLASS
-    NAME "S3"
-    EXPRESSION /Zone S3/
-    COLOR 255 255 0
-    OUTLINECOLOR 0 0 0
-    LABEL
-      TYPE TRUETYPE
-      FONT verdana
-      SIZE 11
-      ANTIALIAS TRUE
-      COLOR 0 0 0
-      OUTLINECOLOR 255 255 255
-      MINFEATURESIZE 50
-    END
-  END
-  CLASS
-    NAME "Aire Zu"
-    EXPRESSION /Aire Zu/
-    COLOR 192 128 255
-    OUTLINECOLOR 0 0 0
-    LABEL
-      TYPE TRUETYPE
-      FONT verdana
-      SIZE 11
-      ANTIALIAS TRUE
-      COLOR 0 0 0
-      OUTLINECOLOR 255 255 255
-      MINFEATURESIZE 50
-    END
-  END
-  CLASS
-    NAME "Bas. versant"
-    EXPRESSION /Bassin versant/
-    COLOR 0 255 255
-    OUTLINECOLOR 0 0 0
-    LABEL
-      TYPE TRUETYPE
-      FONT verdana
-      SIZE 11
-      ANTIALIAS TRUE
-      COLOR 0 0 0
-      OUTLINECOLOR 255 255 255
-      MINFEATURESIZE 50
-    END
-  END
-  CLASS
-    NAME "ÜB"
-    EXPRESSION /ÜB anciennement B et C/
-    STYLE
-      OUTLINECOLOR 0 180 0
-      WIDTH 2
-    END
-    LABEL
-      TYPE TRUETYPE
-      FONT verdana
-      SIZE 11
-      ANTIALIAS TRUE
-      COLOR 0 0 0
-      OUTLINECOLOR 255 255 255
-      MINFEATURESIZE 50
-    END
-  END
-  CLASS
-    NAME "Ao et Au"
-    EXPRESSION /secteur Ao et Au/
-    COLOR 0 0 255
-    OUTLINECOLOR 0 0 0
-    LABEL
-      TYPE TRUETYPE
-      FONT verdana
-      SIZE 11
-      ANTIALIAS TRUE
-      COLOR 0 0 0
-      OUTLINECOLOR 255 255 255
-      MINFEATURESIZE 50
-    END
-  END
-  METADATA
-    "ows_title" "zones_protection"
-    "wms_srs" "epsg:21781"
-  END
-  PROJECTION
-    "init=epsg:21781"   ##required
-  END
-END
 
 #####################
 # Aménagement
@@ -2529,10 +2219,10 @@ LAYER
    CLASS
     NAME "Zones viticoles"
     STYLE
-	COLOR 135 0 135
-	OUTLINECOLOR 128 0 128
-	SYMBOL 9
-	SIZE 3
+      COLOR 135 0 135
+      OUTLINECOLOR 128 0 128
+      SYMBOL 9
+      SIZE 3
     END 
   END
   METADATA
@@ -4006,7 +3696,7 @@ LAYER
   TEMPLATE "ttt"
   OPACITY 50
   CLASS
-	NAME "Inv. féd. CPN"
+    NAME "Inv. féd. CPN"
     COLOR 128 60 10
   END
 END
@@ -4026,7 +3716,7 @@ LAYER
   TEMPLATE "ttt"
   OPACITY 50
   CLASS
-	NAME "Inv. féd districts francs"
+    NAME "Inv. féd districts francs"
     COLOR 255 170 0
   END
 END
@@ -4278,89 +3968,6 @@ END
 #####################
 # Environnement
 #####################
-
-LAYER
- NAME "r145_sens_bruit"
-  TYPE POLYGON
-   METADATA
-       "ows_title" "r145_sens_bruit"
-       "wms_srs" "epsg:21781"
-       "wms_title"           "${vars:instanceid} WMS Server"
-       "wms_onlineresource" "http://${vars:host}/${vars:instanceid}/wmscrdppf"
-       "wms_srs"            "EPSG:21781" 
-       "gml_include_items" "theme, teneur, codegenre, statutjuridique, datepublication"
-  END
-  CONNECTIONTYPE POSTGIS
-  CONNECTION "user=${vars:dbuser} password=${vars:dbpassword} dbname=${vars:db} host=${vars:dbhost} port=${vars:dbport}"
-  PROCESSING "CLOSE_CONNECTION=DEFER"
-  DATA "geom from crdppf.r145_sens_bruit using unique idobj using srid=21781"
-  STATUS ON
-  LABELMAXSCALE 12000
-  LABELITEM "teneur"
-  CLASSITEM "teneur" 
-  OPACITY 50
-  TEMPLATE "ttt"
-  CLASS
-    NAME "IV"
-    EXPRESSION /DS IV/
-    COLOR 0 0 255
-    OUTLINECOLOR 0 0 0
-    LABEL
-      TYPE TRUETYPE
-      FONT arialn
-      SIZE 9
-      ANTIALIAS TRUE
-      COLOR 0 0 0
-      OUTLINECOLOR 255 255 255
-      MINFEATURESIZE 50
-    END
-  END
-  CLASS
-    NAME "III"
-    EXPRESSION /DS III/
-    COLOR 255 0 0
-    OUTLINECOLOR 0 0 0
-    LABEL
-      TYPE TRUETYPE
-      FONT arialn
-      SIZE 9
-      ANTIALIAS TRUE
-      COLOR 0 0 0
-      OUTLINECOLOR 255 255 255
-      MINFEATURESIZE 50
-    END
-  END
-  CLASS
-    NAME "II"
-    EXPRESSION /DS II/
-    COLOR 0 130 0
-    OUTLINECOLOR 0 0 0
-    LABEL
-      TYPE TRUETYPE
-      FONT arialn
-      SIZE 9
-      ANTIALIAS TRUE
-      COLOR 0 0 0
-      OUTLINECOLOR 255 255 255
-      MINFEATURESIZE 50
-    END
-  END
-  CLASS
-    NAME "I"
-    EXPRESSION /DS I/
-    COLOR 255 255 148
-    OUTLINECOLOR 0 0 0
-    LABEL
-      TYPE TRUETYPE
-      FONT arialn
-      SIZE 9
-      ANTIALIAS TRUE
-      COLOR 0 0 0
-      OUTLINECOLOR 255 255 255
-      MINFEATURESIZE 50
-    END
-  END
-END
 
 LAYER
  NAME "en05_degres_sensibilite_bruit"

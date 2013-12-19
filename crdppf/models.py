@@ -159,6 +159,8 @@ class CHAirportSecurityZones(GeoInterface,Base):
     geom = GeometryColumn(Geometry(2,srid=21781))
     # ch.bazl.sicherheitszonenplan.oereb
 
+GeometryDDL(CHAirportSecurityZones.__table__)
+
 class CHAirportProjectZones(GeoInterface,Base):
     __tablename__ = 'r103_bazl_projektierungszonen_flughafenanlagen'
     __table_args__ = {'schema': 'crdppf', 'autoload': True}
@@ -220,7 +222,5 @@ class ForestDistances(GeoInterface,Base):
     __table_args__ = {'schema': 'crdppf', 'autoload': True}
     idobj = Column(Integer, primary_key=True)
     geom =GeometryColumn(Geometry(2,srid=21781))
-
-GeometryDDL(CHAirportSecurityZones.__table__)
 
 # STOP models used for GetFeature queries
