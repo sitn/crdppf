@@ -14,7 +14,7 @@ from geoalchemy import *
 from PIL import Image
 
 from crdppf.models import *
-from crdppf.util.pdf_functions import get_bbox, get_translations, get_feature_info, get_print_format, get_XML
+from crdppf.util.pdf_functions import get_bbox, get_translations, get_feature_info, get_print_format
 
 from crdppf.util.pdf_classes import PDFConfig, Extract
 from crdppf.views.get_features import get_features, get_features_function
@@ -32,9 +32,14 @@ def create_extract(request):
     extract = Extract(request)
 
     # Define the extract type if not set in the request parameters
-    # defaults to 'reduced': no certification, no pdf attachements
+    # defaults to 'standard': no certification, with pdf attachements
+    # other values :
+    # certified : with certification and with all pdf attachements
+    # reduced : no certification, no pdf attachements
+    # reducedcertified : with certification, without pdf attachments
+
     extract.reportInfo = {}
-    defaulttype = 'reduced'
+    defaulttype = 'standard'
 
     if request.params.get('type') :
         extract.reportInfo['type'] = str(request.params.get('type').lower())
@@ -75,8 +80,7 @@ def create_extract(request):
     featureInfo = extract.featureInfo
 
     # complete the dictionnary for the parcel - to be put in the appconfig
-    extract.featureInfo['no_EGRID'] = 'to be defined'
-    extract.featureInfo['operator'] = 'Internet'
+    extract.featureInfo['operator'] = 'Portail Internet'
     
     extract.featureid = featureInfo['featureid']
     extract.set_filename()
@@ -85,8 +89,6 @@ def create_extract(request):
     # extract. It is not needed any longer as the paper size has been fixed to A4 portrait by the cantons
     extract.printformat = get_print_format(featureInfo['BBOX'],pdfconfig.fitratio)
 
-    xml = get_XML(featureInfo['BBOX'])
-    
     # 2) Get the parameters for the paper format and the map based on the feature's geometry
     #---------------------------------------------------------------------------------------------------
     extract.get_map_format()
@@ -103,6 +105,21 @@ def create_extract(request):
         municipality = 'Milvignes'
         extract.featureInfo['nomcom'] = 'Milvignes'
         extract.featureInfo['nufeco'] = '6416'
+
+    if municipality in ['Brot-Plamboz','Plamboz']:
+        municipality = 'Brot-Plamboz'
+        extract.featureInfo['nomcom'] = 'Brot-Plamboz'
+        extract.featureInfo['nufeco'] = '6433'
+    
+    if municipality in ['Neuchâtel','La Coudre']:
+        municipality = 'Neuchatel'
+        extract.featureInfo['nomcom'] = 'Neuchâtel'
+        extract.featureInfo['nufeco'] = '6458'
+
+    if municipality in ['Les Eplatures']:
+        municipality = 'La Chaux-de-Fonds'
+        extract.featureInfo['nomcom'] = 'La Chaux-de-Fonds'
+        extract.featureInfo['nufeco'] = '6421'
 
     if municipality in ['Boudevilliers','Cernier','Chézard-Saint-Martin','Coffrane','Dombresson','Engollon','Fenin-Vilars-Saules','Fontaines','Fontainemelon','Les Geneveys-sur-Coffrane','Les Hauts-Geneveys','Montmollin','Le Pâquier','Savagnier','Villiers']:
         municipality = 'Val-de-Ruz'
@@ -129,6 +146,7 @@ def create_extract(request):
         [u'è', 'e'],
         [u'é', 'e'],
         [u' ', ''],
+        [u'-','_'],
         [u'(NE)', ''],
         [u' (NE)', '']
     ]
@@ -163,7 +181,8 @@ def create_extract(request):
     
     # Create the list of appendices
     #--------------------------------------------------
-    extract.Appendices()
+    if extract.reportInfo['type'] != 'reduced' and extract.reportInfo['type'] != 'reducedcertified':
+        extract.Appendices()
 
     for topic in extract.topiclist:
         extract.write_thematic_page(topic)
@@ -175,6 +194,7 @@ def create_extract(request):
             extract.add_page()
             extract.set_margins(*pdfconfig.pdfmargins)
             extract.set_y(55)
+            extract.set_link(str(j))
             extract.set_font(*pdfconfig.textstyles['title3'])
             extract.cell(15, 10, str('Annexe '+str(j)), 0, 1, 'L')
             extract.cell(100, 10, str(appendix['title']), 0, 1, 'L')

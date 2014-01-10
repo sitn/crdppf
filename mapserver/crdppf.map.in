@@ -2481,61 +2481,99 @@ END
 
 
 LAYER
-  NAME "v_immeubles_txt"
-  TYPE ANNOTATION
-  METADATA
-       "ows_title" "v_immeubles_txt"
-       " wms_srs" "epsg:21781"
-  END
-  CONNECTIONTYPE POSTGIS
-  CONNECTION "user=${vars:dbuser} password=${vars:dbpassword} dbname=${vars:db} host=${vars:dbhost} port=${vars:dbport}"
-  PROCESSING "CLOSE_CONNECTION=DEFER"
-  DATA "geom from mensuration.v_immeubles_txt using unique oid using srid=21781"
-  STATUS ON
-  LABELITEM "label"
-  MAXSCALEDENOM 4000
-  SYMBOLSCALE 1000
-  LABELMAXSCALE 3000
-  CLASSITEM "provenance"
-  CLASS
-    NAME "N° parcelle"
-    EXPRESSION /officiel/
-    LABEL
-        TYPE TRUETYPE
-        FONT arialbd
-        MAXSIZE 11
-        SIZE 10
-        MINSIZE 7
-        ANGLE AUTO
-        ANTIALIAS TRUE
-        COLOR 0 0 0
-        FORCE TRUE
-        OUTLINECOLOR 255 255 255
-        POSITION AUTO
-        ALIGN CENTER
-        WRAP '&'       
+    NAME "v_immeubles_txt"
+    GROUP "mo9_text_group"
+    TYPE ANNOTATION
+    METADATA
+        "ows_title" "v_immeubles_txt"
+        "wms_srs" "epsg:21781"
     END
-  END
-  CLASS
-    NAME "N° parcelle provisoire"
-    EXPRESSION /provisoire/
-    LABEL
-        TYPE TRUETYPE
-        FONT arialbd
-        MAXSIZE 11
-        SIZE 10
-        FORCE TRUE
-        MINSIZE 7
-        ANGLE AUTO
-        ANTIALIAS TRUE
-        COLOR 49 48 198
-        FORCE TRUE
-        OUTLINECOLOR 255 255 255
-        POSITION cc
+    CONNECTIONTYPE POSTGIS
+    CONNECTION "user=${vars:dbuser} password=${vars:dbpassword} dbname=${vars:db} host=${vars:dbhost} port=${vars:dbport}"
+    PROCESSING "CLOSE_CONNECTION=DEFER"
+    DATA "geom from mensuration.v_immeubles_txt using unique oid using srid=21781"
+    STATUS ON
+    LABELITEM "numero"
+    MAXSCALEDENOM 6000
+    SYMBOLSCALE 1000
+    LABELMAXSCALEDENOM 6000
+    CLASSITEM "provenance"
+    CLASS
+        NAME "N° parcelle"
+        EXPRESSION /officiel/
+        LABEL
+            TYPE TRUETYPE
+            FONT arialbd
+            MAXSIZE 11
+            SIZE 10
+            MINSIZE 7
+            ANGLE AUTO
+            ANTIALIAS TRUE
+            COLOR 0 0 0
+            FORCE TRUE
+            OUTLINECOLOR 255 255 255
+            POSITION cc
+        END
     END
+    CLASS
+        NAME "N° parcelle provisoire"
+        EXPRESSION /provisoire/
+        LABEL
+            TYPE TRUETYPE
+            FONT arialbd
+            MAXSIZE 11
+            SIZE 10
+            FORCE TRUE
+            MINSIZE 7
+            ANGLE AUTO
+            ANTIALIAS TRUE
+            COLOR 49 48 198
+            FORCE TRUE
+            OUTLINECOLOR 255 255 255
+            POSITION cc
+        END
+    END
+    CLASS
+        NAME "* en mutation"
+        EXPRESSION /./
+        LABEL
+            TYPE TRUETYPE
+            FONT arialbd
+            MAXSIZE 11
+            SIZE 10
+            MINSIZE 7
+            ANGLE AUTO
+            ANTIALIAS TRUE
+            COLOR 0 0 0
+            FORCE TRUE
+            OUTLINECOLOR 255 255 255
+            POSITION cc
+        END
   END
 END
 
+LAYER
+    NAME "mo9_immeubles_txt_rappel"
+    GROUP "mo9_text_group"
+    TYPE LINE
+    METADATA
+        "ows_title" "mo9_immeubles_txt_rappel"
+        "wms_srs" "epsg:21781"
+    END
+    CONNECTIONTYPE POSTGIS
+    CONNECTION "user=${vars:dbuser} password=${vars:dbpassword} dbname=${vars:db} host=${vars:dbhost} port=${vars:dbport}"
+    PROCESSING "CLOSE_CONNECTION=DEFER"
+    DATA "geom from mensuration.mo9_immeubles_txt_rappel using unique idobj using srid=21781"
+    STATUS ON
+    MINSCALEDENOM 0
+    MAXSCALEDENOM 4000
+    CLASS
+        STYLE
+            WIDTH 1
+            COLOR 0 0 0
+        END
+    END
+END
 
 LAYER
     NAME "mo6_couverture_sol_nb_1"
@@ -2550,9 +2588,6 @@ LAYER
     CONNECTION "user=${vars:dbuser} password=${vars:dbpassword} dbname=${vars:db} host=${vars:dbhost} port=${vars:dbport}"
     PROCESSING "CLOSE_CONNECTION=DEFER"
     DATA "geom from mensuration.mo6_couverture_du_sol_surf_tot using unique idobj using srid=21781"
-    PROJECTION
-        "init=epsg:21781"
-    END
     TEMPLATE "ttt"
     CLASSITEM "typcou"
     CLASS
@@ -2590,9 +2625,6 @@ LAYER
     CONNECTION "user=${vars:dbuser} password=${vars:dbpassword} dbname=${vars:db} host=${vars:dbhost} port=${vars:dbport}"
     PROCESSING "CLOSE_CONNECTION=DEFER"
     DATA "geom from mensuration.mo6_couverture_du_sol_surf_tot using unique idobj using srid=21781"
-    PROJECTION
-        "init=epsg:21781"
-    END
     TEMPLATE "ttt"
     CLASSITEM "desnat"
     CLASS
@@ -2612,28 +2644,6 @@ LAYER
     END
     MINSCALEDENOM 0
     MAXSCALEDENOM 15000
-END
-
-LAYER
-  NAME "mo9_immeubles_txt_rappel"
-  TYPE LINE
-  METADATA
-       "ows_title" "mo9_immeubles_txt_rappel"
-       " wms_srs" "epsg:21781"
-  END
-  CONNECTIONTYPE POSTGIS
-  CONNECTION "user=${vars:dbuser} password=${vars:dbpassword} dbname=${vars:db} host=${vars:dbhost} port=${vars:dbport}"
-  PROCESSING "CLOSE_CONNECTION=DEFER"
-  DATA "geom from mensuration.mo9_immeubles_txt_rappel using unique idobj using srid=21781"
-  STATUS ON
-  MINSCALEDENOM 0
-  MAXSCALEDENOM 4000
-  CLASS
-    STYLE
-      WIDTH 1
-      COLOR 0 0 0
-    END
-  END
 END
 
 LAYER

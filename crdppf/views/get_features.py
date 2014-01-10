@@ -76,7 +76,7 @@ def get_features_function(params):
                 elif geometryType == 'ST_Line' or geometryType == 'ST_MultiLineString' or geometryType == 'ST_LineString':
                     intersectionMeasure = intersectionMeasure = DBSession.scalar(feature.geom.intersection(parcelGeom).length())
                     if intersectionMeasure >= 1:
-                        intersectionMeasureTxt = ' : ' + str(math.ceil(intersectionMeasure*10)/10) + ' [m]'
+                        intersectionMeasureTxt = ' '  # : ' + str(math.ceil(intersectionMeasure*10)/10) + ' [m]'
                         geomType = 'Ligne'
                         jsonFeature = sloads(dumps(feature))
                         jsonFeature['properties']['layerName'] = layer
@@ -85,7 +85,7 @@ def get_features_function(params):
                 elif geometryType == 'ST_Point' or geometryType == 'ST_MultiPoint':
                     featureMeasure = -9999
                     geomType = 'Point'
-                    intersectionMeasureTxt = ' : point'
+                    intersectionMeasureTxt = ' ' #' : point'
                     jsonFeature = sloads(dumps(feature))
                     jsonFeature['properties']['layerName'] = layer
                     jsonFeature['properties']['intersectionMeasure'] = intersectionMeasureTxt
