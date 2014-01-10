@@ -71,6 +71,7 @@ class PDFConfig:
         'title3':[fontfamily, 'B', 16],
         'normal':[fontfamily, '', 10],
         'bold':[fontfamily,'B',10],
+        'url':[fontfamily,'',10],
         'small':[fontfamily, '', 7],
         'tocbold':[fontfamily, 'B', 11],
         'tocurl':[fontfamily, '', 9],
@@ -109,6 +110,7 @@ class Extract(FPDF):
         self.toc_entries = {}
         self.appendix_entries = []
         self.reference_entries = []
+        self.appendix_links = []
 
     def alias_no_page(self, alias='{no_pg}'):
         """Define an alias for total number of pages"""
@@ -155,7 +157,10 @@ class Extract(FPDF):
         self.set_y(-20)
         self.set_font(*self.pdfconfig.textstyles['small'])
         self.cell(55, 5, self.translations['creationdatelabel'] + str(' ')+self.creationdate, 0, 0, 'L')
-        self.cell(60, 5, self.translations['signaturelabel'] + str(' ')+self.timestamp, 0, 0, 'C')
+        if self.reportInfo['type'] == 'certified' or self.reportInfo['type'] == 'reducedcertified':
+            self.cell(60, 5, self.translations['signaturelabel'] + str(' ')+self.timestamp, 0, 0, 'C')
+        else:
+            self.cell(60, 5, self.translations['nosignaturetext'], 0, 0, 'C')
         self.cell(55, 5, self.translations['pagelabel'] + str(self.alias_no_page())+str('/')+ \
             str(self.alias_nb_pages()), 0, 0, 'R')
 
@@ -182,6 +187,7 @@ class Extract(FPDF):
         elif self.reportInfo['type'] =='reducedcertified':
             self.multi_cell(0, 9, self.translations['reducedcertifiedextracttitlelabel'])
         else:
+            self.reportInfo['type'] = 'standard'
             self.multi_cell(0, 9, self.translations['normalextracttitlelabel'])
         self.set_font(*self.pdfconfig.textstyles['title2'])
         #self.multi_cell(0, 7, translations['extractsubtitlelabel'])
@@ -211,13 +217,19 @@ class Extract(FPDF):
         self.set_font(*pdfconfig.textstyles['bold'])
         self.cell(35, 5, translations['EGRIDlabel'], 0, 0, 'L')
         self.set_font(*pdfconfig.textstyles['normal'])
-        self.cell(50, 5, feature_info['no_EGRID'].encode('iso-8859-1'), 0, 1, 'L')
+        if 'no_EGRID' in feature_info:
+            self.cell(50, 5, feature_info['no_EGRID'].encode('iso-8859-1'), 0, 1, 'L')
+        else: 
+            self.cell(50, 5, self.translations['noEGRIDtext'], 0, 1, 'L')
 
         # Third infoline : Adresse/localisation
         self.set_font(*pdfconfig.textstyles['bold'])
         self.cell(45, 5, translations['addresslabel'], 0, 0, 'L')
         self.set_font(*pdfconfig.textstyles['normal'])
-        self.cell(50, 5, str('Placeholder').encode('iso-8859-1'), 0, 1, 'L')
+        if 'adresse' in feature_info:
+            self.cell(50, 5, feature_info['adresse'].encode('iso-8859-1'), 0, 1, 'L')
+        else: 
+            self.cell(50, 5, self.translations['noaddresstext'], 0, 1, 'L')
 
          # Fourth infoline : municipality and BFS number
         self.set_font(*pdfconfig.textstyles['bold'])
@@ -233,10 +245,11 @@ class Extract(FPDF):
         self.set_font(*pdfconfig.textstyles['normal'])
         self.cell(70, 5, feature_info['operator'].encode('iso-8859-1'), 0, 1, 'L')
 
-        y= self.get_y()
-        self.set_y(y+5)
-        self.set_font(*pdfconfig.textstyles['bold'])
-        self.cell(0, 5, translations['signaturelabel'], 0, 0, 'L')
+        if self.reportInfo['type'] == 'certified' or self.reportInfo['type'] == 'reducedcertified':
+            y= self.get_y()
+            self.set_y(y+5)
+            self.set_font(*pdfconfig.textstyles['bold'])
+            self.cell(0, 5, translations['signaturelabel'], 0, 0, 'L')
 
         self.set_y(250)
         self.set_font(*pdfconfig.textstyles['bold'])
@@ -293,7 +306,7 @@ class Extract(FPDF):
         <sld:Font>
         <sld:CssParameter name="font-family">pdfconfig.fontfamily</sld:CssParameter> 
         <sld:CssParameter name="font-weight">bold</sld:CssParameter> 
-        <sld:CssParameter name="font-size">8</sld:CssParameter> 
+        <sld:CssParameter name="font-size">16</sld:CssParameter> 
         </sld:Font>
         <sld:Fill>
         <sld:CssParameter name="fill">#000000</sld:CssParameter> 
@@ -312,23 +325,23 @@ class Extract(FPDF):
 
         # Layers as defined in our WMS - to replace with an array from a table 
         layers = [
-            #'mo6_couverture_sol_nb_1',
-            'parcelles',
+            'mo6_couverture_sol_nb',
             'mo22_batiments',
             'mo21_batiments_provisoires',
             'mo23_batiments_projetes',
+            'parcelles',
             'ag1_parcellaire_provisoire',
             'mo9_immeubles',
-            'mo5_point_de_detail',
+            #'mo9_text_group',
             'mo7_obj_divers_lineaire',
             'mo7_obj_divers_couvert',
             'mo7_obj_divers_piscine',
             'mo7_obj_divers_cordbois',
+            'mo5_point_de_detail',
             'mo4_pfa_1',
             'mo4_pfp_3',
             'mo4_pfp_1_2',
-            'la3_limites_communales',
-            'mo22_batiments'
+            'la3_limites_communales'
         ]
 
         scale = self.printformat['scale']*2
@@ -421,7 +434,7 @@ class Extract(FPDF):
             self.topiclist[str(topic.topicid)]['references']=None
 
     def add_layer(self, layer):
-        results = get_features_function({'layerList':layer.layername,'id':self.featureid})
+        results = get_features_function({'layerList':layer.layername,'id':self.featureid,'translations':self.translations})
         if results :
             self.layerlist[str(layer.layerid)]={'layername':layer.layername,'features':[]}
             for result in results:
@@ -507,22 +520,23 @@ class Extract(FPDF):
 
         # List with the base layers of the map - the restriction layers get added to the list
         layers = [
-            'parcelles',
+            'mo6_couverture_sol_nb',
             'mo22_batiments',
             'mo21_batiments_provisoires',
             'mo23_batiments_projetes',
+            'parcelles',
             'ag1_parcellaire_provisoire',
             'mo9_immeubles',
-            'mo5_point_de_detail',
+            #'mo9_text_group',
             'mo7_obj_divers_lineaire',
             'mo7_obj_divers_couvert',
             'mo7_obj_divers_piscine',
             'mo7_obj_divers_cordbois',
+            'mo5_point_de_detail',
             'mo4_pfa_1',
             'mo4_pfp_3',
             'mo4_pfp_1_2',
-            'la3_limites_communales',
-            'mo22_batiments'
+            'la3_limites_communales'
         ]
 
         # temp var to hold the parameters of the legend
@@ -665,10 +679,17 @@ class Extract(FPDF):
         self.cell(118 ,5, translations['toclabel'], 'LB', 0, 'L')
         y = self.get_y()
         x = self.get_x()
+        # Unfortunately there seems to be a bug in the pyfpdf library regarding the set_y function
+        # when rotating - so we have to use a workaround rotating back and forth...
+        self.set_xy(x+3.5,y+4)
         self.rotate(90)
-        self.text(x-4, y+8, translations['legalprovisionslabel'])
-        self.text(x-4, y+23, translations['referenceslabel'])
+        self.multi_cell(25, 4, translations['tocprovisionslabel'], 0,'L')
         self.rotate(0)
+        self.set_xy(x+18,y+4)
+        self.rotate(90)
+        self.multi_cell(35, 4, translations['tocreferenceslabel'], 0,'L')
+        self.rotate(0)
+        self.set_xy(x,y)
         self.cell(15, 5, '', 'LB', 0, 'L')
         self.cell(15, 5, '', 'LB', 1, 'L')
 
@@ -738,7 +759,6 @@ class Extract(FPDF):
             tocpgalias = 'tocpg_'+str(topic)
             self.pages[2] = self.pages[2].replace(tocpgalias,str(self.page_no()))
 
-
             # Place the map
             self.image(self.topiclist[topic]['mappath'], 65, pdfconfig.headermargin, self.printformat['width'], self.printformat['height'])
             self.rect(65, pdfconfig.headermargin, self.printformat['width'], self.printformat['height'], '')
@@ -751,9 +771,9 @@ class Extract(FPDF):
             self.rect(pdfconfig.leftmargin, pdfconfig.headermargin, legendbox_width, legendbox_height, '')
 
             # define cells with border for the legend and the map
-            self.set_xy(28, pdfconfig.headermargin+3)
+            self.set_xy(26, pdfconfig.headermargin+3)
             self.set_font(*pdfconfig.textstyles['bold'])
-            self.cell(50, 6, translations['legendlabel'], 0, 1, 'L')
+            self.cell(50, 6, translations['bboxlegendlabel'], 0, 1, 'L')
             y= self.get_y()
             self.set_font(*pdfconfig.textstyles['normal'])
             if  len(self.topiclist[topic]['legendpath']) > 0:
@@ -793,7 +813,19 @@ class Extract(FPDF):
             self.multi_cell(0, 6, str(self.topiclist[topic]['topicname'].encode('iso-8859-1')), 0, 1, 'L')
             y = self.get_y()
             self.set_y(y+110)
+
+            #Display the URL to the complete legend
+            self.set_font(*pdfconfig.textstyles['bold'])
+            self.cell(55, 5, translations['completlegendlabel'], 0, 0, 'L')
+            self.set_font(*pdfconfig.textstyles['normal'])
+            if 'topiclegend' in self.topiclist[topic] and self.topiclist[topic]['topiclegend'] is not None:
+                self.cell(120, 5, self.topiclist[topic]['topiclegend'], 0, 1, 'L')
+            else:
+                self.cell(120, 5, translations['nocompletelegendtext'], 0, 1, 'L')
             
+            #Get the restrictions
+            y = self.get_y()
+            self.set_y(y+5)
             if self.topiclist[topic]['layers']:
                 for layer in self.topiclist[topic]['layers']:
                     if self.topiclist[topic]['layers'][layer]['features']:
@@ -808,31 +840,6 @@ class Extract(FPDF):
                                     feature['teneur'] = 'None'
                                 self.multi_cell(100, 5, feature['teneur'].encode('iso-8859-1') \
                                     +'\t('+feature['intersectionMeasure'].replace(' - ','').encode('iso-8859-1')+')', 0, 1, 'L')
-
-                            elif self.topiclist[topic]['layers'][layer]['layername'] in ['en07_canepo_accidents','en07_canepo_decharges_points','en07_canepo_decharges_polygones','en07_canepo_entreprises_points']:
-                                self.set_font(*pdfconfig.textstyles['bold'])
-                                self.cell(55, 5, translations['contentlabel'].encode('iso-8859-1'), 0, 0, 'L')
-                                self.set_font(*pdfconfig.textstyles['normal'])
-                                self.multi_cell(100, 5, unicode(feature['statut_osi']).encode('iso-8859-1'), 0, 1, 'L')
-                                
-                            elif self.topiclist[topic]['layers'][layer]['layername'] == 'en01_zone_sect_protection_eaux':
-                                self.set_font(*pdfconfig.textstyles['bold'])
-                                self.cell(55, 5, translations['contentlabel'].encode('iso-8859-1'), 0, 0, 'L')
-                                self.set_font(*pdfconfig.textstyles['normal'])
-                                self.multi_cell(100, 5, feature['categorie'].encode('iso-8859-1'), 0, 1, 'L')
-
-                            elif self.topiclist[topic]['layers'][layer]['layername'] == 'clo_couloirs':
-                                self.set_font(*pdfconfig.textstyles['bold'])
-                                self.cell(55, 5, translations['contentlabel'].encode('iso-8859-1'), 0, 0, 'L')
-                                self.set_font(*pdfconfig.textstyles['normal'])
-                                self.multi_cell(100, 5, feature['type'].encode('iso-8859-1'), 0, 1, 'L')
-
-                            elif self.topiclist[topic]['layers'][layer]['layername'] == 'clo_cotes_altitude_surfaces':
-                                self.set_font(*pdfconfig.textstyles['bold'])
-                                self.cell(55, 5, translations['contentlabel'].encode('iso-8859-1'), 0, 0, 'L')
-                                self.set_font(*pdfconfig.textstyles['normal'])
-                                self.multi_cell(100, 5, str(feature['cote_alt_obstacles_minimum']).encode('iso-8859-1'), 0, 1, 'L')
-                                
                             else:
                                 for property,value in feature.iteritems():
                                     if value is not None and property != 'featureClass':
@@ -845,35 +852,41 @@ class Extract(FPDF):
             else:
                 self.multi_cell(100, 5, 'Error in line 818', 0, 1, 'L')
 
-                # Legal Provisions/Dispositions juridiques/Gesetzliche Bestimmungen
-                y = self.get_y()
-                self.set_y(y+5)
-                self.set_font(*pdfconfig.textstyles['bold'])
-                self.cell(55, 6, translations['legalprovisionslabel'], 0, 0, 'L')
-                self.set_font(*pdfconfig.textstyles['normal'])
-                if self.topiclist[topic]['legalprovisions']:
-                    count = 0 
-                    for provision in self.topiclist[topic]['legalprovisions']:
-                        self.add_appendix(topic.topicid, 'A'+str(count+1), unicode(provision.officialtitle).encode('iso-8859-1'), unicode(provision.legalprovisionurl).encode('iso-8859-1'))
-                        self.cell(0, 5, unicode(provision.officialtitle).encode('iso-8859-1'), 0, 1, 'L')
-                        self.set_text_color(0, 0, 255)
-                        self.set_x(80)
-                        self.multi_cell(0, 6, unicode(provision.legalprovisionurl).encode('iso-8859-1'))
-                        self.set_text_color(0, 0, 0)
-                else:
-                        self.multi_cell(0, 6, unicode('None').encode('iso-8859-1'))
+            # Legal Provisions/Dispositions juridiques/Gesetzliche Bestimmungen
+            y = self.get_y()
+            self.set_y(y+5)
+            self.set_font(*pdfconfig.textstyles['bold'])
+            self.cell(55, 5, translations['legalprovisionslabel'], 0, 0, 'L')
+            self.set_font(*pdfconfig.textstyles['normal'])
+            if self.topiclist[topic]['legalprovisions']:
+                count = 0 
+                for provision in self.topiclist[topic]['legalprovisions']:
+                    self.set_x(80)
+                    if provision['officialnb'] is not None:
+                        self.multi_cell(0, 5, provision['officialnb'] +' : '+provision['officialtitle'], 0, 1, 'L')
+                    else: 
+                        self.multi_cell(0, 5, provision['officialtitle'], 0, 1, 'L')
+                    self.set_x(80)
+                    self.set_font(*self.pdfconfig.textstyles['url'])
+                    self.set_text_color(*self.pdfconfig.urlcolor)
+                    self.multi_cell(0, 4, 'URL : '+str(provision['legalprovisionurl']))
+                    self.set_text_color(*self.pdfconfig.defaultcolor)
+                    self.set_font(*self.pdfconfig.textstyles['normal'])
+            else:
+                    self.multi_cell(0, 4, translations['nodocumenttext'])
 
             # References and complementary information/Informations et renvois supplémentaires/Verweise und Zusatzinformationen
             y = self.get_y()
             self.set_y(y+5)
             self.set_font(*pdfconfig.textstyles['bold'])
-            self.cell(55, 6, translations['referenceslabel'], 0, 0, 'L')
+            self.cell(55, 5, translations['referenceslabel'], 0, 0, 'L')
             self.set_font(*pdfconfig.textstyles['normal'])
             if self.topiclist[topic]['references']:
                 for reference in self.topiclist[topic]['references']:
-                    self.multi_cell(0, 6, unicode(reference['officialtitle']).encode('iso-8859-1'))
+                    self.set_x(80)
+                    self.multi_cell(0, 5, unicode(reference['officialtitle']).encode('iso-8859-1'))
             else:
-                    self.multi_cell(0, 6, unicode('None','utf-8').encode('iso-8859-1')) 
+                    self.multi_cell(0, 4, translations['nodocumenttext'])
 
             # -- KEEP FOR FURTHER USE
             
@@ -881,16 +894,16 @@ class Extract(FPDF):
             #~ y = self.get_y()
             #~ self.set_y(y+5)
             #~ self.set_font(*pdfconfig.textstyles['bold'])
-            #~ self.cell(55, 6, translations['temporaryprovisionslabel'], 0, 0, 'L')
+            #~ self.cell(55, 5, translations['temporaryprovisionslabel'], 0, 0, 'L')
             #~ self.set_font(*pdfconfig.textstyles['normal'])
             #~ if self.topiclist[topic]['temporaryprovisions']:
                 #~ for temp_provision in self.topiclist[topic]['temporaryprovisions']:
-                    #~ self.multi_cell(0, 6, unicode(temp_provision.officialtitle).encode('iso-8859-1'), 0, 1, 'L')
+                    #~ self.multi_cell(0, 5, unicode(temp_provision.officialtitle).encode('iso-8859-1'), 0, 1, 'L')
                     #~ if temp_provision.temporaryprovisionurl :
                         #~ self.set_x(80)
-                        #~ self.multi_cell(0, 6, unicode(temp_provision.temporaryprovisionurl).encode('iso-8859-1'))
+                        #~ self.multi_cell(0, 5, unicode(temp_provision.temporaryprovisionurl).encode('iso-8859-1'))
             #~ else:
-                    #~ self.multi_cell(0, 6, unicode('None','utf-8').encode('iso-8859-1'), 0, 1, 'L')
+                    #~ self.multi_cell(0, 5, unicode('None','utf-8').encode('iso-8859-1'), 0, 1, 'L')
 
             # --  END KEEP
 
@@ -898,32 +911,41 @@ class Extract(FPDF):
             y = self.get_y()
             self.set_y(y+5)
             self.set_font(*pdfconfig.textstyles['bold'])
-            self.cell(55, 3.9, translations['competentauthoritylabel'], 0, 0, 'L')
+            self.cell(55, 5, translations['competentauthoritylabel'], 0, 0, 'L')
             self.set_font(*pdfconfig.textstyles['normal'])
             
             if self.topiclist[topic]['authority'].authorityname is not None:
-                self.cell(120, 3.9, self.topiclist[topic]['authority'].authorityname.encode('iso-8859-1'), 0, 1, 'L')
+                self.cell(120, 5, self.topiclist[topic]['authority'].authorityname.encode('iso-8859-1'), 0, 1, 'L')
+            else :
+                self.cell(120, 5, translations['noauthoritytext'], 0, 1, 'L')
             if self.topiclist[topic]['authority'].authoritydepartment is not None:
-                self.cell(55, 3.9, str(' '), 0, 0, 'L')
-                self.cell(120, 3.9, self.topiclist[topic]['authority'].authoritydepartment.encode('iso-8859-1'), 0, 1, 'L')
+                self.cell(55, 5, str(' '), 0, 0, 'L')
+                self.cell(120, 5, self.topiclist[topic]['authority'].authoritydepartment.encode('iso-8859-1'), 0, 1, 'L')
             if self.topiclist[topic]['authority'].authorityphone1 is not None:
-                self.cell(55, 3.9, str(' '), 0, 0, 'L')
-                self.cell(120, 3.9, translations['phonelabel']+self.topiclist[topic]['authority'].authorityphone1.encode('iso-8859-1'), 0, 1, 'L')
+                self.cell(55, 5, str(' '), 0, 0, 'L')
+                self.cell(120, 5, translations['phonelabel']+self.topiclist[topic]['authority'].authorityphone1.encode('iso-8859-1'), 0, 1, 'L')
             if self.topiclist[topic]['authority'].authoritywww is not None:
-                self.cell(55, 3.9, str(' '), 0, 0, 'L')
-                self.cell(120, 3.9, translations['webadresslabel']+self.topiclist[topic]['authority'].authoritywww.encode('iso-8859-1'),0,1,'L')
+                self.cell(55, 5, str(' '), 0, 0, 'L')
+                self.cell(120, 5, translations['webadresslabel']+self.topiclist[topic]['authority'].authoritywww.encode('iso-8859-1'),0,1,'L')
 
             # Legal bases/Bases légales/Gesetzliche Grundlagen
             y = self.get_y()
             self.set_y(y+5)
             self.set_font(*pdfconfig.textstyles['bold'])
-            self.cell(55, 6, translations['legalbaseslabel'], 0, 0, 'L')
+            self.cell(55, 5, translations['legalbaseslabel'], 0, 0, 'L')
             self.set_font(*pdfconfig.textstyles['normal'])
             if self.topiclist[topic]['legalbases']:
                 for legalbase in self.topiclist[topic]['legalbases']:
-                    self.multi_cell(100, 5, legalbase['officialtitle'], 0, 1, 'L')
+                    self.set_x(80)
+                    self.multi_cell(0, 5, legalbase['officialnb'] +' : '+legalbase['officialtitle'], 0, 1, 'L')
+                    self.set_x(80)
+                    self.set_font(*self.pdfconfig.textstyles['url'])
+                    self.set_text_color(*self.pdfconfig.urlcolor)
+                    self.multi_cell(0, 4, 'URL : '+str(legalbase['legalbaseurl']))
+                    self.set_text_color(*self.pdfconfig.defaultcolor)
+                    self.set_font(*self.pdfconfig.textstyles['normal'])
             else:
-                self.multi_cell(0, 6, translations['placeholderlabel'])
+                self.multi_cell(0, 5, translations['placeholderlabel'])
 
     def add_appendix(self, topicid, num, label,url):
         self.appendix_entries.append({'topicid':topicid, 'no_page':num, 'title':label, 'url':url})
@@ -974,6 +996,7 @@ class Extract(FPDF):
         index = 1
         for appendix in self.appendix_entries:
             self.set_font(*self.pdfconfig.textstyles['tocbold'])
+            self.appendix_links.append(self.add_link())
             self.cell(15, 6, str('A'+str(index)), 0, 0, 'L')
             self.cell(120, 6, str(appendix['title']), 0, 1, 'L')
             self.set_x(40)
