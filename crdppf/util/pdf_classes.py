@@ -81,8 +81,8 @@ class PDFConfig:
     defaultcolor = [0, 0, 0]
 
     timestamp = datetime.now().strftime("%Y%m%d%H%M%S")
-    pdfname = str(timestamp) + '_ExtraitCRDPPF'
-    siteplanname = str(timestamp) + '_siteplan'
+    pdfname = str(timestamp)+'_ExtraitCRDPPF'
+    siteplanname = str(timestamp)+'_siteplan'
     fitratio = 0.9
     pdfpath = pkg_resources.resource_filename('crdppf', 'static/public/pdf/')
 
@@ -129,7 +129,7 @@ class Extract(FPDF):
         self.pdfconfig = PDFConfig()
 
     def set_filename(self):
-        self.filename = str(self.timestamp) + self.featureid
+        self.filename = str(self.timestamp)+self.featureid
 
     def header(self):
         """Creates the document header with the logos and vertical lines."""
@@ -139,12 +139,12 @@ class Extract(FPDF):
         self.line(105, 0, 105, 35)
         self.line(165, 0, 165, 35)
         # Add the logos if existing else put a placeholder
-        self.image(self.appconfig.imagesbasedir + self.appconfig.CHlogopath, 10, 8, 55, 14.42)
-        self.image(self.appconfig.imagesbasedir + self.appconfig.cantonlogopath, 110, 8, 43.4, 13.8)
+        self.image(self.appconfig.imagesbasedir+self.appconfig.CHlogopath, 10, 8, 55, 14.42)
+        self.image(self.appconfig.imagesbasedir+self.appconfig.cantonlogopath, 110, 8, 43.4, 13.8)
         try:
             self.image(self.municipalitylogopath, 170, 8, 10, 10.7)
         except:
-            self.image(self.appconfig.imagesbasedir + 'ecussons\Placeholder.jpg', 170, 8, 10, 10.7)
+            self.image(self.appconfig.imagesbasedir+'ecussons\Placeholder.jpg', 170, 8, 10, 10.7)
         # This lines are not necessary if the community name is already contained in the 
         self.set_xy(170, 19.5)
         self.set_font(*self.pdfconfig.textstyles['small'])
@@ -156,12 +156,12 @@ class Extract(FPDF):
         # position footer at 15mm from the bottom
         self.set_y(-20)
         self.set_font(*self.pdfconfig.textstyles['small'])
-        self.cell(55, 5, self.translations['creationdatelabel'] + str(' ')+self.creationdate, 0, 0, 'L')
+        self.cell(55, 5, self.translations['creationdatelabel']+str(' ')+self.creationdate, 0, 0, 'L')
         if self.reportInfo['type'] == 'certified' or self.reportInfo['type'] == 'reducedcertified':
-            self.cell(60, 5, self.translations['signaturelabel'] + str(' ')+self.timestamp, 0, 0, 'C')
+            self.cell(60, 5, self.translations['signaturelabel']+str(' ')+self.timestamp, 0, 0, 'C')
         else:
             self.cell(60, 5, self.translations['nosignaturetext'], 0, 0, 'C')
-        self.cell(55, 5, self.translations['pagelabel'] + str(self.alias_no_page())+str('/')+ \
+        self.cell(55, 5, self.translations['pagelabel']+str(self.alias_no_page())+str('/')+ \
             str(self.alias_nb_pages()), 0, 0, 'R')
 
     def get_title_page(self):
@@ -319,7 +319,7 @@ class Extract(FPDF):
         </sld:StyledLayerDescriptor>"""
 
 
-        sldfile = open(self.appconfig.tempdir +self.pdfconfig.siteplanname+'_sld.xml', 'w')
+        sldfile = open(self.appconfig.tempdir+self.pdfconfig.siteplanname+'_sld.xml', 'w')
         sldfile.write(sld)
         sldfile.close()
 
@@ -363,7 +363,7 @@ class Extract(FPDF):
 
         sitemap = wms.getmap(
             layers=layers,
-            sld = self.sld_url + self.pdfconfig.siteplanname + '_sld.xml',
+            sld = self.sld_url+self.pdfconfig.siteplanname+'_sld.xml',
             srs='EPSG:21781',
             bbox=(wmsBBOX['minX'],wmsBBOX['minY'],wmsBBOX['maxX'],wmsBBOX['maxY']),
             size=(1600,900),
@@ -371,11 +371,11 @@ class Extract(FPDF):
             transparent=False
         )
 
-        out = open(self.appconfig.tempdir +self.pdfconfig.siteplanname+'.png', 'wb')
+        out = open(self.appconfig.tempdir+self.pdfconfig.siteplanname+'.png', 'wb')
         out.write(sitemap.read())
         out.close()
 
-        self.sitemappath = self.appconfig.tempdir +self.pdfconfig.siteplanname+'.png'
+        self.sitemappath = self.appconfig.tempdir+self.pdfconfig.siteplanname+'.png'
 
     def add_topic(self, topic):
         """Adds a new entry to the topic list
@@ -626,7 +626,7 @@ class Extract(FPDF):
 
             background.paste(foreground, (0, 0), foreground)
             background.convert('RGB').convert('P', colors=256, palette=Image.ADAPTIVE)
-            background.save(self.appconfig.tempdir + self.filename + '_'+str(topicid) + '.png')
+            background.save(self.appconfig.tempdir+self.filename+'_'+str(topicid)+'.png')
 
         else:
             map = wms.getmap(
@@ -642,7 +642,7 @@ class Extract(FPDF):
             out.write(map.read())
             out.close()
 
-        mappath = self.appconfig.tempdir + self.filename +'_'+ str(topicid) + '.png'
+        mappath = self.appconfig.tempdir+self.filename+'_'+str(topicid)+'.png'
         # Add the path to the thematic map and it's legendfile to the topiclist
         self.topiclist[topicid].update({'mappath':mappath,'legendpath':legend_path})
         #return mappath, legend_path
@@ -676,20 +676,20 @@ class Extract(FPDF):
         self.cell(15, 15, '', 'L', 1, 'C')
 
         self.cell(12, 5, translations['pagelabel'], 'B', 0, 'L')
-        self.cell(118 ,5, translations['toclabel'], 'LB', 0, 'L')
+        self.cell(118 , 5, translations['toclabel'], 'LB', 0, 'L')
         y = self.get_y()
         x = self.get_x()
         # Unfortunately there seems to be a bug in the pyfpdf library regarding the set_y function
         # when rotating - so we have to use a workaround rotating back and forth...
-        self.set_xy(x+3.5,y+4)
+        self.set_xy(x+3.5, y+4)
         self.rotate(90)
         self.multi_cell(25, 4, translations['tocprovisionslabel'], 0,'L')
         self.rotate(0)
-        self.set_xy(x+18,y+4)
+        self.set_xy(x+18, y+4)
         self.rotate(90)
         self.multi_cell(35, 4, translations['tocreferenceslabel'], 0,'L')
         self.rotate(0)
-        self.set_xy(x,y)
+        self.set_xy(x, y)
         self.cell(15, 5, '', 'LB', 0, 'L')
         self.cell(15, 5, '', 'LB', 1, 'L')
 
@@ -863,7 +863,7 @@ class Extract(FPDF):
                 for provision in self.topiclist[topic]['legalprovisions']:
                     self.set_x(80)
                     if provision['officialnb'] is not None:
-                        self.multi_cell(0, 5, provision['officialnb'] +' : '+provision['officialtitle'], 0, 1, 'L')
+                        self.multi_cell(0, 5, provision['officialnb']+' : '+provision['officialtitle'], 0, 1, 'L')
                     else: 
                         self.multi_cell(0, 5, provision['officialtitle'], 0, 1, 'L')
                     self.set_x(80)
@@ -937,7 +937,7 @@ class Extract(FPDF):
             if self.topiclist[topic]['legalbases']:
                 for legalbase in self.topiclist[topic]['legalbases']:
                     self.set_x(80)
-                    self.multi_cell(0, 5, legalbase['officialnb'] +' : '+legalbase['officialtitle'], 0, 1, 'L')
+                    self.multi_cell(0, 5, legalbase['officialnb']+' : '+legalbase['officialtitle'], 0, 1, 'L')
                     self.set_x(80)
                     self.set_font(*self.pdfconfig.textstyles['url'])
                     self.set_text_color(*self.pdfconfig.urlcolor)
