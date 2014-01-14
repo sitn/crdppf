@@ -23,13 +23,25 @@ Ext.onReady(function() {
     var translations = {}; // The interface translations
     var baseLayers = {};
     var parameters = {}
+    
+    // We need to ensure all json data are recieved by the client before starting the application
+    var loadingCounter = 0;
+    
+    var triggerFunction = function(counter) {
+        if (counter == 4) {
+            Crdppf.init_main(lang, parameters, baseLayers, translations);
+        }
+    };
+
     // Get the current session language
     Ext.Ajax.request({
         url: Crdppf.getLanguageUrl,
         success: function(response) {
             var lang_json = Ext.decode(response.responseText);
             lang = lang_json['lang'];
-            OpenLayers.Lang.setCode(lang);    
+            OpenLayers.Lang.setCode(lang); 
+            loadingCounter += 1;
+            triggerFunction(loadingCounter);            
         },
         method: 'POST',
         failure: function () {
@@ -42,6 +54,8 @@ Ext.onReady(function() {
         url: Crdppf.getTranslationDictionaryUrl,
         success: function(response) {
             translations = Ext.decode(response.responseText);
+            loadingCounter += 1; 
+            triggerFunction(loadingCounter);            
         },
         method: 'POST',
         failure: function () {
@@ -53,6 +67,8 @@ Ext.onReady(function() {
         url: Crdppf.getBaselayerConfigUrl,
         success: function(response) {
             baseLayers = Ext.decode(response.responseText);
+            loadingCounter += 1; 
+            triggerFunction(loadingCounter);            
         },
         method: 'POST',
         failure: function () {
@@ -67,7 +83,8 @@ Ext.onReady(function() {
             parameters = Ext.decode(response.responseText);
             // init the interface
             OpenLayers.Util.extend(OpenLayers.Lang.fr,translations);
-            Crdppf.init_main(lang, parameters, baseLayers, translations);
+            loadingCounter += 1;
+            triggerFunction(loadingCounter);        
         },
         method: 'POST',
         failure: function () {
