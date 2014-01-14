@@ -4,6 +4,7 @@
 Crdppf.ThemeSelector = function createThemeSelector () {
     this.makeThemeSelector = makeThemeSelector;
 };
+
 var makeThemeSelector = function makeThemeSelector(){
 
     var myReader = new Ext.data.JsonReader({
@@ -19,7 +20,18 @@ var makeThemeSelector = function makeThemeSelector(){
     });
 
     // load data and create listView
+
     myStore.loadData(layerList);
+    var themeTemplate = new Ext.XTemplate(
+        '<p style="padding-top:6px">{[this.getTranslation(values.name)]}</p>',
+        {
+            compiled: true,
+            getTranslation: function (name) {
+                 return labels[name];
+             }
+        }
+    );
+    
     var listView = new Ext.list.ListView({
         id: 'themeListView',
         store: myStore,
@@ -42,7 +54,7 @@ var makeThemeSelector = function makeThemeSelector(){
                 header: 'Thèmes',
                 width: 0.75,
                 dataIndex: 'name',
-                tpl: '<p style="padding-top:6px">{name}</p>'
+                tpl: themeTemplate
             }
             ],
         listeners:{

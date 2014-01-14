@@ -126,7 +126,7 @@ TODO: pass topic and layerfk to the function to request only related docs
         emptyText: 'No legal documents to display'
     });
 
-    return legalInfo
+    return legalInfo;
 
 };
 

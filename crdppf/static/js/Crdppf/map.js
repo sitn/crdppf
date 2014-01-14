@@ -1,8 +1,6 @@
 ﻿/*
  * @include OpenLayers/Projection.js
  * @include OpenLayers/Map.js
- * @requires Crdppf/resources/Fr.js 
- * @requires Crdppf/resources/De.js 
  * @requires OpenLayers/Request.js 
  * @requires OpenLayers/Layer/WMTS.js 
  * @requires OpenLayers/Layer/Image.js 
@@ -107,7 +105,7 @@ var setInfoControl = function setInfoControl(){
                             for (l=0;l<ll.length;l++){
                                 for (var key in ll[l].layers){
                                     if(lName==key){
-                                        fullName = ll[l].layers[key]; 
+                                        fullName = labels[key]; 
                                     }
                                 }
                             }
@@ -122,11 +120,11 @@ var setInfoControl = function setInfoControl(){
                             
                             // iterate over all features: create a node for each restriction and group them by their owning layer
                             for (j=0; j<jsonData.length; j++) {
-                                if (jsonData[j].attributes.layerName ==lName){
+                                if (jsonData[j].attributes.layerName == lName){
                                     featureClass = jsonData[j].attributes.featureClass;
                                     html = '';
                                     for (var value in jsonData[j].attributes){
-                                        html += '<p class=featureAttributeStyle><b>' + value + ' : </b>' + jsonData[j].attributes[value] +'</p>' ;
+                                        html += '<p class=featureAttributeStyle><b>' + labels[value] + ' : </b>' + jsonData[j].attributes[value] +'</p>' ;
                                     }
                                     html += '';
                                     // create 1 node for each restriction (level 2)

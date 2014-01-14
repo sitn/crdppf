@@ -113,4 +113,4 @@ var disableMeasureControl = function disableMeasureControl() {
     
     var element = document.getElementById('measureOuput');
     element.innerHTML = '';
-}
+};

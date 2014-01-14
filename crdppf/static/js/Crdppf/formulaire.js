@@ -113,7 +113,7 @@ Ext.onReady(function(){
                         numcom:record.data.numcom,
                         nufeco:record.data.nufeco,
                         comnom:record.data.comnom}
-                        )
+                        );
                     }
                 }
             },{
@@ -274,7 +274,7 @@ Ext.onReady(function(){
                 allowBlank: true,
                 width: 250,
                 maxLength: 100
-            },    
+            }   
         ],
 
         buttons: [{
