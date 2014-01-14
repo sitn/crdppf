@@ -21,7 +21,8 @@ Ext.onReady(function() {
     // set the application language to the user session settings
     var lang = ''; // The current session language
     var translations = {}; // The interface translations
-    
+    var baseLayers = {};
+    var parameters = {}
     // Get the current session language
     Ext.Ajax.request({
         url: Crdppf.getLanguageUrl,
