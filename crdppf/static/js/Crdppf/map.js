@@ -58,7 +58,7 @@ var setInfoControl = function setInfoControl(){
         url: Crdppf.ogcproxyUrl,
         geometryName: this.geometryName,
         srsName: this.map.getProjection(),
-            featureType: 'parcelles',
+        featureType: 'parcelles',
         formatOptions: {
             featureNS: 'http://mapserver.gis.umn.edu/mapserver',
             autoconfig: false
@@ -97,8 +97,8 @@ var setInfoControl = function setInfoControl(){
                     var jsonData = geojson_format.read(request.responseText);
                     featureTree.setTitle(labels.restrictionPanelTxt + parcelId);
                     lList = [];
-                    // iterate over the features
-                    for (i=0; i<jsonData.length; i++) {
+                    // iterate over the restriction found
+                    for (i=0; i<jsonData.length;i++) {
                         lName = jsonData[i].attributes.layerName;
                         // create node for layer if not already created
                         if(!contains(lName,lList)){
@@ -125,13 +125,8 @@ var setInfoControl = function setInfoControl(){
                                 if (jsonData[j].attributes.layerName ==lName){
                                     featureClass = jsonData[j].attributes.featureClass;
                                     html = '';
-                                    stop = 0;
                                     for (var value in jsonData[j].attributes){
                                         html += '<p class=featureAttributeStyle><b>' + value + ' : </b>' + jsonData[j].attributes[value] +'</p>' ;
-                                        if (stop > 4){
-                                            break;
-                                        }
-                                        stop +=1;
                                     }
                                     html += '';
                                     // create 1 node for each restriction (level 2)

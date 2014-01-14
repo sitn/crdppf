@@ -6,6 +6,7 @@ Crdppf.wmsUrl = "${request.registry.settings['crdppf_wms']}";
 Crdppf.getFeatureUrl = "${request.route_url('get_features')}";
 Crdppf.setLanguageUrl = "${request.route_url('set_language')}";
 Crdppf.getLanguageUrl = "${request.route_url('get_language')}";
+Crdppf.getTranslationDictionaryUrl = "${request.route_url('get_translation_dictionary')}";
 Crdppf.ogcproxyUrl = "${request.route_url('ogcproxy')}";
 Crdppf.printUrl = "${request.route_url('create_extract')}";
 Crdppf.fulltextsearchUrl = "${request.registry.settings['fulltextsearch_url']}";

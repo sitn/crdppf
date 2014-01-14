@@ -23,56 +23,6 @@ Crdppf.baseLayersFr = {
         ]
 };
  
-// Application labels text values for french  
-Crdppf.labelsFr  ={
-    'navPanelLabel':'Navigation',
-    'infoMsgTitle': 'Info',
-    'searchBoxTxt':'Rechercher...',
-    'themeSelectorLabel':'Thématique CRDPFF',
-    'waitMessage': 'Chargement des données...',
-    'mapContainerTab':'Carte',
-    'legalBasisTab':'Documents légaux',
-    'layerTreeTitle':'Arbre des couches',
-    'selectAllLayerLabel':'Restrictions',
-    'lawTabLabel':'Dispositions juridiques',
-    'additionnalInfoTab':'Informations et renvois supplémentaires',
-    'infoTabLabel':'Informations',
-    'legendPanelTitle':'Légende',
-    'searchBoxEmptyTxt':'Rechercher...',
-    'olCoordinates':'Coordonnées',
-    'restrictionPanelTitle':'Restrictions',
-    'restrictionPanelTxt':'Restrictions affectant la parcelle n° ',
-    'noActiveLayertxt':'Aucune couche active',
-    'restrictionFoundTxt':'Restriction n° ',
-    'disclaimerTxt':'Mise en garde : Le canton de Neuchâtel n\'engage pas sa responsabilité sur l\'exactitude ou la fiabilité des documents législatifs dans leur version électronique. <br>Ces documents ne créent aucun autre droit ou obligation que ceux qui découlent des textes légalement adoptés et publiés, qui font seuls foi.',
-    'mapBottomTxt':'<b>Informations dépourvues de foi publique, <a style="color:#660000;" href="http://sitn.ne.ch/web/conditions_utilisation/contrat_SITN_MO.htm" target="_new">&copy; SITN</a></b>',
-    'maxTitleOverviewMap':'Afficher la carte de situation',
-    'minTitleOverviewMap':'Masquer la carte de situation',
-    'intersectToolTipMessage':'Relation spatiale: intersection',
-    'withinToolTipMessage':'Relation spatiale: à l\'intérieur de',
-    'adjacentToolTipMessage':'Relation spatiale: touche',
-    'printPdfWindowsTitle': 'Extraction au format pdf',
-    'noSelectedParcelMessage': 'Sélectionnez d\'abord une parcelle !',
-    'printButtonTlp':'Générer l\'extrait',
-    'infoButtonTlp':'Interroger les restrictions',
-    'panButtonTlp':'Déplacement de la carte',
-    'zoomInButtonTlp':'Zoom avant',
-    'zoomOutButtonTlp':'Zoom arrière',
-    'infoButtonTlp': 'Effacer la sélection actuelle',
-    'baseLayerGroup': 'Fonds de plan',
-    'chooseExtractMsg': 'Quel type d\'extrait souhaitez-vous imprimer ?',
-    'chooseExtractTypeMsg': 'Choix du type d\'extrait',
-    'reducedExtract': 'Extrait réduit',
-    'extendedExtract': 'Extrait complet',
-    'cancelExtract': 'Annuler',
-    'generateExtract': 'Générer l\'extrait',
-    'restrictionLoadingMsg': 'Calcul...',
-    'measureToolTxt': 'Mesure',
-    'measureToolDistanceTxt': 'Distance',
-    'measureToolSurfaceTxt': 'Surface'
-    };
-   
-
 OpenLayers.Util.extend(OpenLayers.Lang.fr, {
     'adresses_sitn':'Adresses',
     'axe_rue':'Axes et rues',

@@ -19,35 +19,53 @@ var layerList;
 
 Ext.onReady(function() {
     // set the application language to the user session settings
-    var lang = '';
-
+    var lang = ''; // The current session language
+    var traductions = {}; // The interface traductions
+    
+    // Get the current session language
     Ext.Ajax.request({
         url: Crdppf.getLanguageUrl,
         success: function(response) {
             var lang_json = Ext.decode(response.responseText);
             lang = lang_json['lang'];
             OpenLayers.Lang.setCode(lang);
-            Crdppf.init_main(lang);
+            
+            // Once language known, load the interface's translations
+            Ext.Ajax.request({
+                url: Crdppf.getTranslationDictionaryUrl,
+                success: function(response) {
+                    traductions = Ext.decode(response.responseText);
+                    // init the interface in appropriate language
+                    Crdppf.init_main(lang, traductions);
+                },
+                method: 'POST',
+                failure: function () {
+                    Ext.Msg.alert('Error', 'The request failed, please contact the administrator!');
+                }
+            });      
         },
         method: 'POST',
         failure: function () {
             Ext.Msg.alert('Error', 'The request failed, please contact the administrator!');
         }
     });
+    
+
+    
 });
 
 Ext.namespace('Crdppf');
 
-Crdppf.init_main = function(lang) {
-
+Crdppf.init_main = function(lang, traductions) {
     layerList = Crdppf.layerListFr;
-
+    labels = traductions;
+    
     if(lang=='Fr'){
-        labels = Crdppf.labelsFr;
+        // labels = Crdppf.labelsFr;
         layerList = Crdppf.layerListFr;
         baseLayersList = Crdppf.baseLayersFr;
     }else if(lang=='De'){
-        labels = Crdppf.labelsDe;
+        // labels = Crdppf.labelsDe;
         layerList = Crdppf.layerListDe;
         baseLayersList = Crdppf.baseLayersDe;
     }

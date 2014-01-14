@@ -15,7 +15,7 @@ from sqlalchemy import or_
 from papyrus.geojsonencoder import dumps
 import math
 
-def get_features_function(params):
+def get_features_function(parcelGeom, params):
     # for dev purposes: matching dictionnary model-table name
     table2model = {
         'r73_affectations_primaires': PrimaryLandUseZones,
@@ -33,10 +33,6 @@ def get_features_function(params):
         'r159_dist_foret': ForestDistances
     }
 
-    parcelId = params['id']
-    # get the parcel geometry
-    queryParcel =DBSession.query(ImmeublesCanton).filter_by(idemai=parcelId).first()
-    parcelGeom = queryParcel.geom
     # split the layer list string into proper python list
     csvReader = csv.reader([params['layerList']], skipinitialspace=True)
 
@@ -97,6 +93,14 @@ def get_features_function(params):
 @view_config(route_name='get_features', renderer='json')
 def get_features(request):
     params = dict(request.params)
-    result = get_features_function(params)
+    parcelGeom = getParcelGeom(params['id'])
+    result = get_features_function(parcelGeom, params)
     # append feature list to the response
     return {'type':'FeatureCollection', 'features': result}
+    
+def getParcelGeom(parcelId):
+    """ Return the parcel geometry for a given parcel ID
+    """  
+    queryParcel =DBSession.query(ImmeublesCanton).filter_by(idemai=parcelId).first()
+    parcelGeom = queryParcel.geom
+    return parcelGeom

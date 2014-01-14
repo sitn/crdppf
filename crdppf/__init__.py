@@ -55,6 +55,7 @@ def main(global_config, **settings):
     config.add_route('get_features', 'get_features')
     config.add_route('set_language', 'set_language')
     config.add_route('get_language', 'get_language')
+    config.add_route('get_translation_dictionary', 'get_translation_dictionary')
     config.add_route('test', 'test')
     config.add_route('formulaire_reglements', 'formulaire_reglements')
     config.add_route('getCadastreList', 'getCadastreList')
