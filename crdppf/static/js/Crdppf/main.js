@@ -48,10 +48,7 @@ Ext.onReady(function() {
         failure: function () {
             Ext.Msg.alert('Error', 'The request failed, please contact the administrator!');
         }
-    });
-    
-
-    
+    }); 
 });
 
 Ext.namespace('Crdppf');
@@ -61,11 +58,9 @@ Crdppf.init_main = function(lang, traductions) {
     labels = traductions;
     
     if(lang=='Fr'){
-        // labels = Crdppf.labelsFr;
         layerList = Crdppf.layerListFr;
         baseLayersList = Crdppf.baseLayersFr;
     }else if(lang=='De'){
-        // labels = Crdppf.labelsDe;
         layerList = Crdppf.layerListDe;
         baseLayersList = Crdppf.baseLayersDe;
     }
