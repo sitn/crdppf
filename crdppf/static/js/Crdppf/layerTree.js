@@ -27,6 +27,7 @@ var makeLayerTree = function makeLayertree(){
         draggable:false,
         id:'rootLayerTree'});
     var ll = layerList.themes;
+
     // create a node on top of tree to select all nodes
     var checkAllNode = new Ext.tree.TreeNode({
         text: labels.selectAllLayerLabel,
@@ -67,7 +68,7 @@ var makeLayerTree = function makeLayertree(){
         var themeId = ll[i].id;
         // fill tree with nodes relative to themes (level 1)
         var themeNode =  new Ext.tree.TreeNode({
-            text: ll[i].name,
+            text: labels[ll[i].name],
             draggable: false,
             id: ll[i].id,
             leaf: false,
@@ -92,9 +93,8 @@ var makeLayerTree = function makeLayertree(){
         // fill each theme node with his contained node (level 2)
         for (var keys in ll[i].layers)
         {
-            var lName = ll[i].layers[keys];
             layerNode =  new Ext.tree.TreeNode({
-                text: ll[i].layers[keys],
+                text: labels[keys],
                 draggable: false,
                 id: keys,
                 cls:'layerNodeCls',
@@ -117,7 +117,6 @@ var makeLayerTree = function makeLayertree(){
                 });
             themeNode.appendChild(layerNode);
         }
-
         rootLayerTree.appendChild(themeNode);
     }
     
@@ -137,13 +136,19 @@ var makeLayerTree = function makeLayertree(){
     
     // iterate over base layers and create nodes
     for (var i=0;i<baseLayers.length;i++){
+        // default: check first layer
+        isChecked = false;
+        if (i == 0){
+            isChecked = true;
+        }
+        
         // fill tree with nodes relative to baseLayers
         var baseLayerItem =  new Ext.tree.TreeNode({
-            text: baseLayers[i].name,
+            text: labels[baseLayers[i].name],
             draggable:false,
             id: baseLayers[i].wmtsname,
             leaf: true,
-            checked:false,
+            checked: isChecked,
             cls: 'baseLayerNodeCls',
             listeners: {
                 'checkchange': function(node, checked){
@@ -157,9 +162,6 @@ var makeLayerTree = function makeLayertree(){
                                  if(theBaseLayer) {
                                     theBaseLayer.destroy();
                                  }
-                                 
-                                     // base layer: topographic layer
-                                     
                                 var format = "image/png";
                                 var formatSuffixMap = {'image/png':'png'};
                                 

@@ -1,4 +1,4 @@
-from sqlalchemy import (
+from sqlalchemy import(
     Column, 
     Sequence, 
     Integer, 
@@ -6,8 +6,7 @@ from sqlalchemy import (
     String, 
     Boolean, 
     ForeignKey, 
-    Float
-    )
+    Float)
     
 from sqlalchemy.orm import relationship, backref, deferred
 
@@ -86,6 +85,10 @@ class PaperFormats(Base):
 
 class Translations(Base):
     __tablename__ = 'translations'
+    __table_args__ = {'schema': 'crdppf', 'autoload': True}
+    
+class Themes(Base):
+    __tablename__ = 'themes'
     __table_args__ = {'schema': 'crdppf', 'autoload': True}
 
 class Cadastre(GeoInterface,Base):

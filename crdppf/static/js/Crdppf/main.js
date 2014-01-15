@@ -19,38 +19,86 @@ var layerList;
 
 Ext.onReady(function() {
     // set the application language to the user session settings
-    var lang = '';
+    var lang = ''; // The current session language
+    var translations = {}; // The interface translations
+    var baseLayers = {};
+    var parameters = {}
+    
+    // We need to ensure all json data are recieved by the client before starting the application
+    var loadingCounter = 0;
+    
+    var triggerFunction = function(counter) {
+        if (counter == 4) {
+            Crdppf.init_main(lang, parameters, baseLayers, translations);
+        }
+    };
 
+    // Get the current session language
     Ext.Ajax.request({
         url: Crdppf.getLanguageUrl,
         success: function(response) {
             var lang_json = Ext.decode(response.responseText);
             lang = lang_json['lang'];
-            OpenLayers.Lang.setCode(lang);
-            Crdppf.init_main(lang);
+            OpenLayers.Lang.setCode(lang); 
+            loadingCounter += 1;
+            triggerFunction(loadingCounter);            
+        },
+        method: 'POST',
+        failure: function () {
+            Ext.Msg.alert('Error', 'The request failed, please contact the administrator!');
+        }
+    }); 
+    
+    // Load the interface's translations
+    Ext.Ajax.request({
+        url: Crdppf.getTranslationDictionaryUrl,
+        success: function(response) {
+            translations = Ext.decode(response.responseText);
+            loadingCounter += 1; 
+            triggerFunction(loadingCounter);            
         },
         method: 'POST',
         failure: function () {
             Ext.Msg.alert('Error', 'The request failed, please contact the administrator!');
         }
     });
+
+    Ext.Ajax.request({
+        url: Crdppf.getBaselayerConfigUrl,
+        success: function(response) {
+            baseLayers = Ext.decode(response.responseText);
+            loadingCounter += 1; 
+            triggerFunction(loadingCounter);            
+        },
+        method: 'POST',
+        failure: function () {
+            Ext.Msg.alert('Error', 'The request failed, please contact the administrator!');
+        }
+    });     
+    
+    // Load the interface's parameters
+    Ext.Ajax.request({
+        url: Crdppf.getInterfaceConfigUrl,
+        success: function(response) {
+            parameters = Ext.decode(response.responseText);
+            // init the interface
+            OpenLayers.Util.extend(OpenLayers.Lang.fr,translations);
+            loadingCounter += 1;
+            triggerFunction(loadingCounter);        
+        },
+        method: 'POST',
+        failure: function () {
+            Ext.Msg.alert('Error', 'The request failed, please contact the administrator!');
+        }
+    }); 
 });
 
 Ext.namespace('Crdppf');
 
-Crdppf.init_main = function(lang) {
-
-    layerList = Crdppf.layerListFr;
-
-    if(lang=='Fr'){
-        labels = Crdppf.labelsFr;
-        layerList = Crdppf.layerListFr;
-        baseLayersList = Crdppf.baseLayersFr;
-    }else if(lang=='De'){
-        labels = Crdppf.labelsDe;
-        layerList = Crdppf.layerListDe;
-        baseLayersList = Crdppf.baseLayersDe;
-    }
+Crdppf.init_main = function(lang, parameters, baseLayers, translations) {
+    layerList = parameters;
+    labels = translations;
+    baseLayersList = baseLayers;
 
     Ext.QuickTips.init();
 

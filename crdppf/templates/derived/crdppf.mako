@@ -12,8 +12,6 @@
     <script type="text/javascript" src="${request.static_url('crdppf:static/lib/ext/resources/ux/statusbar/StatusBar.js')}"></script>
     
     <!-- CUSTOM CRDPPF STUFF -->
-    <script type="text/javascript" src="${request.static_url('crdppf:static/js/Crdppf/resources/Fr.js')}"></script>
-    <script type="text/javascript" src="${request.static_url('crdppf:static/js/Crdppf/resources/De.js')}"></script>
     <script type="text/javascript" src="${request.static_url('crdppf:static/js/Crdppf/map.js')}"></script>
     <script type="text/javascript" src="${request.static_url('crdppf:static/js/Crdppf/layerTree.js')}"></script>
     <script type="text/javascript" src="${request.static_url('crdppf:static/js/Crdppf/themeSelector.js')}"></script>
