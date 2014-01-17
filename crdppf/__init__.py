@@ -38,6 +38,9 @@ def main(global_config, **settings):
 
     settings.setdefault('mako.directories','crdppf:templates')
     settings.setdefault('reload_templates',True)
+
+    settings.update(yaml.load(file(settings.get('app.cfg'))))
+
     my_session_factory = UnencryptedCookieSessionFactoryConfig('itsaseekreet',2400)
     config = Configurator(settings=settings, session_factory = my_session_factory)
     config.include(papyrus.includeme)
