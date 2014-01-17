@@ -22,70 +22,65 @@ class Restriction:
     def __init__(self, **kwds):
         self.__dict__.update(kwds)
 
-class AppConfig:
+class AppConfig(object):
     """Class holding the definition of the basic parameters
        To put in a table
     """
-    # tempdir : Path to the working directory where the temporary files will be stored
-    tempdir = pkg_resources.resource_filename('crdppf', 'static/public/temp_files/') 
-    # pdfbasedir : Path to the directory where the generated pdf's will be stored
-    pdfbasedir = pkg_resources.resource_filename('crdppf', 'static/public/pdf/') 
-    # imagesbasedir : Path to the directory where the images resources are stored
-    imagesbasedir = pkg_resources.resource_filename('crdppf','static\images\\')
-    # municipalitylogodir : Path to the directory where the logos of the municipalities are stored
-    municipalitylogodir = pkg_resources.resource_filename('crdppf','static/images/ecussons/')
-    # legaldocsdir : Path to the folder where the legal documents are stored that may or may not be included
-    legaldocsdir = pkg_resources.resource_filename('crdppf', 'static/public/reglements/') 
-    # CHlogopath : Path to the header logo of the Swiss Confederation
-    CHlogopath = 'ecussons\\Logo_Schweiz_Eidgen.png'
-    # cantonlogopath : Path to the header logo of the canton
-    cantonlogopath = 'ecussons\\06ne_ch_RVB.jpg'
-    
-    # defaultlanguage : Default language used for the userinterface and the report
-    lang = 'fr'
-    # defaultfont : Default font used for the extract printout
-    defaultfontfamily = 'Arial'
-    # defaultfitratio : Default ratio feature bboxsides to mapsides length
-
+    def __init__(self, config):
+        # tempdir : Path to the working directory where the temporary files will be stored
+        self.tempdir = pkg_resources.resource_filename('crdppf', 'static/public/temp_files/') 
+        # pdfbasedir : Path to the directory where the generated pdf's will be stored
+        self.pdfbasedir = pkg_resources.resource_filename('crdppf', 'static/public/pdf/') 
+        # imagesbasedir : Path to the directory where the images resources are stored
+        self.imagesbasedir = pkg_resources.resource_filename('crdppf','static\images\\')
+        # municipalitylogodir : Path to the directory where the logos of the municipalities are stored
+        self.municipalitylogodir = pkg_resources.resource_filename('crdppf','static/images/ecussons/')
+        # legaldocsdir : Path to the folder where the legal documents are stored that may or may not be included
+        self.legaldocsdir = pkg_resources.resource_filename('crdppf', 'static/public/reglements/') 
+        # CHlogopath : Path to the header logo of the Swiss Confederation
+        self.CHlogopath = config['CHlogopath']
+        # cantonlogopath : Path to the header logo of the canton
+        self.cantonlogopath = config['cantonlogopath']
+        # defaultlanguage : Default language used for the userinterface and the report
+        self.lang = config['lang'].lower()
+        # defaultfont : Default font used for the extract printout
+        self.defaultfontfamily = config['defaultfontfamily']
+        # defaultfitratio : Default ratio feature bboxsides to mapsides length
     appconfig = DBSession.query(AppConfig).order_by(AppConfig.idparam.asc()).all()
 
-class PDFConfig:
+class PDFConfig(object):
     """A class to define the configuration of the PDF extract to simplify changes.
     """
-  
+    def __init__(self, config):
     # PDF Configuration
-    defaultlanguage = 'fr'
-    pdfformat = 'A4'
-    pdforientation = 'portrait'
-    leftmargin = 25 # left margin
-    rightmargin = 25 # right margin
-    topmargin = 55 # top margin for text
-    headermargin = 50 # margin from header for the map placement
-    footermargin = 20
-    pdfmargins = [leftmargin, topmargin, rightmargin]
+        self.defaultlanguage = config['defaultlanguage'].lower()
+        self.pdfformat = config['pdfformat']
+        self.pdforientation = config['pdforientation']
+        self.leftmargin = config['leftmargin']
+        self.rightmargin = config['rightmargin']
+        self.topmargin = config['topmargin']
+        self.headermargin = config['headermargin']
+        self.footermargin = config['footermargin']
+        self.pdfmargins = [
+            self.leftmargin,
+            self.topmargin,
+            self.rightmargin
+        ]
+        self.fontfamily = config['fontfamily']
+        self.textstyles = config['textstyles']
 
-    fontfamily = 'Arial'
-    textstyles = {
-        'title1':[fontfamily, 'B', 22],
-        'title2':[fontfamily, 'B', 18],
-        'title3':[fontfamily, 'B', 16],
-        'normal':[fontfamily, '', 10],
-        'bold':[fontfamily,'B',10],
-        'url':[fontfamily,'',10],
-        'small':[fontfamily, '', 7],
-        'tocbold':[fontfamily, 'B', 11],
-        'tocurl':[fontfamily, '', 9],
-        'tocnormal':[fontfamily, '', 11]
-        }
-    urlcolor = [0, 0, 255]
-    defaultcolor = [0, 0, 0]
+        for style_key in self.textstyles:
+            if self.textstyles[style_key][0] == 'N':
+                self.textstyles[style_key][0] = ''
+            self.textstyles[style_key].insert(0, self.fontfamily)
 
-    timestamp = datetime.now().strftime("%Y%m%d%H%M%S")
-    pdfname = str(timestamp)+'_ExtraitCRDPPF'
-    siteplanname = str(timestamp)+'_siteplan'
-    fitratio = 0.9
-    pdfpath = pkg_resources.resource_filename('crdppf', 'static/public/pdf/')
-
+        self.urlcolor = config['urlcolor']
+        self.defaultcolor = config['defaultcolor']
+        self.timestamp = datetime.now().strftime("%Y%m%d%H%M%S")
+        self.pdfname = str(self.timestamp)+'_ExtraitCRDPPF'
+        self.siteplanname = str(self.timestamp)+'_siteplan'
+        self.fitratio = config['fitratio']
+        self.pdfpath = pkg_resources.resource_filename('crdppf', 'static/public/pdf/')
 
 class Extract(FPDF):
     """The main class for the ectract object which collects all the data, then writes the pdf report."""
@@ -117,16 +112,15 @@ class Extract(FPDF):
         self.str_alias_no_page = alias
         return alias
         
-    def load_app_config(self):
+    def load_app_config(self, config):
         """Initialises the basic parameters of the application.
         """
-        self.appconfig = AppConfig()
+        self.appconfig = AppConfig(config)
 
-
-    def set_pdf_config(self):
+    def set_pdf_config(self, config):
         """Loads the initial configuration of the PDF page.
         """
-        self.pdfconfig = PDFConfig()
+        self.pdfconfig = PDFConfig(config)
 
     def set_filename(self):
         self.filename = str(self.timestamp)+self.featureid
