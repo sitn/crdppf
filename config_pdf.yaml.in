@@ -1,0 +1,35 @@
+app_config:  
+  CHlogopath: ecussons/Logo_Schweiz_Eidgen.png
+  cantonlogopath: ecussons/06ne_ch_RVB.jpg
+  lang: ${vars:default_language}
+  defaultfontfamily: Arial
+  
+pdf_config:
+  defaultlanguage: ${vars:default_language}
+  pdfformat: A4
+  pdforientation: portrait
+# left margin
+  leftmargin: 25
+# right margin
+  rightmargin: 25
+# top margin for text
+  topmargin: 55
+ # margin from header for the map placement
+  headermargin: 50
+  footermargin: 20
+  fontfamily: Arial
+  textstyles:
+    title1: [B, 22]
+    title2: [B, 18]
+    title3: [B, 16]
+    normal: [N, 10]
+    bold: [B,10]
+    url: [N,10]
+    small: [N, 7]
+    tocbold: [B, 11]
+    tocurl: [N, 9]
+    tocnormal: [N, 11]
+  urlcolor: [0, 0, 255]
+  defaultcolor: [0, 0, 0]
+  fitratio: 0.9
+  
