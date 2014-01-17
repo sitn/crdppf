@@ -55,10 +55,10 @@ def create_extract(request):
     extract.translations = get_translations(lang)
 
     # GET the application configuration parameters
-    extract.load_app_config()
+    extract.load_app_config(request.registry.settings['app_config'])
     
     # GET the PDF Configuration parameters
-    extract.set_pdf_config()
+    extract.set_pdf_config(request.registry.settings['pdf_config'])
 
     # promote often used variables to facilitate coding
     pdfconfig = extract.pdfconfig
