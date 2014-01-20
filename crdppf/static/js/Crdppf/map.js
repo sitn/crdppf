@@ -346,6 +346,7 @@ var setOverlays = function() {
     }
     // add new overlays
     if(overlaysList.length > 0){
+        var loadMask = new Ext.LoadMask(themeSelector.body, {msg: labels.layerLoadingMaskMsg});
         var overlays = new OpenLayers.Layer.WMS(
                 layerName, 
                 Crdppf.wmsUrl,
@@ -359,6 +360,16 @@ var setOverlays = function() {
                     isBaseLayer: false
                 }
             );
+            
+        overlays.events.register("loadstart", overlays, function() {
+            loadMask.show();
+            });        
+        overlays.events.register("loadend", overlays, function() {
+                loadMask.hide();
+            });        
+        overlays.events.register("tileloaded", overlays, function() {
+                loadMask.show();
+            });
         overlays.id = 'overlayLayer';
         this.map.addLayer(overlays);
         this.map.raiseLayer(this.map.getLayersBy('id', 'selectionLayer')[0], this.map.layers.length);
