@@ -46,7 +46,7 @@ Ext.onReady(function() {
         if (userChoice == 'yes'){
             Crdppf.init_main(lang, parameters, baseLayers, translations);
         } else {
-            window.open("http://sitn.ne.ch", "_self");
+            window.open(translations.disclaimerRedirectUrl, "_self");
         }  
     };
 
