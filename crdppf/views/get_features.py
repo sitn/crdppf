@@ -26,6 +26,7 @@ def get_features_function(parcelGeom, params):
         'r103_bazl_projektierungszonen_flughafenanlagen': CHAirportProjectZones,
         'r108_bazl_sicherheitszonenplan': CHAirportSecurityZones,
         'r116_sites_pollues': PollutedSites,
+        'r119_bav_belastete_standorte_oev': CHPollutedSitesPublicTransports,
         'r131_zone_prot_eau': Zoneprotection,
         'r132_perimetre_prot_eau': WaterProtectionPerimeters,
         'r145_sens_bruit': RoadNoise,
@@ -67,6 +68,7 @@ def get_features_function(parcelGeom, params):
                         jsonFeature = sloads(dumps(feature))
                         jsonFeature['properties']['layerName'] = layer
                         jsonFeature['properties']['intersectionMeasure'] = intersectionMeasureTxt
+                        jsonFeature['properties']['geomType'] = 'area'
                         featureList.append(jsonFeature)
 
                 elif geometryType == 'ST_Line' or geometryType == 'ST_MultiLineString' or geometryType == 'ST_LineString':
@@ -77,6 +79,7 @@ def get_features_function(parcelGeom, params):
                         jsonFeature = sloads(dumps(feature))
                         jsonFeature['properties']['layerName'] = layer
                         jsonFeature['properties']['intersectionMeasure'] = intersectionMeasureTxt
+                        jsonFeature['properties']['geomType'] = 'line'
                         featureList.append(jsonFeature)
                 elif geometryType == 'ST_Point' or geometryType == 'ST_MultiPoint':
                     featureMeasure = -9999
@@ -85,6 +88,7 @@ def get_features_function(parcelGeom, params):
                     jsonFeature = sloads(dumps(feature))
                     jsonFeature['properties']['layerName'] = layer
                     jsonFeature['properties']['intersectionMeasure'] = intersectionMeasureTxt
+                    jsonFeature['properties']['geomType'] = 'point'
                     featureList.append(jsonFeature)
 
     return featureList

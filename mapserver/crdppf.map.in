@@ -990,6 +990,30 @@ LAYER
 END
 
 LAYER
+  STATUS ON
+  NAME "r119_bav_belastete_standorte_oev"
+  METADATA
+       "ows_title"                      "r119_bav_belastete_standorte_oev"
+       "wms_srs"                    "epsg:21781"
+       "wms_title"                      "${vars:instanceid} WMS Server"
+       "wms_onlineresource"     "http://${vars:host}/${vars:instanceid}/wmscrdppf"
+       "wms_srs"                    "EPSG:21781" 
+  END
+  CONNECTIONTYPE POSTGIS
+  CONNECTION "user=${vars:dbuser} password=${vars:dbpassword} dbname=${vars:db} host=${vars:dbhost} port=${vars:dbport}"
+  PROCESSING "CLOSE_CONNECTION=DEFER"
+  DATA "geom from crdppf.r119_bav_belastete_standorte_oev using unique idobj using srid=21781"
+  TYPE POLYGON
+  TEMPLATE "ttt"
+  OPACITY 60
+   CLASS
+    NAME "Sites pollués - domaine transports publics"
+    COLOR 255 255 0
+    OUTLINECOLOR 0 0 0
+   END
+END
+
+LAYER
   NAME "r131_zone_prot_eau"
   STATUS ON
   METADATA
