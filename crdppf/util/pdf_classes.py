@@ -9,11 +9,10 @@ from owslib.wms import WebMapService
 import httplib2
 import urllib
 from PIL import Image
-
 from xml.dom.minidom import parse, parseString
-
 from crdppf.models import *
-from crdppf.views.get_features import get_features, get_features_function
+from crdppf.views.get_features import get_features
+from crdppf.util.get_feature_functions import get_features_function
 from crdppf.util.pdf_functions import geom_from_coordinates
 
 class Restriction:
