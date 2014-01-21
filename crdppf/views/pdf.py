@@ -12,11 +12,13 @@ from geojson import Feature, FeatureCollection, dumps, loads as gloads
 from simplejson import loads as sloads,dumps as sdumps
 from geoalchemy import *
 from PIL import Image
+
 from crdppf.models import *
 from crdppf.util.pdf_functions import get_translations, get_feature_info, get_print_format, get_XML
 from crdppf.util.pdf_classes import PDFConfig, Extract
 from crdppf.util.get_feature_functions import get_features_function
-from PyPDF2 import PdfFileReader,PdfFileWriter
+
+from PyPDF2 import PdfFileMerger,PdfFileReader,PdfFileWriter
 
 @view_config(route_name='create_extract')
 def create_extract(request):
@@ -182,14 +184,36 @@ def create_extract(request):
             extract.cell(100, 10, str(appendix['title']), 0, 1, 'L')
             j = j+1
 
-            # TO DO
-            # Add all the appendices requested using pyPDF2
-
     # Set the page number once all the pages are printed
     for key in extract.pages.keys():
         extract.pages[key] = extract.pages[key].replace('{no_pg}', str(' ')+str(key))
 
     extract.output(pdfconfig.pdfpath+pdfconfig.pdfname+'.pdf','F')
+
+    # TO DO
+    # Add all the appendices requested using pyPDF2
+    #path = extract.appconfig.legaldocsdir+str('exemple.pdf')
+    path = 'C:/Mapfish/crdppf/crdppf/static/public/reglements/exemple.pdf'
+    input1 = PdfFileReader(file(path,'rb'))
+    #~ input2 = PdfFileReader(file("C:\\GEHEIM2.pdf", "rb"))
+    
+    #~ filenames = [path]
+    #~ merger = PdfFileMerger()
+    #~ for filename in filenames:
+        #~ merger.append(PdfFileReader(file(filename, 'rb')))
+
+    for page in range(input1.getNumPages()):
+        #~ output.addPage(input1.getPage(page))
+        extract.addPage(input1.getPage(page))
+        print 'Added page %s from first file'%page
+
+    #~ for page in range(input2.getNumPages()):
+        #~ output.addPage(input2.getPage(page))
+        #~ print 'Added page %s from second file'%page
+        
+    #~ outputStream = file("c:\\temp\document-output.pdf", "wb")
+    #~ output.write(outputStream)
+    #~ outputStream.close()
 
     response = FileResponse(
         pdfconfig.pdfpath + pdfconfig.pdfname + '.pdf',
