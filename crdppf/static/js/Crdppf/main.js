@@ -22,15 +22,32 @@ Ext.onReady(function() {
     var lang = ''; // The current session language
     var translations = {}; // The interface translations
     var baseLayers = {};
-    var parameters = {}
+    var parameters = {};
     
     // We need to ensure all json data are recieved by the client before starting the application
     var loadingCounter = 0;
     
     var triggerFunction = function(counter) {
         if (counter == 4) {
-            Crdppf.init_main(lang, parameters, baseLayers, translations);
+            Ext.MessageBox.buttonText.yes = translations.disclaimerAcceptance;
+            Ext.MessageBox.buttonText.no = translations.diclaimerRefusal;
+            Ext.Msg.show({
+               title: translations.disclaimerWindowTitle,
+               msg: translations.disclaimerMsg,
+               buttons: Ext.Msg.YESNO,
+               fn: redirectAfterDisclaimer,
+               animEl: 'elId',
+               icon: Ext.MessageBox.WARNING
+            });
         }
+    };
+    
+    var redirectAfterDisclaimer = function(userChoice){
+        if (userChoice == 'yes'){
+            Crdppf.init_main(lang, parameters, baseLayers, translations);
+        } else {
+            window.open(translations.disclaimerRedirectUrl, "_self");
+        }  
     };
 
     // Get the current session language
