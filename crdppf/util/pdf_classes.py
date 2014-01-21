@@ -1,14 +1,20 @@
 # -*- coding: UTF-8 -*-
 
+from pyramid.httpexceptions import HTTPBadRequest, HTTPNotFound
+
 from fpdf import FPDF
 import pkg_resources
 from datetime import datetime
 from owslib.wms import WebMapService
+import httplib2
 import urllib
 from PIL import Image
 
+from xml.dom.minidom import parse, parseString
+
 from crdppf.models import *
 from crdppf.views.get_features import get_features, get_features_function
+from crdppf.util.pdf_functions import geom_from_coordinates
 
 class Restriction:
     """Representation of a restriction in the transfert model structure."""
@@ -35,24 +41,41 @@ class AppConfig:
     # municipalitylogodir : Path to the directory where the logos of the municipalities are stored
     municipalitylogodir = pkg_resources.resource_filename('crdppf','static/images/ecussons/')
     # legaldocsdir : Path to the folder where the legal documents are stored that may or may not be included
-    legaldocsdir = pkg_resources.resource_filename('crdppf', 'static/public/reglements/') 
-    # CHlogopath : Path to the header logo of the Swiss Confederation
-    CHlogopath = 'ecussons\\Logo_Schweiz_Eidgen.png'
-    # cantonlogopath : Path to the header logo of the canton
-    cantonlogopath = 'ecussons\\06ne_ch_RVB.jpg'
-    
-    # defaultlanguage : Default language used for the userinterface and the report
-    lang = 'fr'
-    # defaultfont : Default font used for the extract printout
-    defaultfontfamily = 'Arial'
-    # defaultfitratio : Default ratio feature bboxsides to mapsides length
+    legaldocsdir = pkg_resources.resource_filename('crdppf', 'static/public/reglements/')
+    ch_wms_layers = []
+    ch_topics = ['103','108','119']
+    crdppf_wms_layers = [
+        'mo6_couverture_sol_nb',
+        'mo22_batiments',
+        'mo21_batiments_provisoires',
+        'mo23_batiments_projetes',
+        'parcelles',
+        'ag1_parcellaire_provisoire',
+        'mo9_immeubles',
+        #'mo9_text_group',
+        'mo7_obj_divers_lineaire',
+        'mo7_obj_divers_couvert',
+        'mo7_obj_divers_piscine',
+        'mo7_obj_divers_cordbois',
+        'mo5_point_de_detail',
+        'mo4_pfa_1',
+        'mo4_pfp_3',
+        'mo4_pfp_1_2',
+        'la3_limites_communales'
+        ]
 
+    wms_srs = 'EPSG:21781'
+    wms_version = 'VERSION=1.1.1'
+    wms_transparency = 'TRUE'
+    wms_imageformat = 'image/png; mode=24bit'
+
+    # Would it be a good idea to put this vars in a table and import them on initialising the pdf class?
     appconfig = DBSession.query(AppConfig).order_by(AppConfig.idparam.asc()).all()
 
 class PDFConfig:
     """A class to define the configuration of the PDF extract to simplify changes.
     """
-  
+
     # PDF Configuration
     defaultlanguage = 'fr'
     pdfformat = 'A4'
@@ -80,6 +103,11 @@ class PDFConfig:
     urlcolor = [0, 0, 255]
     defaultcolor = [0, 0, 0]
 
+    # CHlogopath : Path to the header logo of the Swiss Confederation
+    CHlogopath = 'ecussons\\Logo_Schweiz_Eidgen.png'
+    # cantonlogopath : Path to the header logo of the canton
+    cantonlogopath = 'ecussons\\06ne_ch_RVB.jpg'
+
     timestamp = datetime.now().strftime("%Y%m%d%H%M%S")
     pdfname = str(timestamp)+'_ExtraitCRDPPF'
     siteplanname = str(timestamp)+'_siteplan'
@@ -96,6 +124,8 @@ class Extract(FPDF):
         FPDF.__init__(self)
         self.request = request
         self.crdppf_wms = request.registry.settings['crdppf_wms']
+        self.ch_wms = request.registry.settings['ch_wms']
+        self.chfs_baseurl = request.registry.settings['chfs_baseurl']
         self.sld_url = request.static_url('crdppf:static/public/temp_files/')
         self.creationdate = datetime.now().strftime("%d.%m.%Y-%H:%M:%S")
         self.timestamp = datetime.now().strftime("%Y%m%d%H%M%S")
@@ -111,6 +141,8 @@ class Extract(FPDF):
         self.appendix_entries = []
         self.reference_entries = []
         self.appendix_links = []
+        self.topicorder = {}
+        self.wms_baselayers = []
 
     def alias_no_page(self, alias='{no_pg}'):
         """Define an alias for total number of pages"""
@@ -122,13 +154,14 @@ class Extract(FPDF):
         """
         self.appconfig = AppConfig()
 
-
     def set_pdf_config(self):
         """Loads the initial configuration of the PDF page.
         """
         self.pdfconfig = PDFConfig()
 
     def set_filename(self):
+        """ Sets the file name of the pdf extract based on the time and parcel id
+        """
         self.filename = str(self.timestamp)+self.featureid
 
     def header(self):
@@ -139,16 +172,19 @@ class Extract(FPDF):
         self.line(105, 0, 105, 35)
         self.line(165, 0, 165, 35)
         # Add the logos if existing else put a placeholder
-        self.image(self.appconfig.imagesbasedir+self.appconfig.CHlogopath, 10, 8, 55, 14.42)
-        self.image(self.appconfig.imagesbasedir+self.appconfig.cantonlogopath, 110, 8, 43.4, 13.8)
+        self.image(self.appconfig.imagesbasedir+self.pdfconfig.CHlogopath, 10, 8, 55, 14.42)
+        self.image(self.appconfig.imagesbasedir+self.pdfconfig.cantonlogopath, 110, 8, 43.4, 13.8)
         try:
             self.image(self.municipalitylogopath, 170, 8, 10, 10.7)
         except:
             self.image(self.appconfig.imagesbasedir+'ecussons\Placeholder.jpg', 170, 8, 10, 10.7)
-        # This lines are not necessary if the community name is already contained in the 
+        # This lines are not necessary if the community name is already contained in the picture
         self.set_xy(170, 19.5)
         self.set_font(*self.pdfconfig.textstyles['small'])
         self.cell(30, 3, self.municipality.encode('iso-8859-1'), 0, 0, 'L')
+
+        # Once the header has been placed at the right place, we re-initialize y for text placing
+        self.set_y(self.t_margin)
 
     def footer(self):
         """Creates the document footer"""
@@ -156,6 +192,7 @@ class Extract(FPDF):
         # position footer at 15mm from the bottom
         self.set_y(-20)
         self.set_font(*self.pdfconfig.textstyles['small'])
+        self.set_text_color(*self.pdfconfig.defaultcolor)
         self.cell(55, 5, self.translations['creationdatelabel']+str(' ')+self.creationdate, 0, 0, 'L')
         if self.reportInfo['type'] == 'certified' or self.reportInfo['type'] == 'reducedcertified':
             self.cell(60, 5, self.translations['signaturelabel']+str(' ')+self.timestamp, 0, 0, 'C')
@@ -164,19 +201,33 @@ class Extract(FPDF):
         self.cell(55, 5, self.translations['pagelabel']+str(self.alias_no_page())+str('/')+ \
             str(self.alias_nb_pages()), 0, 0, 'R')
 
+    def set_wms_config(self, topicid):
+        """ Sets the basic WMS parameters in function of the topic
+        """
+        self.ch_topics = self.appconfig.ch_topics
+        self.wms_srs = self.appconfig.wms_srs
+        self.wms_version = self.appconfig.wms_version
+
+        if topicid in self.ch_topics:
+            self.wms_url = self.ch_wms
+        else:
+            self.wms_url = self.crdppf_wms
+
     def get_title_page(self):
         """Creates the title page of the PDF extract with the abstract and a situation map of the property.
         """
         today= datetime.now()
-            
+
         # START TITLEPAGE
         self.add_page()
+        self.set_font(*self.pdfconfig.textstyles['title1'])
         self.set_margins(*self.pdfconfig.pdfmargins)
 
         # following 3 lines to replace - used for convenience only
         translations = self.translations
         pdfconfig = self.pdfconfig
         feature_info = self.featureInfo
+
         # PageTitle
         self.set_y(45)
         self.set_font(*self.pdfconfig.textstyles['title1'])
@@ -190,15 +241,15 @@ class Extract(FPDF):
             self.reportInfo['type'] = 'standard'
             self.multi_cell(0, 9, self.translations['normalextracttitlelabel'])
         self.set_font(*self.pdfconfig.textstyles['title2'])
-        #self.multi_cell(0, 7, translations['extractsubtitlelabel'])
         self.multi_cell(0, 7, self.translations['extractsubtitlelabel'])
         self.ln()
-        
+
         map = self.image(self.sitemappath, 25, 80, 160, 90)
 
         y=self.get_y()
         self.rect(25, 80, 160, 90, '')
         self.set_y(y+105)
+
         # First infoline
         self.set_font(*self.pdfconfig.textstyles['bold'])
         self.cell(45, 5, self.translations['propertylabel'], 0, 0, 'L')
@@ -208,7 +259,7 @@ class Extract(FPDF):
             self.cell(50, 5, feature_info['nummai'].encode('iso-8859-1')+str(' (')+feature_info['nomcad'].encode('iso-8859-1')+str(') ')+str(' - ')+feature_info['type'].encode('iso-8859-1'), 0, 1, 'L')
         else : 
             self.cell(50, 5, feature_info['nummai'].encode('iso-8859-1'), 0, 1, 'L')
-        
+
          # Second infoline : Area and EGRID
         self.set_font(*pdfconfig.textstyles['bold'])
         self.cell(45, 5, translations['propertyarealabel'], 0, 0, 'L')
@@ -267,6 +318,18 @@ class Extract(FPDF):
         self.mapconfig['bboxCenterX'] = (self.featureInfo['BBOX']['maxX']+self.featureInfo['BBOX']['minX'])/2
         self.mapconfig['bboxCenterY'] = (self.featureInfo['BBOX']['maxY']+self.featureInfo['BBOX']['minY'])/2
 
+    def get_legend_classes(self, bbox, layername):
+        """ Collects all the features in the map perimeter into a liste to create a dynamic legend
+        """
+        geom = geom_from_coordinates(bbox)
+        polygon = WKTSpatialElement(geom.wkt, 21781)
+        results = get_features_function(polygon,{'layerList':layername,'translations':self.translations})
+        if results is not None:
+            classes = []
+            for result in results:
+                classes.append(str(result['properties']['codegenre']))
+
+        return classes
 
     def get_site_map(self):
         """Creates the situation map of the property.
@@ -323,26 +386,8 @@ class Extract(FPDF):
         sldfile.write(sld)
         sldfile.close()
 
-        # Layers as defined in our WMS - to replace with an array from a table 
-        layers = [
-            'mo6_couverture_sol_nb',
-            'mo22_batiments',
-            'mo21_batiments_provisoires',
-            'mo23_batiments_projetes',
-            'parcelles',
-            'ag1_parcellaire_provisoire',
-            'mo9_immeubles',
-            #'mo9_text_group',
-            'mo7_obj_divers_lineaire',
-            'mo7_obj_divers_couvert',
-            'mo7_obj_divers_piscine',
-            'mo7_obj_divers_cordbois',
-            'mo5_point_de_detail',
-            'mo4_pfa_1',
-            'mo4_pfp_3',
-            'mo4_pfp_1_2',
-            'la3_limites_communales'
-        ]
+        # Layers as defined in our WMS - to replace with an array from a table
+        layers = self.appconfig.crdppf_wms_layers
 
         scale = self.printformat['scale']*2
         # SitePlan/Plan de situation/Situationsplan
@@ -359,12 +404,12 @@ class Extract(FPDF):
         wmsBBOX['maxY'] = int(wmsBBOX['centerY']+(90*scale/1000/2))
 
         #wms = WebMapService('http://sitn.ne.ch/mapproxy/service', version='1.1.1')
-        wms = WebMapService(self.wms, version='1.1.1')
+        wms = WebMapService(self.crdppf_wms, version='1.1.1')
 
         sitemap = wms.getmap(
             layers=layers,
             sld = self.sld_url+self.pdfconfig.siteplanname+'_sld.xml',
-            srs='EPSG:21781',
+            srs= self.appconfig.wms_srs,
             bbox=(wmsBBOX['minX'],wmsBBOX['minY'],wmsBBOX['maxX'],wmsBBOX['maxY']),
             size=(1600,900),
             format='image/png',
@@ -410,7 +455,7 @@ class Extract(FPDF):
                     'features':None
                     }
                 self.add_layer(layer)
-            self.get_map(topic.layers,topic.topicid)
+            self.get_topic_map(topic.layers,topic.topicid)
         else:
             self.topiclist[str(topic.topicid)]['layers'] = None
             self.topiclist[str(topic.topicid)]['categorie']=0
@@ -434,7 +479,7 @@ class Extract(FPDF):
             self.topiclist[str(topic.topicid)]['references']=None
 
     def add_layer(self, layer):
-        results = get_features_function({'layerList':layer.layername,'id':self.featureid,'translations':self.translations})
+        results = get_features_function(self.featureInfo['geom'],{'layerList':layer.layername,'id':self.featureid,'translations':self.translations})
         if results :
             self.layerlist[str(layer.layerid)]={'layername':layer.layername,'features':[]}
             for result in results:
@@ -509,7 +554,7 @@ class Extract(FPDF):
                 })
         self.topiclist[str(topicid)]['references'] = self.referenceslist[str(topicid)]
 
-    def get_map(self,restriction_layers, topicid):
+    def get_topic_map(self,restriction_layers, topicid):
         """Produces the map and the legend for each layer of an restriction theme
         """
         # API GEO ADMIN EXAMPLE:
@@ -517,66 +562,6 @@ class Extract(FPDF):
 
         # Map scale
         scale = self.printformat['scale']
-
-        # List with the base layers of the map - the restriction layers get added to the list
-        layers = [
-            'mo6_couverture_sol_nb',
-            'mo22_batiments',
-            'mo21_batiments_provisoires',
-            'mo23_batiments_projetes',
-            'parcelles',
-            'ag1_parcellaire_provisoire',
-            'mo9_immeubles',
-            #'mo9_text_group',
-            'mo7_obj_divers_lineaire',
-            'mo7_obj_divers_couvert',
-            'mo7_obj_divers_piscine',
-            'mo7_obj_divers_cordbois',
-            'mo5_point_de_detail',
-            'mo4_pfa_1',
-            'mo4_pfp_3',
-            'mo4_pfp_1_2',
-            'la3_limites_communales'
-        ]
-
-        # temp var to hold the parameters of the legend
-        legend_layers = []
-        # temp var for the path to the created legend
-        legend_path = []
-
-        
-        if topicid == '103':
-            dffg
-            # store the cadastral plan WMS parameters to overlay with federal data further on
-            baselayers = layers
-            baseurl = crdppf_wms
-
-            layers = [
-                'ch.bazl.projektierungszonen-flughafenanlagen',
-                'ch.bazl.sachplan-infrastruktur-luftfahrt_kraft'
-            ]
-            crdppf_wms = 'http://wms.geo.admin.ch/'
-
-        # Adding each layer of the restriction to the WMS
-        for layer in restriction_layers:
-            # Compile the layer list for the wms
-            layers.append(layer.layername)
-
-            # in the same time create the legend graphic for each layer and write it to disk
-            if topicid == '103':
-                legend = open(self.appconfig.tempdir+self.filename+str('_legend_')+str('103')+'.png', 'wb')
-            else:
-                legend = open(self.appconfig.tempdir+self.filename+str('_legend_')+str(layer.layername)+'.png', 'wb')
-            img = urllib.urlopen(self.wms+ \
-                str('?TRANSPARENT=TRUE&SERVICE=WMS&VERSION=1.1.1&REQUEST=GetLegendGraphic&FORMAT=image%2Fpng; mode=8bit&LAYER=' \
-                +str(layer.layername)))
-
-            legend.write(img.read())
-            legend.close()
-            if topicid == '103':
-                legend_path.append(self.appconfig.tempdir+self.filename+str('_legend_')+str('103'))
-            else:
-                legend_path.append(self.appconfig.tempdir+self.filename+str('_legend_')+str(layer.layername))
 
         # to recenter the map on the bbox of the feature, compute the best scale and add at least 10% of space we calculate a wmsBBOX
         wmsBBOX = {}
@@ -587,10 +572,126 @@ class Extract(FPDF):
         wmsBBOX['maxX'] = int(wmsBBOX['centerX']+(self.printformat['width']*scale/1000/2))
         wmsBBOX['minY'] = int(wmsBBOX['centerY']-(self.printformat['height']*scale/1000/2))
         wmsBBOX['maxY'] = int(wmsBBOX['centerY']+(self.printformat['height']*scale/1000/2))
-        wmsbbox = [wmsBBOX['minX'], wmsBBOX['minY'], wmsBBOX['maxX'], wmsBBOX['maxY']]
+        wmsbbox = [
+            (wmsBBOX['minX'], wmsBBOX['minY']), 
+            (wmsBBOX['maxX'], wmsBBOX['minY']), 
+            (wmsBBOX['maxX'], wmsBBOX['maxY']),
+            (wmsBBOX['minX'], wmsBBOX['maxY'])
+            ]
+
+        # temp var to hold the parameters of the legend
+        legend_layers = []
+        # temp var for the path to the created legend
+        legend_path = []
+        layers = []
+
+        for wms_layer in self.appconfig.crdppf_wms_layers:
+            layers.append(wms_layer)
+
+        # Configure the WMS request to call either the internal or the external, federal WMS
+        if topicid in self.appconfig.ch_topics:
+            # store the cadastral plan WMS parameters to overlay with federal data further on
+            self.set_wms_config(topicid)
+            #~ layers = [
+                #~ 'ch.bazl.projektierungszonen-flughafenanlagen',
+                #~ 'ch.bav.kataster-belasteter-standorte-oev.oereb'
+            #~ ]
+        else:
+            self.set_wms_config(topicid)
+            # List with the base layers of the map - the restriction layers get added to the list
+
+        # Adding each layer of the restriction to the WMS
+        for layer in restriction_layers:
+            # Compile the layer list for the wms
+            layers.append(layer.layername)
+            legend_classes = self.get_legend_classes(wmsbbox,layer.layername)
+
+            # For each layer get the SLD to filter only the features classes in the BBOX
+            # Request original sld files from mapserver
+            http = httplib2.Http()
+            wms_get_styles = {
+                'LAYERS': layer.layername,
+                'SERVICE': 'WMS',
+                'VERSION': '1.1.1',
+                'REQUEST': 'GetStyles'
+            }
+            body = urllib.urlencode(wms_get_styles)
+
+            try:
+                resp, content = http.request(self.wms_url+"?"+body, method="GET")
+            except:
+                return HTTPBadRequest(detail='Internal server error - Please contact administrator')
+
+            dom = parseString(content)
+            rules = dom.getElementsByTagName("Rule")
+
+            #legend_classes = ['8101']
+            complet_list = []
+
+            for rule in rules:
+                literal = rule.getElementsByTagName("ogc:Literal")[0]
+                literal_value = literal.firstChild.nodeValue
+                complet_list.append(literal_value)
+                if literal_value not in legend_classes:
+                    dynamic_legend= rule.parentNode
+                    dynamic_legend.removeChild(rule)
+            
+            sld_legendfile = open(self.appconfig.tempdir+self.filename+str('_')+str(layer.layername)+'_legend_sld.xml', 'w')
+            sld_legendfile.write(dom.toxml("utf-8"))
+            sld_legendfile.close()
+
+            #~ sld_legendfile = self.appconfig.tempdir+self.filename+str('_')+str(layer.layername)+'_legend_sld.xml'
+            
+            #~ wms_get_legend = {
+                #~ 'SERVICE': 'WMS',
+                #~ 'VERSION': '1.1.1',
+                #~ 'REQUEST': 'GetLegendGraphic',
+                #~ 'TRANSPARENT':'TRUE',
+                #~ 'LAYER': str(layer.layername),
+                #~ 'SLD': str(sld_legendfile),
+                #~ 'FORMAT':'image/png; mode=8bit'
+            #~ }
+            #~ legend_body = urllib.urlencode(wms_get_legend)
+
+            #~ legendimg = open(self.appconfig.tempdir+self.filename+str('_dynlegend_')+str(layer.layername)+'.png', 'wb')
+            
+            #~ try:
+                #~ response, legend_img = urllib.urlopen(self.wms_url+"?"+legend_body, method="GET")
+            #~ except:
+                #~ return HTTPBadRequest(detail='Internal server error - Please contact administrator')
+
+            #~ legendimg.write(legend_img.read())
+            #~ legendimg.close()
+
+            # in the same time create the legend graphic for each layer and write it to disk
+            if topicid in self.appconfig.ch_topics:
+                legend = open(self.appconfig.tempdir+self.filename+str('_legend_')+str(topicid)+'.png', 'wb')
+            else:
+                legend = open(self.appconfig.tempdir+self.filename+str('_legend_')+str(layer.layername)+'.png', 'wb')
+
+
+            # once the federal wms is called : img = urllib.urlopen(self.wms_url+ \
+            img = urllib.urlopen(self.crdppf_wms+ \
+                str('?TRANSPARENT=TRUE&SERVICE=WMS&VERSION=1.1.1&REQUEST=GetLegendGraphic&FORMAT=image/png; mode=8bit&LAYER=' \
+                +str(layer.layername)))
+            
+            # Define the url to display the complete legend of a topic
+            complet_legend = {'topicid':str(topicid)}
+            complet_legend['legend_url'] = self.crdppf_wms+ \
+                str('?TRANSPARENT=TRUE&SERVICE=WMS&VERSION=1.1.1&REQUEST=GetLegendGraphic&FORMAT=image/png; mode=8bit&LAYER=' \
+                +str(layers))
+
+            legend.write(img.read())
+            legend.close()
+            
+            if topicid in self.appconfig.ch_topics:
+                legend_path.append(self.appconfig.tempdir+self.filename+str('_legend_')+str(topicid))
+            else:
+                legend_path.append(self.appconfig.tempdir+self.filename+str('_legend_')+str(layer.layername))
 
         # call the WMS and write the map to file
-        wms = WebMapService(self.wms, version='1.1.1')
+        #wms = WebMapService(self.wms_url, version='1.1.1')
+        wms = WebMapService(self.crdppf_wms, version='1.1.1')
         imgformat = 'image/png; mode=24bit'
 
         if topicid == '103':
@@ -599,7 +700,7 @@ class Extract(FPDF):
             #~ wmsbbox = [680585, 255022, 686695, 259952]
             basemap = basewms.getmap(
                 layers = baselayers,
-                srs = 'EPSG:21781',
+                srs = self.appconfig.wms_srs,
                 bbox = (wmsBBOX['minX'], wmsBBOX['minY'], wmsBBOX['maxX'], wmsBBOX['maxY']),
                 size = (self.mapconfig['width'], self.mapconfig['height']),
                 format = 'image/png',
@@ -611,7 +712,7 @@ class Extract(FPDF):
 
             overlay = wms.getmap(
                 layers = layers,
-                srs = 'EPSG:21781',
+                srs = self.appconfig.wms_srs,
                 bbox = (wmsBBOX['minX'], wmsBBOX['minY'], wmsBBOX['maxX'], wmsBBOX['maxY']),
                 size = (self.mapconfig['width'], self.mapconfig['height']),
                 format = 'image/png; mode=24bit',
@@ -631,7 +732,7 @@ class Extract(FPDF):
         else:
             map = wms.getmap(
                 layers = layers,
-                srs = 'EPSG:21781',
+                srs = self.appconfig.wms_srs,
                 bbox = (wmsBBOX['minX'], wmsBBOX['minY'], wmsBBOX['maxX'], wmsBBOX['maxY']),
                 size = (self.mapconfig['width'], self.mapconfig['height']),
                 format = imgformat,
@@ -646,6 +747,7 @@ class Extract(FPDF):
         # Add the path to the thematic map and it's legendfile to the topiclist
         self.topiclist[topicid].update({'mappath':mappath,'legendpath':legend_path})
         #return mappath, legend_path
+
 
     def add_toc_entry(self, topicid, num, label, categorie, appendices):
         self.toc_entries[str(topicid)]={'no_page':num, 'title':label, 'categorie':int(categorie), 'appendices':set()}
@@ -683,11 +785,11 @@ class Extract(FPDF):
         # when rotating - so we have to use a workaround rotating back and forth...
         self.set_xy(x+3.5, y+4)
         self.rotate(90)
-        self.multi_cell(25, 4, translations['tocprovisionslabel'], 0,'L')
+        self.multi_cell(30, 4, translations['tocprovisionslabel'], 0,'L')
         self.rotate(0)
         self.set_xy(x+18, y+4)
         self.rotate(90)
-        self.multi_cell(35, 4, translations['tocreferenceslabel'], 0,'L')
+        self.multi_cell(38, 4, translations['tocreferenceslabel'], 0,'L')
         self.rotate(0)
         self.set_xy(x, y)
         self.cell(15, 5, '', 'LB', 0, 'L')
@@ -752,7 +854,6 @@ class Extract(FPDF):
         translations = self.translations
         pdfconfig = self.pdfconfig
         feature_info = self.featureInfo
-        
         if self.topiclist[topic]['categorie'] > 2:
             self.add_page()
             self.set_margins(*pdfconfig.pdfmargins)
@@ -999,9 +1100,11 @@ class Extract(FPDF):
             self.appendix_links.append(self.add_link())
             self.cell(15, 6, str('A'+str(index)), 0, 0, 'L')
             self.cell(120, 6, str(appendix['title']), 0, 1, 'L')
-            self.set_x(40)
-            self.set_font(*self.pdfconfig.textstyles['tocurl'])
-            self.set_text_color(*self.pdfconfig.urlcolor)
-            self.multi_cell(0, 5, str(appendix['url']))
-            self.set_text_color(*self.pdfconfig.defaultcolor)
+            if self.reportInfo['type'] == 'reduced' or self.reportInfo['type'] == 'reducedcertified':
+                self.set_x(40)
+                self.set_font(*self.pdfconfig.textstyles['tocurl'])
+                self.set_text_color(*self.pdfconfig.urlcolor)
+                self.multi_cell(0, 5, str(appendix['url']))
+                self.set_text_color(*self.pdfconfig.defaultcolor)
+
             index = index+1
