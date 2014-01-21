@@ -14,11 +14,12 @@ from geoalchemy import *
 from PIL import Image
 
 from crdppf.models import *
-from crdppf.util.pdf_functions import get_bbox, get_translations, get_feature_info, get_print_format
+from crdppf.util.pdf_functions import get_translations, get_feature_info, get_print_format, get_XML
 
 from crdppf.util.pdf_classes import PDFConfig, Extract
 from crdppf.views.get_features import get_features, get_features_function
 
+from PyPDF2 import PdfFileReader,PdfFileWriter
 
 @view_config(route_name='create_extract')
 def create_extract(request):
@@ -54,10 +55,12 @@ def create_extract(request):
         lang = session['lang'].lower()
     extract.translations = get_translations(lang)
 
-    # GET the application configuration parameters
+    # GET the application configuration parameters such as base paths,
+    # working directory and other default parameters
     extract.load_app_config()
     
-    # GET the PDF Configuration parameters
+    # GET the PDF Configuration parameters such as the page layout, margins
+    # and text styles
     extract.set_pdf_config()
 
     # promote often used variables to facilitate coding
@@ -65,7 +68,6 @@ def create_extract(request):
     translations = extract.translations
 
     # to get vars defined in the buildout  use : request.registry.settings['key']
-    extract.wms = request.registry.settings['crdppf_wms']
     pdfconfig.sld_url = extract.sld_url
 
 
@@ -80,52 +82,28 @@ def create_extract(request):
     featureInfo = extract.featureInfo
 
     # complete the dictionnary for the parcel - to be put in the appconfig
-    extract.featureInfo['operator'] = 'Portail Internet'
+    extract.featureInfo['operator'] = translations['defaultoperatortext']
     
     extract.featureid = featureInfo['featureid']
     extract.set_filename()
 
     # the get_print_format function which would define the ideal paper format and orientation for the
     # extract. It is not needed any longer as the paper size has been fixed to A4 portrait by the cantons
+    # BUT there could be a change of opinion after the start phase, so we keep this code part for now
     extract.printformat = get_print_format(featureInfo['BBOX'],pdfconfig.fitratio)
 
     # 2) Get the parameters for the paper format and the map based on the feature's geometry
     #---------------------------------------------------------------------------------------------------
     extract.get_map_format()
+    # again we promote the variables one level
     printformat = extract.printformat
 
-    # 3) Get the list of all the restrictions
+    # 3) Get the list of all the restrictions by topicorder set in a column
     #-------------------------------------------
     extract.topics = DBSession.query(Topics).order_by(Topics.topicorder).all()
 
     # Get the community name and escape special chars to place the logo in the header of the title page
     municipality = featureInfo['nomcom'].strip()
-    #  START Temporary code for development after municipality fusions 
-    if municipality in ['Colombier (NE)','Auvernier','Bôle']:
-        municipality = 'Milvignes'
-        extract.featureInfo['nomcom'] = 'Milvignes'
-        extract.featureInfo['nufeco'] = '6416'
-
-    if municipality in ['Brot-Plamboz','Plamboz']:
-        municipality = 'Brot-Plamboz'
-        extract.featureInfo['nomcom'] = 'Brot-Plamboz'
-        extract.featureInfo['nufeco'] = '6433'
-    
-    if municipality in ['Neuchâtel','La Coudre']:
-        municipality = 'Neuchatel'
-        extract.featureInfo['nomcom'] = 'Neuchâtel'
-        extract.featureInfo['nufeco'] = '6458'
-
-    if municipality in ['Les Eplatures']:
-        municipality = 'La Chaux-de-Fonds'
-        extract.featureInfo['nomcom'] = 'La Chaux-de-Fonds'
-        extract.featureInfo['nufeco'] = '6421'
-
-    if municipality in ['Boudevilliers','Cernier','Chézard-Saint-Martin','Coffrane','Dombresson','Engollon','Fenin-Vilars-Saules','Fontaines','Fontainemelon','Les Geneveys-sur-Coffrane','Les Hauts-Geneveys','Montmollin','Le Pâquier','Savagnier','Villiers']:
-        municipality = 'Val-de-Ruz'
-        extract.featureInfo['nomcom'] = 'Val-de-Ruz'
-        extract.featureInfo['nufeco'] = '6487'
-    # END temporary code
 
     # AS does the german language, the french contains a few accents we have to replace to fetch the banner which has no accents in its pathname...
     conversion = [
@@ -159,11 +137,17 @@ def create_extract(request):
     extract.municipalitylogopath = extract.appconfig.municipalitylogodir + municipality_escaped + '.png'
     extract.municipality = municipality # to clean up once code modified
 
+    # Get the data for the federal data layers using the map extend
+    #~ for topic in extract.topics:
+        #~ if topic.topicid in extract.appconfig.ch_topics:
+            #~ xml_layers = []
+            #~ for xml_layer in topic.layers:
+                #~ xml_layers.append(xml_layer.layername)
+            #~ get_XML(extract.featureInfo['geom'],topic.topicid)
+
     # 4) Create the title page for the pdf extract
     #--------------------------------------------------
     extract.get_site_map()
-    # enable auto page break
-    extract.set_auto_page_break(1,margin=25)
 
     # 5) Create the pages of the extract for each topic in the list
     #---------------------------------------------------
@@ -171,6 +155,8 @@ def create_extract(request):
     
     for topic in extract.topics:
         extract.add_topic(topic)
+        # to print the topics in ther right order - this could probably be done in a more elegant way
+        extract.topicorder[topic.topicorder] = topic.topicid
 
     # Write pdf file to disc
     extract.get_title_page()
@@ -181,10 +167,9 @@ def create_extract(request):
     
     # Create the list of appendices
     #--------------------------------------------------
-    if extract.reportInfo['type'] != 'reduced' and extract.reportInfo['type'] != 'reducedcertified':
-        extract.Appendices()
+    extract.Appendices()
 
-    for topic in extract.topiclist:
+    for topic in extract.topicorder.values():
         extract.write_thematic_page(topic)
 
     j = 1
@@ -199,7 +184,10 @@ def create_extract(request):
             extract.cell(15, 10, str('Annexe '+str(j)), 0, 1, 'L')
             extract.cell(100, 10, str(appendix['title']), 0, 1, 'L')
             j = j+1
-                
+
+            # TO DO
+            # Add all the appendices requested using pyPDF2
+
     # Set the page number once all the pages are printed
     for key in extract.pages.keys():
         extract.pages[key] = extract.pages[key].replace('{no_pg}', str(' ')+str(key))
