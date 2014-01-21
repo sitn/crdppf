@@ -12,13 +12,10 @@ from geojson import Feature, FeatureCollection, dumps, loads as gloads
 from simplejson import loads as sloads,dumps as sdumps
 from geoalchemy import *
 from PIL import Image
-
 from crdppf.models import *
 from crdppf.util.pdf_functions import get_translations, get_feature_info, get_print_format, get_XML
-
 from crdppf.util.pdf_classes import PDFConfig, Extract
-from crdppf.views.get_features import get_features, get_features_function
-
+from crdppf.util.get_feature_functions import get_features_function
 from PyPDF2 import PdfFileReader,PdfFileWriter
 
 @view_config(route_name='create_extract')
