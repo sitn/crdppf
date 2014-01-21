@@ -61,7 +61,7 @@ Ext.onReady(function() {
         },
         method: 'POST',
         failure: function () {
-            Ext.Msg.alert('Error', 'The request failed, please contact the administrator!');
+            Ext.Msg.alert(labels.serverErrorMessage);
         }
     }); 
     
@@ -75,7 +75,7 @@ Ext.onReady(function() {
         },
         method: 'POST',
         failure: function () {
-            Ext.Msg.alert('Error', 'The request failed, please contact the administrator!');
+            Ext.Msg.alert(labels.serverErrorMessage);
         }
     });
 
@@ -89,7 +89,7 @@ Ext.onReady(function() {
         },
         method: 'POST',
         failure: function () {
-            Ext.Msg.alert('Error', 'The request failed, please contact the administrator!');
+            Ext.Msg.alert(labels.serverErrorMessage);
         }
     });     
     
@@ -112,7 +112,7 @@ Ext.onReady(function() {
         },
         method: 'POST',
         failure: function () {
-            Ext.Msg.alert('Error', 'The request failed, please contact the administrator!');
+            Ext.Msg.alert(labels.serverErrorMessage);
         }
     }); 
 });
@@ -248,6 +248,7 @@ Crdppf.init_main = function(lang, parameters, baseLayers, translations) {
             click: function (){
                 if(select.features.length == 1){
                     var chooseExtract = new Ext.Window({
+                        id: 'extractChoiceWindow',
                         title: labels.chooseExtractTypeMsg,
                         width: 300,
                         height: 110,
@@ -259,6 +260,9 @@ Crdppf.init_main = function(lang, parameters, baseLayers, translations) {
                                 xtype: 'label',
                                 text: labels.chooseExtractMsg,
                                 cls: 'textExtractCls'
+                            },{
+                                xtype: 'label',
+                                id: 'pdfLoadDiv'
                             },{
                                 xtype: 'spacer',
                                 height: 5
@@ -280,10 +284,26 @@ Crdppf.init_main = function(lang, parameters, baseLayers, translations) {
                                         text: labels.generateExtract,                                        
                                         listeners: {
                                             click: function(){
-                                                urlToOpen = Crdppf.printUrl + '?id=' + select.features[0].attributes.idemai;
-                                                selectedRadio = Ext.getCmp('extractRadioGroup').getValue();
+                                                var pdfMask = new Ext.LoadMask(Ext.getCmp('extractChoiceWindow').body, {msg: labels.pdfLoadMessage});
+                                                pdfMask.show();
+                                                var urlToOpen = Crdppf.printUrl + '?id=' + select.features[0].attributes.idemai;
+                                                var selectedRadio = Ext.getCmp('extractRadioGroup').getValue();
                                                 urlToOpen += '&type=' + selectedRadio.inputValue;
-                                                window.open(urlToOpen);
+                                                
+                                                Ext.Ajax.request({
+                                                    url: urlToOpen,
+                                                    success: function(response) {
+                                                        var filename = response.getResponseHeader('Content-Disposition').split('filename=')[1];
+                                                        var outputUrl = Crdppf.baseUrl + 'static/public/pdf/' + filename;
+                                                        window.open(outputUrl);
+                                                        pdfMask.hide();                                                        
+                                                    },
+                                                    method: 'POST',
+                                                    timeout : 300000,
+                                                    failure: function () {
+                                                        Ext.Msg.alert(labels.serverErrorMessage);
+                                                    }
+                                                }); 
                                             }
                                         }
                                     },{
