@@ -92,7 +92,6 @@ def get_XML(geometry, topicid):
     
     sampleurl = 'https://api3.geo.admin.ch/rest/services/api/MapServer/identify?geometry=515000,180000,580000,230000&geometryType=esriGeometryEnvelope&layers=all:'+xml_layers[topicid]+'&mapExtent=515000,180000,580000,230000&imageDisplay=1920,576,96&tolerance=5&geometryFormat=interlis'
  
-    #xmlurl = server+url+'geometry='+feature+geomtype+'layers='layers+
     # Call the feature service URL wich sends back an XML Interlis 2.3 file in the OEREB Transfer structure
     response = urllib.urlopen(sampleurl)
     content = response.read()
@@ -104,7 +103,6 @@ def get_XML(geometry, topicid):
         content_lines[count] = line.strip()
         count += 1
     content = ''.join(content_lines)
-    
     
     # validate XML
     
@@ -247,12 +245,6 @@ def get_XML(geometry, topicid):
             xml_model = CHPollutedSitesPublicTransports()
             xml_model.theme = u'Cadastre des sites pollués - domaine des transports publics' # to replace by translations['CHAirportSecurityZonesThemeLabel']
             xml_model.teneur = u'Sites pollué' # to replace by translations['CHAirportSecurityZonesThemeLabel']
-            #~ for restriction in restrictions:
-                #~ if geometry['tid'] in restriction['restrictionid']:
-                    #~ xml_model.teneur = restriction['teneurit']
-            #codeliste = {'StaoTyp1':9901,'StaoTyp2':9902,'StaoTyp3':9903,'StaoTyp4':9904,'StaoTyp5':9905,'StaoTyp6':9906}
-            #xml_model.codegenre = codeliste[0]
-        #securityzone.idobj = geometry['restrictionid']
 
         xml_model.codegenre = None
         if geometry['legalstate'] ==  u'inKraft':
@@ -327,6 +319,7 @@ def get_feature_info(request, translations):
     parcelInfo['BBOX'] = get_bbox_from_geometry(DBSession.scalar(queryresult.geom.envelope.wkt))
 
     # the get_print_format function is not needed any longer as the paper size has been fixed to A4 by the cantons
+    # but we keep the code because the decision will be revoked 
     # parcelInfo['printFormat'] = get_print_format(parcelInfo['BBOX'])
 
     return parcelInfo

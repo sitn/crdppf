@@ -15,12 +15,12 @@ EXTENT 496748.9216 183451.7632 598251.0784 226548.2368
 WEB
   IMAGEPATH "/tmp"
   METADATA
-    "ows_title"          "CRDPPF OWS server"
-    "ows_enable_request" "*"
-    "wfs_encoding"       "utf-8"
-    "wms_title"           "${vars:instanceid} WMS Server"
-    "wms_onlineresource" "http://${vars:host}/${vars:instanceid}/wmscrdppf"
-    "wms_srs"            "EPSG:21781" 
+    "ows_title"                         "CRDPPF OWS server"
+    "ows_enable_request"          "*"
+    "wfs_encoding"                   "utf-8"
+    "wms_title"                        "${vars:instanceid} WMS Server"
+    "wms_onlineresource"          "http://${vars:host}/${vars:instanceid}/wmscrdppf"
+    "wms_srs"                         "EPSG:21781" 
   END
 END
 
@@ -120,11 +120,11 @@ LAYER
   NAME "r73_contenus_ponctuels"
   TYPE POINT
    METADATA
-       "ows_title" "r73_contenus_ponctuels"
-       "wms_srs" "epsg:21781"
-       "wms_title"           "${vars:instanceid} WMS Server"
-       "wms_onlineresource" "http://${vars:host}/${vars:instanceid}/wmscrdppf"
-       "wms_srs"            "EPSG:21781" 
+       "ows_title"                    "r73_contenus_ponctuels"
+       "wms_srs"                     "epsg:21781"
+       "wms_title"                   "${vars:instanceid} WMS Server"
+       "wms_onlineresource"     "http://${vars:host}/${vars:instanceid}/wmscrdppf"
+       "wms_srs"                    "EPSG:21781" 
   END
   CONNECTIONTYPE POSTGIS
   CONNECTION "user=${vars:dbuser} password=${vars:dbpassword} dbname=${vars:db} host=${vars:dbhost} port=${vars:dbport}"
@@ -203,11 +203,11 @@ LAYER
   NAME "r73_contenus_lineaires"
   TYPE LINE
    METADATA
-       "ows_title" "r73_contenus_lineaires"
-       "wms_srs" "epsg:21781"
-       "wms_title"           "${vars:instanceid} WMS Server"
-       "wms_onlineresource" "http://${vars:host}/${vars:instanceid}/wmscrdppf"
-       "wms_srs"            "EPSG:21781" 
+       "ows_title"                   "r73_contenus_lineaires"
+       "wms_srs"                    "epsg:21781"
+       "wms_title"                  "${vars:instanceid} WMS Server"
+       "wms_onlineresource"    "http://${vars:host}/${vars:instanceid}/wmscrdppf"
+       "wms_srs"                   "EPSG:21781" 
   END
   CONNECTIONTYPE POSTGIS
   CONNECTION "user=${vars:dbuser} password=${vars:dbpassword} dbname=${vars:db} host=${vars:dbhost} port=${vars:dbport}"
@@ -308,11 +308,11 @@ LAYER
   NAME "r73_perimetres_superposes"
   TYPE LINE
    METADATA
-       "ows_title" "r73_perimetres_superposes"
-       "wms_srs" "epsg:21781"
-       "wms_title"           "${vars:instanceid} WMS Server"
-       "wms_onlineresource" "http://${vars:host}/${vars:instanceid}/wmscrdppf"
-       "wms_srs"            "EPSG:21781" 
+       "ows_title"                  "r73_perimetres_superposes"
+       "wms_srs"                   "epsg:21781"
+       "wms_title"                  "${vars:instanceid} WMS Server"
+       "wms_onlineresource"    "http://${vars:host}/${vars:instanceid}/wmscrdppf"
+       "wms_srs"                   "EPSG:21781" 
   END
   CONNECTIONTYPE POSTGIS
   CONNECTION "user=${vars:dbuser} password=${vars:dbpassword} dbname=${vars:db} host=${vars:dbhost} port=${vars:dbport}"
@@ -993,11 +993,11 @@ LAYER
   STATUS ON
   NAME "r119_bav_belastete_standorte_oev"
   METADATA
-       "ows_title"                      "r119_bav_belastete_standorte_oev"
+       "ows_title"                   "r119_bav_belastete_standorte_oev"
        "wms_srs"                    "epsg:21781"
-       "wms_title"                      "${vars:instanceid} WMS Server"
-       "wms_onlineresource"     "http://${vars:host}/${vars:instanceid}/wmscrdppf"
-       "wms_srs"                    "EPSG:21781" 
+       "wms_title"                  "${vars:instanceid} WMS Server"
+       "wms_onlineresource"    "http://${vars:host}/${vars:instanceid}/wmscrdppf"
+       "wms_srs"                   "EPSG:21781" 
   END
   CONNECTIONTYPE POSTGIS
   CONNECTION "user=${vars:dbuser} password=${vars:dbpassword} dbname=${vars:db} host=${vars:dbhost} port=${vars:dbport}"
@@ -1017,11 +1017,11 @@ LAYER
   NAME "r131_zone_prot_eau"
   STATUS ON
   METADATA
-       "ows_title"                      "r131_zone_prot_eau"
+       "ows_title"                   "r131_zone_prot_eau"
        "wms_srs"                    "epsg:21781"
-       "wms_title"                      "${vars:instanceid} WMS Server"
-       "wms_onlineresource"     "http://${vars:host}/${vars:instanceid}/wmscrdppf"
-       "wms_srs"                    "EPSG:21781" 
+       "wms_title"                  "${vars:instanceid} WMS Server"
+       "wms_onlineresource"    "http://${vars:host}/${vars:instanceid}/wmscrdppf"
+       "wms_srs"                   "EPSG:21781" 
   END
   CONNECTIONTYPE POSTGIS
   CONNECTION "user=${vars:dbuser} password=${vars:dbpassword} dbname=${vars:db} host=${vars:dbhost} port=${vars:dbport}"
@@ -1067,11 +1067,11 @@ LAYER
   NAME "r132_perimetre_prot_eau"
   STATUS ON
   METADATA
-       "ows_title"                      "r132_perimetre_prot_eau"
+       "ows_title"                   "r132_perimetre_prot_eau"
        "wms_srs"                    "epsg:21781"
-       "wms_title"                      "${vars:instanceid} WMS Server"
-       "wms_onlineresource"     "http://${vars:host}/${vars:instanceid}/wmscrdppf"
-       "wms_srs"                    "EPSG:21781" 
+       "wms_title"                  "${vars:instanceid} WMS Server"
+       "wms_onlineresource"    "http://${vars:host}/${vars:instanceid}/wmscrdppf"
+       "wms_srs"                   "EPSG:21781" 
   END
   CONNECTIONTYPE POSTGIS
   CONNECTION "user=${vars:dbuser} password=${vars:dbpassword} dbname=${vars:db} host=${vars:dbhost} port=${vars:dbport}"
