@@ -348,28 +348,29 @@ var setOverlays = function() {
     if(overlaysList.length > 0){
         var loadMask = new Ext.LoadMask(themeSelector.body, {msg: labels.layerLoadingMaskMsg});
         var overlays = new OpenLayers.Layer.WMS(
-                layerName, 
-                Crdppf.wmsUrl,
-                {
-                    layers: overlaysList,
-                    format: 'image/png',
-                    singleTile: true,
-                    transparent: 'true'
-                }, {
-                    singleTile: true,
-                    isBaseLayer: false
-                }
-            );
-            
+            layerName, 
+            Crdppf.wmsUrl,
+            {
+                layers: overlaysList,
+                format: 'image/png',
+                singleTile: true,
+                transparent: 'true'
+            },{
+                singleTile: true,
+                isBaseLayer: false
+            }
+        );
+        
+        // Listen to layers events and show loading mask whenever necessary
         overlays.events.register("loadstart", overlays, function() {
             loadMask.show();
-            });        
+        });        
         overlays.events.register("loadend", overlays, function() {
-                loadMask.hide();
-            });        
+            loadMask.hide();
+        });        
         overlays.events.register("tileloaded", overlays, function() {
-                loadMask.show();
-            });
+            loadMask.show();
+        });
         overlays.id = 'overlayLayer';
         this.map.addLayer(overlays);
         this.map.raiseLayer(this.map.getLayersBy('id', 'selectionLayer')[0], this.map.layers.length);
