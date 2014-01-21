@@ -8,7 +8,7 @@
  * @requires OpenLayers/Control/OverViewMap.js
  * @requires OpenLayers/Control/PanZoomBar.js
  * @requires OpenLayers/Control/GetFeature.js
- * @requires OpenLayers/Control/ScaleBar.js
+ * @requires OpenLayers/Control/ScaleLine.js
  * @requires OpenLayers/Control/Measure.js
  * @requires OpenLayers/Handler/Path.js
  * @requires OpenLayers/Handler/Polygon.js
@@ -248,6 +248,12 @@ function makeMap(mapOptions){
         );
     intersect.id='intersectLayer';
     
+    var scalebar = new OpenLayers.Control.ScaleLine({
+        bottomOutUnits:'',
+        bottomInUnits: '',
+        maxWidth: 200
+    });
+    
     // THE OL map object
     var map = new OpenLayers.Map({
         projection: new OpenLayers.Projection('EPSG:21781'),
@@ -263,7 +269,7 @@ function makeMap(mapOptions){
                 panIcons: false
             }),
             new OpenLayers.Control.Navigation(),
-            new OpenLayers.Control.ScaleBar()            
+            scalebar            
         ]
     });   
 
@@ -274,8 +280,8 @@ function makeMap(mapOptions){
                 var lonlat = map.getLonLatFromPixel(pixel);
                 OpenLayers.Util.getElement(mapOptions.divMousePosition).innerHTML = labels.olCoordinates + ' (ch1903) - Y : ' + Math.round(lonlat.lon) + '  X : ' + Math.round(lonlat.lat) + 'm';
     });
+    
     // add base layers & selection layers
-
     map.addLayers([intersect,select, layer]);
 
     // create an overview map control and customize it

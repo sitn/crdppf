@@ -345,3 +345,10 @@ body {
 .extractButtonCls{
     margin-left: 10px;
 }
+
+/* OL ScaleLine */
+.olControlScaleLineTop{
+    color: red; 
+    font-size: 10px;
+    font-weight: bold;
+}

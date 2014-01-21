@@ -23,7 +23,6 @@ Ext.onReady(function() {
     var translations = {}; // The interface translations
     var baseLayers = {};
     var parameters = {};
-    
     // We need to ensure all json data are recieved by the client before starting the application
     var loadingCounter = 0;
     
@@ -80,6 +79,7 @@ Ext.onReady(function() {
         }
     });
 
+    // Load base layers configuration
     Ext.Ajax.request({
         url: Crdppf.getBaselayerConfigUrl,
         success: function(response) {
@@ -93,13 +93,20 @@ Ext.onReady(function() {
         }
     });     
     
-    // Load the interface's parameters
+    // Load the interface configuration
     Ext.Ajax.request({
         url: Crdppf.getInterfaceConfigUrl,
         success: function(response) {
             parameters = Ext.decode(response.responseText);
-            // init the interface
-            OpenLayers.Util.extend(OpenLayers.Lang.fr,translations);
+            if (lang !== '' && lang == 'Fr'){
+                OpenLayers.Util.extend(OpenLayers.Lang.fr,translations);
+            } else if (lang !== '' && lang == 'De') {
+                OpenLayers.Util.extend(OpenLayers.Lang.de,translations);
+            } else if (lang !== '' && lang == 'en') {
+                OpenLayers.Util.extend(OpenLayers.Lang.en,translations);
+            } else if (lang !== '') {
+                OpenLayers.Util.extend(OpenLayers.Lang.fr,translations);
+            }
             loadingCounter += 1;
             triggerFunction(loadingCounter);        
         },
