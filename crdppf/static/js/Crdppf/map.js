@@ -124,7 +124,9 @@ var setInfoControl = function setInfoControl(){
                                     featureClass = jsonData[j].attributes.featureClass;
                                     html = '';
                                     for (var value in jsonData[j].attributes){
-                                        html += '<p class=featureAttributeStyle><b>' + labels[value] + ' : </b>' + jsonData[j].attributes[value] +'</p>' ;
+                                        if (value !== 'geomType'){
+                                            html += '<p class=featureAttributeStyle><b>' + labels[value] + ' : </b>' + jsonData[j].attributes[value] +'</p>' ;
+                                        }
                                     }
                                     html += '';
                                     // create 1 node for each restriction (level 2)
