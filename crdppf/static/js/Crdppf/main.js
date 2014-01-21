@@ -579,7 +579,7 @@ Crdppf.init_main = function(lang, parameters, baseLayers, translations) {
 
     infoPanel = new Ext.Panel({
         header: false,
-        width: 250,
+        width: 350,
         region: 'east',
         title: labels.infoTabLabel,
         collapseMode: 'mini',
