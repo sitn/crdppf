@@ -6,6 +6,7 @@ Crdppf.getFeatureUrl = "${request.route_url('get_features')}";
 Crdppf.setLanguageUrl = "${request.route_url('set_language')}";
 Crdppf.getLanguageUrl = "${request.route_url('get_language')}";
 Crdppf.getTranslationDictionaryUrl = "${request.route_url('get_translation_dictionary')}";
+Crdppf.getLegalDocumentsUrl = "${request.route_url('getLegalDocuments')}";
 Crdppf.getInterfaceConfigUrl = "${request.route_url('get_interface_config')}";
 Crdppf.getBaselayerConfigUrl = "${request.route_url('get_baselayers_config')}";
 Crdppf.wmsUrl = "${request.route_url('ogcproxy')}";

@@ -9,7 +9,7 @@ TODO: pass topic and layerfk to the function to request only related docs
         var legaldocs = new Ext.data.JsonStore({
         autoDestroy: true,
         autoLoad: true,
-        url: 'getLegalDocuments',
+        url: Crdppf.getLegalDocumentsUrl,
         sort: {
             field: 'doctype',
             direction: 'ASC'
