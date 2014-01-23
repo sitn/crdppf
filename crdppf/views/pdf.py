@@ -207,15 +207,14 @@ def create_extract(request):
             filenames.append(pdfconfig.pdfpath+pdfconfig.pdfname+'_a'+str(j)+'.pdf')
             filenames.append(appendix['url'])
             j += 1
+        merger = PdfFileMerger()
+        for filename in filenames:
+            try:
+                merger.append(PdfFileReader(file(filename, 'rb')))
+            except:
+                merger.append(PdfFileReader(file(exception, 'rb')))
 
-    merger = PdfFileMerger()
-    for filename in filenames:
-        try:
-            merger.append(PdfFileReader(file(filename, 'rb')))
-        except:
-            merger.append(PdfFileReader(file(exception, 'rb')))
-
-    merger.write(pdfconfig.pdfpath+pdfconfig.pdfname+'.pdf')
+        merger.write(pdfconfig.pdfpath+pdfconfig.pdfname+'.pdf')
 
     response = FileResponse(
         pdfconfig.pdfpath + pdfconfig.pdfname + '.pdf',
