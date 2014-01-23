@@ -278,7 +278,7 @@ Crdppf.init_main = function(lang, parameters, baseLayers, translations) {
                                 fieldLabel: 'Auto Layout',
                                 items: [
                                     {boxLabel: labels.reducedExtract, name: 'rb-auto', inputValue: 'reduced',  cls: 'radioExtractCls', checked: true},
-                                    {boxLabel: labels.extendedExtract, name: 'rb-auto', inputValue: 'certified',  cls: 'radioExtractCls'}
+                                    {boxLabel: labels.extendedExtract, name: 'rb-auto', inputValue: 'standard',  cls: 'radioExtractCls'}
                                 ]
                             },{
                                 xtype: 'buttongroup',
