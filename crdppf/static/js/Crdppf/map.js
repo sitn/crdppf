@@ -124,7 +124,7 @@ var setInfoControl = function setInfoControl(){
                                     featureClass = jsonData[j].attributes.featureClass;
                                     html = '';
                                     for (var value in jsonData[j].attributes){
-                                        if (value !== 'geomType'){
+                                        if (value !== 'geomType' && value !=='theme' && value!=='codegenre' && value!=='intersectionMeasure'){
                                             html += '<p class=featureAttributeStyle><b>' + labels[value] + ' : </b>' + jsonData[j].attributes[value] +'</p>' ;
                                         }
                                     }
@@ -133,7 +133,7 @@ var setInfoControl = function setInfoControl(){
                                     var sameLayerNode = new Ext.tree.TreeNode({
                                         singleClickExpand: true,
                                         attributes: jsonData[j],
-                                        text: labels.restrictionFoundTxt + (j+1) + String(jsonData[j].data.intersectionMeasure),
+                                        text: labels.restrictionFoundTxt + (j+1) + ' : ' + String(jsonData[j].data.intersectionMeasure),
                                         draggable:false,
                                         leaf: false,
                                         expanded: false,
