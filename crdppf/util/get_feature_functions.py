@@ -38,7 +38,7 @@ def get_features_function(parcelGeom, params):
                 if geometryType == 'ST_Polygon' or geometryType == 'ST_MultiPolygon':
                     intersectionMeasure = DBSession.scalar(feature.geom.intersection(parcelGeom).area())
                     if intersectionMeasure >= 1:
-                        intersectionMeasureTxt = ' : ' + str(math.ceil(intersectionMeasure*10)/10) + ' [m2]'
+                        intersectionMeasureTxt = str(math.ceil(intersectionMeasure*10)/10) + ' [m2]'
                         geomType = 'Polygone'
                         jsonFeature = sloads(dumps(feature))
                         jsonFeature['properties']['layerName'] = layer
