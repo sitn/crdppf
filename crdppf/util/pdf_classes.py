@@ -44,11 +44,11 @@ class AppConfig:
     legaldocsdir = pkg_resources.resource_filename('crdppf', 'static/public/reglements/')
     ch_wms_layers = []
     ch_topics = ['103','108','119']
-    ch_legend_layers={
+    ch_legend_layers = {
         u'103':'ch.bazl.projektierungszonen-flughafenanlagen.oereb',
         u'108':'ch.bazl.sicherheitszonenplan.oereb',
         u'119':'ch.bav.kataster-belasteter-standorte-oev.oereb'
-        }
+    }
     crdppf_wms_layers = [
         'mo6_couverture_sol_nb',
         'mo22_batiments',
@@ -67,7 +67,7 @@ class AppConfig:
         'mo4_pfp_3',
         'mo4_pfp_1_2',
         'la3_limites_communales'
-        ]
+    ]
 
     wms_srs = 'EPSG:21781'
     wms_version = '1.1.1'
@@ -104,7 +104,7 @@ class PDFConfig:
         'tocbold':[fontfamily, 'B', 11],
         'tocurl':[fontfamily, '', 9],
         'tocnormal':[fontfamily, '', 11]
-        }
+    }
     urlcolor = [0, 0, 255]
     defaultcolor = [0, 0, 0]
 
@@ -361,17 +361,20 @@ class Extract(FPDF):
         self.set_font(*pdfconfig.textstyles['normal'])
         self.cell(70, 5, feature_info['operator'].encode('iso-8859-1'), 0, 1, 'L')
 
+        # == this note is published only as long as the legal documents are not validated
         y= self.get_y()
         self.set_y(y+5)
         self.set_font(*pdfconfig.textstyles['bold'])
         self.multi_cell(0, 5, translations['pilotphasetxt'], 0, 1, 'L')
-
+        # == end of temporary info will be removed and original code :
+        # == START original code:
 #        if self.reportInfo['type'] == 'certified' or self.reportInfo['type'] == 'reducedcertified':
 #            y= self.get_y()
 #            self.set_y(y+5)
 #            self.set_font(*pdfconfig.textstyles['bold'])
 #            self.cell(0, 5, translations['signaturelabel'], 0, 0, 'L')
-
+        # == END original code:
+        
         self.set_y(250)
         self.set_font(*pdfconfig.textstyles['bold'])
         self.cell(0, 5, translations['disclaimerlabel'], 0, 1, 'L')
@@ -392,7 +395,7 @@ class Extract(FPDF):
         """
         geom = geom_from_coordinates(bbox)
         polygon = WKTSpatialElement(geom.wkt, 21781)
-        mapfeatures = get_features_function(polygon,{'layerList':layername,'translations':self.translations})
+        mapfeatures = get_features_function(polygon, {'layerList':layername, 'translations':self.translations})
         if mapfeatures is not None:
             classes = []
             for mapfeature in mapfeatures:
@@ -724,7 +727,7 @@ class Extract(FPDF):
                     literal_value = literal.firstChild.nodeValue
                     complet_list.append(literal_value)
                     if literal_value not in legend_classes:
-                        dynamic_legend= rule.parentNode
+                        dynamic_legend = rule.parentNode
                         dynamic_legend.removeChild(rule)
 
             # write an sld file to filter the getLegendGraphic request with
@@ -746,14 +749,10 @@ class Extract(FPDF):
 
             legend_body = urllib.urlencode(self.wms_get_legend)
 
-            #~ # get the legend for the layer and write it to disc
-            #~ try:
+            #~ # get the legend graphic for the layer and write it to disc
             legend_img = urllib.urlopen(self.wms_url+"?"+legend_body)
-            #~ response, legend_img = http.request(self.wms_url+"?"+legend_body, method="GET")
             legend.write(legend_img.read())
             legend.close()
-            #~ except:
-                #~ return HTTPBadRequest(detail='Internal server error - Please contact administrator')
 
         self.topiclist[topicid]['topiclegend'] = self.topiclegenddir+str(topicid)+'_topiclegend.pdf'
 
