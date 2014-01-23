@@ -17,7 +17,7 @@ from crdppf.util.pdf_functions import get_translations, get_feature_info, get_pr
 from crdppf.util.pdf_classes import PDFConfig, Extract, AppendixFile
 from crdppf.util.get_feature_functions import get_features_function
 
-from PyPDF2 import PdfFileMerger,PdfFileReader,PdfFileWriter
+from PyPDF2 import PdfFileMerger, PdfFileReader, PdfFileWriter
 
 @view_config(route_name='create_extract')
 def create_extract(request):
