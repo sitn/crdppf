@@ -30,6 +30,12 @@ Ext.onReady(function() {
         if (counter == 4) {
             Ext.MessageBox.buttonText.yes = translations.disclaimerAcceptance;
             Ext.MessageBox.buttonText.no = translations.diclaimerRefusal;
+            var dlg = Ext.MessageBox.getDialog();
+            var buttons = dlg.buttons;
+            for (var i = 0; i < buttons.length; i++){
+                 buttons[i].addClass('msgButtonStyle'); 
+            }
+            
             Ext.Msg.show({
                title: translations.disclaimerWindowTitle,
                msg: translations.disclaimerMsg,
@@ -281,7 +287,10 @@ Crdppf.init_main = function(lang, parameters, baseLayers, translations) {
                                 items: [
                                     {
                                         xtype: 'button',
-                                        text: labels.generateExtract,                                        
+                                        text: labels.generateExtract,  
+                                        height: 20,
+                                        width: 100,    
+                                        cls: 'msgButtonStyle',
                                         listeners: {
                                             click: function(){
                                                 var pdfMask = new Ext.LoadMask(Ext.getCmp('extractChoiceWindow').body, {msg: labels.pdfLoadMessage});
@@ -308,6 +317,9 @@ Crdppf.init_main = function(lang, parameters, baseLayers, translations) {
                                         }
                                     },{
                                         xtype: 'button',
+                                        cls: 'msgButtonStyle',
+                                        height: 20,
+                                        width: 100,    
                                         text: labels.cancelExtract,
                                         listeners: {
                                             click: function(){
