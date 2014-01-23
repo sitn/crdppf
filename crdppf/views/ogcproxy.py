@@ -5,6 +5,7 @@ from pyramid.view import view_config
 from pyramid.httpexceptions import HTTPNotAcceptable
 
 import httplib2
+import urllib
 
 from crdppf.lib.wfsparsing import is_get_feature, limit_featurecollection
 
@@ -13,10 +14,20 @@ def ogcproxy(request):
 
     params = dict(request.params)
 
-    method = request.method
+    params_encoded = {}
 
-    if method == "GET":
-        return HTTPNotAcceptable()
+    for k, v in params.iteritems():
+        if k == 'callback':
+            continue
+        params_encoded[k] = unicode(v).encode('utf-8')
+    query_string = urllib.urlencode(params_encoded)
+
+    if len(params_encoded) > 0:
+        _url = '?' + query_string
+    else:
+        _url = ''
+
+    method = request.method
 
     h = dict(request.headers)
     h.pop("Host", h)
@@ -27,6 +38,8 @@ def ogcproxy(request):
         body = request.body
 
     url = request.registry.settings['crdppf_wms']
+    
+    url += _url
     
     http = httplib2.Http()
     
