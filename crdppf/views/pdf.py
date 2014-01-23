@@ -207,7 +207,6 @@ def create_extract(request):
             filenames.append(pdfconfig.pdfpath+pdfconfig.pdfname+'_a'+str(j)+'.pdf')
             filenames.append(appendix['url'])
             j += 1
-
         merger = PdfFileMerger()
         for filename in filenames:
             try:
