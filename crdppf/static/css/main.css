@@ -352,3 +352,13 @@ body {
     font-size: 10px;
     font-weight: bold;
 }
+
+.msgButtonStyle  {  
+    padding-left: 3px !important;
+    border: 1px #CCCCE0 solid !important;
+    margin-right: 3px !important;
+}
+
+.msgButtonStyle :hover {
+    color: gray !important;
+}
