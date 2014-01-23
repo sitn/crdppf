@@ -364,9 +364,7 @@ class Extract(FPDF):
         y= self.get_y()
         self.set_y(y+5)
         self.set_font(*pdfconfig.textstyles['bold'])
-        self.cell(0, 5, u'Phase pilote : Extraits dépourvus de foi publique tant que l\'approbabtion des textes légaux est en cours.', 0, 0, 'L')
-#        self.cell(0, 5, translations['pilotphasetxt'], 0, 0, 'L')
-
+        self.multi_cell(0, 5, translations['pilotphasetxt'], 0, 1, 'L')
 
 #        if self.reportInfo['type'] == 'certified' or self.reportInfo['type'] == 'reducedcertified':
 #            y= self.get_y()
