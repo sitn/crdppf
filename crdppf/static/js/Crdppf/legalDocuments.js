@@ -49,7 +49,7 @@ TODO: pass topic and layerfk to the function to request only related docs
                     '</tpl>',
                     '<div style="margin-left:20px;padding:3px">',
                         '<h2 class="doctitle">{officialnb} - {officialtitle}</h2>',
-                        '<p class="docurl"><b>URL:</b> <a href="{documenturl}" target="_blank">{documenturl}</a></p>',
+                        '<p class="docurl"><b>URL:</b> <a href="#" onClick="window.open(\'{documenturl}\');" target="_blank">{documenturl}</a></p>',
                         '<br />',
                     '</div>',
                 '</tpl>',
