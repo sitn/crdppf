@@ -177,8 +177,8 @@ def create_extract(request):
 
     extract.output(pdfconfig.pdfpath+pdfconfig.pdfname+'.pdf','F')
 
-    path = extract.appconfig.legaldocsdir+str('pas_disponible.pdf')
-    exception = extract.appconfig.legaldocsdir+str('exception.pdf')
+    path = extract.appconfig.legaldocsdir + str('pas_disponible.pdf')
+    exception = extract.appconfig.legaldocsdir + str('exception.pdf')
     
     j = 1
     # If report type is not 'reduced': Add a title page in front of every attached pdf
@@ -190,7 +190,7 @@ def create_extract(request):
             appendixfile.timestamp = str(extract.timestamp)
             appendixfile.reporttype = str(extract.reportInfo['type'])
             appendixfile.translations = get_translations(lang)
-            appendixfile.current_page = ' A'+str(j)
+            appendixfile.current_page = ' A' + str(j)
             appendixfile.load_app_config()
             appendixfile.set_pdf_config()
             appendixfile.municipalitylogopath = appendixfile.appconfig.municipalitylogodir + municipality_escaped + '.png'
