@@ -4,7 +4,6 @@ from pyramid.renderers import render_to_response
 from pyramid.httpexceptions import HTTPForbidden, HTTPBadRequest
 from pyramid.view import view_config
 
-
 from datetime import datetime, time
 import httplib, urllib2
 import pkg_resources
@@ -15,7 +14,7 @@ from PIL import Image
 
 from crdppf.models import *
 from crdppf.util.pdf_functions import get_translations, get_feature_info, get_print_format, get_XML
-from crdppf.util.pdf_classes import PDFConfig, Extract
+from crdppf.util.pdf_classes import PDFConfig, Extract, AppendixFile
 from crdppf.util.get_feature_functions import get_features_function
 
 from PyPDF2 import PdfFileMerger,PdfFileReader,PdfFileWriter
@@ -53,11 +52,12 @@ def create_extract(request):
     else : 
         lang = session['lang'].lower()
     extract.translations = get_translations(lang)
+    extract.lang = lang
 
     # GET the application configuration parameters such as base paths,
     # working directory and other default parameters
     extract.load_app_config()
-    
+
     # GET the PDF Configuration parameters such as the page layout, margins
     # and text styles
     extract.set_pdf_config()
@@ -68,7 +68,6 @@ def create_extract(request):
 
     # to get vars defined in the buildout  use : request.registry.settings['key']
     pdfconfig.sld_url = extract.sld_url
-
 
 # *************************
 # MAIN PROGRAM PART
@@ -136,6 +135,7 @@ def create_extract(request):
     extract.municipalitylogopath = extract.appconfig.municipalitylogodir + municipality_escaped + '.png'
     extract.municipality = municipality # to clean up once code modified
 
+    # === TO IMPROVE thus code is left commented
     # Get the data for the federal data layers using the map extend
     #~ for topic in extract.topics:
         #~ if topic.topicid in extract.appconfig.ch_topics:
@@ -171,49 +171,50 @@ def create_extract(request):
     for topic in extract.topicorder.values():
         extract.write_thematic_page(topic)
 
-    j = 1
-    # If report type is not 'reduced': Add a title page in front of every attached pdf
-    if extract.reportInfo['type'] != 'reduced' and extract.reportInfo['type'] != 'reducedcertified':
-        for appendix in extract.appendix_entries:
-            extract.add_page()
-            extract.set_margins(*pdfconfig.pdfmargins)
-            extract.set_y(55)
-            extract.set_link(str(j))
-            extract.set_font(*pdfconfig.textstyles['title3'])
-            extract.cell(15, 10, str('Annexe '+str(j)), 0, 1, 'L')
-            extract.cell(100, 10, str(appendix['title']), 0, 1, 'L')
-            j = j+1
-
     # Set the page number once all the pages are printed
     for key in extract.pages.keys():
         extract.pages[key] = extract.pages[key].replace('{no_pg}', str(' ')+str(key))
 
     extract.output(pdfconfig.pdfpath+pdfconfig.pdfname+'.pdf','F')
 
-    # TO DO
-    # Add all the appendices requested using pyPDF2
-    #path = extract.appconfig.legaldocsdir+str('exemple.pdf')
-    path = 'C:/Mapfish/crdppf/crdppf/static/public/reglements/exemple.pdf'
-    input1 = PdfFileReader(file(path,'rb'))
-    #~ input2 = PdfFileReader(file("C:\\GEHEIM2.pdf", "rb"))
+    path = extract.appconfig.legaldocsdir+str('pas_disponible.pdf')
+    exception = extract.appconfig.legaldocsdir+str('exception.pdf')
     
-    #~ filenames = [path]
-    #~ merger = PdfFileMerger()
-    #~ for filename in filenames:
-        #~ merger.append(PdfFileReader(file(filename, 'rb')))
+    j = 1
+    # If report type is not 'reduced': Add a title page in front of every attached pdf
+    if extract.reportInfo['type'] != 'reduced' and extract.reportInfo['type'] != 'reducedcertified':
+        filenames = [pdfconfig.pdfpath+pdfconfig.pdfname+'.pdf']
+        for appendix in extract.appendix_entries:
+            appendixfile = AppendixFile()
+            appendixfile.creationdate = str(extract.creationdate)
+            appendixfile.timestamp = str(extract.timestamp)
+            appendixfile.reporttype = str(extract.reportInfo['type'])
+            appendixfile.translations = get_translations(lang)
+            appendixfile.current_page = ' A'+str(j)
+            appendixfile.load_app_config()
+            appendixfile.set_pdf_config()
+            appendixfile.municipalitylogopath = appendixfile.appconfig.municipalitylogodir + municipality_escaped + '.png'
+            appendixfile.municipality = municipality # to clean up once code modified
+            appendixfile.add_page()
+            appendixfile.set_margins(*pdfconfig.pdfmargins)
+            appendixfile.set_y(55)
+            appendixfile.set_link(str(j))
+            appendixfile.set_font(*pdfconfig.textstyles['title3'])
+            appendixfile.cell(15, 10, str('Annexe '+str(j)), 0, 1, 'L')
+            appendixfile.cell(100, 10, str(appendix['title']), 0, 1, 'L')
+            appendixfile.output(pdfconfig.pdfpath+pdfconfig.pdfname+'_a'+str(j)+'.pdf','F')
+            filenames.append(pdfconfig.pdfpath+pdfconfig.pdfname+'_a'+str(j)+'.pdf')
+            filenames.append(appendix['url'])
+            j += 1
 
-    for page in range(input1.getNumPages()):
-        #~ output.addPage(input1.getPage(page))
-        extract.addPage(input1.getPage(page))
-        print 'Added page %s from first file'%page
+    merger = PdfFileMerger()
+    for filename in filenames:
+        try:
+            merger.append(PdfFileReader(file(filename, 'rb')))
+        except:
+            merger.append(PdfFileReader(file(exception, 'rb')))
 
-    #~ for page in range(input2.getNumPages()):
-        #~ output.addPage(input2.getPage(page))
-        #~ print 'Added page %s from second file'%page
-        
-    #~ outputStream = file("c:\\temp\document-output.pdf", "wb")
-    #~ output.write(outputStream)
-    #~ outputStream.close()
+    merger.write(pdfconfig.pdfpath+pdfconfig.pdfname+'.pdf')
 
     response = FileResponse(
         pdfconfig.pdfpath + pdfconfig.pdfname + '.pdf',
