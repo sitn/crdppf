@@ -181,6 +181,7 @@ def create_extract(request):
     exception = extract.appconfig.legaldocsdir + str('exception.pdf')
     
     j = 1
+    filenames = []
     # If report type is not 'reduced': Add a title page in front of every attached pdf
     if extract.reportInfo['type'] != 'reduced' and extract.reportInfo['type'] != 'reducedcertified':
         filenames = [pdfconfig.pdfpath+pdfconfig.pdfname+'.pdf']
