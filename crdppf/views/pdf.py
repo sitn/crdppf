@@ -202,7 +202,7 @@ def create_extract(request):
             appendixfile.set_link(str(j))
             appendixfile.set_font(*pdfconfig.textstyles['title3'])
             appendixfile.cell(15, 10, str('Annexe '+str(j)), 0, 1, 'L')
-            appendixfile.cell(100, 10, str(appendix['title']), 0, 1, 'L')
+            appendixfile.multi_cell(0, 10, str(appendix['title']), 0, 'L')
             appendixfile.output(pdfconfig.pdfpath+pdfconfig.pdfname+'_a'+str(j)+'.pdf','F')
             appendicesfiles.append(pdfconfig.pdfpath+pdfconfig.pdfname+'_a'+str(j)+'.pdf')
             extract.cleanupfiles.append(pdfconfig.pdfpath+pdfconfig.pdfname+'_a'+str(j)+'.pdf')
@@ -218,7 +218,6 @@ def create_extract(request):
         merger.write(pdfconfig.pdfpath+pdfconfig.pdfname+'.pdf')
 
     extract.clean_up_temp_files()
-
 
     response = FileResponse(
         pdfconfig.pdfpath + pdfconfig.pdfname + '.pdf',
