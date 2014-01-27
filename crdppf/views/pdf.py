@@ -181,10 +181,10 @@ def create_extract(request):
     exception = extract.appconfig.legaldocsdir + str('exception.pdf')
     
     j = 1
-    filenames = []
+    appendicesfiles = []
     # If report type is not 'reduced': Add a title page in front of every attached pdf
     if extract.reportInfo['type'] != 'reduced' and extract.reportInfo['type'] != 'reducedcertified':
-        filenames = [pdfconfig.pdfpath+pdfconfig.pdfname+'.pdf']
+        appendicesfiles= [pdfconfig.pdfpath+pdfconfig.pdfname+'.pdf']
         for appendix in extract.appendix_entries:
             appendixfile = AppendixFile()
             appendixfile.creationdate = str(extract.creationdate)
@@ -204,17 +204,21 @@ def create_extract(request):
             appendixfile.cell(15, 10, str('Annexe '+str(j)), 0, 1, 'L')
             appendixfile.cell(100, 10, str(appendix['title']), 0, 1, 'L')
             appendixfile.output(pdfconfig.pdfpath+pdfconfig.pdfname+'_a'+str(j)+'.pdf','F')
-            filenames.append(pdfconfig.pdfpath+pdfconfig.pdfname+'_a'+str(j)+'.pdf')
-            filenames.append(appendix['url'])
+            appendicesfiles.append(pdfconfig.pdfpath+pdfconfig.pdfname+'_a'+str(j)+'.pdf')
+            extract.cleanupfiles.append(pdfconfig.pdfpath+pdfconfig.pdfname+'_a'+str(j)+'.pdf')
+            appendicesfiles.append(appendix['url'])
             j += 1
         merger = PdfFileMerger()
-        for filename in filenames:
+        for appendixfile in appendicesfiles:
             try:
-                merger.append(PdfFileReader(file(filename, 'rb')))
+                merger.append(PdfFileReader(file(appendixfile, 'rb')))
             except:
                 merger.append(PdfFileReader(file(exception, 'rb')))
 
         merger.write(pdfconfig.pdfpath+pdfconfig.pdfname+'.pdf')
+
+    extract.clean_up_temp_files()
+
 
     response = FileResponse(
         pdfconfig.pdfpath + pdfconfig.pdfname + '.pdf',
