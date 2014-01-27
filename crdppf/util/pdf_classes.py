@@ -219,9 +219,9 @@ class Extract(FPDF):
     def set_filename(self):
         """ Sets the file name of the pdf extract based on the time and parcel id
         """
-        self.filename = str(self.timestamp)+self.featureid
-        self.pdfconfig.pdfname = str(self.filename)+'_ExtraitCRDPPF'
-        self.pdfconfig.siteplanname = str(self.filename)+'_siteplan'
+        self.filename = str(self.timestamp) + self.featureid
+        self.pdfconfig.pdfname = str(self.filename) + '_ExtraitCRDPPF'
+        self.pdfconfig.siteplanname = str(self.filename) + '_siteplan'
 
     def header(self):
         """Creates the document header with the logos and vertical lines."""
