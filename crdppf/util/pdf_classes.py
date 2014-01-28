@@ -6,15 +6,18 @@ from fpdf import FPDF
 import pkg_resources
 from datetime import datetime
 from owslib.wms import WebMapService
-import httplib2
-import urllib
 from PIL import Image
+
+import urllib
+import urllib2
 
 from xml.dom.minidom import parse, parseString
 
 from crdppf.models import *
 from crdppf.views.get_features import get_features, get_features_function
 from crdppf.util.pdf_functions import geom_from_coordinates
+
+from crdppf.util.proxy import set_proxy, unset_proxy
 
 class Restriction:
     """Representation of a restriction in the transfert model structure."""
@@ -171,7 +174,7 @@ class Extract(FPDF):
     # HINTS #
     # to get vars defined in the buildout  use : request.registry.settings['key']
     
-    def __init__(self, request):
+    def __init__(self, request, log):
         FPDF.__init__(self)
         self.request = request
         self.crdppf_wms = request.registry.settings['crdppf_wms']
@@ -199,6 +202,12 @@ class Extract(FPDF):
         self.appendix_links = []
         self.topicorder = {}
         self.wms_baselayers = []
+        self.log = log
+        if request.registry.settings['proxy_enabled'] == 'True':
+            self.proxy_enabled = True
+        else:
+            self.proxy_enabled = False
+        self.proxy_conf = request.registry.settings['proxy_conf']
 
     def alias_no_page(self, alias='{no_pg}'):
         """Define an alias for total number of pages"""
@@ -555,7 +564,17 @@ class Extract(FPDF):
             self.topiclist[str(topic.topicid)]['references']=None
 
     def add_layer(self, layer):
+
+        if self.log:
+            now = datetime.now()
+            self.log.warning("Running get feature,  min.sec: %s", str(now.minute)+'.'+str(now.second))
+
         results = get_features_function(self.featureInfo['geom'],{'layerList':layer.layername,'id':self.featureid,'translations':self.translations})
+
+        if self.log:
+            now = datetime.now()
+            self.log.warning("Done get feature,  min.sec: %s", str(now.minute)+'.'+str(now.second))
+
         if results :
             self.layerlist[str(layer.layerid)]={'layername':layer.layername,'features':[]}
             for result in results:
@@ -663,6 +682,10 @@ class Extract(FPDF):
 
         wmsBBOX, wmsbbox = self.get_wms_bbox()
 
+        if self.log:
+            now = datetime.now()
+            self.log.warning("DONE get_wms_bbox, min.sec: %s", str(now.minute)+'.'+str(now.second))
+
         # temp var to hold the parameters of the legend
         legend_layers = []
         # temp var for the path to the created legend
@@ -670,7 +693,6 @@ class Extract(FPDF):
         complet_legend_path = []
         layers = []
         baselayers = []
-        http = httplib2.Http()
 
         # Get the list of the baselayers
         for wms_layer in self.appconfig.crdppf_wms_layers:
@@ -679,10 +701,19 @@ class Extract(FPDF):
         # Configure the WMS request to call either the internal or the external, federal WMS
         if topicid in self.appconfig.ch_topics:
             # sets the wms_url to call CH-Server
+
             self.set_wms_config(topicid)
+            if self.log:
+                now = datetime.now()
+                self.log.warning("DONE set_wms_config, min.sec: %s", str(now.minute)+'.'+str(now.second))
         else:
             # sets the wms_url to call localhost
             self.set_wms_config(topicid)
+
+            if self.log:
+                now = datetime.now()
+                self.log.warning("DONE set_wms_config, min.sec: %s", str(now.minute)+'.'+str(now.second))
+
             layers = baselayers
             # List with the base layers of the map - the restriction layers get added to the list
 
@@ -711,10 +742,24 @@ class Extract(FPDF):
             self.wms_get_legend['FORMAT'] = 'image/png; mode=8bit'
             sld_body = urllib.urlencode(self.wms_get_styles)
 
-            try:
-                resp, content = http.request(self.wms_url+"?"+sld_body, method="GET")
-            except:
-                return HTTPBadRequest(detail='Internal server error - Please contact administrator')
+            if self.log:
+                now = datetime.now()
+                self.log.warning("WMS REQUEST, min.sec: %s", str(now.minute)+'.'+str(now.second))
+                self.log.warning("on URL: %s", self.wms_url)
+                self.log.warning('Doing layer: %s',restriction_layer.topicfk)
+
+            if restriction_layer.topicfk in self.appconfig.ch_legend_layers.keys():
+                if self.proxy_enabled == True:
+                    set_proxy(self.proxy_conf)
+                content = urllib2.urlopen(self.wms_url+"?"+sld_body).read()
+            else:
+                content = urllib2.urlopen(self.wms_url+"?"+sld_body).read()
+            if self.proxy_enabled == True:
+                unset_proxy()
+
+            if self.log:
+                now = datetime.now()
+                self.log.warning("DONE WMS REQUEST, min.sec: %s", str(now.minute)+'.'+str(now.second))
 
             dom = parseString(content)
             rules = dom.getElementsByTagName("Rule")
@@ -738,10 +783,22 @@ class Extract(FPDF):
             # only necessary if complet legend should be called dynamically
             complet_legend_body = urllib.urlencode(self.wms_get_legend)
 
+            if self.log:
+                now = datetime.now()
+                self.log.warning("Applying SLD, min.sec: %s", str(now.minute)+'.'+str(now.second))
+
             if topicid in self.appconfig.ch_topics:
-                complet_legend_path = urllib.urlopen(self.wms_url+"?"+complet_legend_body)
+                if self.proxy_enabled == True:
+                    set_proxy(self.proxy_conf)
+                complet_legend_path = urllib2.urlopen(self.wms_url+"?"+complet_legend_body)
+                if self.proxy_enabled == True:
+                    unset_proxy()
             else:
-                complet_legend_path = urllib.urlopen(self.crdppf_wms+"?"+complet_legend_body)
+                complet_legend_path = urllib2.urlopen(self.crdppf_wms+"?"+complet_legend_body)
+
+            if self.log:
+                now = datetime.now()
+                self.log.warning("DONE Applying SLD, min.sec: %s", str(now.minute)+'.'+str(now.second))
 
             if sld_legendfile:
                 legend_sld = self.sld_url+self.filename+str('_')+str(restriction_layer.layername)+'_legend_sld.xml'
@@ -749,18 +806,36 @@ class Extract(FPDF):
 
             legend_body = urllib.urlencode(self.wms_get_legend)
 
-            #~ # get the legend graphic for the layer and write it to disc
-            legend_img = urllib.urlopen(self.wms_url+"?"+legend_body)
+            if topicid in self.appconfig.ch_topics:
+                if self.proxy_enabled == True:
+                    set_proxy(self.proxy_conf)
+                legend_img = urllib2.urlopen(self.wms_url+"?"+legend_body)
+                if self.proxy_enabled == True:
+                    unset_proxy()
+            else:
+                legend_img = urllib2.urlopen(self.wms_url+"?"+legend_body)
+
             legend.write(legend_img.read())
             legend.close()
 
+            if self.log:
+                now = datetime.now()
+                self.log.warning("DONE SLD on WMS, min.sec: %s", str(now.minute)+'.'+str(now.second))
+
         self.topiclist[topicid]['topiclegend'] = self.topiclegenddir+str(topicid)+'_topiclegend.pdf'
 
-        wms = WebMapService(self.wms_url, self.wms_version)
-        basewms = WebMapService(self.crdppf_wms, self.wms_version)
         #imgformat = 'image/png; mode=24bit'
         imgformat = 'image/png; mode=8bit'
         
+        if self.log:
+            now = datetime.now()
+            self.log.warning("WMS, min.sec: %s", str(now.minute)+'.'+str(now.second))
+
+        if topicid in self.appconfig.ch_topics:
+            layers = baselayers
+            layers.append(str(restriction_layer.layername))
+
+        wms = WebMapService(self.crdppf_wms, self.wms_version)
         map = wms.getmap(
             layers = layers,
             srs = self.appconfig.wms_srs,
@@ -770,17 +845,22 @@ class Extract(FPDF):
             transparent = False
         )
 
-        if topicid in self.appconfig.ch_topics:
-            layers = baselayers
-            layers.append(str(restriction_layer.layername))
-            map = basewms.getmap(
-                layers = layers,
-                srs = self.appconfig.wms_srs,
-                bbox = (wmsBBOX['minX'], wmsBBOX['minY'], wmsBBOX['maxX'], wmsBBOX['maxY']),
-                size = (self.mapconfig['width'], self.mapconfig['height']),
-                format = imgformat,
-                transparent = False
-            )
+        #~ elif topicid in self.appconfig.ch_topics:
+        #~ now = datetime.now()
+        #~ self.log.warning("DONE WMS, min.sec: %s", str(now.minute)+'.'+str(now.second))
+        #~ if topicid in self.appconfig.ch_topics:
+            #~ layers = baselayers
+            #~ layers.append(str(restriction_layer.layername))
+
+            #~ basewms = WebMapService(self.crdppf_wms, self.wms_version)
+            #~ map = basewms.getmap(
+                #~ layers = layers,
+                #~ srs = self.appconfig.wms_srs,
+                #~ bbox = (wmsBBOX['minX'], wmsBBOX['minY'], wmsBBOX['maxX'], wmsBBOX['maxY']),
+                #~ size = (self.mapconfig['width'], self.mapconfig['height']),
+                #~ format = imgformat,
+                #~ transparent = False
+            #~ )
 
             #~ basemap = basewms.getmap(
                 #~ layers = baselayers,
