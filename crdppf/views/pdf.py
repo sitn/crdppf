@@ -19,6 +19,10 @@ from crdppf.util.get_feature_functions import get_features_function
 
 from PyPDF2 import PdfFileMerger, PdfFileReader, PdfFileWriter
 
+import logging
+
+log = logging.getLogger(__name__)
+
 @view_config(route_name='create_extract')
 def create_extract(request):
     """The function collects alle the necessary data from the subfunctions and classes
@@ -27,9 +31,25 @@ def create_extract(request):
     # Start a session
     session = request.session
 
-    # Create an instance of an extract
-    extract = Extract(request)
+    logon = request.registry.settings['logon']
+    if logon == 'False':
+        logon = False
+    else:
+        logon = True
 
+    log2 = None
+
+    if logon is True:
+        now = datetime.now()
+        log.warning("Entering PDF extract, min.sec: %s", str(now.minute)+'.'+str(now.second))
+        log2 = log
+
+    # Create an instance of an extract
+    extract = Extract(request, log2)
+
+    if logon is True:
+        now = datetime.now()
+        log.warning("Created Extract class, min.sec: %s", str(now.minute)+'.'+str(now.second))
     # Define the extract type if not set in the request parameters
     # defaults to 'standard': no certification, with pdf attachements
     # other values :
@@ -54,20 +74,41 @@ def create_extract(request):
     extract.translations = get_translations(lang)
     extract.lang = lang
 
+    if logon is True:
+        now = datetime.now()
+        log.warning("Created language init, min.sec: %s", str(now.minute)+'.'+str(now.second))
     # GET the application configuration parameters such as base paths,
     # working directory and other default parameters
     extract.load_app_config()
 
+    if logon is True:
+        now = datetime.now()
+        log.warning("load_app_config(), min.sec: %s", str(now.minute)+'.'+str(now.second))
     # GET the PDF Configuration parameters such as the page layout, margins
     # and text styles
     extract.set_pdf_config()
 
+    if logon is True:
+        now = datetime.now()
+        log.warning("set_pdf_config(), min.sec: %s", str(now.minute)+'.'+str(now.second))
     # promote often used variables to facilitate coding
     pdfconfig = extract.pdfconfig
+
+    if logon is True:
+        now = datetime.now()
+        log.warning("pdfconfig, min.sec: %s", str(now.minute)+'.'+str(now.second))
+
     translations = extract.translations
 
+    if logon is True:
+        now = datetime.now()
+        log.warning("translations, min.sec: %s", str(now.minute)+'.'+str(now.second))
     # to get vars defined in the buildout  use : request.registry.settings['key']
     pdfconfig.sld_url = extract.sld_url
+
+    if logon is True:
+        now = datetime.now()
+        log.warning("extract.sld_url, min.sec: %s", str(now.minute)+'.'+str(now.second))
 
 # *************************
 # MAIN PROGRAM PART
@@ -77,6 +118,7 @@ def create_extract(request):
     # else get the ID (idemai) of the selected parcel first using X/Y coordinates of the center 
     #----------------------------------------------------------------------------------------------------
     extract.featureInfo = get_feature_info(request,translations) # '1_14127' # test parcel or '1_11340'
+
     featureInfo = extract.featureInfo
 
     # complete the dictionnary for the parcel - to be put in the appconfig
@@ -93,6 +135,7 @@ def create_extract(request):
     # 2) Get the parameters for the paper format and the map based on the feature's geometry
     #---------------------------------------------------------------------------------------------------
     extract.get_map_format()
+
     # again we promote the variables one level
     printformat = extract.printformat
 
@@ -146,36 +189,66 @@ def create_extract(request):
 
     # 4) Create the title page for the pdf extract
     #--------------------------------------------------
+
+
+
     extract.get_site_map()
 
     # 5) Create the pages of the extract for each topic in the list
     #---------------------------------------------------
     # Thematic pages
-    
+    count = 1
     for topic in extract.topics:
-        extract.add_topic(topic)
+        if logon is True:
+            now = datetime.now()
+            log.warning("Begin of topic no %s, topic_id: %s min.sec: %s", count, topic.topicid, str(now.minute)+'.'+str(now.second))
+        add = extract.add_topic(topic)
+
+        if logon is True:
+            now = datetime.now()
+            log.warning("End of topic no %s, min.sec: %s", count, str(now.minute)+'.'+str(now.second))
+            count += 1
         # to print the topics in ther right order - this could probably be done in a more elegant way
         extract.topicorder[topic.topicorder] = topic.topicid
 
     # Write pdf file to disc
     extract.get_title_page()
-    
+
+    if logon is True:
+        now = datetime.now()
+        log.warning("get_title_page, min.sec: %s", str(now.minute)+'.'+str(now.second))
+
     # Create the table of content
     #--------------------------------------------------
     extract.get_toc()
-    
+
+    if logon is True:
+        now = datetime.now()
+        log.warning("get_toc, min.sec: %s", str(now.minute)+'.'+str(now.second))
     # Create the list of appendices
     #--------------------------------------------------
     extract.Appendices()
 
+    if logon is True:
+        now = datetime.now()
+        log.warning("Appendices, min.sec: %s", str(now.minute)+'.'+str(now.second))
+
+    count = 1
     for topic in extract.topicorder.values():
         extract.write_thematic_page(topic)
-
+        if logon is True:
+            now = datetime.now()
+            log.warning("write_thematic_page, page n° %s min.sec: %s", count, str(now.minute)+'.'+str(now.second))
+        count += 1
     # Set the page number once all the pages are printed
     for key in extract.pages.keys():
         extract.pages[key] = extract.pages[key].replace('{no_pg}', str(' ')+str(key))
 
     extract.output(pdfconfig.pdfpath+pdfconfig.pdfname+'.pdf','F')
+
+    if logon is True:
+        now = datetime.now()
+        log.warning("File created, min.sec: %s", str(now.minute)+'.'+str(now.second))
 
     path = extract.appconfig.legaldocsdir + str('pas_disponible.pdf')
     exception = extract.appconfig.legaldocsdir + str('exception.pdf')
@@ -216,6 +289,9 @@ def create_extract(request):
                 merger.append(PdfFileReader(file(exception, 'rb')))
 
         merger.write(pdfconfig.pdfpath+pdfconfig.pdfname+'.pdf')
+        if logon is True:
+            now = datetime.now()
+            log.warning("Appendices, min.sec: %s", str(now.minute)+'.'+str(now.second))
 
     extract.clean_up_temp_files()
 
