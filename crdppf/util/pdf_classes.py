@@ -795,14 +795,18 @@ class Extract(FPDF):
                 now = datetime.now()
                 self.log.warning("Applying SLD, min.sec: %s", str(now.minute)+'.'+str(now.second))
 
+            if 'SLD' in self.wms_get_legend:
+                del self.wms_get_legend['SLD']
+
             if topicid in self.appconfig.ch_topics:
                 if self.proxy_enabled == True:
                     set_proxy(self.proxy_conf)
-                complet_legend_path = urllib2.urlopen(self.wms_url+"?"+complet_legend_body)
+                #complet_legend_path = urllib2.urlopen(self.wms_url+"?"+complet_legend_body)
                 if self.proxy_enabled == True:
                     unset_proxy()
             else:
-                complet_legend_path = urllib2.urlopen(self.crdppf_wms+"?"+complet_legend_body)
+                #complet_legend_path = urllib2.urlopen(self.crdppf_wms+"?"+complet_legend_body)
+                pass
 
             if self.log:
                 now = datetime.now()
