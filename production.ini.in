@@ -20,6 +20,11 @@ default_language = ${vars:default_language}
 fulltextsearch_url = ${vars:fulltextsearch_url}
 mapproxyurl = ${vars:mapproxyurl}
 
+logon = ${vars:logon}
+
+proxy_enabled = ${vars:proxy_enabled}
+proxy_conf = http://${vars:proxy_user}:${vars:proxy_pass}@${vars:proxy_server}:${vars:proxy_port}
+
 [server:main]
 use = egg:waitress#main
 host = 0.0.0.0
