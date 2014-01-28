@@ -1,5 +1,7 @@
 # -*- coding: UTF-8 -*-
 
+from os import remove
+
 from pyramid.httpexceptions import HTTPBadRequest, HTTPNotFound
 
 from fpdf import FPDF
@@ -117,8 +119,6 @@ class PDFConfig:
     cantonlogopath = 'ecussons\\06ne_ch_RVB.jpg'
 
     timestamp = datetime.now().strftime("%Y%m%d%H%M%S")
-    pdfname = str(timestamp)+'_ExtraitCRDPPF'
-    siteplanname = str(timestamp)+'_siteplan'
     fitratio = 0.9
     pdfpath = pkg_resources.resource_filename('crdppf', 'static/public/pdf/')
 
@@ -208,6 +208,7 @@ class Extract(FPDF):
         else:
             self.proxy_enabled = False
         self.proxy_conf = request.registry.settings['proxy_conf']
+        self.cleanupfiles = []
 
     def alias_no_page(self, alias='{no_pg}'):
         """Define an alias for total number of pages"""
@@ -227,7 +228,9 @@ class Extract(FPDF):
     def set_filename(self):
         """ Sets the file name of the pdf extract based on the time and parcel id
         """
-        self.filename = str(self.timestamp)+self.featureid
+        self.filename = str(self.timestamp) + self.featureid
+        self.pdfconfig.pdfname = str(self.filename) + '_ExtraitCRDPPF'
+        self.pdfconfig.siteplanname = str(self.filename) + '_siteplan'
 
     def header(self):
         """Creates the document header with the logos and vertical lines."""
@@ -464,6 +467,7 @@ class Extract(FPDF):
 
 
         sldfile = open(self.appconfig.tempdir+self.pdfconfig.siteplanname+'_sld.xml', 'w')
+        self.cleanupfiles.append(self.appconfig.tempdir+self.pdfconfig.siteplanname+'_sld.xml')
         sldfile.write(sld)
         sldfile.close()
 
@@ -498,6 +502,7 @@ class Extract(FPDF):
         )
 
         out = open(self.appconfig.tempdir+self.pdfconfig.siteplanname+'.png', 'wb')
+        self.cleanupfiles.append(self.appconfig.tempdir+self.pdfconfig.siteplanname+'.png')
         out.write(sitemap.read())
         out.close()
 
@@ -727,6 +732,7 @@ class Extract(FPDF):
                 self.wms_get_styles['LAYERS'] = self.appconfig.ch_legend_layers[str(restriction_layer.topicfk)]
                 # open an empty file for the layers legend graphic
                 legend = open(self.appconfig.tempdir+self.filename+str('_legend_')+str(topicid)+'.png', 'wb')
+                self.cleanupfiles.append(self.appconfig.tempdir+self.filename+str('_legend_')+str(topicid)+'.png')
                 # define the legend path
                 legend_path.append(self.appconfig.tempdir+self.filename+str('_legend_')+str(topicid))
             else:
@@ -735,6 +741,7 @@ class Extract(FPDF):
                 self.wms_get_legend['LAYER'] = restriction_layer.layername
                 self.wms_get_styles['LAYERS'] = restriction_layer.layername
                 legend = open(self.appconfig.tempdir+self.filename+str('_legend_')+str(restriction_layer.layername)+'.png', 'wb')
+                self.cleanupfiles.append(self.appconfig.tempdir+self.filename+str('_legend_')+str(restriction_layer.layername)+'.png')
                 legend_path.append(self.appconfig.tempdir+self.filename+str('_legend_')+str(restriction_layer.layername))
 
             legend_classes = set(self.get_legend_classes(wmsbbox,restriction_layer.layername))
@@ -777,6 +784,7 @@ class Extract(FPDF):
 
             # write an sld file to filter the getLegendGraphic request with
             sld_legendfile = open(self.appconfig.tempdir+self.filename+str('_')+str(restriction_layer.layername)+'_legend_sld.xml', 'w')
+            self.cleanupfiles.append(self.appconfig.tempdir+self.filename+str('_')+str(restriction_layer.layername)+'_legend_sld.xml')
             sld_legendfile.write(dom.toxml("utf-8"))
             sld_legendfile.close()
 
@@ -800,7 +808,7 @@ class Extract(FPDF):
                 now = datetime.now()
                 self.log.warning("DONE Applying SLD, min.sec: %s", str(now.minute)+'.'+str(now.second))
 
-            if sld_legendfile:
+            if sld_legendfile and topicid in [u'73','73']:
                 legend_sld = self.sld_url+self.filename+str('_')+str(restriction_layer.layername)+'_legend_sld.xml'
                 self.wms_get_legend['SLD'] = str(legend_sld)
 
@@ -894,11 +902,9 @@ class Extract(FPDF):
             #~ background.save(self.appconfig.tempdir+self.filename+'_'+str(topicid)+'.png')
             
         out = open(self.appconfig.tempdir+self.filename+'_'+str(topicid)+'.png', 'wb')
+        self.cleanupfiles.append(self.appconfig.tempdir+self.filename+'_'+str(topicid)+'.png')
         out.write(map.read())
         out.close()
-
-        #~ if topicid in self.appconfig.ch_topics:
-            #~ sdfd
 
         mappath = self.appconfig.tempdir+self.filename+'_'+str(topicid)+'.png'
         # Add the path to the thematic map and it's legendfile to the topiclist
@@ -1080,7 +1086,9 @@ class Extract(FPDF):
             self.cell(55, 5, translations['completlegendlabel'], 0, 0, 'L')
             self.set_font(*pdfconfig.textstyles['normal'])
             if 'topiclegend' in self.topiclist[topic] and self.topiclist[topic]['topiclegend'] is not None:
+                self.set_text_color(*self.pdfconfig.urlcolor)
                 self.cell(120, 5, self.topiclist[topic]['topiclegend'], 0, 1, 'L')
+                self.set_text_color(*self.pdfconfig.defaultcolor)
             else:
                 self.cell(120, 5, translations['nocompletelegendtext'], 0, 1, 'L')
             
@@ -1266,7 +1274,7 @@ class Extract(FPDF):
             self.set_font(*self.pdfconfig.textstyles['tocbold'])
             self.appendix_links.append(self.add_link())
             self.cell(15, 6, str('A'+str(index)), 0, 0, 'L')
-            self.cell(120, 6, str(appendix['title']), 0, 1, 'L')
+            self.multi_cell(0, 6, str(appendix['title']), 0, 'L')
             if self.reportInfo['type'] == 'reduced' or self.reportInfo['type'] == 'reducedcertified':
                 self.set_x(40)
                 self.set_font(*self.pdfconfig.textstyles['tocurl'])
@@ -1275,3 +1283,11 @@ class Extract(FPDF):
                 self.set_text_color(*self.pdfconfig.defaultcolor)
 
             index = index+1
+
+    def clean_up_temp_files(self):
+        """ Removes the temporary files needed to create an extract:
+            sld files, legend files, map files
+        """
+
+        for tempfile in self.cleanupfiles:
+            remove(str(tempfile))
