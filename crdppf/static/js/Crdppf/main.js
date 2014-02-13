@@ -574,19 +574,19 @@ Crdppf.init_main = function(lang, parameters, baseLayers, translations) {
     });
 
     var legendPanel = new GeoExt.LegendPanel({
-            collapsible:true, 
-            map: MapO.map,
-            cls:'legendPanelCls',
-            title: labels.legendPanelTitle,
-            autoScroll: true,
-            flex: 1.0,
-            defaults: {
-                style: 'padding:5px',
-                baseParams: {
-                    FORMAT: 'image/png',
-                    LEGEND_OPTIONS: 'forceLabels:on'
-                }
+        collapsible:true, 
+        map: MapO.map,
+        cls:'legendPanelCls',
+        title: labels.legendPanelTitle,
+        autoScroll: true,
+        flex: 1.0,
+        defaults: {
+            style: 'padding:5px',
+            baseParams: {
+                FORMAT: 'image/png',
+                LEGEND_OPTIONS: 'forceLabels:on'
             }
+        }
     });
 
     infoPanel = new Ext.Panel({
