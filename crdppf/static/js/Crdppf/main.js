@@ -578,8 +578,8 @@ Crdppf.init_main = function(lang, parameters, baseLayers, translations) {
         map: MapO.map,
         cls:'legendPanelCls',
         title: labels.legendPanelTitle,
-        height: 400,
         autoScroll: true,
+        flex: 1.0,
         defaults: {
             style: 'padding:5px',
             baseParams: {
@@ -591,7 +591,8 @@ Crdppf.init_main = function(lang, parameters, baseLayers, translations) {
 
     infoPanel = new Ext.Panel({
         header: false,
-        width: 350,
+        layout: 'vbox',
+        width: 300,
         region: 'east',
         title: labels.infoTabLabel,
         collapseMode: 'mini',
@@ -599,6 +600,9 @@ Crdppf.init_main = function(lang, parameters, baseLayers, translations) {
         cls: 'infoPanelCls',
         collapsible: true,
         split: true,
+        layoutConfig: {
+            align: 'stretch'
+        },
         items:[featureTree, legendPanel]
     });
 
