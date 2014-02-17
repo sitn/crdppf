@@ -266,8 +266,8 @@ class Extract(FPDF):
             self.cell(60, 5, self.translations['signaturelabel']+str(' ')+self.timestamp, 0, 0, 'C')
         else:
             self.cell(60, 5, self.translations['nosignaturetext'], 0, 0, 'C')
-        self.cell(55, 5, self.translations['pagelabel']+str(self.alias_no_page())+str('/')+ \
-            str(self.alias_nb_pages()), 0, 0, 'R')
+        self.cell(55, 5, self.translations['pagelabel']+str(' ')+str(self.page)+str('/')+ \
+                str(self.alias_nb_pages()), 0, 0, 'R')
 
     def set_wms_config(self, topicid):
         """ Sets the basic WMS parameters in function of the topic
