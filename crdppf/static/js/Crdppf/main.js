@@ -186,7 +186,7 @@ Crdppf.init_main = function(lang, parameters, baseLayers, translations) {
     });
 
     var measureLabelBox = new Ext.form.Label({
-        cls: 'measureOuput'
+        cls: 'measureOutput'
     });
 
     var measureControlO = new Crdppf.MeasureTool(map, measureLabelBox);
