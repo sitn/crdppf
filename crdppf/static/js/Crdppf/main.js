@@ -185,7 +185,11 @@ Crdppf.init_main = function(lang, parameters, baseLayers, translations) {
         }
     });
 
-    var measureControlO = new Crdppf.MeasureTool();
+    var measureLabelBox = new Ext.form.Label({
+        cls: 'measureOuput'
+    });
+
+    var measureControlO = new Crdppf.MeasureTool(map, measureLabelBox);
     measureControlO.makeMeasureTool();
     
     var lineMeasureButton = new Ext.Button({
@@ -465,10 +469,7 @@ Crdppf.init_main = function(lang, parameters, baseLayers, translations) {
         zoomInButton,
         zoomOutButton,
         measureToolsMenu,
-        {
-            xtype: 'label',
-            html: '<div id="measureOuput"></div>'
-        }
+        measureLabelBox
         ]
    });
 
