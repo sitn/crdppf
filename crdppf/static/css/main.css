@@ -79,7 +79,7 @@ body {
     padding-left: 30px !important;
 }
 
-#measureOuput{
+.measureOutput {
     color: red;
     margin-left: 10px;
     font-weight: bold;
