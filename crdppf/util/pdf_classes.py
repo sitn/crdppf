@@ -785,7 +785,6 @@ class Extract(FPDF):
             complet_legend_body = urllib.urlencode(self.wms_get_legend)
 
             if self.log:
-                now = datetime.now()
                 self.log.warning("Applying SLD")
 
             if 'SLD' in self.wms_get_legend:
