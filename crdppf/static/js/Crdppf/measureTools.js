@@ -3,7 +3,7 @@ Ext.namespace('Crdppf');
 Crdppf.MeasureTool = function(map, measureLabelBox) {
 
     // Write measurement to Ext Window html
-    this.handleMeasurements =function(event) {
+    this.handleMeasurements = function(event) {
         var geometry = event.geometry;
         var units = event.units;
         var order = event.order;
@@ -28,7 +28,7 @@ Crdppf.MeasureTool = function(map, measureLabelBox) {
         }
     };
 
-    this.makeMeasureTool =  function makeMeasureTool(){
+    this.makeMeasureTool = function makeMeasureTool(){
         // custom style
         var sketchSymbolizers = {
             "Point": {
