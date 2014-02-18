@@ -12,6 +12,9 @@ pyramid.includes =
 
 sqlalchemy.url = postgresql://${vars:dbuser}:${vars:dbpassword}@${vars:dbhost}:${vars:dbport}/${vars:db}
 
+jsbuild_cfg = ${jsbuild:config}
+jsbuild_root_dir = ${buildout:directory}
+
 tile_date_file = %(here)s/tile_date.yaml
 
 crdppf_wms = ${vars:crdppf_wms}

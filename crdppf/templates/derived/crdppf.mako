@@ -5,23 +5,17 @@
     </script>
 
 % if debug:
-    <!-- GENERAL LIBRARIES -->
-    <script type="text/javascript" src="${request.static_url('crdppf:static/lib/openlayers/lib/OpenLayers.js')}"></script>
-    <script type="text/javascript" src="${request.static_url('crdppf:static/lib/openlayers/lib/Openlayers/Lang/fr.js')}"></script>
-    <script type="text/javascript" src="${request.static_url('crdppf:static/lib/geoext/lib/GeoExt.js')}"></script>
-    <script type="text/javascript" src="${request.static_url('crdppf:static/lib/ext/resources/ux/statusbar/StatusBar.js')}"></script>
-    
-    <!-- CUSTOM CRDPPF STUFF -->
-    <script type="text/javascript" src="${request.static_url('crdppf:static/js/Crdppf/map.js')}"></script>
-    <script type="text/javascript" src="${request.static_url('crdppf:static/js/Crdppf/layerTree.js')}"></script>
-    <script type="text/javascript" src="${request.static_url('crdppf:static/js/Crdppf/themeSelector.js')}"></script>
-    <script type="text/javascript" src="${request.static_url('crdppf:static/js/Crdppf/main.js')}"></script>
-    <script type="text/javascript" src="${request.static_url('crdppf:static/js/Crdppf/searcher/searcher.js')}"></script>
-    <script type="text/javascript" src="${request.static_url('crdppf:static/js/Crdppf/searcher/GroupComboBox.js')}"></script>
-    <script type="text/javascript" src="${request.static_url('crdppf:static/js/Crdppf/searcher/GroupingView.js')}"></script>
-    <script type="text/javascript" src="${request.static_url('crdppf:static/js/Crdppf/legalDocuments.js')}"></script>
-    <script type="text/javascript" src="${request.static_url('crdppf:static/js/Crdppf/measureTools.js')}"></script>
-    <script type="text/javascript" src="${request.static_url('crdppf:static/lib/openlayers.addins/lib/OpenLayers/Control/ScaleBar.js')}"></script>
+    <%!
+    from jstools.merge import Merger
+    %>
+    <%
+    jsbuild_cfg = request.registry.settings.get('jsbuild_cfg')
+    jsbuild_root_dir = request.registry.settings.get('jsbuild_root_dir')
+    %>
+    % for script in Merger.from_fn(jsbuild_cfg.split(), root_dir=jsbuild_root_dir).list_run(['crdppf.js']):
+    <script type="text/javascript" src="${request.static_url(script.replace('/', ':', 1))}"></script>
+    % endfor
+
 % else:
     <script type="text/javascript" src="${request.static_url('crdppf:static/build/crdppf.js')}"></script>
 % endif
