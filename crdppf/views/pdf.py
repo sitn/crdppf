@@ -40,16 +40,14 @@ def create_extract(request):
     log2 = None
 
     if logon is True:
-        now = datetime.now()
-        log.warning("Entering PDF extract, min.sec: %s", str(now.minute)+'.'+str(now.second))
+        log.warning("Entering PDF extract")
         log2 = log
 
     # Create an instance of an extract
     extract = Extract(request, log2)
 
     if logon is True:
-        now = datetime.now()
-        log.warning("Created Extract class, min.sec: %s", str(now.minute)+'.'+str(now.second))
+        log.warning("Created Extract class")
     # Define the extract type if not set in the request parameters
     # defaults to 'standard': no certification, with pdf attachements
     # other values :
@@ -75,40 +73,34 @@ def create_extract(request):
     extract.lang = lang
 
     if logon is True:
-        now = datetime.now()
-        log.warning("Created language init, min.sec: %s", str(now.minute)+'.'+str(now.second))
+        log.warning("Created language init")
     # GET the application configuration parameters such as base paths,
     # working directory and other default parameters
     extract.load_app_config()
 
     if logon is True:
-        now = datetime.now()
-        log.warning("load_app_config(), min.sec: %s", str(now.minute)+'.'+str(now.second))
+        log.warning("load_app_config()")
     # GET the PDF Configuration parameters such as the page layout, margins
     # and text styles
     extract.set_pdf_config()
 
     if logon is True:
-        now = datetime.now()
-        log.warning("set_pdf_config(), min.sec: %s", str(now.minute)+'.'+str(now.second))
+        log.warning("set_pdf_config()")
     # promote often used variables to facilitate coding
     pdfconfig = extract.pdfconfig
 
     if logon is True:
-        now = datetime.now()
-        log.warning("pdfconfig, min.sec: %s", str(now.minute)+'.'+str(now.second))
+        log.warning("pdfconfig")
 
     translations = extract.translations
 
     if logon is True:
-        now = datetime.now()
-        log.warning("translations, min.sec: %s", str(now.minute)+'.'+str(now.second))
+        log.warning("translations")
     # to get vars defined in the buildout  use : request.registry.settings['key']
     pdfconfig.sld_url = extract.sld_url
 
     if logon is True:
-        now = datetime.now()
-        log.warning("extract.sld_url, min.sec: %s", str(now.minute)+'.'+str(now.second))
+        log.warning("extract.sld_url")
 
 # *************************
 # MAIN PROGRAM PART
@@ -200,13 +192,11 @@ def create_extract(request):
     count = 1
     for topic in extract.topics:
         if logon is True:
-            now = datetime.now()
-            log.warning("Begin of topic no %s, topic_id: %s min.sec: %s", count, topic.topicid, str(now.minute)+'.'+str(now.second))
+            log.warning("Begin of topic no %s, topic_id: %s", count, topic.topicid)
         add = extract.add_topic(topic)
 
         if logon is True:
-            now = datetime.now()
-            log.warning("End of topic no %s, min.sec: %s", count, str(now.minute)+'.'+str(now.second))
+            log.warning("End of topic no %s", count)
             count += 1
         # to print the topics in ther right order - this could probably be done in a more elegant way
         extract.topicorder[topic.topicorder] = topic.topicid
@@ -215,30 +205,26 @@ def create_extract(request):
     extract.get_title_page()
 
     if logon is True:
-        now = datetime.now()
-        log.warning("get_title_page, min.sec: %s", str(now.minute)+'.'+str(now.second))
+        log.warning("get_title_page")
 
     # Create the table of content
     #--------------------------------------------------
     extract.get_toc()
 
     if logon is True:
-        now = datetime.now()
-        log.warning("get_toc, min.sec: %s", str(now.minute)+'.'+str(now.second))
+        log.warning("get_toc")
     # Create the list of appendices
     #--------------------------------------------------
     extract.Appendices()
 
     if logon is True:
-        now = datetime.now()
-        log.warning("Appendices, min.sec: %s", str(now.minute)+'.'+str(now.second))
+        log.warning("Appendices")
 
     count = 1
     for topic in extract.topicorder.values():
         extract.write_thematic_page(topic)
         if logon is True:
-            now = datetime.now()
-            log.warning("write_thematic_page, page n° %s min.sec: %s", count, str(now.minute)+'.'+str(now.second))
+            log.warning("write_thematic_page, page n° %s", count)
         count += 1
     # Set the page number once all the pages are printed
     for key in extract.pages.keys():
@@ -247,8 +233,7 @@ def create_extract(request):
     extract.output(pdfconfig.pdfpath+pdfconfig.pdfname+'.pdf','F')
 
     if logon is True:
-        now = datetime.now()
-        log.warning("File created, min.sec: %s", str(now.minute)+'.'+str(now.second))
+        log.warning("File created")
 
     path = extract.appconfig.legaldocsdir + str('pas_disponible.pdf')
     exception = extract.appconfig.legaldocsdir + str('exception.pdf')
@@ -290,8 +275,7 @@ def create_extract(request):
 
         merger.write(pdfconfig.pdfpath+pdfconfig.pdfname+'.pdf')
         if logon is True:
-            now = datetime.now()
-            log.warning("Appendices, min.sec: %s", str(now.minute)+'.'+str(now.second))
+            log.warning("Merge appendices")
 
     extract.clean_up_temp_files()
 

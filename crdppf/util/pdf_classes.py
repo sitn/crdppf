@@ -571,14 +571,12 @@ class Extract(FPDF):
     def add_layer(self, layer):
 
         if self.log:
-            now = datetime.now()
-            self.log.warning("Running get feature,  min.sec: %s", str(now.minute)+'.'+str(now.second))
+            self.log.warning("Running get feature")
 
         results = get_features_function(self.featureInfo['geom'],{'layerList':layer.layername,'id':self.featureid,'translations':self.translations})
 
         if self.log:
-            now = datetime.now()
-            self.log.warning("Done get feature,  min.sec: %s", str(now.minute)+'.'+str(now.second))
+            self.log.warning("Done get feature")
 
         if results :
             self.layerlist[str(layer.layerid)]={'layername':layer.layername,'features':[]}
@@ -688,8 +686,7 @@ class Extract(FPDF):
         wmsBBOX, wmsbbox = self.get_wms_bbox()
 
         if self.log:
-            now = datetime.now()
-            self.log.warning("DONE get_wms_bbox, min.sec: %s", str(now.minute)+'.'+str(now.second))
+            self.log.warning("DONE get_wms_bbox")
 
         # temp var to hold the parameters of the legend
         legend_layers = []
@@ -709,15 +706,13 @@ class Extract(FPDF):
 
             self.set_wms_config(topicid)
             if self.log:
-                now = datetime.now()
-                self.log.warning("DONE set_wms_config, min.sec: %s", str(now.minute)+'.'+str(now.second))
+                self.log.warning("DONE set_wms_config")
         else:
             # sets the wms_url to call localhost
             self.set_wms_config(topicid)
 
             if self.log:
-                now = datetime.now()
-                self.log.warning("DONE set_wms_config, min.sec: %s", str(now.minute)+'.'+str(now.second))
+                self.log.warning("DONE set_wms_config")
 
             layers = baselayers
             # List with the base layers of the map - the restriction layers get added to the list
@@ -750,10 +745,9 @@ class Extract(FPDF):
             sld_body = urllib.urlencode(self.wms_get_styles)
 
             if self.log:
-                now = datetime.now()
-                self.log.warning("WMS REQUEST, min.sec: %s", str(now.minute)+'.'+str(now.second))
+                self.log.warning("WMS REQUEST")
                 self.log.warning("on URL: %s", self.wms_url)
-                self.log.warning('Doing layer: %s',restriction_layer.topicfk)
+                self.log.warning('Doing layer: %s', restriction_layer.topicfk)
 
             if restriction_layer.topicfk in self.appconfig.ch_legend_layers.keys():
                 if self.proxy_enabled == True:
@@ -765,8 +759,7 @@ class Extract(FPDF):
                 unset_proxy()
 
             if self.log:
-                now = datetime.now()
-                self.log.warning("DONE WMS REQUEST, min.sec: %s", str(now.minute)+'.'+str(now.second))
+                self.log.warning("DONE WMS REQUEST")
 
             dom = parseString(content)
             rules = dom.getElementsByTagName("Rule")
@@ -793,7 +786,7 @@ class Extract(FPDF):
 
             if self.log:
                 now = datetime.now()
-                self.log.warning("Applying SLD, min.sec: %s", str(now.minute)+'.'+str(now.second))
+                self.log.warning("Applying SLD")
 
             if 'SLD' in self.wms_get_legend:
                 del self.wms_get_legend['SLD']
@@ -809,8 +802,7 @@ class Extract(FPDF):
                 pass
 
             if self.log:
-                now = datetime.now()
-                self.log.warning("DONE Applying SLD, min.sec: %s", str(now.minute)+'.'+str(now.second))
+                self.log.warning("DONE Applying SLD")
 
             if sld_legendfile and topicid in [u'73','73']:
                 legend_sld = self.sld_url+self.filename+str('_')+str(restriction_layer.layername)+'_legend_sld.xml'
@@ -831,8 +823,7 @@ class Extract(FPDF):
             legend.close()
 
             if self.log:
-                now = datetime.now()
-                self.log.warning("DONE SLD on WMS, min.sec: %s", str(now.minute)+'.'+str(now.second))
+                self.log.warning("DONE SLD on WMS")
 
         self.topiclist[topicid]['topiclegend'] = self.topiclegenddir+str(topicid)+'_topiclegend.pdf'
 
@@ -840,8 +831,7 @@ class Extract(FPDF):
         imgformat = 'image/png; mode=8bit'
         
         if self.log:
-            now = datetime.now()
-            self.log.warning("WMS, min.sec: %s", str(now.minute)+'.'+str(now.second))
+            self.log.warning("WMS")
 
         if topicid in self.appconfig.ch_topics:
             layers = baselayers
