@@ -33,7 +33,7 @@ port = 6543
 # Begin logging configuration
 
 [loggers]
-keys = root, crdppf, sqlalchemy
+keys = root, crdppf
 
 [handlers]
 keys = console
