@@ -12,13 +12,23 @@ pyramid.includes =
 
 sqlalchemy.url = postgresql://${vars:dbuser}:${vars:dbpassword}@${vars:dbhost}:${vars:dbport}/${vars:db}
 
+jsbuild_cfg = ${jsbuild:config}
+jsbuild_root_dir = ${buildout:directory}
+
 tile_date_file = %(here)s/tile_date.yaml
 
 crdppf_wms = ${vars:crdppf_wms}
+chfs_baseurl = ${vars:chfs_baseurl}
+ch_wms = ${vars:ch_wms}
 default_language = ${vars:default_language}
 fulltextsearch_url = ${vars:fulltextsearch_url}
 mapproxyurl = ${vars:mapproxyurl}
 app.cfg = %(here)s/config_pdf.yaml
+
+logon = ${vars:logon}
+
+proxy_enabled = ${vars:proxy_enabled}
+proxy_conf = http://${vars:proxy_user}:${vars:proxy_pass}@${vars:proxy_server}:${vars:proxy_port}
 
 [server:main]
 use = egg:waitress#main
@@ -28,7 +38,7 @@ port = 6544
 # Begin logging configuration
 
 [loggers]
-keys = root, crdppf, sqlalchemy
+keys = root, crdppf
 
 [handlers]
 keys = console

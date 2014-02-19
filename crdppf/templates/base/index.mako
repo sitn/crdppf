@@ -4,6 +4,7 @@
 "http://www.w3.org/TR/html4/strict.dtd">
 <html>
 <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf8" />
     <title>Cadastre des restrictions de droit public à la propriété foncière - Canton de Neuchâtel</title>
     <link href="http://www.ne.ch/neat/site/favico.ico" rel="shortcut icon" type="image/x-icon" />
     <link rel="stylesheet" href="${request.static_url('crdppf:static/lib/ext/resources/css/ext-all.css')}" type="text/css" media="screen" charset="utf-8" />
@@ -41,7 +42,8 @@
                 <a class="banner2" href="http://sitn.ne.ch/" target="_blank">Géoportail</a> - 
                 <a class="banner2" href="http://sitn.ne.ch/mobile" target="_blank">Géoportail mobile</a> - 
                 <a class="banner2" href="http://sitn.ne.ch/sitn_php/divers/liens_cartographiques.html" target="_blank">Liens cartographiques</a> - 
-                <a class="banner2" href="mailto:sitn@ne.ch?subject=Nouveau Geoportail SITN" target="_blank">Contact</a> - 
+                <a class="banner2" href="mailto:sitn@ne.ch?subject=Projet pilote CRDPPF" target="_blank">Contact</a> - 
+                <a class="banner2" style="color:#990000;" href="mailto:francois.voisard@ne.ch?subject=CRDPPF - Problème à signaler" target="_blank">Signaler un problème</a> - 
                 <a class="banner2" href="" id="frLink">Fr</a> /
                 <a class="banner2" href="" id="deLink">De</a>
         </span>

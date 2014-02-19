@@ -8,7 +8,7 @@
  * @requires OpenLayers/Control/OverViewMap.js
  * @requires OpenLayers/Control/PanZoomBar.js
  * @requires OpenLayers/Control/GetFeature.js
- * @requires OpenLayers/Control/ScaleBar.js
+ * @requires OpenLayers/Control/ScaleLine.js
  * @requires OpenLayers/Control/Measure.js
  * @requires OpenLayers/Handler/Path.js
  * @requires OpenLayers/Handler/Polygon.js
@@ -124,14 +124,16 @@ var setInfoControl = function setInfoControl(){
                                     featureClass = jsonData[j].attributes.featureClass;
                                     html = '';
                                     for (var value in jsonData[j].attributes){
-                                        html += '<p class=featureAttributeStyle><b>' + labels[value] + ' : </b>' + jsonData[j].attributes[value] +'</p>' ;
+                                        if (value !== 'geomType' && value !=='theme' && value!=='codegenre' && value!=='intersectionMeasure'){
+                                            html += '<p class=featureAttributeStyle><b>' + labels[value] + ' : </b>' + jsonData[j].attributes[value] +'</p>' ;
+                                        }
                                     }
                                     html += '';
                                     // create 1 node for each restriction (level 2)
                                     var sameLayerNode = new Ext.tree.TreeNode({
                                         singleClickExpand: true,
                                         attributes: jsonData[j],
-                                        text: labels.restrictionFoundTxt + (j+1) + String(jsonData[j].data.intersectionMeasure),
+                                        text: labels.restrictionFoundTxt + (j+1) + ' : ' + String(jsonData[j].data.intersectionMeasure),
                                         draggable:false,
                                         leaf: false,
                                         expanded: false,
@@ -248,6 +250,12 @@ function makeMap(mapOptions){
         );
     intersect.id='intersectLayer';
     
+    var scalebar = new OpenLayers.Control.ScaleLine({
+        bottomOutUnits:'',
+        bottomInUnits: '',
+        maxWidth: 200
+    });
+    
     // THE OL map object
     var map = new OpenLayers.Map({
         projection: new OpenLayers.Projection('EPSG:21781'),
@@ -263,7 +271,7 @@ function makeMap(mapOptions){
                 panIcons: false
             }),
             new OpenLayers.Control.Navigation(),
-            new OpenLayers.Control.ScaleBar()            
+            scalebar            
         ]
     });   
 
@@ -274,8 +282,8 @@ function makeMap(mapOptions){
                 var lonlat = map.getLonLatFromPixel(pixel);
                 OpenLayers.Util.getElement(mapOptions.divMousePosition).innerHTML = labels.olCoordinates + ' (ch1903) - Y : ' + Math.round(lonlat.lon) + '  X : ' + Math.round(lonlat.lat) + 'm';
     });
+    
     // add base layers & selection layers
-
     map.addLayers([intersect,select, layer]);
 
     // create an overview map control and customize it
@@ -346,19 +354,31 @@ var setOverlays = function() {
     }
     // add new overlays
     if(overlaysList.length > 0){
+        var loadMask = new Ext.LoadMask(themeSelector.body, {msg: labels.layerLoadingMaskMsg});
         var overlays = new OpenLayers.Layer.WMS(
-                layerName, 
-                Crdppf.wmsUrl,
-                {
-                    layers: overlaysList,
-                    format: 'image/png',
-                    singleTile: true,
-                    transparent: 'true'
-                }, {
-                    singleTile: true,
-                    isBaseLayer: false
-                }
-            );
+            layerName, 
+            Crdppf.wmsUrl,
+            {
+                layers: overlaysList,
+                format: 'image/png',
+                singleTile: true,
+                transparent: 'true'
+            },{
+                singleTile: true,
+                isBaseLayer: false
+            }
+        );
+        
+        // Listen to layers events and show loading mask whenever necessary
+        overlays.events.register("loadstart", overlays, function() {
+            loadMask.show();
+        });        
+        overlays.events.register("loadend", overlays, function() {
+            loadMask.hide();
+        });        
+        overlays.events.register("tileloaded", overlays, function() {
+            loadMask.show();
+        });
         overlays.id = 'overlayLayer';
         this.map.addLayer(overlays);
         this.map.raiseLayer(this.map.getLayersBy('id', 'selectionLayer')[0], this.map.layers.length);

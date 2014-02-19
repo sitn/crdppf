@@ -8,9 +8,3 @@ def globalsjs(request):
     d = {}
     return d
 
-
-
-#~ @view_config(renderer = '/derived/crdppf.mako')
-#~ def crdppf(request):
-
-    #~ return request

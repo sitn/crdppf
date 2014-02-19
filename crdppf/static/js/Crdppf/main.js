@@ -22,15 +22,37 @@ Ext.onReady(function() {
     var lang = ''; // The current session language
     var translations = {}; // The interface translations
     var baseLayers = {};
-    var parameters = {}
-    
+    var parameters = {};
     // We need to ensure all json data are recieved by the client before starting the application
     var loadingCounter = 0;
     
     var triggerFunction = function(counter) {
         if (counter == 4) {
-            Crdppf.init_main(lang, parameters, baseLayers, translations);
+            Ext.MessageBox.buttonText.yes = translations.disclaimerAcceptance;
+            Ext.MessageBox.buttonText.no = translations.diclaimerRefusal;
+            var dlg = Ext.MessageBox.getDialog();
+            var buttons = dlg.buttons;
+            for (var i = 0; i < buttons.length; i++){
+                 buttons[i].addClass('msgButtonStyle'); 
+            }
+            
+            Ext.Msg.show({
+               title: translations.disclaimerWindowTitle,
+               msg: translations.disclaimerMsg,
+               buttons: Ext.Msg.YESNO,
+               fn: redirectAfterDisclaimer,
+               animEl: 'elId',
+               icon: Ext.MessageBox.WARNING
+            });
         }
+    };
+    
+    var redirectAfterDisclaimer = function(userChoice){
+        if (userChoice == 'yes'){
+            Crdppf.init_main(lang, parameters, baseLayers, translations);
+        } else {
+            window.open(translations.disclaimerRedirectUrl, "_self");
+        }  
     };
 
     // Get the current session language
@@ -45,7 +67,7 @@ Ext.onReady(function() {
         },
         method: 'POST',
         failure: function () {
-            Ext.Msg.alert('Error', 'The request failed, please contact the administrator!');
+            Ext.Msg.alert(labels.serverErrorMessage);
         }
     }); 
     
@@ -59,10 +81,11 @@ Ext.onReady(function() {
         },
         method: 'POST',
         failure: function () {
-            Ext.Msg.alert('Error', 'The request failed, please contact the administrator!');
+            Ext.Msg.alert(labels.serverErrorMessage);
         }
     });
 
+    // Load base layers configuration
     Ext.Ajax.request({
         url: Crdppf.getBaselayerConfigUrl,
         success: function(response) {
@@ -72,23 +95,30 @@ Ext.onReady(function() {
         },
         method: 'POST',
         failure: function () {
-            Ext.Msg.alert('Error', 'The request failed, please contact the administrator!');
+            Ext.Msg.alert(labels.serverErrorMessage);
         }
     });     
     
-    // Load the interface's parameters
+    // Load the interface configuration
     Ext.Ajax.request({
         url: Crdppf.getInterfaceConfigUrl,
         success: function(response) {
             parameters = Ext.decode(response.responseText);
-            // init the interface
-            OpenLayers.Util.extend(OpenLayers.Lang.fr,translations);
+            if (lang !== '' && lang == 'Fr'){
+                OpenLayers.Util.extend(OpenLayers.Lang.fr,translations);
+            } else if (lang !== '' && lang == 'De') {
+                OpenLayers.Util.extend(OpenLayers.Lang.de,translations);
+            } else if (lang !== '' && lang == 'en') {
+                OpenLayers.Util.extend(OpenLayers.Lang.en,translations);
+            } else if (lang !== '') {
+                OpenLayers.Util.extend(OpenLayers.Lang.fr,translations);
+            }
             loadingCounter += 1;
             triggerFunction(loadingCounter);        
         },
         method: 'POST',
         failure: function () {
-            Ext.Msg.alert('Error', 'The request failed, please contact the administrator!');
+            Ext.Msg.alert(labels.serverErrorMessage);
         }
     }); 
 });
@@ -155,7 +185,11 @@ Crdppf.init_main = function(lang, parameters, baseLayers, translations) {
         }
     });
 
-    var measureControlO = new Crdppf.MeasureTool();
+    var measureLabelBox = new Ext.form.Label({
+        cls: 'measureOutput'
+    });
+
+    var measureControlO = new Crdppf.MeasureTool(map, measureLabelBox);
     measureControlO.makeMeasureTool();
     
     var lineMeasureButton = new Ext.Button({
@@ -224,6 +258,7 @@ Crdppf.init_main = function(lang, parameters, baseLayers, translations) {
             click: function (){
                 if(select.features.length == 1){
                     var chooseExtract = new Ext.Window({
+                        id: 'extractChoiceWindow',
                         title: labels.chooseExtractTypeMsg,
                         width: 300,
                         height: 110,
@@ -236,6 +271,9 @@ Crdppf.init_main = function(lang, parameters, baseLayers, translations) {
                                 text: labels.chooseExtractMsg,
                                 cls: 'textExtractCls'
                             },{
+                                xtype: 'label',
+                                id: 'pdfLoadDiv'
+                            },{
                                 xtype: 'spacer',
                                 height: 5
                             },{
@@ -244,7 +282,7 @@ Crdppf.init_main = function(lang, parameters, baseLayers, translations) {
                                 fieldLabel: 'Auto Layout',
                                 items: [
                                     {boxLabel: labels.reducedExtract, name: 'rb-auto', inputValue: 'reduced',  cls: 'radioExtractCls', checked: true},
-                                    {boxLabel: labels.extendedExtract, name: 'rb-auto', inputValue: 'certified',  cls: 'radioExtractCls'}
+                                    {boxLabel: labels.extendedExtract, name: 'rb-auto', inputValue: 'standard',  cls: 'radioExtractCls'}
                                 ]
                             },{
                                 xtype: 'buttongroup',
@@ -253,17 +291,39 @@ Crdppf.init_main = function(lang, parameters, baseLayers, translations) {
                                 items: [
                                     {
                                         xtype: 'button',
-                                        text: labels.generateExtract,                                        
+                                        text: labels.generateExtract,  
+                                        height: 20,
+                                        width: 100,    
+                                        cls: 'msgButtonStyle',
                                         listeners: {
                                             click: function(){
-                                                urlToOpen = Crdppf.printUrl + '?id=' + select.features[0].attributes.idemai;
-                                                selectedRadio = Ext.getCmp('extractRadioGroup').getValue();
+                                                var pdfMask = new Ext.LoadMask(Ext.getCmp('extractChoiceWindow').body, {msg: labels.pdfLoadMessage});
+                                                pdfMask.show();
+                                                var urlToOpen = Crdppf.printUrl + '?id=' + select.features[0].attributes.idemai;
+                                                var selectedRadio = Ext.getCmp('extractRadioGroup').getValue();
                                                 urlToOpen += '&type=' + selectedRadio.inputValue;
-                                                window.open(urlToOpen);
+                                                
+                                                Ext.Ajax.request({
+                                                    url: urlToOpen,
+                                                    success: function(response) {
+                                                        var filename = response.getResponseHeader('Content-Disposition').split('filename=')[1];
+                                                        var outputUrl = Crdppf.baseUrl + 'static/public/pdf/' + filename;
+                                                        window.open(outputUrl);
+                                                        pdfMask.hide();                                                        
+                                                    },
+                                                    method: 'POST',
+                                                    timeout : 300000,
+                                                    failure: function () {
+                                                        Ext.Msg.alert(labels.serverErrorMessage);
+                                                    }
+                                                }); 
                                             }
                                         }
                                     },{
                                         xtype: 'button',
+                                        cls: 'msgButtonStyle',
+                                        height: 20,
+                                        width: 100,    
                                         text: labels.cancelExtract,
                                         listeners: {
                                             click: function(){
@@ -409,10 +469,7 @@ Crdppf.init_main = function(lang, parameters, baseLayers, translations) {
         zoomInButton,
         zoomOutButton,
         measureToolsMenu,
-        {
-            xtype: 'label',
-            html: '<div id="measureOuput"></div>'
-        }
+        measureLabelBox
         ]
    });
 
@@ -522,8 +579,8 @@ Crdppf.init_main = function(lang, parameters, baseLayers, translations) {
         map: MapO.map,
         cls:'legendPanelCls',
         title: labels.legendPanelTitle,
-        height: 400,
         autoScroll: true,
+        flex: 1.0,
         defaults: {
             style: 'padding:5px',
             baseParams: {
@@ -535,7 +592,8 @@ Crdppf.init_main = function(lang, parameters, baseLayers, translations) {
 
     infoPanel = new Ext.Panel({
         header: false,
-        width: 250,
+        layout: 'vbox',
+        width: 300,
         region: 'east',
         title: labels.infoTabLabel,
         collapseMode: 'mini',
@@ -543,6 +601,9 @@ Crdppf.init_main = function(lang, parameters, baseLayers, translations) {
         cls: 'infoPanelCls',
         collapsible: true,
         split: true,
+        layoutConfig: {
+            align: 'stretch'
+        },
         items:[featureTree, legendPanel]
     });
 

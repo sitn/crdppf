@@ -18,6 +18,7 @@ buildout_olivier.cfg
 buildout_nesitnd1.cfg
 buildout_michael.cfg
 buildout_francois.cfg
+buildout_nesitn2.cfg
 crdppf/static/public/temp_files/*.png
 crdppf/static/public/temp_files/*.xml
 crdppf/static/public/pdf/*.pdf

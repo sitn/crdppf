@@ -79,7 +79,7 @@ body {
     padding-left: 30px !important;
 }
 
-#measureOuput{
+.measureOutput {
     color: red;
     margin-left: 10px;
     font-weight: bold;
@@ -346,3 +346,19 @@ body {
     margin-left: 10px;
 }
 
+/* OL ScaleLine */
+.olControlScaleLineTop{
+    color: red; 
+    font-size: 10px;
+    font-weight: bold;
+}
+
+.msgButtonStyle  {  
+    padding-left: 3px !important;
+    border: 1px #CCCCE0 solid !important;
+    margin-right: 3px !important;
+}
+
+.msgButtonStyle :hover {
+    color: gray !important;
+}

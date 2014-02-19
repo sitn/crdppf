@@ -17,6 +17,18 @@ from crdppf.models import *
 
 from geoalchemy import WKBSpatialElement
 
+def geom_from_coordinates(coords):
+    """ Function to convert a list of coordinates in a geometry
+    """
+    if (len(coords) > 1 and len(coords) % 2 == 0):
+        geom = splPolygon(coords)
+    elif (len(coords) > 0 and len(coords) % 2 == 0):
+        geom = splPoint(coords)
+    else:
+        geom = None
+
+    return geom
+
 def get_translations(lang):
     """Loads the translations for all the multilingual labels
     """
@@ -56,7 +68,7 @@ def validate_XML(xmlparser, xmlfilename):
 
     return xmlvalid
 
-def get_XML(geometry):
+def get_XML(geometry, topicid):
     """Gets the XML extract of the federal data feature service for a given topic
         and validates it against the schema.
     """
@@ -67,18 +79,33 @@ def get_XML(geometry):
     # geometry of the feature to call the feature server for
     feature = geometry
     geomtype = 'geometryType=esriGeometryEnvelope'
-    layers = 'all:ch.bazl.sicherheitszonenplan.oereb'
+    #layers = 'all:ch.bazl.sicherheitszonenplan.oereb'
     bbox = 'mapExtent=671164.31244,253770,690364.31244,259530'
     mapparams = 'imageDisplay=1920,576,96'
     tolerance=5
     format='interlis'
-
-    sampleurl = 'https://api3.geo.admin.ch/rest/services/api/MapServer/identify?geometry=515000,180000,580000,230000&geometryType=esriGeometryEnvelope&layers=all:ch.bazl.sicherheitszonenplan.oereb&mapExtent=515000,180000,580000,230000&imageDisplay=1920,576,96&tolerance=5&geometryFormat=interlis'
-
-    #xmlurl = server+url+'geometry='+feature+geomtype+'layers='layers+
+    xml_layers = {
+        '103':'ch.bazl.projektierungszonen-flughafenanlagen.oereb',
+        '108':'ch.bazl.sicherheitszonenplan.oereb',
+        '119':'ch.bav.kataster-belasteter-standorte-oev.oereb'
+        }
+    
+    sampleurl = 'https://api3.geo.admin.ch/rest/services/api/MapServer/identify?geometry=515000,180000,580000,230000&geometryType=esriGeometryEnvelope&layers=all:'+xml_layers[topicid]+'&mapExtent=515000,180000,580000,230000&imageDisplay=1920,576,96&tolerance=5&geometryFormat=interlis'
+ 
     # Call the feature service URL wich sends back an XML Interlis 2.3 file in the OEREB Transfer structure
     response = urllib.urlopen(sampleurl)
     content = response.read()
+    
+    # trim all whitespace and newlines
+    content_lines = content.splitlines()
+    count = 0
+    for line in content_lines:
+        content_lines[count] = line.strip()
+        count += 1
+    content = ''.join(content_lines)
+    
+    # validate XML
+    
     xmldoc = parseString(content).firstChild
     # extract the datasection from the response
     datasection = xmldoc.getElementsByTagName("DATASECTION")[0]
@@ -201,27 +228,36 @@ def get_XML(geometry):
             'competentAuthority':xtfgeom.getElementsByTagName("ZustaendigeStelle")[0].getAttributeNode("REF").value,
             'legalstate':xtfgeom.getElementsByTagName("Rechtsstatus")[0].firstChild.data,
             'publishedsince':xtfgeom.getElementsByTagName("publiziertAb")[0].firstChild.data,
-            'metadata':xtfgeom.getElementsByTagName("MetadatenGeobasisdaten")[0].firstChild.data,
+            #'metadata':xtfgeom.getElementsByTagName("MetadatenGeobasisdaten")[0].firstChild.data,
             'geom':geom.wkt
             })
 
     for geometry in geometries:
-        securityzone = CHAirportSecurityZones()
-        #securityzone.idobj = geometry['restrictionid']
-        securityzone.theme = u'Plan de la zone de sécurité des aéroports' # to replace by translations['CHAirportSecurityZonesThemeLabel']
-        securityzone.codegenre = None
-        securityzone.teneur = u'Limitation de la hauteur des bâtiments et autres obstacles' # to replace by translations['CHAirportSecurityZonesContentLabel']
+        if topicid ==  '103':
+            xml_model = CHAirportProjectZones()
+            xml_model.theme = u'Zones réservées des installations aéroportuaires' # to replace by translations['CHAirportSecurityZonesThemeLabel']
+            xml_model.teneur = u'Limitation de la hauteur des bâtiments et autres obstacles' # to replace by translations['CHAirportSecurityZonesContentLabel']
+        elif topicid ==  u'108':
+            xml_model = CHAirportSecurityZones()
+            xml_model.theme = u'Plan de la zone de sécurité des aéroports' # to replace by translations['CHAirportSecurityZonesThemeLabel']
+            xml_model.teneur = u'Limitation de la hauteur des bâtiments et autres obstacles' # to replace by translations['CHAirportSecurityZonesContentLabel']
+        elif topicid ==  u'119':
+            xml_model = CHPollutedSitesPublicTransports()
+            xml_model.theme = u'Cadastre des sites pollués - domaine des transports publics' # to replace by translations['CHAirportSecurityZonesThemeLabel']
+            xml_model.teneur = u'Sites pollué' # to replace by translations['CHAirportSecurityZonesThemeLabel']
+
+        xml_model.codegenre = None
         if geometry['legalstate'] ==  u'inKraft':
-            securityzone.statutjuridique = u'En vigueur' # to replace by translations['legalstateLabelvalid']
+            xml_model.statutjuridique = u'En vigueur' # to replace by translations['legalstateLabelvalid']
         else:
-            securityzone.statutjuridique = u'En cours d\'approbation' # to replace by translations['legalstateLabelmodification']
+            xml_model.statutjuridique = u'En cours d\'approbation' # to replace by translations['legalstateLabelmodification']
         if geometry['publishedsince']:
-            securityzone.datepublication = geometry['publishedsince']
+            xml_model.datepublication = geometry['publishedsince']
         else:
-            securityzone.datepublication = None
+            xml_model.datepublication = None
         # It is very important to set the SRID if it's not the default EPSG:4326 !!
-        securityzone.geom = WKTSpatialElement(geometry['geom'], 21781)
-        DBSession.add(securityzone)
+        xml_model.geom = WKTSpatialElement(geometry['geom'], 21781)
+        DBSession.add(xml_model)
 
     DBSession.flush()
     
@@ -280,14 +316,15 @@ def get_feature_info(request, translations):
     parcelInfo['nomcom'] = queryresult2.comnom
     parcelInfo['nufeco'] = queryresult2.nufeco
     parcelInfo['centerX'], parcelInfo['centerY'] = DBSession.scalar(queryresult.geom.centroid.x),DBSession.scalar(queryresult.geom.centroid.y)
-    parcelInfo['BBOX'] = get_bbox(DBSession.scalar(queryresult.geom.envelope.wkt))
+    parcelInfo['BBOX'] = get_bbox_from_geometry(DBSession.scalar(queryresult.geom.envelope.wkt))
 
     # the get_print_format function is not needed any longer as the paper size has been fixed to A4 by the cantons
+    # but we keep the code because the decision will be revoked 
     # parcelInfo['printFormat'] = get_print_format(parcelInfo['BBOX'])
 
     return parcelInfo
 
-def get_bbox(geometry):
+def get_bbox_from_geometry(geometry):
     """Returns the BBOX coordinates of an rectangle. Input : rectangle; output : bbox
        coordListStr : String with the list of the X,Y coordinates of the bounding box
        X,Y : coordinates in Swiss national projection

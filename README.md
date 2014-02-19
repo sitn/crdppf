@@ -23,11 +23,16 @@ Bootstrap and buildout
         http://pypi.camptocamp.net/distribute-0.6.22_fix-issue-227/ --setup-source \
         http://pypi.camptocamp.net/distribute-0.6.22_fix-issue-227/distribute_setup.py
 
-Create your own buildout file
+Create your own buildout file by:
+* Copy-paste `buildout.cfg`
+* Rename the new file `buildout_<user>.cfg`
+* Open this file in a text editor
+* Erase all sections except the `[vars`] section
+* In the `[vars]` section, delete all lines which do not contain `overwrite_me`
 
-    $ buildout_<user>.cfg
-
-Overwrite all the vars which equal to "overwrite"
+Adapt the `overwrite_me` values to your environment:
+* `mapproxyurl` has to be a single or a list of WMTS URLs (like 'http://wmts1', 'http://wmts2', ...)
+* If you do not set `proxy_enabled` to True, then you do not need to set the four remaining (`proxy_user`, `proxy_pass`, `proxy_server`, `proxy_port`).
 
 Run buildout
 

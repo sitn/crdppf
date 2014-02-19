@@ -171,6 +171,8 @@ class CHAirportProjectZones(GeoInterface,Base):
     geom = GeometryColumn(Geometry(2,srid=21781))
     # ch.bazl.projektierungszonen-flughafenanlagen.oereb
 
+GeometryDDL(CHAirportProjectZones.__table__)
+
 #~ class Corridors(GeoInterface,Base):
     #~ __tablename__ = 'clo_couloirs'
     #~ __table_args__ = {'schema': 'amenagement', 'autoload': True}
@@ -190,6 +192,15 @@ class PollutedSites(GeoInterface,Base):
     __table_args__ = {'schema': 'crdppf', 'autoload': True}
     idobj = Column(Integer, primary_key=True)
     geom =GeometryColumn(Geometry(2,srid=21781))
+    
+class CHPollutedSitesPublicTransports(GeoInterface,Base):
+    __tablename__ = 'r119_bav_belastete_standorte_oev'
+    __table_args__ = {'schema': 'crdppf', 'autoload': True}
+    idobj = Column(Integer, primary_key=True)
+    geom =GeometryColumn(Geometry(2,srid=21781))
+
+GeometryDDL(CHPollutedSitesPublicTransports.__table__)
+# ch.bav.kataster-belasteter-standorte-oev.oereb
 
 # models for the topic noise
 

@@ -29,7 +29,9 @@ setup(
         'fpdf',
         'httplib2',
         'pil',
-        'pyyaml'
+        'pyyaml',
+        'pypdf2',
+        'JSTools'
     ],
     packages=find_packages(exclude=['ez_setup']),
     include_package_data=True,
