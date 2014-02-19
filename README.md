@@ -29,6 +29,12 @@ Create your own buildout file by:
 * Open this file in a text editor
 * Erase all sections except the `[vars`] section
 * In the `[vars]` section, delete all lines which do not contain `overwrite_me`
+* At the top of the file, add the extend instruction:
+
+```
+[buildout]
+extends = buildout.cfg
+```
 
 Adapt the `overwrite_me` values to your environment:
 * `mapproxyurl` has to be a single or a list of WMTS URLs (like 'http://wmts1', 'http://wmts2', ...)
