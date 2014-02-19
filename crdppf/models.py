@@ -28,6 +28,8 @@ from geoalchemy import (
 
 from crdppf import db_config
 
+srid_ = db_config['srid']
+
 Base = sqlahelper.get_base()
 
 # Models for the configuration of the application
@@ -96,34 +98,46 @@ class Themes(Base):
 
 # DATA SECTION
 
-if db_config['tables']['cadastre']['exists']:
+if 'cadastre' in db_config['tables']:
+    table_def_ = db_config['tables']['cadastre']
     class Cadastre(GeoInterface,Base):
-        __tablename__ = db_config['tables']['cadastre']['tablename']
-        __table_args__ = {'schema': db_config['tables']['cadastre']['schema'], 'autoload': True}
-        idobj = Column(Integer, primary_key=True)
-        geom =GeometryColumn(Geometry(2,srid=21781))
+        __tablename__ = table_def_['tablename']
+        __table_args__ = {'schema': table_def_['schema'], 'autoload': True}
+        idobj = Column(table_def_['att_id'], Integer, primary_key=True)
+        numcad = Column(table_def_['att_cadastre_number'], Integer)
+        numcom = Column(table_def_['att_commune_number'], Integer)
+        comnom = Column(table_def_['att_commune_name'], String)
+        cadnom = Column(table_def_['att_cadastre_name'], String)
+        nufeco = Column(table_def_['att_federal_number'], Integer)
+        geom =GeometryColumn(Geometry(2, srid=srid_))
 else:
     class Cadastre():
         pass
 
-if db_config['tables']['property']['exists']:
-    class ImmeublesCanton(GeoInterface,Base):
-        __tablename__ = db_config['tables']['property']['tablename']
-        __table_args__ = {'schema': db_config['tables']['property']['schema'], 'autoload': True}
-        noobj = Column(Integer, primary_key=True)
-        geom =GeometryColumn(Geometry(2,srid=21781))
+if 'property' in db_config['tables']:
+    table_def_ = db_config['tables']['property']
+    class Property(GeoInterface,Base):
+        __tablename__ = table_def_['tablename']
+        __table_args__ = {'schema': table_def_['schema'], 'autoload': True}
+        noobj = Column(table_def_['att_id'], Integer, primary_key=True)
+        idemai = Column(table_def_['att_id_property'], String)
+        nummai = Column(table_def_['att_property_number'], String)
+        typimm = Column(table_def_['att_property_type'], String)
+        geom =GeometryColumn(Geometry(2, srid=srid_))
 else:
-    class ImmeublesCanton():
+    class Property():
         pass
 
-if db_config['tables']['local_names']['exists']:
-    class NomLocalLieuDit(GeoInterface,Base):
-        __tablename__ = db_config['tables']['local_names']['tablename']
-        __table_args__ = {'schema': db_config['tables']['local_names']['schema'], 'autoload': True}
-        idcnlo = Column(String(30), primary_key=True)
-        geom =GeometryColumn(Geometry(2,srid=21781))
+if 'local_names' in db_config['tables']:
+    table_def_ = db_config['tables']['local_names']
+    class LocalName(GeoInterface,Base):
+        __tablename__ = table_def_['tablename']
+        __table_args__ = {'schema': table_def_['schema'], 'autoload': True}
+        idcnlo = Column(table_def_['att_id'], String, primary_key=True)
+        nomloc = Column(table_def_['att_local_name'], String)
+        geom =GeometryColumn(Geometry(2, srid=srid_))
 else:
-    class NomLocalLieuDit():
+    class LocalName():
         pass
     
 # STOP models used for static extraction and general models
@@ -136,31 +150,31 @@ class PrimaryLandUseZones(GeoInterface,Base):
     __table_args__ = {'schema': db_config['schema'], 'autoload': True}
     __tablename__ = 'r73_affectations_primaires'
     idobj = Column(Integer, primary_key=True)
-    geom =GeometryColumn(Geometry(2,srid=21781))
+    geom =GeometryColumn(Geometry(2,srid=srid_))
 
 class SecondaryLandUseZones(GeoInterface,Base):
     __table_args__ = {'schema': db_config['schema'], 'autoload': True}
     __tablename__ = 'r73_zones_superposees'
     idobj = Column(Integer, primary_key=True)
-    geom =GeometryColumn(Geometry(2,srid=21781))
+    geom =GeometryColumn(Geometry(2,srid=srid_))
 
 class ComplementaryLandUsePerimeters(GeoInterface,Base):
     __table_args__ = {'schema': db_config['schema'], 'autoload': True}
     __tablename__ = 'r73_perimetres_superposes'
     idobj = Column(Integer, primary_key=True)
-    geom =GeometryColumn(Geometry(2,srid=21781))
+    geom =GeometryColumn(Geometry(2,srid=srid_))
 
 class LandUseLinearConstraints(GeoInterface,Base):
     __tablename__ = 'r73_contenus_lineaires'
     __table_args__ = {'schema': db_config['schema'], 'autoload': True}
     idobj = Column(Integer, primary_key=True)
-    geom =GeometryColumn(Geometry(2,srid=21781))
+    geom =GeometryColumn(Geometry(2,srid=srid_))
 
 class LandUsePointConstraints(GeoInterface,Base):
     __tablename__ = 'r73_contenus_ponctuels'
     __table_args__ = {'schema': db_config['schema'], 'autoload': True}
     idobj = Column(Integer, primary_key=True)
-    geom =GeometryColumn(Geometry(2,srid=21781))
+    geom =GeometryColumn(Geometry(2,srid=srid_))
 
 # models for the topic national roads
 
@@ -176,7 +190,7 @@ class CHAirportSecurityZones(GeoInterface,Base):
     __tablename__ = 'r108_bazl_sicherheitszonenplan'
     __table_args__ = {'schema': db_config['schema'], 'autoload': True}
     idobj = Column(Integer, primary_key=True)
-    geom = GeometryColumn(Geometry(2,srid=21781))
+    geom = GeometryColumn(Geometry(2,srid=srid_))
     # ch.bazl.sicherheitszonenplan.oereb
 
 GeometryDDL(CHAirportSecurityZones.__table__)
@@ -185,7 +199,7 @@ class CHAirportProjectZones(GeoInterface,Base):
     __tablename__ = 'r103_bazl_projektierungszonen_flughafenanlagen'
     __table_args__ = {'schema': db_config['schema'], 'autoload': True}
     idobj = Column(Integer, primary_key=True)
-    geom = GeometryColumn(Geometry(2,srid=21781))
+    geom = GeometryColumn(Geometry(2,srid=srid_))
     # ch.bazl.projektierungszonen-flughafenanlagen.oereb
 
 GeometryDDL(CHAirportProjectZones.__table__)
@@ -194,13 +208,13 @@ GeometryDDL(CHAirportProjectZones.__table__)
     #~ __tablename__ = 'clo_couloirs'
     #~ __table_args__ = {'schema': 'amenagement', 'autoload': True}
     #~ idobj = Column(Integer, primary_key=True)
-    #~ geom =GeometryColumn(Geometry(2,srid=21781))
+    #~ geom =GeometryColumn(Geometry(2,srid=srid_))
     
 #~ class AltitudeRatings(GeoInterface,Base):
     #~ __tablename__ = 'clo_cotes_altitude_surfaces'
     #~ __table_args__ = {'schema': 'amenagement', 'autoload': True}
     #~ idobj = Column(Integer, primary_key=True)
-    #~ geom =GeometryColumn(Geometry(2,srid=21781))
+    #~ geom =GeometryColumn(Geometry(2,srid=srid_))
 
 # models for theme: register of polluted sites
 
@@ -208,13 +222,13 @@ class PollutedSites(GeoInterface,Base):
     __tablename__ = 'r116_sites_pollues'
     __table_args__ = {'schema': db_config['schema'], 'autoload': True}
     idobj = Column(Integer, primary_key=True)
-    geom =GeometryColumn(Geometry(2,srid=21781))
+    geom =GeometryColumn(Geometry(2,srid=srid_))
     
 class CHPollutedSitesPublicTransports(GeoInterface,Base):
     __tablename__ = 'r119_bav_belastete_standorte_oev'
     __table_args__ = {'schema': db_config['schema'], 'autoload': True}
     idobj = Column(Integer, primary_key=True)
-    geom =GeometryColumn(Geometry(2,srid=21781))
+    geom =GeometryColumn(Geometry(2,srid=srid_))
 
 GeometryDDL(CHPollutedSitesPublicTransports.__table__)
 # ch.bav.kataster-belasteter-standorte-oev.oereb
@@ -225,7 +239,7 @@ class RoadNoise(GeoInterface,Base):
     __tablename__ = 'r145_sens_bruit'
     __table_args__ = {'schema': db_config['schema'], 'autoload': True}
     idobj = Column(Integer, primary_key=True)
-    geom =GeometryColumn(Geometry(2,srid=21781))
+    geom =GeometryColumn(Geometry(2,srid=srid_))
 
 # models for water protection
 
@@ -233,25 +247,25 @@ class Zoneprotection(GeoInterface,Base):
     __tablename__ = 'r131_zone_prot_eau'
     __table_args__ = {'schema': db_config['schema'], 'autoload': True}
     idobj = Column(String(40), primary_key=True)
-    geom = GeometryColumn(Geometry(srid=21781))
+    geom = GeometryColumn(Geometry(srid=srid_))
     
 class WaterProtectionPerimeters(GeoInterface,Base):
     __tablename__ = 'r132_perimetre_prot_eau'
     __table_args__ = {'schema': db_config['schema'], 'autoload': True}
     idobj = Column(String(40), primary_key=True)
-    geom = GeometryColumn(Geometry(srid=21781))
+    geom = GeometryColumn(Geometry(srid=srid_))
 
 # models for the topic Forest
 class ForestLimits(GeoInterface,Base):
     __tablename__ = 'r157_lim_foret'
     __table_args__ = {'schema': db_config['schema'], 'autoload': True}
     idobj = Column(Integer, primary_key=True)
-    geom =GeometryColumn(Geometry(2,srid=21781))
+    geom =GeometryColumn(Geometry(2,srid=srid_))
     
 class ForestDistances(GeoInterface,Base):
     __tablename__ = 'r159_dist_foret'
     __table_args__ = {'schema': db_config['schema'], 'autoload': True}
     idobj = Column(Integer, primary_key=True)
-    geom =GeometryColumn(Geometry(2,srid=21781))
+    geom =GeometryColumn(Geometry(2,srid=srid_))
 
 # STOP models used for GetFeature queries

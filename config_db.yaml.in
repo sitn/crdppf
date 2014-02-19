@@ -1,20 +1,28 @@
 # Database schema containing the data
 db_config:
   schema: crdppf
+  srid: 21781
 
   tables:
 
     cadastre:
-      exists: True
       tablename: la02_cadastres
       schema: general
+      att_id: idobj
+      att_cadastre_number: numcad
+      att_cadastre_name: cadnom
+      att_commune_number: numcom
+      att_commune_name: comnom
+      att_federal_number: nufeco
     property:
-      exists: True
       tablename: immeubles_canton
       schema: public
+      att_id: noobj
+      att_id_property: idemai
+      att_property_number: nummai
+      att_property_type: typimm
     local_names:
-      exists: True
       tablename: nom_local_lieu_dit
       schema: public
-    
-
+      att_id: idcnlo
+      att_local_name: nomloc
