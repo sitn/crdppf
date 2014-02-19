@@ -27,7 +27,7 @@ Create your own buildout file by:
 * Copy-paste `buildout.cfg`
 * Rename the new file `buildout_<user>.cfg`
 * Open this file in a text editor
-* Erase all sections except the `[vars`] section
+* Erase all sections except the `[vars]` section
 * In the `[vars]` section, delete all lines which do not contain `overwrite_me`
 * At the top of the file, add the extend instruction:
 
