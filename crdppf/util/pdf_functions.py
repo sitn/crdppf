@@ -289,14 +289,14 @@ def get_feature_info(request, translations):
         raise Exception(translations[''])
 
     if parcelInfo['featureid'] is not None:
-        queryresult = DBSession.query(ImmeublesCanton).filter_by(idemai=parcelInfo['featureid']).first()
+        queryresult = DBSession.query(Property).filter_by(idemai=parcelInfo['featureid']).first()
         # We should check unicity of the property id and raise an exception if there are multiple results 
     elif (X > 0 and Y > 0):
         if  Y > X :
             pointYX = WKTSpatialElement('POINT('+str(Y)+' '+str(X)+')',SRS)
         else:
             pointYX = WKTSpatialElement('POINT('+str(X)+' '+str(Y)+')',SRS)
-        queryresult = DBSession.query(ImmeublesCanton).filter(ImmeublesCanton.geom.gcontains(pointYX)).first()
+        queryresult = DBSession.query(Property).filter(Property.geom.gcontains(pointYX)).first()
         parcelInfo['featureid'] = queryresult.idemai
     else : 
         # to define
@@ -305,7 +305,7 @@ def get_feature_info(request, translations):
     parcelInfo['geom'] = queryresult.geom
     parcelInfo['area'] = int(DBSession.scalar(queryresult.geom.area))
 
-    queryresult1 = DBSession.query(NomLocalLieuDit).filter(NomLocalLieuDit.geom.intersects(parcelInfo['geom'])).first()
+    queryresult1 = DBSession.query(LocalName).filter(LocalName.geom.intersects(parcelInfo['geom'])).first()
     queryresult2 = DBSession.query(Cadastre).filter(Cadastre.geom.buffer(1).gcontains(parcelInfo['geom'])).first()
 
     parcelInfo['nummai'] = queryresult.nummai # Parcel number

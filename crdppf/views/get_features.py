@@ -9,7 +9,8 @@ import httplib
 from owslib.wms import WebMapService
 from simplejson import loads as sloads 
 import pkg_resources
-from crdppf.models import *
+from crdppf.models import DBSession
+from crdppf.models import Property
 import csv
 from sqlalchemy import or_
 from papyrus.geojsonencoder import dumps
@@ -27,6 +28,6 @@ def get_features(request):
 def getParcelGeom(parcelId):
     """ Return the parcel geometry for a given parcel ID
     """  
-    queryParcel =DBSession.query(ImmeublesCanton).filter_by(idemai=parcelId).first()
+    queryParcel =DBSession.query(Property).filter_by(idemai=parcelId).first()
     parcelGeom = queryParcel.geom
     return parcelGeom
