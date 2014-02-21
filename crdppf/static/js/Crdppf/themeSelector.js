@@ -1,13 +1,8 @@
 ﻿Ext.namespace('Crdppf');
 
 // create layer tree and append nodes & subnodes to it
-Crdppf.ThemeSelector = function createThemeSelector () {
-    this.makeThemeSelector = makeThemeSelector;
-};
-
-var makeThemeSelector = function makeThemeSelector(){
-
-    var myReader = new Ext.data.JsonReader({
+Crdppf.ThemeSelector = function(labels, layerList) {
+       var myReader = new Ext.data.JsonReader({
         idProperty: 'id',
         root: 'themes',
         fields: [

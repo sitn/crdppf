@@ -1,10 +1,7 @@
 ﻿Ext.namespace('Crdppf');
 
 // create layer tree and append nodes & subnodes to it
-Crdppf.LayerTree = function createLayerTree () {
-    this.makeLayerTree = makeLayerTree;
-};
-var makeLayerTree = function makeLayertree(){
+Crdppf.LayerTree = function(labels, layerList, baseLayersList) {
     // create layer tree object
     overlaysList = [];
     var layerTree = new Ext.tree.TreePanel({
