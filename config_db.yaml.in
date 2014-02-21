@@ -5,11 +5,14 @@ db_config:
 
   tables:
 
-    cadastre:
+    town:
       tablename: la02_cadastres
+     # tablename: la3_limites_communales
       schema: general
       att_id: idobj
+      # optional:
       att_cadastre_number: numcad
+      # optional:
       att_cadastre_name: cadnom
       att_commune_number: numcom
       att_commune_name: comnom
@@ -21,6 +24,7 @@ db_config:
       att_id_property: idemai
       att_property_number: nummai
       att_property_type: typimm
+    #optional:
     local_names:
       tablename: nom_local_lieu_dit
       schema: public
