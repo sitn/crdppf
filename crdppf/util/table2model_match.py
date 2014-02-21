@@ -1,5 +1,12 @@
 # -*- coding: UTF-8 -*-
-from crdppf.models import *
+from crdppf.models import PrimaryLandUseZones, SecondaryLandUseZones
+from crdppf.models import ComplementaryLandUsePerimeters, LandUseLinearConstraints
+from crdppf.models import LandUsePointConstraints, CHAirportProjectZones
+from crdppf.models import CHAirportSecurityZones, PollutedSites
+from crdppf.models import CHPollutedSitesPublicTransports, Zoneprotection
+from crdppf.models import Zoneprotection, WaterProtectionPerimeters
+from crdppf.models import RoadNoise, ForestLimits, ForestDistances
+
 # Matching dictionnary model-table name
 table2model = {
     'r73_affectations_primaires': PrimaryLandUseZones,
