@@ -98,21 +98,31 @@ class Themes(Base):
 
 # DATA SECTION
 
-if 'cadastre' in db_config['tables']:
-    table_def_ = db_config['tables']['cadastre']
-    class Cadastre(GeoInterface,Base):
-        __tablename__ = table_def_['tablename']
-        __table_args__ = {'schema': table_def_['schema'], 'autoload': True}
-        idobj = Column(table_def_['att_id'], Integer, primary_key=True)
-        numcad = Column(table_def_['att_cadastre_number'], Integer)
-        numcom = Column(table_def_['att_commune_number'], Integer)
-        comnom = Column(table_def_['att_commune_name'], String)
-        cadnom = Column(table_def_['att_cadastre_name'], String)
-        nufeco = Column(table_def_['att_federal_number'], Integer)
-        geom =GeometryColumn(Geometry(2, srid=srid_))
+if 'town' in db_config['tables']:
+    table_def_ = db_config['tables']['town']
+    if 'att_cadastre_number' in table_def_:
+        class Town(GeoInterface,Base):
+            __tablename__ = table_def_['tablename']
+            __table_args__ = {'schema': table_def_['schema'], 'autoload': True}
+            idobj = Column(table_def_['att_id'], Integer, primary_key=True)
+            numcad = Column(table_def_['att_cadastre_number'], Integer)
+            numcom = Column(table_def_['att_commune_number'], Integer)
+            comnom = Column(table_def_['att_commune_name'], String)
+            cadnom = Column(table_def_['att_cadastre_name'], String)
+            nufeco = Column(table_def_['att_federal_number'], Integer)
+            geom =GeometryColumn(Geometry(2, srid=srid_))
+    else:
+        class Town(GeoInterface,Base):
+            __tablename__ = table_def_['tablename']
+            __table_args__ = {'schema': table_def_['schema'], 'autoload': True}
+            idobj = Column(table_def_['att_id'], Integer, primary_key=True)
+            numcom = Column(table_def_['att_commune_number'], Integer)
+            comnom = Column(table_def_['att_commune_name'], String)
+            nufeco = Column(table_def_['att_federal_number'], Integer)
+            geom =GeometryColumn(Geometry(2, srid=srid_))
 else:
-    class Cadastre():
-        pass
+    class Town():
+        fake_attr = True
 
 if 'property' in db_config['tables']:
     table_def_ = db_config['tables']['property']
