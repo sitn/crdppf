@@ -250,8 +250,8 @@ def create_extract(request):
             appendixfile.reporttype = str(extract.reportInfo['type'])
             appendixfile.translations = get_translations(lang)
             appendixfile.current_page = ' A' + str(j)
-            appendixfile.load_app_config()
-            appendixfile.set_pdf_config()
+            appendixfile.load_app_config(request.registry.settings['app_config'])
+            appendixfile.set_pdf_config(request.registry.settings['pdf_config'])
             appendixfile.municipalitylogopath = appendixfile.appconfig.municipalitylogodir + municipality_escaped + '.png'
             appendixfile.municipality = municipality # to clean up once code modified
             appendixfile.add_page()
