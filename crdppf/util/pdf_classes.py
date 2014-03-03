@@ -21,21 +21,8 @@ from crdppf.util.pdf_functions import geom_from_coordinates
 
 from crdppf.util.proxy import set_proxy, unset_proxy
 
-class Restriction:
-    """Representation of a restriction in the transfert model structure."""
-    tenor = ''
-    theme = ''
-    typecode = 0
-    typecodelist = []
-    legalstate = ''
-    publicationdate = ''
-
-    def __init__(self, **kwds):
-        self.__dict__.update(kwds)
-
 class AppConfig(object):
-    """Class holding the definition of the basic parameters
-       To put in a table
+    """Class holding the definition of the basic parameters loaded from yaml
     """
     def __init__(self, config):
         # tempdir : Path to the working directory where the temporary files will be stored
@@ -56,8 +43,6 @@ class AppConfig(object):
         self.wms_version = config['wms_version']
         self.wms_transparency = config['wms_transparency']
         self.wms_imageformat = config['wms_imageformat']
-    # Would it be a good idea to put this vars in a table and import them on initialising the pdf class?
-    appconfig = DBSession.query(AppConfig).order_by(AppConfig.idparam.asc()).all()
 
 class PDFConfig(object):
     """A class to define the configuration of the PDF extract to simplify changes.
@@ -79,12 +64,12 @@ class PDFConfig(object):
         ]
         self.fontfamily = config['fontfamily']
         self.textstyles = config['textstyles']
-
         for style_key in self.textstyles:
             if self.textstyles[style_key][0] == 'N':
                 self.textstyles[style_key][0] = ''
-            self.textstyles[style_key].insert(0, self.fontfamily)
-
+            if len(self.textstyles[style_key]) < 3:
+                self.textstyles[style_key].insert(0, self.fontfamily)
+        
         self.urlcolor = config['urlcolor']
         self.defaultcolor = config['defaultcolor']
         self.timestamp = datetime.now().strftime("%Y%m%d%H%M%S")
@@ -99,16 +84,17 @@ class PDFConfig(object):
 class AppendixFile(FPDF):
     def __init__(self):
         FPDF.__init__(self)
-
-    def load_app_config(self):
+        self.pdfconfig = {}
+        
+    def load_app_config(self, config):
         """Initialises the basic parameters of the application.
         """
-        self.appconfig = AppConfig()
+        self.appconfig = AppConfig(config)
 
-    def set_pdf_config(self):
+    def set_pdf_config(self, config):
         """Loads the initial configuration of the PDF page.
         """
-        self.pdfconfig = PDFConfig()
+        self.pdfconfig = PDFConfig(config)
 
     def header(self):
         """Creates the document header with the logos and vertical lines."""

@@ -14,7 +14,7 @@ from PIL import Image
 
 from crdppf.models import *
 from crdppf.util.pdf_functions import get_translations, get_feature_info, get_print_format, get_XML
-from crdppf.util.pdf_classes import PDFConfig, Extract, AppendixFile
+from crdppf.util.pdf_classes import Extract, AppendixFile
 from crdppf.util.get_feature_functions import get_features_function
 
 from PyPDF2 import PdfFileMerger, PdfFileReader, PdfFileWriter
@@ -251,7 +251,7 @@ def create_extract(request):
             appendixfile.translations = get_translations(lang)
             appendixfile.current_page = ' A' + str(j)
             appendixfile.load_app_config(request.registry.settings['app_config'])
-            appendixfile.set_pdf_config(request.registry.settings['pdf_config'])
+            appendixfile.set_pdf_config(request.registry.settings['pdf_config']) #extract.pdfconfig
             appendixfile.municipalitylogopath = appendixfile.appconfig.municipalitylogodir + municipality_escaped + '.png'
             appendixfile.municipality = municipality # to clean up once code modified
             appendixfile.add_page()
