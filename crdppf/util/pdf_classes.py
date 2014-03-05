@@ -30,7 +30,7 @@ class AppConfig(object):
         # pdfbasedir : Path to the directory where the generated pdf's will be stored
         self.pdfbasedir = pkg_resources.resource_filename('crdppf', 'static/public/pdf/') 
         # imagesbasedir : Path to the directory where the images resources are stored
-        self.imagesbasedir = pkg_resources.resource_filename('crdppf','static\images\\')
+        self.imagesbasedir = pkg_resources.resource_filename('crdppf','static/images/')
         # municipalitylogodir : Path to the directory where the logos of the municipalities are stored
         self.municipalitylogodir = pkg_resources.resource_filename('crdppf','static/images/ecussons/')
         # legaldocsdir : Path to the folder where the legal documents are stored that may or may not be included
@@ -77,9 +77,9 @@ class PDFConfig(object):
         self.fitratio = config['fitratio']
         self.pdfpath = pkg_resources.resource_filename('crdppf', 'static/public/pdf/')
         # CHlogopath : Path to the header logo of the Swiss Confederation
-        self.CHlogopath = 'ecussons\\Logo_Schweiz_Eidgen.png'
+        self.CHlogopath = 'ecussons/Logo_Schweiz_Eidgen.png'
         # cantonlogopath : Path to the header logo of the canton
-        self.cantonlogopath = 'ecussons\\06ne_ch_RVB.jpg'
+        self.cantonlogopath = 'ecussons/06ne_ch_RVB.jpg'
 
 class AppendixFile(FPDF):
     def __init__(self):

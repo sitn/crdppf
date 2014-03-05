@@ -60,6 +60,6 @@ pdf_config:
   urlcolor: [0, 0, 255]
   defaultcolor: [0, 0, 0]
   fitratio: 0.9
-  CHlogopath: ecussons\\Logo_Schweiz_Eidgen.png
-  cantonlogopath: ecussons\\06ne_ch_RVB.jpg
+  CHlogopath: ecussons/Logo_Schweiz_Eidgen.png
+  cantonlogopath: ecussons/06ne_ch_RVB.jpg
   
