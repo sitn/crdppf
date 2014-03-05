@@ -4,8 +4,7 @@ ScriptAlias /${vars:instanceid}/wmscrdppf ${mapserverexec}
    # the following lines:
    Order Deny,Allow
    Deny from all
-   Allow from 148.196 127.0.0.01
-#   ${vars:mapserv_allow}
+   ${vars:mapserv_allow}
    SetHandler cgi-script
    SetEnv MS_MAPFILE ${buildout:directory}/mapserver/crdppf.map
 </Location>
