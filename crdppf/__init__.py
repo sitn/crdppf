@@ -42,6 +42,8 @@ def main(global_config, **settings):
     global db_config
     db_config = yaml.load(file(settings.get('db.cfg')))['db_config']
 
+    settings.update(yaml.load(file(settings.get('app.cfg'))))
+
     my_session_factory = UnencryptedCookieSessionFactoryConfig('itsaseekreet',2400)
     config = Configurator(settings=settings, session_factory = my_session_factory)
     config.include(papyrus.includeme)

@@ -25,3 +25,4 @@ crdppf/static/public/pdf/*.pdf
 MANIFEST
 tile_date.yaml
 config_db.yaml
+config_pdf.yaml
