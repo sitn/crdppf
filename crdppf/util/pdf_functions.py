@@ -1,21 +1,17 @@
 # -*- coding: UTF-8 -*-
 
-from owslib.wms import WebMapService
-import pkg_resources
-from datetime import datetime
 import urllib
-from PIL import Image
+import types
+
 # geometry related librabries
 from shapely.geometry import Point as splPoint, Polygon as splPolygon
 from shapely.geometry import MultiPolygon as splMultiPolygon, LinearRing as splLinearRing
-from shapely.wkb import loads as loads_wkb
-from shapely.wkt import loads as loads_wkt
 
 from xml.dom.minidom import parseString
 
-from crdppf.models import *
-
-from geoalchemy import WKBSpatialElement
+from crdppf.models import DBSession
+from crdppf.models import Translations, PaperFormats
+from crdppf.models import Town, Property, LocalName
 
 def geom_from_coordinates(coords):
     """ Function to convert a list of coordinates in a geometry
@@ -289,14 +285,14 @@ def get_feature_info(request, translations):
         raise Exception(translations[''])
 
     if parcelInfo['featureid'] is not None:
-        queryresult = DBSession.query(ImmeublesCanton).filter_by(idemai=parcelInfo['featureid']).first()
+        queryresult = DBSession.query(Property).filter_by(idemai=parcelInfo['featureid']).first()
         # We should check unicity of the property id and raise an exception if there are multiple results 
     elif (X > 0 and Y > 0):
         if  Y > X :
             pointYX = WKTSpatialElement('POINT('+str(Y)+' '+str(X)+')',SRS)
         else:
             pointYX = WKTSpatialElement('POINT('+str(X)+' '+str(Y)+')',SRS)
-        queryresult = DBSession.query(ImmeublesCanton).filter(ImmeublesCanton.geom.gcontains(pointYX)).first()
+        queryresult = DBSession.query(Property).filter(Property.geom.gcontains(pointYX)).first()
         parcelInfo['featureid'] = queryresult.idemai
     else : 
         # to define
@@ -305,17 +301,23 @@ def get_feature_info(request, translations):
     parcelInfo['geom'] = queryresult.geom
     parcelInfo['area'] = int(DBSession.scalar(queryresult.geom.area))
 
-    queryresult1 = DBSession.query(NomLocalLieuDit).filter(NomLocalLieuDit.geom.intersects(parcelInfo['geom'])).first()
-    queryresult2 = DBSession.query(Cadastre).filter(Cadastre.geom.buffer(1).gcontains(parcelInfo['geom'])).first()
+    if isinstance(LocalName, (types.ClassType)) is False:
+        queryresult1 = DBSession.query(LocalName).filter(LocalName.geom.intersects(parcelInfo['geom'])).first()
+        parcelInfo['lieu_dit'] = queryresult1.nomloc # Flurname
+
+    queryresult2 = DBSession.query(Town).filter(Town.geom.buffer(1).gcontains(parcelInfo['geom'])).first()
 
     parcelInfo['nummai'] = queryresult.nummai # Parcel number
     parcelInfo['type'] = queryresult.typimm # Parcel type
-    parcelInfo['lieu_dit'] = queryresult1.nomloc # Flurname
-    parcelInfo['nomcad'] = queryresult2.cadnom
+
+    if 'numcad' in queryresult2.__table__.columns.keys():
+        parcelInfo['nomcad'] = queryresult2.cadnom
+
     parcelInfo['numcom'] = queryresult.numcom
     parcelInfo['nomcom'] = queryresult2.comnom
     parcelInfo['nufeco'] = queryresult2.nufeco
-    parcelInfo['centerX'], parcelInfo['centerY'] = DBSession.scalar(queryresult.geom.centroid.x),DBSession.scalar(queryresult.geom.centroid.y)
+    parcelInfo['centerX'] = DBSession.scalar(queryresult.geom.centroid.x)
+    parcelInfo['centerY'] = DBSession.scalar(queryresult.geom.centroid.y)
     parcelInfo['BBOX'] = get_bbox_from_geometry(DBSession.scalar(queryresult.geom.envelope.wkt))
 
     # the get_print_format function is not needed any longer as the paper size has been fixed to A4 by the cantons

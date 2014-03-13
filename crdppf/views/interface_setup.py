@@ -1,10 +1,7 @@
 # -*- coding: UTF-8 -*-
-from pyramid.response import FileResponse
-from pyramid.renderers import render_to_response
-from pyramid.httpexceptions import HTTPForbidden
 from pyramid.view import view_config
-from crdppf.models import *
-
+from crdppf.models import DBSession
+from crdppf.models import Themes, Layers
 
 @view_config(route_name='get_interface_config', renderer='json')
 def get_interface_config(request):
