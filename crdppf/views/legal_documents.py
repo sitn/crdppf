@@ -30,12 +30,12 @@ def getTownList(request):
             cadnom = None
 
         towns.append({
-            'idobj': cadastre.idobj,
-            'numcom': cadastre.numcom,
-            'comnom': cadastre.comnom,
+            'idobj': town.idobj,
+            'numcom': town.numcom,
+            'comnom': town.comnom,
             'numcad': numcad,
             'cadnom': cadnom,
-            'nufeco': cadastre.nufeco
+            'nufeco': town.nufeco
         })
 
     return towns
