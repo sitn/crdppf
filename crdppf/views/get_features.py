@@ -1,20 +1,9 @@
 # -*- coding: UTF-8 -*-
-from pyramid.response import FileResponse
-from pyramid.renderers import render_to_response
-from pyramid.httpexceptions import HTTPForbidden
 from pyramid.view import view_config
-from fpdf import FPDF
-from datetime import datetime
-import httplib
-from owslib.wms import WebMapService
-from simplejson import loads as sloads 
-import pkg_resources
-from crdppf.models import *
-import csv
-from sqlalchemy import or_
-from papyrus.geojsonencoder import dumps
-import math
+
 from crdppf.util.get_feature_functions import get_features_function
+from crdppf.models import DBSession
+from crdppf.models import Property
 
 @view_config(route_name='get_features', renderer='json')
 def get_features(request):
@@ -27,6 +16,6 @@ def get_features(request):
 def getParcelGeom(parcelId):
     """ Return the parcel geometry for a given parcel ID
     """  
-    queryParcel =DBSession.query(ImmeublesCanton).filter_by(idemai=parcelId).first()
+    queryParcel =DBSession.query(Property).filter_by(idemai=parcelId).first()
     parcelGeom = queryParcel.geom
     return parcelGeom

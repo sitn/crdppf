@@ -2,23 +2,24 @@
 
 from os import remove
 
-from pyramid.httpexceptions import HTTPBadRequest, HTTPNotFound
-
 from fpdf import FPDF
 import pkg_resources
 from datetime import datetime
 from owslib.wms import WebMapService
 from PIL import Image
 
+from geoalchemy import WKTSpatialElement
+
 import urllib
 import urllib2
 
-from xml.dom.minidom import parse, parseString
+from xml.dom.minidom import parseString
 
-from crdppf.models import *
-from crdppf.views.get_features import get_features, get_features_function
+from crdppf.models import DBSession
+from crdppf.models import AppConfig
+
+from crdppf.views.get_features import get_features_function
 from crdppf.util.pdf_functions import geom_from_coordinates
-
 from crdppf.util.proxy import set_proxy, unset_proxy
 
 class AppConfig(object):
@@ -292,10 +293,20 @@ class Extract(FPDF):
         self.cell(45, 5, self.translations['propertylabel'], 0, 0, 'L')
 
         self.set_font(*self.pdfconfig.textstyles['normal'])
-        if feature_info['nomcad'] is not None:
-            self.cell(50, 5, feature_info['nummai'].encode('iso-8859-1')+str(' (')+feature_info['nomcad'].encode('iso-8859-1')+str(') ')+str(' - ')+feature_info['type'].encode('iso-8859-1'), 0, 1, 'L')
-        else : 
-            self.cell(50, 5, feature_info['nummai'].encode('iso-8859-1'), 0, 1, 'L')
+        # should we generalize the dict keys like 'nomcad'?
+        if 'nomcad' in feature_info:
+            if feature_info['nomcad'] is not None:
+                self.cell(50, 5, feature_info['nummai'].encode('iso-8859-1')+str(' (')+ \
+                    feature_info['nomcad'].encode('iso-8859-1')+str(') ')+ \
+                    str(' - ')+feature_info['type'].encode('iso-8859-1'), 0, 1, 'L')
+            else:
+                self.cell(50, 5, feature_info['nummai'].encode('iso-8859-1'), 0, 1, 'L')
+        else:
+            if feature_info['nomcom'] is not None:
+                self.cell(50, 5, feature_info['nummai'].encode('iso-8859-1')+ \
+                    str(' ')+str(' - ')+feature_info['type'].encode('iso-8859-1'), 0, 1, 'L')
+            else:
+                self.cell(50, 5, feature_info['nummai'].encode('iso-8859-1'), 0, 1, 'L')
 
          # Second infoline : Area and EGRID
         self.set_font(*pdfconfig.textstyles['bold'])
@@ -450,15 +461,15 @@ class Extract(FPDF):
 
         #wms = WebMapService('http://sitn.ne.ch/mapproxy/service', version='1.1.1')
         wms = WebMapService(self.crdppf_wms, version='1.1.1')
-
+        print self.sld_url+self.pdfconfig.siteplanname
         sitemap = wms.getmap(
-            layers=layers,
+            layers = layers,
             sld = self.sld_url+self.pdfconfig.siteplanname+'_sld.xml',
-            srs= self.appconfig.wms_srs,
-            bbox=(wmsBBOX['minX'],wmsBBOX['minY'],wmsBBOX['maxX'],wmsBBOX['maxY']),
-            size=(1600,900),
-            format='image/png',
-            transparent=False
+            srs = self.appconfig.wms_srs,
+            bbox = (wmsBBOX['minX'], wmsBBOX['minY'], wmsBBOX['maxX'], wmsBBOX['maxY']),
+            size=(1600, 900),
+            format = 'image/png',
+            transparent = False
         )
 
         out = open(self.appconfig.tempdir+self.pdfconfig.siteplanname+'.png', 'wb')

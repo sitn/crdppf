@@ -14,7 +14,7 @@ Ext.onReady(function(){
     var combostore = new Ext.data.JsonStore({
         autoDestroy: true,
         autoLoad: true,
-        url: 'getCadastreList',
+        url: 'getTownList',
         idProperty: 'idobj',
         fields:[
             {name: 'idobj'},

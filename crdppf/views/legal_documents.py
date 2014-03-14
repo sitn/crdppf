@@ -1,36 +1,43 @@
 # -*- coding: UTF-8 -*-
-from pyramid.response import FileResponse
-from pyramid.renderers import render_to_response
-from pyramid.httpexceptions import HTTPForbidden
 from pyramid.view import view_config
 
-from simplejson import loads as sloads,dumps as sdumps 
+from simplejson import loads as sloads
 
-from crdppf.models import *
-import pkg_resources
-from datetime import datetime
+from crdppf.models import DBSession
+from crdppf.models import Topics, LegalBases, LegalProvisions, References
+from crdppf.models import TemporaryProvisions
+from crdppf.models import Town
 
-from crdppf.models import *
-
-@view_config(route_name='getCadastreList', renderer='json')
-def getCadastreList(request):
+@view_config(route_name='getTownList', renderer='json')
+def getTownList(request):
     """ Loads the list of the cadastres of the Canton."""
     
     results = {}
-    results = DBSession.query(Cadastre).order_by(Cadastre.numcad.asc()).all()
 
-    cadastres = []
-    for cadastre in results :
-        cadastres.append({
-            'idobj':cadastre.idobj, 
-            'numcom':cadastre.numcom, 
-            'comnom':cadastre.comnom, 
-            'numcad':cadastre.numcad, 
-            'cadnom':cadastre.cadnom, 
-            'nufeco':cadastre.nufeco
+    if 'numcad' in Town.__table__.columns.keys():
+        results = DBSession.query(Town).order_by(Town.numcad.asc()).all()
+    else:
+        results = DBSession.query(Town).order_by(Town.numcom.asc()).all()
+
+    towns = []
+    for town in results :
+        if 'numcad' in Town.__table__.columns.keys():
+            numcad = town.numcad
+            cadnom = town.cadnom
+        else:
+            numcad = None
+            cadnom = None
+
+        towns.append({
+            'idobj': town.idobj,
+            'numcom': town.numcom,
+            'comnom': town.comnom,
+            'numcad': numcad,
+            'cadnom': cadnom,
+            'nufeco': town.nufeco
         })
 
-    return cadastres
+    return towns
 
 @view_config(route_name='getTopicsList', renderer='json')
 def getTopicsList(request):

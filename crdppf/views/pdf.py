@@ -1,23 +1,16 @@
 # -*- coding: UTF-8 -*-
-from pyramid.response import FileResponse, Response
-from pyramid.renderers import render_to_response
-from pyramid.httpexceptions import HTTPForbidden, HTTPBadRequest
+from pyramid.response import FileResponse
 from pyramid.view import view_config
 
-from datetime import datetime, time
-import httplib, urllib2
-import pkg_resources
-from geojson import Feature, FeatureCollection, dumps, loads as gloads
-from simplejson import loads as sloads,dumps as sdumps
-from geoalchemy import *
-from PIL import Image
+from crdppf.models import DBSession
+from crdppf.models import Topics
 
-from crdppf.models import *
 from crdppf.util.pdf_functions import get_translations, get_feature_info, get_print_format, get_XML
 from crdppf.util.pdf_classes import Extract, AppendixFile
+
 from crdppf.util.get_feature_functions import get_features_function
 
-from PyPDF2 import PdfFileMerger, PdfFileReader, PdfFileWriter
+from PyPDF2 import PdfFileMerger, PdfFileReader
 
 import logging
 
@@ -138,6 +131,9 @@ def create_extract(request):
     # Get the community name and escape special chars to place the logo in the header of the title page
     municipality = featureInfo['nomcom'].strip()
 
+    if logon is True:
+        log.warning(municipality)
+
     # AS does the german language, the french contains a few accents we have to replace to fetch the banner which has no accents in its pathname...
     conversion = [
         [u'â', 'a'],
@@ -168,6 +164,7 @@ def create_extract(request):
         municipality_escaped = municipality_escaped.replace(char[0], char[1])
 
     extract.municipalitylogopath = extract.appconfig.municipalitylogodir + municipality_escaped + '.png'
+
     extract.municipality = municipality # to clean up once code modified
 
     # === TO IMPROVE thus code is left commented
