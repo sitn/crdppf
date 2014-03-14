@@ -293,6 +293,7 @@ class Extract(FPDF):
         self.cell(45, 5, self.translations['propertylabel'], 0, 0, 'L')
 
         self.set_font(*self.pdfconfig.textstyles['normal'])
+        # should we generalize the dict keys like 'nomcad'?
         if 'nomcad' in feature_info:
             if feature_info['nomcad'] is not None:
                 self.cell(50, 5, feature_info['nummai'].encode('iso-8859-1')+str(' (')+ \
@@ -303,8 +304,7 @@ class Extract(FPDF):
         else:
             if feature_info['nomcom'] is not None:
                 self.cell(50, 5, feature_info['nummai'].encode('iso-8859-1')+ \
-                    str(' (')+feature_info['nomcom'].encode('iso-8859-1')+ \
-                    str(') ')+str(' - ')+feature_info['type'].encode('iso-8859-1'), 0, 1, 'L')
+                    str(' ')+str(' - ')+feature_info['type'].encode('iso-8859-1'), 0, 1, 'L')
             else:
                 self.cell(50, 5, feature_info['nummai'].encode('iso-8859-1'), 0, 1, 'L')
 

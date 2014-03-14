@@ -14,7 +14,6 @@ def getTownList(request):
     
     results = {}
 
-    # TODO FIXME!!!!!#
     if 'numcad' in Town.__table__.columns.keys():
         results = DBSession.query(Town).order_by(Town.numcad.asc()).all()
     else:
