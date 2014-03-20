@@ -2,139 +2,100 @@
 
 from os import remove
 
-from pyramid.httpexceptions import HTTPBadRequest, HTTPNotFound
-
 from fpdf import FPDF
 import pkg_resources
 from datetime import datetime
 from owslib.wms import WebMapService
 from PIL import Image
 
+from geoalchemy import WKTSpatialElement
+
 import urllib
 import urllib2
 
-from xml.dom.minidom import parse, parseString
+from xml.dom.minidom import parseString
 
-from crdppf.models import *
-from crdppf.views.get_features import get_features, get_features_function
+from crdppf.models import DBSession
+from crdppf.models import AppConfig
+
+from crdppf.views.get_features import get_features_function
 from crdppf.util.pdf_functions import geom_from_coordinates
-
 from crdppf.util.proxy import set_proxy, unset_proxy
 
-class Restriction:
-    """Representation of a restriction in the transfert model structure."""
-    tenor = ''
-    theme = ''
-    typecode = 0
-    typecodelist = []
-    legalstate = ''
-    publicationdate = ''
-
-    def __init__(self, **kwds):
-        self.__dict__.update(kwds)
-
-class AppConfig:
-    """Class holding the definition of the basic parameters
-       To put in a table
+class AppConfig(object):
+    """Class holding the definition of the basic parameters loaded from yaml
     """
-    # tempdir : Path to the working directory where the temporary files will be stored
-    tempdir = pkg_resources.resource_filename('crdppf', 'static/public/temp_files/') 
-    # pdfbasedir : Path to the directory where the generated pdf's will be stored
-    pdfbasedir = pkg_resources.resource_filename('crdppf', 'static/public/pdf/') 
-    # imagesbasedir : Path to the directory where the images resources are stored
-    imagesbasedir = pkg_resources.resource_filename('crdppf','static\images\\')
-    # municipalitylogodir : Path to the directory where the logos of the municipalities are stored
-    municipalitylogodir = pkg_resources.resource_filename('crdppf','static/images/ecussons/')
-    # legaldocsdir : Path to the folder where the legal documents are stored that may or may not be included
-    legaldocsdir = pkg_resources.resource_filename('crdppf', 'static/public/reglements/')
-    ch_wms_layers = []
-    ch_topics = ['103','108','119']
-    ch_legend_layers = {
-        u'103':'ch.bazl.projektierungszonen-flughafenanlagen.oereb',
-        u'108':'ch.bazl.sicherheitszonenplan.oereb',
-        u'119':'ch.bav.kataster-belasteter-standorte-oev.oereb'
-    }
-    crdppf_wms_layers = [
-        'mo6_couverture_sol_nb',
-        'mo22_batiments',
-        'mo21_batiments_provisoires',
-        'mo23_batiments_projetes',
-        'parcelles',
-        'ag1_parcellaire_provisoire',
-        'mo9_immeubles',
-        #'mo9_text_group',
-        'mo7_obj_divers_lineaire',
-        'mo7_obj_divers_couvert',
-        'mo7_obj_divers_piscine',
-        'mo7_obj_divers_cordbois',
-        'mo5_point_de_detail',
-        'mo4_pfa_1',
-        'mo4_pfp_3',
-        'mo4_pfp_1_2',
-        'la3_limites_communales'
-    ]
+    def __init__(self, config):
+        # tempdir : Path to the working directory where the temporary files will be stored
+        self.tempdir = pkg_resources.resource_filename('crdppf', 'static/public/temp_files/') 
+        # pdfbasedir : Path to the directory where the generated pdf's will be stored
+        self.pdfbasedir = pkg_resources.resource_filename('crdppf', 'static/public/pdf/') 
+        # imagesbasedir : Path to the directory where the images resources are stored
+        self.imagesbasedir = pkg_resources.resource_filename('crdppf','static/images/')
+        # municipalitylogodir : Path to the directory where the logos of the municipalities are stored
+        self.municipalitylogodir = pkg_resources.resource_filename('crdppf','static/images/ecussons/')
+        # legaldocsdir : Path to the folder where the legal documents are stored that may or may not be included
+        self.legaldocsdir = pkg_resources.resource_filename('crdppf', 'static/public/reglements/') 
+        self.ch_wms_layers = []
+        self.ch_topics = config['ch_topics']
+        self.ch_legend_layers = config['ch_legend_layers']
+        self.crdppf_wms_layers = config['crdppf_wms_layers']
+        self.wms_srs = config['wms_srs']
+        self.wms_version = config['wms_version']
+        self.wms_transparency = config['wms_transparency']
+        self.wms_imageformat = config['wms_imageformat']
 
-    wms_srs = 'EPSG:21781'
-    wms_version = '1.1.1'
-    wms_transparency = 'TRUE'
-    wms_imageformat = 'image/png; mode=24bit'
-
-    # Would it be a good idea to put this vars in a table and import them on initialising the pdf class?
-    appconfig = DBSession.query(AppConfig).order_by(AppConfig.idparam.asc()).all()
-
-class PDFConfig:
+class PDFConfig(object):
     """A class to define the configuration of the PDF extract to simplify changes.
     """
-
+    def __init__(self, config):
     # PDF Configuration
-    defaultlanguage = 'fr'
-    pdfformat = 'A4'
-    pdforientation = 'portrait'
-    leftmargin = 25 # left margin
-    rightmargin = 25 # right margin
-    topmargin = 55 # top margin for text
-    headermargin = 50 # margin from header for the map placement
-    footermargin = 20
-    pdfmargins = [leftmargin, topmargin, rightmargin]
-
-    fontfamily = 'Arial'
-    textstyles = {
-        'title1':[fontfamily, 'B', 22],
-        'title2':[fontfamily, 'B', 18],
-        'title3':[fontfamily, 'B', 16],
-        'normal':[fontfamily, '', 10],
-        'bold':[fontfamily,'B',10],
-        'url':[fontfamily,'',10],
-        'small':[fontfamily, '', 7],
-        'tocbold':[fontfamily, 'B', 11],
-        'tocurl':[fontfamily, '', 9],
-        'tocnormal':[fontfamily, '', 11]
-    }
-    urlcolor = [0, 0, 255]
-    defaultcolor = [0, 0, 0]
-
-    # CHlogopath : Path to the header logo of the Swiss Confederation
-    CHlogopath = 'ecussons\\Logo_Schweiz_Eidgen.png'
-    # cantonlogopath : Path to the header logo of the canton
-    cantonlogopath = 'ecussons\\06ne_ch_RVB.jpg'
-
-    timestamp = datetime.now().strftime("%Y%m%d%H%M%S")
-    fitratio = 0.9
-    pdfpath = pkg_resources.resource_filename('crdppf', 'static/public/pdf/')
+        self.defaultlanguage = config['defaultlanguage'].lower()
+        self.pdfformat = config['pdfformat']
+        self.pdforientation = config['pdforientation']
+        self.leftmargin = config['leftmargin']
+        self.rightmargin = config['rightmargin']
+        self.topmargin = config['topmargin']
+        self.headermargin = config['headermargin']
+        self.footermargin = config['footermargin']
+        self.pdfmargins = [
+            self.leftmargin,
+            self.topmargin,
+            self.rightmargin
+        ]
+        self.fontfamily = config['fontfamily']
+        self.textstyles = config['textstyles']
+        for style_key in self.textstyles:
+            if self.textstyles[style_key][0] == 'N':
+                self.textstyles[style_key][0] = ''
+            if len(self.textstyles[style_key]) < 3:
+                self.textstyles[style_key].insert(0, self.fontfamily)
+        
+        self.urlcolor = config['urlcolor']
+        self.defaultcolor = config['defaultcolor']
+        self.timestamp = datetime.now().strftime("%Y%m%d%H%M%S")
+        self.siteplanname = str(self.timestamp)+'_siteplan'
+        self.fitratio = config['fitratio']
+        self.pdfpath = pkg_resources.resource_filename('crdppf', 'static/public/pdf/')
+        # CHlogopath : Path to the header logo of the Swiss Confederation
+        self.CHlogopath = 'ecussons/Logo_Schweiz_Eidgen.png'
+        # cantonlogopath : Path to the header logo of the canton
+        self.cantonlogopath = 'ecussons/06ne_ch_RVB.jpg'
 
 class AppendixFile(FPDF):
     def __init__(self):
         FPDF.__init__(self)
-
-    def load_app_config(self):
+        self.pdfconfig = {}
+        
+    def load_app_config(self, config):
         """Initialises the basic parameters of the application.
         """
-        self.appconfig = AppConfig()
+        self.appconfig = AppConfig(config)
 
-    def set_pdf_config(self):
+    def set_pdf_config(self, config):
         """Loads the initial configuration of the PDF page.
         """
-        self.pdfconfig = PDFConfig()
+        self.pdfconfig = PDFConfig(config)
 
     def header(self):
         """Creates the document header with the logos and vertical lines."""
@@ -215,15 +176,15 @@ class Extract(FPDF):
         self.str_alias_no_page = alias
         return alias
         
-    def load_app_config(self):
+    def load_app_config(self, config):
         """Initialises the basic parameters of the application.
         """
-        self.appconfig = AppConfig()
+        self.appconfig = AppConfig(config)
 
-    def set_pdf_config(self):
+    def set_pdf_config(self, config):
         """Loads the initial configuration of the PDF page.
         """
-        self.pdfconfig = PDFConfig()
+        self.pdfconfig = PDFConfig(config)
 
     def set_filename(self):
         """ Sets the file name of the pdf extract based on the time and parcel id
@@ -332,10 +293,20 @@ class Extract(FPDF):
         self.cell(45, 5, self.translations['propertylabel'], 0, 0, 'L')
 
         self.set_font(*self.pdfconfig.textstyles['normal'])
-        if feature_info['nomcad'] is not None:
-            self.cell(50, 5, feature_info['nummai'].encode('iso-8859-1')+str(' (')+feature_info['nomcad'].encode('iso-8859-1')+str(') ')+str(' - ')+feature_info['type'].encode('iso-8859-1'), 0, 1, 'L')
-        else : 
-            self.cell(50, 5, feature_info['nummai'].encode('iso-8859-1'), 0, 1, 'L')
+        # should we generalize the dict keys like 'nomcad'?
+        if 'nomcad' in feature_info:
+            if feature_info['nomcad'] is not None:
+                self.cell(50, 5, feature_info['nummai'].encode('iso-8859-1')+str(' (')+ \
+                    feature_info['nomcad'].encode('iso-8859-1')+str(') ')+ \
+                    str(' - ')+feature_info['type'].encode('iso-8859-1'), 0, 1, 'L')
+            else:
+                self.cell(50, 5, feature_info['nummai'].encode('iso-8859-1'), 0, 1, 'L')
+        else:
+            if feature_info['nomcom'] is not None:
+                self.cell(50, 5, feature_info['nummai'].encode('iso-8859-1')+ \
+                    str(' ')+str(' - ')+feature_info['type'].encode('iso-8859-1'), 0, 1, 'L')
+            else:
+                self.cell(50, 5, feature_info['nummai'].encode('iso-8859-1'), 0, 1, 'L')
 
          # Second infoline : Area and EGRID
         self.set_font(*pdfconfig.textstyles['bold'])
@@ -490,15 +461,15 @@ class Extract(FPDF):
 
         #wms = WebMapService('http://sitn.ne.ch/mapproxy/service', version='1.1.1')
         wms = WebMapService(self.crdppf_wms, version='1.1.1')
-
+        print self.sld_url+self.pdfconfig.siteplanname
         sitemap = wms.getmap(
-            layers=layers,
+            layers = layers,
             sld = self.sld_url+self.pdfconfig.siteplanname+'_sld.xml',
-            srs= self.appconfig.wms_srs,
-            bbox=(wmsBBOX['minX'],wmsBBOX['minY'],wmsBBOX['maxX'],wmsBBOX['maxY']),
-            size=(1600,900),
-            format='image/png',
-            transparent=False
+            srs = self.appconfig.wms_srs,
+            bbox = (wmsBBOX['minX'], wmsBBOX['minY'], wmsBBOX['maxX'], wmsBBOX['maxY']),
+            size=(1600, 900),
+            format = 'image/png',
+            transparent = False
         )
 
         out = open(self.appconfig.tempdir+self.pdfconfig.siteplanname+'.png', 'wb')

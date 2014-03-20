@@ -1,0 +1,65 @@
+app_config:  
+ # CHlogopath: ecussons/Logo_Schweiz_Eidgen.png
+ # cantonlogopath: ecussons/06ne_ch_RVB.jpg
+ # lang: ${vars:default_language}
+ # defaultfontfamily: Arial
+  ch_topics: ['103','108','119']
+  ch_legend_layers:
+    '103': ch.bazl.projektierungszonen-flughafenanlagen.oereb
+    '108': ch.bazl.sicherheitszonenplan.oereb
+    '119': ch.bav.kataster-belasteter-standorte-oev.oereb
+
+  crdppf_wms_layers:
+    - mo6_couverture_sol_nb
+    - mo22_batiments
+    - mo21_batiments_provisoires
+    - mo23_batiments_projetes
+    - parcelles
+    - ag1_parcellaire_provisoire
+    - mo9_immeubles
+#  - mo9_text_group
+    - mo7_obj_divers_lineaire
+    - mo7_obj_divers_couvert
+    - mo7_obj_divers_piscine
+    - mo7_obj_divers_cordbois
+    - mo5_point_de_detail
+    - mo4_pfa_1
+    - mo4_pfp_3
+    - mo4_pfp_1_2
+    - la3_limites_communales
+  wms_srs: EPSG:21781
+  wms_version: 1.1.1
+  wms_transparency: TRUE
+  wms_imageformat: image/png; mode=24bit
+  
+pdf_config:
+  defaultlanguage: ${vars:default_language}
+  pdfformat: A4
+  pdforientation: portrait
+# left margin
+  leftmargin: 25
+# right margin
+  rightmargin: 25
+# top margin for text
+  topmargin: 55
+ # margin from header for the map placement
+  headermargin: 50
+  footermargin: 20
+  fontfamily: Arial
+  textstyles:
+    title1: [B, 22]
+    title2: [B, 18]
+    title3: [B, 16]
+    normal: [N, 10]
+    bold: [B,10]
+    url: [N,10]
+    small: [N, 7]
+    tocbold: [B, 11]
+    tocurl: [N, 9]
+    tocnormal: [N, 11]
+  urlcolor: [0, 0, 255]
+  defaultcolor: [0, 0, 0]
+  fitratio: 0.9
+  CHlogopath: ecussons/Logo_Schweiz_Eidgen.png
+  cantonlogopath: ecussons/06ne_ch_RVB.jpg
+  

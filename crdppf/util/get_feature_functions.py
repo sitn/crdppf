@@ -1,10 +1,12 @@
 # -*- coding: UTF-8 -*-
-from simplejson import loads as sloads 
-from crdppf.models import *
-import csv
 from sqlalchemy import or_
 from papyrus.geojsonencoder import dumps
+
+from simplejson import loads as sloads
+import csv
 import math
+
+from crdppf.models import DBSession
 from crdppf.util.table2model_match import table2model
 
 def get_features_function(parcelGeom, params):

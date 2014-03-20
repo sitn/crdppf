@@ -38,6 +38,12 @@ def main(global_config, **settings):
 
     settings.setdefault('mako.directories','crdppf:templates')
     settings.setdefault('reload_templates',True)
+
+    global db_config
+    db_config = yaml.load(file(settings.get('db.cfg')))['db_config']
+
+    settings.update(yaml.load(file(settings.get('app.cfg'))))
+
     my_session_factory = UnencryptedCookieSessionFactoryConfig('itsaseekreet',2400)
     config = Configurator(settings=settings, session_factory = my_session_factory)
     config.include(papyrus.includeme)
@@ -60,7 +66,7 @@ def main(global_config, **settings):
     config.add_route('get_baselayers_config', 'get_baselayers_config')
     config.add_route('test', 'test')
     config.add_route('formulaire_reglements', 'formulaire_reglements')
-    config.add_route('getCadastreList', 'getCadastreList')
+    config.add_route('getTownList', 'getTownList')
     config.add_route('getTopicsList', 'getTopicsList')
     config.add_route('createNewDocEntry', 'createNewDocEntry')
     config.add_route('getLegalDocuments', 'getLegalDocuments')

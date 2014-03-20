@@ -1,8 +1,6 @@
 # -*- coding: UTF-8 -*-
-from pyramid.response import FileResponse
-from pyramid.renderers import render_to_response
-from pyramid.httpexceptions import HTTPForbidden
 from pyramid.view import view_config
+
 from crdppf.util.pdf_functions import get_translations
 
 @view_config(route_name='get_translation_dictionary', renderer='json')
