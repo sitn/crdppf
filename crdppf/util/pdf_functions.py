@@ -6,12 +6,14 @@ import types
 # geometry related librabries
 from shapely.geometry import Point as splPoint, Polygon as splPolygon
 from shapely.geometry import MultiPolygon as splMultiPolygon, LinearRing as splLinearRing
+from geoalchemy import WKTSpatialElement
 
 from xml.dom.minidom import parseString
 
 from crdppf.models import DBSession
 from crdppf.models import Translations, PaperFormats
 from crdppf.models import Town, Property, LocalName
+from crdppf.models import CHAirportSecurityZonesPDF, CHAirportProjectZonesPDF, CHPollutedSitesPublicTransportsPDF
 
 def geom_from_coordinates(coords):
     """ Function to convert a list of coordinates in a geometry
@@ -64,7 +66,7 @@ def validate_XML(xmlparser, xmlfilename):
 
     return xmlvalid
 
-def get_XML(geometry, topicid):
+def get_XML(geometry, topicid, extracttime):
     """Gets the XML extract of the federal data feature service for a given topic
         and validates it against the schema.
     """
@@ -102,7 +104,8 @@ def get_XML(geometry, topicid):
     
     # validate XML
     
-    xmldoc = parseString(content).firstChild
+    #xmldoc = parseString(content).firstChild
+    xmldoc = parseString(content).getElementsByTagName("TRANSFER")[0]
     # extract the datasection from the response
     datasection = xmldoc.getElementsByTagName("DATASECTION")[0]
     # extract the complete tranfert structure
@@ -230,15 +233,15 @@ def get_XML(geometry, topicid):
 
     for geometry in geometries:
         if topicid ==  '103':
-            xml_model = CHAirportProjectZones()
+            xml_model = CHAirportProjectZonesPDF()
             xml_model.theme = u'Zones réservées des installations aéroportuaires' # to replace by translations['CHAirportSecurityZonesThemeLabel']
             xml_model.teneur = u'Limitation de la hauteur des bâtiments et autres obstacles' # to replace by translations['CHAirportSecurityZonesContentLabel']
         elif topicid ==  u'108':
-            xml_model = CHAirportSecurityZones()
+            xml_model = CHAirportSecurityZonesPDF()
             xml_model.theme = u'Plan de la zone de sécurité des aéroports' # to replace by translations['CHAirportSecurityZonesThemeLabel']
             xml_model.teneur = u'Limitation de la hauteur des bâtiments et autres obstacles' # to replace by translations['CHAirportSecurityZonesContentLabel']
         elif topicid ==  u'119':
-            xml_model = CHPollutedSitesPublicTransports()
+            xml_model = CHPollutedSitesPublicTransportsPDF()
             xml_model.theme = u'Cadastre des sites pollués - domaine des transports publics' # to replace by translations['CHAirportSecurityZonesThemeLabel']
             xml_model.teneur = u'Sites pollué' # to replace by translations['CHAirportSecurityZonesThemeLabel']
 
@@ -252,6 +255,7 @@ def get_XML(geometry, topicid):
         else:
             xml_model.datepublication = None
         # It is very important to set the SRID if it's not the default EPSG:4326 !!
+        xml_model.idobj = str(extracttime)+'_'+str(geometry['restrictionid'])
         xml_model.geom = WKTSpatialElement(geometry['geom'], 21781)
         DBSession.add(xml_model)
 

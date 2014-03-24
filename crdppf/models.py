@@ -201,18 +201,30 @@ class CHAirportSecurityZones(GeoInterface,Base):
     __table_args__ = {'schema': db_config['schema'], 'autoload': True}
     idobj = Column(Integer, primary_key=True)
     geom = GeometryColumn(Geometry(2,srid=srid_))
+
+class CHAirportSecurityZonesPDF(GeoInterface,Base):
+    __tablename__ = 'r108_bazl_sicherheitszonenplan_pdf'
+    __table_args__ = {'schema': db_config['schema'], 'autoload': True}
+    idobj = Column(Integer, primary_key=True)
+    geom = GeometryColumn(Geometry(2,srid=srid_))
     # ch.bazl.sicherheitszonenplan.oereb
 
-GeometryDDL(CHAirportSecurityZones.__table__)
+GeometryDDL(CHAirportSecurityZonesPDF.__table__)
 
 class CHAirportProjectZones(GeoInterface,Base):
     __tablename__ = 'r103_bazl_projektierungszonen_flughafenanlagen'
     __table_args__ = {'schema': db_config['schema'], 'autoload': True}
     idobj = Column(Integer, primary_key=True)
     geom = GeometryColumn(Geometry(2,srid=srid_))
+    
+class CHAirportProjectZonesPDF(GeoInterface,Base):
+    __tablename__ = 'r103_bazl_projektierungszonen_flughafenanlagen_pdf'
+    __table_args__ = {'schema': db_config['schema'], 'autoload': True}
+    idobj = Column(Integer, primary_key=True)
+    geom = GeometryColumn(Geometry(2,srid=srid_))
     # ch.bazl.projektierungszonen-flughafenanlagen.oereb
 
-GeometryDDL(CHAirportProjectZones.__table__)
+GeometryDDL(CHAirportProjectZonesPDF.__table__)
 
 #~ class Corridors(GeoInterface,Base):
     #~ __tablename__ = 'clo_couloirs'
@@ -240,7 +252,13 @@ class CHPollutedSitesPublicTransports(GeoInterface,Base):
     idobj = Column(Integer, primary_key=True)
     geom =GeometryColumn(Geometry(2,srid=srid_))
 
-GeometryDDL(CHPollutedSitesPublicTransports.__table__)
+class CHPollutedSitesPublicTransportsPDF(GeoInterface,Base):
+    __tablename__ = 'r119_bav_belastete_standorte_oev_pdf'
+    __table_args__ = {'schema': db_config['schema'], 'autoload': True}
+    idobj = Column(Integer, primary_key=True)
+    geom =GeometryColumn(Geometry(2,srid=srid_))
+
+GeometryDDL(CHPollutedSitesPublicTransportsPDF.__table__)
 # ch.bav.kataster-belasteter-standorte-oev.oereb
 
 # models for the topic noise

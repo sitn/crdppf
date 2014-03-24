@@ -169,18 +169,15 @@ def create_extract(request):
 
     # === TO IMPROVE thus code is left commented
     # Get the data for the federal data layers using the map extend
-    #~ for topic in extract.topics:
-        #~ if topic.topicid in extract.appconfig.ch_topics:
-            #~ xml_layers = []
-            #~ for xml_layer in topic.layers:
-                #~ xml_layers.append(xml_layer.layername)
-            #~ get_XML(extract.featureInfo['geom'],topic.topicid)
+    for topic in extract.topics:
+        if topic.topicid in extract.appconfig.ch_topics:
+            xml_layers = []
+            for xml_layer in topic.layers:
+                xml_layers.append(xml_layer.layername)
+            get_XML(extract.featureInfo['geom'],topic.topicid, pdfconfig.timestamp)
 
     # 4) Create the title page for the pdf extract
     #--------------------------------------------------
-
-
-
     extract.get_site_map()
 
     # 5) Create the pages of the extract for each topic in the list
