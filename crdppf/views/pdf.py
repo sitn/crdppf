@@ -174,12 +174,12 @@ def create_extract(request):
             xml_layers = []
             for xml_layer in topic.layers:
                 xml_layers.append(xml_layer.layername)
-            get_XML(extract.featureInfo['geom'],topic.topicid, pdfconfig.timestamp)
+            get_XML(extract.featureInfo['geom'],topic.topicid, pdfconfig.timestamp,lang)
 
     # 4) Create the title page for the pdf extract
     #--------------------------------------------------
     extract.get_site_map()
-
+    
     # 5) Create the pages of the extract for each topic in the list
     #---------------------------------------------------
     # Thematic pages
