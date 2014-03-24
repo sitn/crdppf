@@ -76,6 +76,7 @@ def get_XML(geometry, topicid, extracttime):
     url = '/rest/services/api/MapServer/identify?'
     # geometry of the feature to call the feature server for
     feature = geometry
+    sdf
     geomtype = 'geometryType=esriGeometryEnvelope'
     #layers = 'all:ch.bazl.sicherheitszonenplan.oereb'
     bbox = 'mapExtent=671164.31244,253770,690364.31244,259530'
