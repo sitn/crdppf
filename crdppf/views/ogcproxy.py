@@ -6,6 +6,7 @@ from pyramid.httpexceptions import HTTPNotAcceptable
 
 import httplib2
 import urllib
+from urlparse import urlparse
 
 from crdppf.lib.wfsparsing import is_get_feature, limit_featurecollection
 
@@ -30,7 +31,9 @@ def ogcproxy(request):
     method = request.method
 
     h = dict(request.headers)
-    h.pop("Host", h)
+
+    if urlparse(url).hostname != 'localhost':
+        h.pop("Host", h)
     
     body = None
     

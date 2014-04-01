@@ -5,13 +5,13 @@ from os import remove
 from fpdf import FPDF
 import pkg_resources
 from datetime import datetime
-from owslib.wms import WebMapService
+
 from PIL import Image
 
 from geoalchemy import WKTSpatialElement
 
-import urllib
-import urllib2
+import httplib2
+from urlparse import urlparse
 
 from xml.dom.minidom import parseString
 
@@ -20,7 +20,6 @@ from crdppf.models import AppConfig
 
 from crdppf.views.get_features import get_features_function
 from crdppf.util.pdf_functions import geom_from_coordinates
-from crdppf.util.proxy import set_proxy, unset_proxy
 
 class AppConfig(object):
     """Class holding the definition of the basic parameters loaded from yaml
@@ -147,9 +146,15 @@ class Extract(FPDF):
         self.timestamp = datetime.now().strftime("%Y%m%d%H%M%S")
         self.printformat = {}
         self.wms_params = {}
-        self.wms_get_legend = {'REQUEST':'GetLegendGraphic'}
-        self.wms_get_styles = {'REQUEST':'GetStyles'}
-        self.wms_get_map = {'REQUEST':'GetMap'}
+        self.wms_get_legend = (
+            ('REQUEST', 'GetLegendGraphic'),
+        )
+        self.wms_get_styles = (
+            ('REQUEST', 'GetStyles'),
+        )
+        self.wms_get_map = (
+            ('REQUEST', 'GetMap'),
+        )
         self.topicdata = {}
         self.filename = 'thefilename'
         self.topiclist = {}
@@ -164,11 +169,6 @@ class Extract(FPDF):
         self.topicorder = {}
         self.wms_baselayers = []
         self.log = log
-        if request.registry.settings['proxy_enabled'] == 'True':
-            self.proxy_enabled = True
-        else:
-            self.proxy_enabled = False
-        self.proxy_conf = request.registry.settings['proxy_conf']
         self.cleanupfiles = []
 
     def alias_no_page(self, alias='{no_pg}'):
@@ -244,8 +244,8 @@ class Extract(FPDF):
             'lang':self.lang
             }
         for key, value in self.wms_params.iteritems():
-            self.wms_get_legend[key]=value 
-            self.wms_get_styles[key]=value
+            self.wms_get_legend += (key, value),
+            self.wms_get_styles += (key, value),
         if topicid in self.ch_topics:
             self.wms_url = self.ch_wms
         else:
@@ -459,22 +459,40 @@ class Extract(FPDF):
         wmsBBOX['minY'] = int(wmsBBOX['centerY']-(90*scale/1000/2))
         wmsBBOX['maxY'] = int(wmsBBOX['centerY']+(90*scale/1000/2))
 
-        #wms = WebMapService('http://sitn.ne.ch/mapproxy/service', version='1.1.1')
-        wms = WebMapService(self.crdppf_wms, version='1.1.1')
-        print self.sld_url+self.pdfconfig.siteplanname
-        sitemap = wms.getmap(
-            layers = layers,
-            sld = self.sld_url+self.pdfconfig.siteplanname+'_sld.xml',
-            srs = self.appconfig.wms_srs,
-            bbox = (wmsBBOX['minX'], wmsBBOX['minY'], wmsBBOX['maxX'], wmsBBOX['maxY']),
-            size=(1600, 900),
-            format = 'image/png',
-            transparent = False
+        params = (
+            ('REQUEST', 'GetMap'),
+            ('VERSION', self.appconfig.wms_version),
+            ('LAYERS', ",".join(layers)),
+            ('SLD',  self.sld_url+self.pdfconfig.siteplanname+'_sld.xml'),
+            ('SRS', self.appconfig.wms_srs),
+            ('BBOX', ",".join([str(wmsBBOX['minX']), str(wmsBBOX['minY']), str(wmsBBOX['maxX']), str(wmsBBOX['maxY'])])),
+            ('WIDTH', str(1600)),
+            ('HEIGHT', str(900)),
+            ('FORMAT', 'image/png'),
+            ('TRANSPARENT', 'false')
         )
+
+        url = self.crdppf_wms
+
+        if url.find('?') < 0:
+            url += '?'
+        url = url + '&'.join(['='.join(p) for p in params])
+
+        http = httplib2.Http()
+
+        h = dict(self.request.headers)
+        if urlparse(url).hostname != 'localhost': # pragma: no cover
+            h.pop('Host')
+
+        try:
+            resp, content = http.request(url, method='GET', headers=h)
+        except: # pragma: no cover
+            errors.append("Unable to do GetMap request for url %s" % url)
+            return None, errors
 
         out = open(self.appconfig.tempdir+self.pdfconfig.siteplanname+'.png', 'wb')
         self.cleanupfiles.append(self.appconfig.tempdir+self.pdfconfig.siteplanname+'.png')
-        out.write(sitemap.read())
+        out.write(content)
         out.close()
 
         self.sitemappath = self.appconfig.tempdir+self.pdfconfig.siteplanname+'.png'
@@ -694,8 +712,8 @@ class Extract(FPDF):
             if restriction_layer.topicfk in self.appconfig.ch_legend_layers.keys():
                 legend_layers.append(self.appconfig.ch_legend_layers[str(restriction_layer.topicfk)])
                 layers.append(self.appconfig.ch_legend_layers[str(restriction_layer.topicfk)])
-                self.wms_get_legend['LAYER'] = self.appconfig.ch_legend_layers[str(restriction_layer.topicfk)]
-                self.wms_get_styles['LAYERS'] = self.appconfig.ch_legend_layers[str(restriction_layer.topicfk)]
+                self.wms_get_legend += ('LAYER', self.appconfig.ch_legend_layers[str(restriction_layer.topicfk)]),
+                self.wms_get_styles += ('LAYERS', self.appconfig.ch_legend_layers[str(restriction_layer.topicfk)]),
                 # open an empty file for the layers legend graphic
                 legend = open(self.appconfig.tempdir+self.filename+str('_legend_')+str(topicid)+'.png', 'wb')
                 self.cleanupfiles.append(self.appconfig.tempdir+self.filename+str('_legend_')+str(topicid)+'.png')
@@ -704,30 +722,45 @@ class Extract(FPDF):
             else:
                 legend_layers.append(restriction_layer.layername)
                 layers.append(restriction_layer.layername)
-                self.wms_get_legend['LAYER'] = restriction_layer.layername
-                self.wms_get_styles['LAYERS'] = restriction_layer.layername
+                self.wms_get_legend += ('LAYER', restriction_layer.layername),
+                self.wms_get_styles += ('LAYERS', restriction_layer.layername),
                 legend = open(self.appconfig.tempdir+self.filename+str('_legend_')+str(restriction_layer.layername)+'.png', 'wb')
                 self.cleanupfiles.append(self.appconfig.tempdir+self.filename+str('_legend_')+str(restriction_layer.layername)+'.png')
                 legend_path.append(self.appconfig.tempdir+self.filename+str('_legend_')+str(restriction_layer.layername))
 
             legend_classes = set(self.get_legend_classes(wmsbbox,restriction_layer.layername))
-            self.wms_get_legend['TRANSPARENT'] = self.wms_transparency
-            self.wms_get_legend['FORMAT'] = 'image/png; mode=8bit'
-            sld_body = urllib.urlencode(self.wms_get_styles)
+            self.wms_get_legend += ('TRANSPARENT', self.wms_transparency),
+            self.wms_get_legend += ('FORMAT', 'image/png'),
+
+            url = self.wms_url
+
+            if url.find('?') < 0:
+                url += '?'
+            url = url + '&'.join(['='.join(p) for p in self.wms_get_styles])
 
             if self.log:
                 self.log.warning("WMS REQUEST")
                 self.log.warning("on URL: %s", self.wms_url)
                 self.log.warning('Doing layer: %s', restriction_layer.topicfk)
 
+            http = httplib2.Http()
+
+            h = dict(self.request.headers)
+            if urlparse(url).hostname != 'localhost': # pragma: no cover
+                h.pop('Host')
+
             if restriction_layer.topicfk in self.appconfig.ch_legend_layers.keys():
-                if self.proxy_enabled == True:
-                    set_proxy(self.proxy_conf)
-                content = urllib2.urlopen(self.wms_url+"?"+sld_body).read()
+                try:
+                    resp, content = http.request(url, method='GET', headers=h)
+                except: # pragma: no cover
+                    errors.append("Unable to do GetMap request for url %s" % url)
+                    return None, errors
             else:
-                content = urllib2.urlopen(self.wms_url+"?"+sld_body).read()
-            if self.proxy_enabled == True:
-                unset_proxy()
+                try:
+                    resp, content = http.request(url, method='GET', headers=h)
+                except: # pragma: no cover
+                    errors.append("Unable to do GetMap request for url %s" % url)
+                    return None, errors
 
             if self.log:
                 self.log.warning("DONE WMS REQUEST")
@@ -753,7 +786,7 @@ class Extract(FPDF):
             sld_legendfile.close()
 
             # only necessary if complet legend should be called dynamically
-            complet_legend_body = urllib.urlencode(self.wms_get_legend)
+            #complet_legend_body = urllib.urlencode(self.wms_get_legend)
 
             if self.log:
                 self.log.warning("Applying SLD")
@@ -762,11 +795,8 @@ class Extract(FPDF):
                 del self.wms_get_legend['SLD']
 
             if topicid in self.appconfig.ch_topics:
-                if self.proxy_enabled == True:
-                    set_proxy(self.proxy_conf)
                 #complet_legend_path = urllib2.urlopen(self.wms_url+"?"+complet_legend_body)
-                if self.proxy_enabled == True:
-                    unset_proxy()
+                pass
             else:
                 #complet_legend_path = urllib2.urlopen(self.crdppf_wms+"?"+complet_legend_body)
                 pass
@@ -776,20 +806,34 @@ class Extract(FPDF):
 
             if sld_legendfile and topicid in [u'73','73']:
                 legend_sld = self.sld_url+self.filename+str('_')+str(restriction_layer.layername)+'_legend_sld.xml'
-                self.wms_get_legend['SLD'] = str(legend_sld)
+                self.wms_get_legend += ('SLD', str(legend_sld)),
 
-            legend_body = urllib.urlencode(self.wms_get_legend)
+            url = self.wms_url
+
+            if url.find('?') < 0:
+                url += '?'
+            url = url + '&'.join(['='.join(p) for p in self.wms_get_legend])
+
+            http = httplib2.Http()
+
+            h = dict(self.request.headers)
+            if urlparse(url).hostname != 'localhost': # pragma: no cover
+                h.pop('Host')
 
             if topicid in self.appconfig.ch_topics:
-                if self.proxy_enabled == True:
-                    set_proxy(self.proxy_conf)
-                legend_img = urllib2.urlopen(self.wms_url+"?"+legend_body)
-                if self.proxy_enabled == True:
-                    unset_proxy()
+                try:
+                    resp, content = http.request(url, method='GET', headers=h)
+                except: # pragma: no cover
+                    errors.append("Unable to do GetMap request for url %s" % url)
+                    return None, errors
             else:
-                legend_img = urllib2.urlopen(self.wms_url+"?"+legend_body)
+                try:
+                    resp, content = http.request(url, method='GET', headers=h)
+                except: # pragma: no cover
+                    errors.append("Unable to do GetMap request for url %s" % url)
+                    return None, errors
 
-            legend.write(legend_img.read())
+            legend.write(content)
             legend.close()
 
             if self.log:
@@ -797,9 +841,6 @@ class Extract(FPDF):
 
         self.topiclist[topicid]['topiclegend'] = self.topiclegenddir+str(topicid)+'_topiclegend.pdf'
 
-        #imgformat = 'image/png; mode=24bit'
-        imgformat = 'image/png; mode=8bit'
-        
         if self.log:
             self.log.warning("WMS")
 
@@ -807,15 +848,35 @@ class Extract(FPDF):
             layers = baselayers
             layers.append(str(restriction_layer.layername))
 
-        wms = WebMapService(self.crdppf_wms, self.wms_version)
-        map = wms.getmap(
-            layers = layers,
-            srs = self.appconfig.wms_srs,
-            bbox = (wmsBBOX['minX'], wmsBBOX['minY'], wmsBBOX['maxX'], wmsBBOX['maxY']),
-            size = (self.mapconfig['width'], self.mapconfig['height']),
-            format = imgformat,
-            transparent = False
+        params = (
+            ('REQUEST', 'GetMap'),
+            ('VERSION', self.appconfig.wms_version),
+            ('LAYERS', ",".join(layers)),
+            ('SRS', self.appconfig.wms_srs),
+            ('BBOX', ",".join([str(wmsBBOX['minX']), str(wmsBBOX['minY']), str(wmsBBOX['maxX']), str(wmsBBOX['maxY'])])),
+            ('WIDTH', str(self.mapconfig['width'])),
+            ('HEIGHT', str(self.mapconfig['height'])),
+            ('FORMAT', 'image/png'),
+            ('TRANSPARENT', 'false')
         )
+
+        url = self.crdppf_wms
+
+        if url.find('?') < 0:
+            url += '?'
+        url = url + '&'.join(['='.join(p) for p in params])
+
+        http = httplib2.Http()
+
+        h = dict(self.request.headers)
+        if urlparse(url).hostname != 'localhost': # pragma: no cover
+            h.pop('Host')
+
+        try:
+            resp, content = http.request(url, method='GET', headers=h)
+        except: # pragma: no cover
+            errors.append("Unable to do GetMap request for url %s" % url)
+            return None, errors
 
         #~ elif topicid in self.appconfig.ch_topics:
         #~ now = datetime.now()
@@ -867,7 +928,7 @@ class Extract(FPDF):
             
         out = open(self.appconfig.tempdir+self.filename+'_'+str(topicid)+'.png', 'wb')
         self.cleanupfiles.append(self.appconfig.tempdir+self.filename+'_'+str(topicid)+'.png')
-        out.write(map.read())
+        out.write(content)
         out.close()
 
         mappath = self.appconfig.tempdir+self.filename+'_'+str(topicid)+'.png'
