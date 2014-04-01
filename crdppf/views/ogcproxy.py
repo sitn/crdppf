@@ -30,6 +30,8 @@ def ogcproxy(request):
 
     method = request.method
 
+    url = request.registry.settings['crdppf_wms']
+
     h = dict(request.headers)
 
     if urlparse(url).hostname != 'localhost':
@@ -39,13 +41,11 @@ def ogcproxy(request):
     
     if method in ("POST", "PUT"):
         body = request.body
-
-    url = request.registry.settings['crdppf_wms']
     
     url += _url
     
     http = httplib2.Http()
-    
+
     resp, content = http.request(url, method=method, body=body, headers=h)
 
     if method == "POST" and is_get_feature(body):
