@@ -146,15 +146,15 @@ class Extract(FPDF):
         self.timestamp = datetime.now().strftime("%Y%m%d%H%M%S")
         self.printformat = {}
         self.wms_params = {}
-        self.wms_get_legend = (
-            ('REQUEST', 'GetLegendGraphic'),
-        )
-        self.wms_get_styles = (
-            ('REQUEST', 'GetStyles'),
-        )
-        self.wms_get_map = (
-            ('REQUEST', 'GetMap'),
-        )
+        self.wms_get_legend = {
+            'REQUEST': 'GetLegendGraphic'
+        }
+        self.wms_get_styles = {
+            'REQUEST': 'GetStyles'
+        }
+        self.wms_get_map = {
+            'REQUEST': 'GetMap'
+        }
         self.topicdata = {}
         self.filename = 'thefilename'
         self.topiclist = {}
@@ -244,8 +244,8 @@ class Extract(FPDF):
             'lang':self.lang
             }
         for key, value in self.wms_params.iteritems():
-            self.wms_get_legend += (key, value),
-            self.wms_get_styles += (key, value),
+            self.wms_get_legend[key] = value
+            self.wms_get_styles[key] = value
         if topicid in self.ch_topics:
             self.wms_url = self.ch_wms
         else:
@@ -295,7 +295,7 @@ class Extract(FPDF):
         self.set_font(*self.pdfconfig.textstyles['normal'])
         # should we generalize the dict keys like 'nomcad'?
         if 'nomcad' in feature_info:
-            if feature_info['nomcad'] is not None:
+            if feature_info['nomcad'] and feature_info['type']:
                 self.cell(50, 5, feature_info['nummai'].encode('iso-8859-1')+str(' (')+ \
                     feature_info['nomcad'].encode('iso-8859-1')+str(') ')+ \
                     str(' - ')+feature_info['type'].encode('iso-8859-1'), 0, 1, 'L')
@@ -459,24 +459,24 @@ class Extract(FPDF):
         wmsBBOX['minY'] = int(wmsBBOX['centerY']-(90*scale/1000/2))
         wmsBBOX['maxY'] = int(wmsBBOX['centerY']+(90*scale/1000/2))
 
-        params = (
-            ('REQUEST', 'GetMap'),
-            ('VERSION', self.appconfig.wms_version),
-            ('LAYERS', ",".join(layers)),
-            ('SLD',  self.sld_url+self.pdfconfig.siteplanname+'_sld.xml'),
-            ('SRS', self.appconfig.wms_srs),
-            ('BBOX', ",".join([str(wmsBBOX['minX']), str(wmsBBOX['minY']), str(wmsBBOX['maxX']), str(wmsBBOX['maxY'])])),
-            ('WIDTH', str(1600)),
-            ('HEIGHT', str(900)),
-            ('FORMAT', 'image/png'),
-            ('TRANSPARENT', 'false')
-        )
+        params = {
+            'REQUEST': 'GetMap',
+            'VERSION': self.appconfig.wms_version,
+            'LAYERS': ",".join(layers),
+            'SLD':  self.sld_url+self.pdfconfig.siteplanname+'_sld.xml',
+            'SRS': self.appconfig.wms_srs,
+            'BBOX': ",".join([str(wmsBBOX['minX']), str(wmsBBOX['minY']), str(wmsBBOX['maxX']), str(wmsBBOX['maxY'])]),
+            'WIDTH': str(1600),
+            'HEIGHT': str(900),
+            'FORMAT': 'image/png',
+            'TRANSPARENT': 'false'
+        }
 
         url = self.crdppf_wms
 
         if url.find('?') < 0:
             url += '?'
-        url = url + '&'.join(['='.join(p) for p in params])
+        url = url + '&'.join(['%s=%s' % (key, value) for (key, value) in params.items()])
 
         http = httplib2.Http()
 
@@ -712,8 +712,8 @@ class Extract(FPDF):
             if restriction_layer.topicfk in self.appconfig.ch_legend_layers.keys():
                 legend_layers.append(self.appconfig.ch_legend_layers[str(restriction_layer.topicfk)])
                 layers.append(self.appconfig.ch_legend_layers[str(restriction_layer.topicfk)])
-                self.wms_get_legend += ('LAYER', self.appconfig.ch_legend_layers[str(restriction_layer.topicfk)]),
-                self.wms_get_styles += ('LAYERS', self.appconfig.ch_legend_layers[str(restriction_layer.topicfk)]),
+                self.wms_get_legend['LAYER'] = self.appconfig.ch_legend_layers[str(restriction_layer.topicfk)]
+                self.wms_get_styles['LAYERS'] = self.appconfig.ch_legend_layers[str(restriction_layer.topicfk)]
                 # open an empty file for the layers legend graphic
                 legend = open(self.appconfig.tempdir+self.filename+str('_legend_')+str(topicid)+'.png', 'wb')
                 self.cleanupfiles.append(self.appconfig.tempdir+self.filename+str('_legend_')+str(topicid)+'.png')
@@ -722,32 +722,32 @@ class Extract(FPDF):
             else:
                 legend_layers.append(restriction_layer.layername)
                 layers.append(restriction_layer.layername)
-                self.wms_get_legend += ('LAYER', restriction_layer.layername),
-                self.wms_get_styles += ('LAYERS', restriction_layer.layername),
+                self.wms_get_legend ['LAYER'] = restriction_layer.layername
+                self.wms_get_styles['LAYERS'] = restriction_layer.layername
                 legend = open(self.appconfig.tempdir+self.filename+str('_legend_')+str(restriction_layer.layername)+'.png', 'wb')
                 self.cleanupfiles.append(self.appconfig.tempdir+self.filename+str('_legend_')+str(restriction_layer.layername)+'.png')
                 legend_path.append(self.appconfig.tempdir+self.filename+str('_legend_')+str(restriction_layer.layername))
 
             legend_classes = set(self.get_legend_classes(wmsbbox,restriction_layer.layername))
-            self.wms_get_legend += ('TRANSPARENT', self.wms_transparency),
-            self.wms_get_legend += ('FORMAT', 'image/png'),
+            self.wms_get_legend['TRANSPARENT'] = self.wms_transparency
+            self.wms_get_legend['FORMAT'] = 'image/png'
 
             url = self.wms_url
 
             if url.find('?') < 0:
                 url += '?'
-            url = url + '&'.join(['='.join(p) for p in self.wms_get_styles])
-
-            if self.log:
-                self.log.warning("WMS REQUEST")
-                self.log.warning("on URL: %s", self.wms_url)
-                self.log.warning('Doing layer: %s', restriction_layer.topicfk)
+            url = url + '&'.join(['%s=%s' % (key, value) for (key, value) in self.wms_get_styles.items()])
 
             http = httplib2.Http()
 
             h = dict(self.request.headers)
             if urlparse(url).hostname != 'localhost': # pragma: no cover
                 h.pop('Host')
+
+            if self.log:
+                self.log.warning("WMS REQUEST")
+                self.log.warning("on URL: %s", url)
+                self.log.warning('Doing layer: %s', restriction_layer.topicfk)
 
             if restriction_layer.topicfk in self.appconfig.ch_legend_layers.keys():
                 try:
@@ -806,13 +806,13 @@ class Extract(FPDF):
 
             if sld_legendfile and topicid in [u'73','73']:
                 legend_sld = self.sld_url+self.filename+str('_')+str(restriction_layer.layername)+'_legend_sld.xml'
-                self.wms_get_legend += ('SLD', str(legend_sld)),
+                self.wms_get_legend['SLD'] = str(legend_sld)
 
             url = self.wms_url
 
             if url.find('?') < 0:
                 url += '?'
-            url = url + '&'.join(['='.join(p) for p in self.wms_get_legend])
+            url = url + '&'.join(['%s=%s' % (key, value) for (key, value) in self.wms_get_legend.items()])
 
             http = httplib2.Http()
 
@@ -1081,7 +1081,7 @@ class Extract(FPDF):
                     tot_legend_height_px += legend_height_px
 
                 # number of px per mm of legend width = width proportion
-                width_proportion = float((max_legend_width_px)) / float(legendbox_width-4)
+                width_proportion = float(max_legend_width_px) / float(legendbox_width-4)
                 height_proportion = float(tot_legend_height_px) / float(legendbox_height-20)
                 
                 # check if using this proportion of px/mm the totol_legend_height fits 
