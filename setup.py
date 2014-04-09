@@ -30,8 +30,8 @@ setup(
         'httplib2',
         'pil',
         'pyyaml',
-        'pypdf2',
-        'JSTools'
+        'JSTools',
+        'PyPDF2'
     ],
     packages=find_packages(exclude=['ez_setup']),
     include_package_data=True,
