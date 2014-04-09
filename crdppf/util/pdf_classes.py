@@ -7,6 +7,7 @@ import pkg_resources
 from datetime import datetime
 
 from PIL import Image
+from StringIO import StringIO
 
 from geoalchemy import WKTSpatialElement
 
@@ -170,6 +171,43 @@ class Extract(FPDF):
         self.wms_baselayers = []
         self.log = log
         self.cleanupfiles = []
+        self.basemap = ''
+
+    def get_basemap(self):
+
+        wmsBBOX, wmsbbox = self.get_wms_bbox()
+
+        params = {
+            'REQUEST': 'GetMap',
+            'VERSION': self.appconfig.wms_version,
+            'LAYERS': ",".join(self.appconfig.crdppf_wms_layers),
+            'SRS': self.appconfig.wms_srs,
+            'BBOX': ",".join([str(wmsBBOX['minX']), str(wmsBBOX['minY']), str(wmsBBOX['maxX']), str(wmsBBOX['maxY'])]),
+            'WIDTH': self.mapconfig['width'],
+            'HEIGHT': self.mapconfig['height'],
+            'FORMAT': 'image/png',
+            'TRANSPARENT': 'false'
+        }
+
+        url = self.crdppf_wms
+
+        if url.find('?') < 0:
+            url += '?'
+        url = url + '&'.join(['%s=%s' % (key, value) for (key, value) in params.items()])
+
+        http = httplib2.Http()
+
+        h = dict(self.request.headers)
+        if urlparse(url).hostname != 'localhost': # pragma: no cover
+            h.pop('Host')
+
+        try:
+            resp, content = http.request(url, method='GET', headers=h)
+        except: # pragma: no cover
+            errors.append("Unable to do GetMap request for url %s" % url)
+            return None, errors
+
+        self.basemap = Image.open(StringIO(content))
 
     def alias_no_page(self, alias='{no_pg}'):
         """Define an alias for total number of pages"""
@@ -685,10 +723,6 @@ class Extract(FPDF):
         layers = []
         baselayers = []
 
-        # Get the list of the baselayers
-        for wms_layer in self.appconfig.crdppf_wms_layers:
-            baselayers.append(wms_layer)
-
         # Configure the WMS request to call either the internal or the external, federal WMS
         if topicid in self.appconfig.ch_topics:
             # sets the wms_url to call CH-Server
@@ -702,9 +736,6 @@ class Extract(FPDF):
 
             if self.log:
                 self.log.warning("DONE set_wms_config")
-
-            layers = baselayers
-            # List with the base layers of the map - the restriction layers get added to the list
 
         # Adding each layer of the restriction to the WMS
         for restriction_layer in restriction_layers:
@@ -845,7 +876,6 @@ class Extract(FPDF):
             self.log.warning("WMS")
 
         if topicid in self.appconfig.ch_topics:
-            layers = baselayers
             layers.append(str(restriction_layer.layername))
 
         params = (
@@ -857,7 +887,7 @@ class Extract(FPDF):
             ('WIDTH', str(self.mapconfig['width'])),
             ('HEIGHT', str(self.mapconfig['height'])),
             ('FORMAT', 'image/png'),
-            ('TRANSPARENT', 'false')
+            ('TRANSPARENT', 'true')
         )
 
         url = self.crdppf_wms
@@ -865,6 +895,9 @@ class Extract(FPDF):
         if url.find('?') < 0:
             url += '?'
         url = url + '&'.join(['='.join(p) for p in params])
+
+        if self.log:
+            self.log.warning("On URL: %s", url)
 
         http = httplib2.Http()
 
@@ -877,6 +910,10 @@ class Extract(FPDF):
         except: # pragma: no cover
             errors.append("Unable to do GetMap request for url %s" % url)
             return None, errors
+
+        if self.log:
+            self.log.warning("DONE WMS REQUEST")
+
 
         #~ elif topicid in self.appconfig.ch_topics:
         #~ now = datetime.now()
@@ -925,11 +962,21 @@ class Extract(FPDF):
             #~ background.paste(foreground, (0, 0), foreground)
             #~ background.convert('RGB').convert('P', colors=256, palette=Image.ADAPTIVE)
             #~ background.save(self.appconfig.tempdir+self.filename+'_'+str(topicid)+'.png')
-            
-        out = open(self.appconfig.tempdir+self.filename+'_'+str(topicid)+'.png', 'wb')
+        if self.log:
+            self.log.warning("Writing image file")
+
+        front_img = Image.open(StringIO(content))
+
+        back_img = self.basemap
+        back_img = back_img.convert('RGBA')
+
+        back_img.paste(front_img, (0, 0), front_img)
+        back_img = back_img.convert('RGB')
+        back_img.save(self.appconfig.tempdir+self.filename+'_'+str(topicid)+'.png')
         self.cleanupfiles.append(self.appconfig.tempdir+self.filename+'_'+str(topicid)+'.png')
-        out.write(content)
-        out.close()
+
+        if self.log:
+            self.log.warning("Done - Writing image file")
 
         mappath = self.appconfig.tempdir+self.filename+'_'+str(topicid)+'.png'
         # Add the path to the thematic map and it's legendfile to the topiclist
