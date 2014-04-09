@@ -914,7 +914,6 @@ class Extract(FPDF):
         if self.log:
             self.log.warning("DONE WMS REQUEST")
 
-
         #~ elif topicid in self.appconfig.ch_topics:
         #~ now = datetime.now()
         #~ self.log.warning("DONE WMS, min.sec: %s", str(now.minute)+'.'+str(now.second))

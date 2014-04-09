@@ -191,9 +191,6 @@ def create_extract(request):
     if logon is True:
         log.warning('get_site_map DONE')
 
-
-
-
     # 5) Create the pages of the extract for each topic in the list
     #---------------------------------------------------
     # Thematic pages
