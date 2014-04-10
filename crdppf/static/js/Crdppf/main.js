@@ -11,6 +11,8 @@
  * @include Crdppf/measureTools.js
  */
 
+var layerList;
+
 // MAIN USER INTERFACE
 Ext.onReady(function() {
     
@@ -74,7 +76,7 @@ Ext.onReady(function() {
         },
         method: 'POST',
         failure: function () {
-            Ext.Msg.alert(labels.serverErrorMessage);
+            Ext.Msg.alert(Crdppf.labels.serverErrorMessage);
         }
     }); 
     
@@ -88,7 +90,7 @@ Ext.onReady(function() {
         },
         method: 'POST',
         failure: function () {
-            Ext.Msg.alert(labels.serverErrorMessage);
+            Ext.Msg.alert(Crdppf.labels.serverErrorMessage);
         }
     });
 
@@ -102,7 +104,7 @@ Ext.onReady(function() {
         },
         method: 'POST',
         failure: function () {
-            Ext.Msg.alert(labels.serverErrorMessage);
+            Ext.Msg.alert(Crdppf.labels.serverErrorMessage);
         }
     });     
     
@@ -117,7 +119,7 @@ Ext.onReady(function() {
         },
         method: 'POST',
         failure: function () {
-            Ext.Msg.alert(labels.serverErrorMessage);
+            Ext.Msg.alert(Crdppf.labels.serverErrorMessage);
         }
     }); 
 });
@@ -310,7 +312,7 @@ Crdppf.init_main = function(lang) {
                                                     method: 'POST',
                                                     timeout : 300000,
                                                     failure: function () {
-                                                        Ext.Msg.alert(labels.serverErrorMessage);
+                                                        Ext.Msg.alert(Crdppf.labels.serverErrorMessage);
                                                     }
                                                 }); 
                                             }
@@ -514,8 +516,8 @@ Crdppf.init_main = function(lang) {
         contentEl: 'header'
     });
 
-    var layerTree = Crdppf.LayerTree(Crdppf.labels, Crdppf.layerList, Crdppf.baseLayersList);
-    var themeSelector = Crdppf.ThemeSelector(Crdppf.labels, Crdppf.layerList);
+    layerTree = Crdppf.LayerTree(Crdppf.labels, Crdppf.layerList, Crdppf.baseLayersList);
+    themeSelector = new Crdppf.ThemeSelector(Crdppf.labels, Crdppf.layerList);
 
     // create the CGPX searchbox
     var searcher = new Crdppf.SearchBox({

@@ -3,7 +3,8 @@
 // create layer tree and append nodes & subnodes to it
 Crdppf.LayerTree = function(labels, layerList, baseLayersList) {
     // create layer tree object
-    var overlaysList = [];
+    overlaysList = [];
+
     var layerTree = new Ext.tree.TreePanel({
         title: labels.layerTreeTitle,
         collapsible:true,
