@@ -309,6 +309,9 @@ def get_feature_info(request, translations):
 
     parcelInfo['nummai'] = queryresult.nummai # Parcel number
     parcelInfo['type'] = queryresult.typimm # Parcel type
+    parcelInfo['source'] = queryresult.source # Parcel type
+    if parcelInfo['type'] == None :
+        parcelInfo['type'] = translations['UndefinedPropertyType']
 
     if 'numcad' in queryresult2.__table__.columns.keys():
         parcelInfo['nomcad'] = queryresult2.cadnom
