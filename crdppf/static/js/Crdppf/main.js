@@ -11,19 +11,13 @@
  * @include Crdppf/measureTools.js
  */
 
-// VARIABLES
-var mapPanel;
-var winWait;
-var layerList;
 // MAIN USER INTERFACE
-
 Ext.onReady(function() {
     
     Ext.namespace('Crdppf');
     Crdppf.layerList = '';
     Crdppf.labels = '' ;
     Crdppf.baseLayersList = '';
-    
     
     // set the application language to the user session settings
     var lang = ''; // The current session language
@@ -131,7 +125,6 @@ Ext.onReady(function() {
 Ext.namespace('Crdppf');
 
 Crdppf.init_main = function(lang) {
-
 
     Ext.QuickTips.init();
 
@@ -344,7 +337,7 @@ Crdppf.init_main = function(lang) {
                     chooseExtract.show();
                 }
                 else {
-                    Ext.Msg.alert(labels.infoMsgTitle, Crdppf.labels.noSelectedParcelMessage);
+                    Ext.Msg.alert(Crdppf.labels.infoMsgTitle, Crdppf.labels.noSelectedParcelMessage);
                     infoButton.toggle(true);
                 }
             }

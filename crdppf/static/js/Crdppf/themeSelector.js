@@ -10,13 +10,13 @@ Crdppf.ThemeSelector = function(labels, layerList) {
             {name: 'image', mapping: 'image'}
         ]
     });
+    
     var myStore = new Ext.data.Store({
         reader: myReader
     });
-
     // load data and create listView
-
     myStore.loadData(layerList);
+    
     var themeTemplate = new Ext.XTemplate(
         '<p style="padding-top:6px">{[this.getTranslation(values.name)]}</p>',
         {
@@ -64,6 +64,7 @@ Crdppf.ThemeSelector = function(labels, layerList) {
             }
         }
     });
+    
     // insert listView into a nice looking panel
     var themePanel = new Ext.Panel({
         id:'images-view',
@@ -73,5 +74,6 @@ Crdppf.ThemeSelector = function(labels, layerList) {
         title:labels.themeSelectorLabel,
         items: listView
     });
+
     return themePanel;
 };

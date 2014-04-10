@@ -3,7 +3,7 @@
 // create layer tree and append nodes & subnodes to it
 Crdppf.LayerTree = function(labels, layerList, baseLayersList) {
     // create layer tree object
-    overlaysList = [];
+    var overlaysList = [];
     var layerTree = new Ext.tree.TreePanel({
         title: labels.layerTreeTitle,
         collapsible:true,
@@ -57,7 +57,6 @@ Crdppf.LayerTree = function(labels, layerList, baseLayersList) {
             }
         }
     });
-    
     
     rootLayerTree.appendChild(checkAllNode);
     // iterate over themes and create nodes

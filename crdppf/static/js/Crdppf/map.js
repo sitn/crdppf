@@ -174,7 +174,7 @@ var setInfoControl = function setInfoControl(){
                 url: Crdppf.getFeatureUrl,
                 params: {
                     id: parcelId,
-                    layerList: overlaysList
+                    layerList: overlaysList,
                 },
                 callback: handler,
                 success: function(){
@@ -318,7 +318,7 @@ function makeMap(mapOptions, labels){
 var disableInfoControl = function disableInfoControl(){
     featureTree.collapse(false);
     intersect.removeAllFeatures();
-    featureTree.setTitle(labels.restrictionPanelTitle);
+    featureTree.setTitle(Crdppf.labels.restrictionPanelTitle);
     root.removeAll(true);
     var selectionLayer = this.map.getLayer('selectionLayer');
     selectionLayer.removeAllFeatures();
