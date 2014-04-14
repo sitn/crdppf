@@ -517,7 +517,7 @@ Crdppf.init_main = function(lang) {
     });
 
     layerTree = Crdppf.LayerTree(Crdppf.labels, Crdppf.layerList, Crdppf.baseLayersList);
-    themeSelector = new Crdppf.ThemeSelector(Crdppf.labels, Crdppf.layerList);
+    themeSelector = Crdppf.ThemeSelector(Crdppf.labels, Crdppf.layerList);
 
     // create the CGPX searchbox
     var searcher = new Crdppf.SearchBox({
@@ -535,7 +535,11 @@ Crdppf.init_main = function(lang) {
         collapseMode: 'mini',
         width: 250,
         boxMinWidth: 225,
-        items:[searcher,themeSelector,layerTree],
+        items: [
+            searcher, 
+            themeSelector, 
+            layerTree
+        ],
         layoutConfig: {
             align: 'stretch'
         }
@@ -569,19 +573,19 @@ Crdppf.init_main = function(lang) {
         map: MapO.map
     });
     var legendPanel = new GeoExt.LegendPanel({
-            collapsible:true, 
-            map: MapO.map,
-            cls:'legendPanelCls',
-            title: Crdppf.labels.legendPanelTitle,
-            autoScroll: true,
-            flex: 1.0,
-            defaults: {
-                style: 'padding:5px',
-                baseParams: {
-                    FORMAT: 'image/png',
-                    LEGEND_OPTIONS: 'forceLabels:on'
-                }
+        collapsible:true, 
+        map: MapO.map,
+        cls:'legendPanelCls',
+        title: Crdppf.labels.legendPanelTitle,
+        autoScroll: true,
+        flex: 1.0,
+        defaults: {
+            style: 'padding:5px',
+            baseParams: {
+            FORMAT: 'image/png',
+            LEGEND_OPTIONS: 'forceLabels:on'
             }
+        }
     });
     infoPanel = new Ext.Panel({
         header: false,
@@ -597,7 +601,10 @@ Crdppf.init_main = function(lang) {
         layoutConfig: {
             align: 'stretch'
         },
-        items:[featureTree, legendPanel]
+        items: [
+            featureTree,
+            legendPanel
+        ]
     });
     centerPanel = new Ext.TabPanel({
         region: 'center',
@@ -613,10 +620,12 @@ Crdppf.init_main = function(lang) {
         renderTo:'main',
         id:'viewPort',
         border:true,
-        items: [headerPanel,
+        items: [
+            headerPanel,
             navigationPanel,
             infoPanel, 
-            centerPanel]
+            centerPanel
+        ]
     });
 
     mapPanel = Ext.getCmp('mappanel');    

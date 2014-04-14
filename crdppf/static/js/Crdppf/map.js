@@ -1,4 +1,4 @@
-﻿/*
+/*
  * @include OpenLayers/Projection.js
  * @include OpenLayers/Map.js
  * @requires OpenLayers/Request.js 
@@ -32,7 +32,7 @@ Ext.namespace('Crdppf');
 OpenLayers.ImgPath = Crdppf.OLImgPath;  
 
 // Constructor
-Crdppf.Map = function Map(mapOptions,labels) {
+Crdppf.Map = function Map(mapOptions, labels) {
     this.title = 'Crdppf OpenLayers custom map object';
     this.description = 'Manages all cartographic parameters and actions';       
     this.map = makeMap(mapOptions, labels);
@@ -174,7 +174,7 @@ var setInfoControl = function setInfoControl(){
                 url: Crdppf.getFeatureUrl,
                 params: {
                     id: parcelId,
-                    layerList: overlaysList,
+                    layerList: overlaysList
                 },
                 callback: handler,
                 success: function(){
