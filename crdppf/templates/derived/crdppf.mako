@@ -1,9 +1,5 @@
 <%inherit file="/base/index.mako"/>
 
-    <script type="text/javascript">
-        var OLImgPath = "${request.static_url('crdppf:static/images/ol/')}";
-    </script>
-
 % if debug:
     <%!
     from jstools.merge import Merger

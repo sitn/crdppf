@@ -1,6 +1,6 @@
 ﻿Ext.namespace('Crdppf');
 
-Crdppf.legalDocuments = function() {
+Crdppf.legalDocuments = function(labels) {
 /*
 Function to collect all legal documents related to a selection of restrictions from the db
 and create a data view applying a template to format the page layout
