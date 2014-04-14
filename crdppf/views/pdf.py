@@ -16,7 +16,7 @@ import logging
 
 log = logging.getLogger(__name__)
 
-@view_config(route_name='create_extract')
+@view_config(route_name='create_extract', renderer='json')
 def create_extract(request):
     """The function collects alle the necessary data from the subfunctions and classes
        and then writes the pdf file of the extract."""
@@ -276,11 +276,12 @@ def create_extract(request):
 
     extract.clean_up_temp_files()
 
-    response = FileResponse(
-        pdfconfig.pdfpath + pdfconfig.pdfname + '.pdf',
-        request,
-        None,
-        'application/pdf'
-    )
-    response. content_disposition='attachment; filename='+ pdfconfig.pdfname +'.pdf'
-    return response
+    pdffile = {'pdfurl':request.static_url('crdppf:static/public/pdf/'+pdfconfig.pdfname+'.pdf')}
+    #~ response = FileResponse(
+        #~ pdfconfig.pdfpath + pdfconfig.pdfname + '.pdf',
+        #~ request,
+        #~ None,
+        #~ 'application/pdf'
+    #~ )
+    #~ response. content_disposition='attachment; filename='+ pdfconfig.pdfname +'.pdf'
+    return pdffile

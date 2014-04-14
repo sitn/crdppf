@@ -304,10 +304,13 @@ Crdppf.init_main = function(lang) {
                                                 Ext.Ajax.request({
                                                     url: urlToOpen,
                                                     success: function(response) {
-                                                        var filename = response.getResponseHeader('Content-Disposition').split('filename=')[1];
-                                                        var outputUrl = Crdppf.baseUrl + 'static/public/pdf/' + filename;
-                                                        window.open(outputUrl);
-                                                        pdfMask.hide();                                                        
+                                                        var result = Ext.util.JSON.decode(response.responseText);
+                                                        var pdfurl = result['pdfurl'];
+                                                        var outputUrl = pdfurl;
+                                                        pdfMask.hide();
+                                                        Ext.getCmp('extractChoiceWindow').update('<a href="'+outputUrl+'" target="_new">Afficher le PDF</a>');
+                                                        //window.open(outputUrl);
+                                                        //chooseExtract.destroy();
                                                     },
                                                     method: 'POST',
                                                     timeout : 300000,
