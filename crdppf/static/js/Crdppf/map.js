@@ -1,4 +1,4 @@
-﻿/*
+/*
  * @include OpenLayers/Projection.js
  * @include OpenLayers/Map.js
  * @requires OpenLayers/Request.js 
@@ -29,13 +29,13 @@
  */
  
 Ext.namespace('Crdppf');
-OpenLayers.ImgPath = OLImgPath;  
+OpenLayers.ImgPath = Crdppf.OLImgPath;  
 
 // Constructor
-Crdppf.Map = function Map(mapOptions) {
+Crdppf.Map = function Map(mapOptions, labels) {
     this.title = 'Crdppf OpenLayers custom map object';
     this.description = 'Manages all cartographic parameters and actions';       
-    this.map = makeMap(mapOptions);
+    this.map = makeMap(mapOptions, labels);
     this.setOverlays = setOverlays;
     this.setInfoControl = setInfoControl;
     this.disableInfoControl = disableInfoControl;
@@ -82,7 +82,7 @@ var setInfoControl = function setInfoControl(){
         var parcelId = e.feature.attributes.idemai;
         if(overlaysList.length === 0){
             var top =  new Ext.tree.TreeNode({
-                text: labels.noActiveLayertxt,
+                text: Crdppf.labels.noActiveLayertxt,
                 draggable:false,
                 leaf: true,
                 expanded: true
@@ -93,7 +93,7 @@ var setInfoControl = function setInfoControl(){
                 function handler(request) {
                     var geojson_format = new OpenLayers.Format.GeoJSON();
                     var jsonData = geojson_format.read(request.responseText);
-                    featureTree.setTitle(labels.restrictionPanelTxt + parcelId);
+                    featureTree.setTitle(Crdppf.labels.restrictionPanelTxt + parcelId);
                     lList = [];
                     // iterate over the restriction found
                     for (i=0; i<jsonData.length;i++) {
@@ -101,11 +101,11 @@ var setInfoControl = function setInfoControl(){
                         // create node for layer if not already created
                         if(!contains(lName,lList)){
                             var fullName = '';
-                            var ll = layerList.themes;
+                            var ll = Crdppf.layerList.themes;
                             for (l=0;l<ll.length;l++){
                                 for (var key in ll[l].layers){
                                     if(lName==key){
-                                        fullName = labels[key]; 
+                                        fullName = Crdppf.labels[key]; 
                                     }
                                 }
                             }
@@ -125,7 +125,7 @@ var setInfoControl = function setInfoControl(){
                                     html = '';
                                     for (var value in jsonData[j].attributes){
                                         if (value !== 'geomType' && value !=='theme' && value!=='codegenre' && value!=='intersectionMeasure'){
-                                            html += '<p class=featureAttributeStyle><b>' + labels[value] + ' : </b>' + jsonData[j].attributes[value] +'</p>' ;
+                                            html += '<p class=featureAttributeStyle><b>' + Crdppf.labels[value] + ' : </b>' + jsonData[j].attributes[value] +'</p>' ;
                                         }
                                     }
                                     html += '';
@@ -133,7 +133,7 @@ var setInfoControl = function setInfoControl(){
                                     var sameLayerNode = new Ext.tree.TreeNode({
                                         singleClickExpand: true,
                                         attributes: jsonData[j],
-                                        text: labels.restrictionFoundTxt + (j+1) + ' : ' + String(jsonData[j].data.intersectionMeasure),
+                                        text: Crdppf.labels.restrictionFoundTxt + (j+1) + ' : ' + String(jsonData[j].data.intersectionMeasure),
                                         draggable:false,
                                         leaf: false,
                                         expanded: false,
@@ -167,7 +167,7 @@ var setInfoControl = function setInfoControl(){
             }
             // define an request object to the interection route
             
-            var featureMask = new Ext.LoadMask(featureTree.body, {msg: labels.restrictionLoadingMsg});
+            var featureMask = new Ext.LoadMask(featureTree.body, {msg: Crdppf.labels.restrictionLoadingMsg});
             featureMask.show();
             
             var request = OpenLayers.Request.GET({
@@ -196,7 +196,7 @@ var setInfoControl = function setInfoControl(){
 };
 
 // Create OL map object, add base layer & zoom to max extent
-function makeMap(mapOptions){
+function makeMap(mapOptions, labels){
 
     // base layer: topographic layer
     var layer = new OpenLayers.Layer.WMTS({
@@ -280,7 +280,7 @@ function makeMap(mapOptions){
     map.events.register("mousemove", map, function(e) {
                 var pixel = new OpenLayers.Pixel(e.xy.x,e.xy.y);
                 var lonlat = map.getLonLatFromPixel(pixel);
-                OpenLayers.Util.getElement(mapOptions.divMousePosition).innerHTML = labels.olCoordinates + ' (ch1903) - Y : ' + Math.round(lonlat.lon) + '  X : ' + Math.round(lonlat.lat) + 'm';
+                OpenLayers.Util.getElement(mapOptions.divMousePosition).innerHTML = '<b>' + labels.olCoordinates + ' (ch1903) - Y : ' + Math.round(lonlat.lon) + ' m / X : ' + Math.round(lonlat.lat) + ' m</b>';
     });
     
     // add base layers & selection layers
@@ -318,7 +318,7 @@ function makeMap(mapOptions){
 var disableInfoControl = function disableInfoControl(){
     featureTree.collapse(false);
     intersect.removeAllFeatures();
-    featureTree.setTitle(labels.restrictionPanelTitle);
+    featureTree.setTitle(Crdppf.labels.restrictionPanelTitle);
     root.removeAll(true);
     var selectionLayer = this.map.getLayer('selectionLayer');
     selectionLayer.removeAllFeatures();
@@ -354,7 +354,7 @@ var setOverlays = function() {
     }
     // add new overlays
     if(overlaysList.length > 0){
-        var loadMask = new Ext.LoadMask(themeSelector.body, {msg: labels.layerLoadingMaskMsg});
+        var loadMask = new Ext.LoadMask(themeSelector.body, {msg: Crdppf.labels.layerLoadingMaskMsg});
         var overlays = new OpenLayers.Layer.WMS(
             layerName, 
             Crdppf.wmsUrl,

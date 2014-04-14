@@ -14,6 +14,7 @@ Crdppf.ogcproxyUrl  = "${request.route_url('ogcproxy')}";
 Crdppf.printUrl = "${request.route_url('create_extract')}";
 Crdppf.fulltextsearchUrl = "${request.registry.settings['fulltextsearch_url']}";
 Crdppf.mapproxyUrl = [${request.registry.settings['mapproxyurl']|n}];
+Crdppf.OLImgPath = "${request.static_url('crdppf:static/images/ol/')}";
 
 Crdppf.tileNames = {
     'plan_ville_name': 'plan_ville_${request.tile_date[1]}',
