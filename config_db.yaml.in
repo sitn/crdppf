@@ -24,6 +24,7 @@ db_config:
       att_id_property: idemai
       att_property_number: nummai
       att_property_type: typimm
+      att_property_source: source
     #optional:
     local_names:
       tablename: nom_local_lieu_dit
