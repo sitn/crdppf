@@ -32,7 +32,7 @@ logon = ${vars:logon}
 [server:main]
 use = egg:waitress#main
 host = 0.0.0.0
-port = 6544
+port = ${vars:waitress_port}
 
 # Begin logging configuration
 
