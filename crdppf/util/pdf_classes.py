@@ -733,7 +733,6 @@ class Extract(FPDF):
         else:
             # sets the wms_url to call localhost
             self.set_wms_config(topicid)
-
             if self.log:
                 self.log.warning("DONE set_wms_config")
 
@@ -759,16 +758,17 @@ class Extract(FPDF):
                 self.cleanupfiles.append(self.appconfig.tempdir+self.filename+str('_legend_')+str(restriction_layer.layername)+'.png')
                 legend_path.append(self.appconfig.tempdir+self.filename+str('_legend_')+str(restriction_layer.layername))
 
+            # gets a list of all the categories of objects found in the map perimeter to reduce the legend
             legend_classes = set(self.get_legend_classes(wmsbbox,restriction_layer.layername))
-            self.wms_get_legend['TRANSPARENT'] = self.wms_transparency
             self.wms_get_legend['FORMAT'] = 'image/png'
+            self.wms_get_legend['TRANSPARENT'] = self.wms_transparency
 
             url = self.wms_url
 
             if url.find('?') < 0:
                 url += '?'
             url = url + '&'.join(['%s=%s' % (key, value) for (key, value) in self.wms_get_styles.items()])
-
+                
             http = httplib2.Http()
 
             h = dict(self.request.headers)
@@ -780,18 +780,18 @@ class Extract(FPDF):
                 self.log.warning("on URL: %s", url)
                 self.log.warning('Doing layer: %s', restriction_layer.topicfk)
 
-            if restriction_layer.topicfk in self.appconfig.ch_legend_layers.keys():
-                try:
-                    resp, content = http.request(url, method='GET', headers=h)
-                except: # pragma: no cover
-                    errors.append("Unable to do GetMap request for url %s" % url)
-                    return None, errors
-            else:
-                try:
-                    resp, content = http.request(url, method='GET', headers=h)
-                except: # pragma: no cover
-                    errors.append("Unable to do GetMap request for url %s" % url)
-                    return None, errors
+            #~ if restriction_layer.topicfk in self.appconfig.ch_legend_layers.keys():
+                #~ try:
+                    #~ resp, content = http.request(url, method='GET', headers=h)
+                #~ except: # pragma: no cover
+                    #~ errors.append("Unable to do GetMap request for url %s" % url)
+                    #~ return None, errors
+            #~ else:
+            try:
+                resp, content = http.request(url, method='GET', headers=h)
+            except: # pragma: no cover
+                errors.append("Unable to do GetMap request for url %s" % url)
+                return None, errors
 
             if self.log:
                 self.log.warning("DONE WMS REQUEST")
@@ -851,21 +851,29 @@ class Extract(FPDF):
             if urlparse(url).hostname != 'localhost': # pragma: no cover
                 h.pop('Host')
 
-            if topicid in self.appconfig.ch_topics:
-                try:
-                    resp, content = http.request(url, method='GET', headers=h)
-                except: # pragma: no cover
-                    errors.append("Unable to do GetMap request for url %s" % url)
-                    return None, errors
-            else:
-                try:
-                    resp, content = http.request(url, method='GET', headers=h)
-                except: # pragma: no cover
-                    errors.append("Unable to do GetMap request for url %s" % url)
-                    return None, errors
+            #~ if topicid in self.appconfig.ch_topics:
+                #~ try:
+                    #~ resp, content = http.request(url, method='GET', headers=h)
+                #~ except: # pragma: no cover
+                    #~ errors.append("Unable to do GetMap request for url %s" % url)
+                    #~ return None, errors
+            #~ else:
+            try:
+                resp, content = http.request(url, method='GET', headers=h)
+            except: # pragma: no cover
+                errors.append("Unable to do GetMap request for url %s" % url)
+                return None, errors
 
-            legend.write(content)
-            legend.close()
+            if topicid in self.appconfig.ch_topics:
+                front = Image.open(StringIO(content))
+                front = front.point(lambda x: x*0.7)
+                legend = Image.new('RGBA', front.size, (255, 255, 255))
+                legend.paste(front, (0, 0), front)
+                legend = legend.convert('RGB')
+                legend.save(self.appconfig.tempdir+self.filename+str('_legend_')+str(topicid)+'.png')
+            else :
+                legend.write(content)
+                legend.close()
 
             if self.log:
                 self.log.warning("DONE SLD on WMS")
@@ -874,9 +882,6 @@ class Extract(FPDF):
 
         if self.log:
             self.log.warning("WMS")
-
-        if topicid in self.appconfig.ch_topics:
-            layers.append(str(restriction_layer.layername))
 
         params = (
             ('REQUEST', 'GetMap'),
@@ -890,8 +895,8 @@ class Extract(FPDF):
             ('TRANSPARENT', 'true')
         )
 
-        url = self.crdppf_wms
-
+        url = self.wms_url
+            
         if url.find('?') < 0:
             url += '?'
         url = url + '&'.join(['='.join(p) for p in params])
@@ -914,61 +919,15 @@ class Extract(FPDF):
         if self.log:
             self.log.warning("DONE WMS REQUEST")
 
-        #~ elif topicid in self.appconfig.ch_topics:
-        #~ now = datetime.now()
-        #~ self.log.warning("DONE WMS, min.sec: %s", str(now.minute)+'.'+str(now.second))
-        #~ if topicid in self.appconfig.ch_topics:
-            #~ layers = baselayers
-            #~ layers.append(str(restriction_layer.layername))
-
-            #~ basewms = WebMapService(self.crdppf_wms, self.wms_version)
-            #~ map = basewms.getmap(
-                #~ layers = layers,
-                #~ srs = self.appconfig.wms_srs,
-                #~ bbox = (wmsBBOX['minX'], wmsBBOX['minY'], wmsBBOX['maxX'], wmsBBOX['maxY']),
-                #~ size = (self.mapconfig['width'], self.mapconfig['height']),
-                #~ format = imgformat,
-                #~ transparent = False
-            #~ )
-
-            #~ basemap = basewms.getmap(
-                #~ layers = baselayers,
-                #~ srs = self.appconfig.wms_srs,
-                #~ bbox = (wmsBBOX['minX'], wmsBBOX['minY'], wmsBBOX['maxX'], wmsBBOX['maxY']),
-                #~ size = (self.mapconfig['width'], self.mapconfig['height']),
-                #~ format = imgformat,
-                #~ transparent = False
-            #~ )
-            #~ out1 = open(self.appconfig.tempdir+self.filename+str('_baselayer')+'.png', 'wb')
-            #~ out1.write(basemap.read())
-            #~ out1.close()
-
-            #~ overlay = wms.getmap(
-                #~ layers = layers,
-                #~ srs = self.appconfig.wms_srs,
-                #~ bbox = (wmsBBOX['minX'], wmsBBOX['minY'], wmsBBOX['maxX'], wmsBBOX['maxY']),
-                #~ size = (self.mapconfig['width'], self.mapconfig['height']),
-                #~ format = 'image/png; mode=24bit',
-                #~ transparent = True
-            #~ )
-            #~ out2 = open(self.appconfig.tempdir+self.filename+str('_overlay')+'.png', 'wb')
-            #~ out2.write(map.read())
-            #~ out2.close()
-
-            #~ background = Image.open(self.appconfig.tempdir+self.filename+str('_baselayer')+'.png')
-            #~ foreground = Image.open(self.appconfig.tempdir+self.filename+str('_overlay')+'.png')
-
-            #~ background.paste(foreground, (0, 0), foreground)
-            #~ background.convert('RGB').convert('P', colors=256, palette=Image.ADAPTIVE)
-            #~ background.save(self.appconfig.tempdir+self.filename+'_'+str(topicid)+'.png')
         if self.log:
             self.log.warning("Writing image file")
 
         front_img = Image.open(StringIO(content))
-
+        if restriction_layer.topicfk in self.appconfig.ch_topics:
+            # reduce the opacity of the overlay image to 50%
+            front_img = front_img.point(lambda x: x*0.5)
         back_img = self.basemap
         back_img = back_img.convert('RGBA')
-
         back_img.paste(front_img, (0, 0), front_img)
         back_img = back_img.convert('RGB')
         back_img.save(self.appconfig.tempdir+self.filename+'_'+str(topicid)+'.png')
