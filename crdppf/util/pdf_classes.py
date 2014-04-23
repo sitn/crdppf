@@ -522,6 +522,7 @@ class Extract(FPDF):
         if urlparse(url).hostname != 'localhost': # pragma: no cover
             h.pop('Host')
 
+        errors = []
         try:
             resp, content = http.request(url, method='GET', headers=h)
         except: # pragma: no cover
@@ -784,13 +785,16 @@ class Extract(FPDF):
                 #~ try:
                     #~ resp, content = http.request(url, method='GET', headers=h)
                 #~ except: # pragma: no cover
-                    #~ errors.append("Unable to do GetMap request for url %s" % url)
+                    #~ errors.append("Unable to do GetStyles request for url %s" % url)
                     #~ return None, errors
             #~ else:
+            errors = []
             try:
                 resp, content = http.request(url, method='GET', headers=h)
             except: # pragma: no cover
-                errors.append("Unable to do GetMap request for url %s" % url)
+                if self.log:
+                    self.log.warning("URL: "+url)
+                errors.append("Unable to do GetStyles request for url %s" % url)
                 return None, errors
 
             if self.log:
