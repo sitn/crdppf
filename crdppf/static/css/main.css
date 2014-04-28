@@ -346,6 +346,12 @@ body {
     margin-left: 10px;
 }
 
+.pdfDownloadCls{
+	background-color:#FFFFFF !important;
+	padding: 10px !important;
+	font-weight:bold !important;
+	}
+
 /* OL ScaleLine */
 .olControlScaleLineTop{
     color: red; 
