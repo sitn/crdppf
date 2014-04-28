@@ -277,11 +277,5 @@ def create_extract(request):
     extract.clean_up_temp_files()
 
     pdffile = {'pdfurl':request.static_url('crdppf:static/public/pdf/'+pdfconfig.pdfname+'.pdf')}
-    #~ response = FileResponse(
-        #~ pdfconfig.pdfpath + pdfconfig.pdfname + '.pdf',
-        #~ request,
-        #~ None,
-        #~ 'application/pdf'
-    #~ )
-    #~ response. content_disposition='attachment; filename='+ pdfconfig.pdfname +'.pdf'
+
     return pdffile

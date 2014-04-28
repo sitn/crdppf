@@ -43,7 +43,6 @@ Ext.onReady(function() {
                fn: redirectAfterDisclaimer,
                animEl: 'elId',
                icon: Ext.MessageBox.WARNING,
-                
             });
         }
     };
@@ -264,10 +263,10 @@ Crdppf.init_main = function(lang) {
                         layout:'fit',
                         items: [
                             {
-                                xtype:'panel',
-                                id:'extractChoiceBody',
-                                border: false,
-                                items: [
+                            xtype:'panel',
+                            id:'extractChoiceBody',
+                            border: false,
+                            items: [
                                 {
                                     xtype: 'spacer',
                                     height: 5
@@ -335,17 +334,14 @@ Crdppf.init_main = function(lang) {
                                             listeners: {
                                                 click: function(){
                                                     chooseExtract.destroy();
+                                                    }
                                                 }
-                                                
                                             }
-                                        }
-                                    ]
+                                        ]
                                     }
                                 ]
                             }
-                            
                         ]
-                        
                     });
                     chooseExtract.show();
                 }
