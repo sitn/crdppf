@@ -1,5 +1,4 @@
 # -*- coding: UTF-8 -*-
-from pyramid.response import FileResponse
 from pyramid.view import view_config
 
 from crdppf.models import DBSession
