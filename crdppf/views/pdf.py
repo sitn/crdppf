@@ -131,7 +131,7 @@ def create_extract(request):
     municipality = featureInfo['nomcom'].strip()
 
     if logon is True:
-        log.warning(municipality)
+        log.warning('Town: %s', municipality)
 
     # AS does the german language, the french contains a few accents we have to replace to fetch the banner which has no accents in its pathname...
     conversion = [
@@ -175,12 +175,20 @@ def create_extract(request):
                 #~ xml_layers.append(xml_layer.layername)
             #~ get_XML(extract.featureInfo['geom'],topic.topicid)
 
+
+    # Create basemap
+    extract.get_basemap()
+
     # 4) Create the title page for the pdf extract
     #--------------------------------------------------
 
-
+    if logon is True:
+        log.warning('get_site_map')
 
     extract.get_site_map()
+
+    if logon is True:
+        log.warning('get_site_map DONE')
 
     # 5) Create the pages of the extract for each topic in the list
     #---------------------------------------------------
