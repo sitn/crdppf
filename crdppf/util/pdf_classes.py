@@ -205,7 +205,7 @@ class Extract(FPDF):
             resp, content = http.request(url, method='GET', headers=h)
         except: # pragma: no cover
             errors.append("Unable to do GetMap request for url %s" % url)
-            return None, errors
+            return None
 
         self.basemap = Image.open(StringIO(content))
 
@@ -522,12 +522,11 @@ class Extract(FPDF):
         if urlparse(url).hostname != 'localhost': # pragma: no cover
             h.pop('Host')
 
-        errors = []
         try:
             resp, content = http.request(url, method='GET', headers=h)
         except: # pragma: no cover
-            errors.append("Unable to do GetMap request for url %s" % url)
-            return None, errors
+            self.log.error("Unable to do GetMap request for url %s" % url)
+            return None
 
         out = open(self.appconfig.tempdir+self.pdfconfig.siteplanname+'.png', 'wb')
         self.cleanupfiles.append(self.appconfig.tempdir+self.pdfconfig.siteplanname+'.png')
@@ -725,21 +724,13 @@ class Extract(FPDF):
         baselayers = []
 
         # Configure the WMS request to call either the internal or the external, federal WMS
-        if topicid in self.appconfig.ch_topics:
-            # sets the wms_url to call CH-Server
-
-            self.set_wms_config(topicid)
-            if self.log:
-                self.log.warning("DONE set_wms_config")
-        else:
-            # sets the wms_url to call localhost
-            self.set_wms_config(topicid)
-            if self.log:
-                self.log.warning("DONE set_wms_config")
+        self.set_wms_config(topicid)
+        if self.log:
+            self.log.warning("DONE set_wms_config")
 
         # Adding each layer of the restriction to the WMS
         for restriction_layer in restriction_layers:
-            # set the request for a call to the federal wms or to localhost
+            # set the request parameters for either a call to the federal wms or to localhost
             if restriction_layer.topicfk in self.appconfig.ch_legend_layers.keys():
                 legend_layers.append(self.appconfig.ch_legend_layers[str(restriction_layer.topicfk)])
                 layers.append(self.appconfig.ch_legend_layers[str(restriction_layer.topicfk)])
@@ -781,21 +772,11 @@ class Extract(FPDF):
                 self.log.warning("on URL: %s", url)
                 self.log.warning('Doing layer: %s', restriction_layer.topicfk)
 
-            #~ if restriction_layer.topicfk in self.appconfig.ch_legend_layers.keys():
-                #~ try:
-                    #~ resp, content = http.request(url, method='GET', headers=h)
-                #~ except: # pragma: no cover
-                    #~ errors.append("Unable to do GetStyles request for url %s" % url)
-                    #~ return None, errors
-            #~ else:
-            errors = []
             try:
                 resp, content = http.request(url, method='GET', headers=h)
             except: # pragma: no cover
-                if self.log:
-                    self.log.warning("URL: "+url)
-                errors.append("Unable to do GetStyles request for url %s" % url)
-                return None, errors
+                self.log.error("Unable to do GetStyles request for url %s" % url)
+                return None
 
             if self.log:
                 self.log.warning("DONE WMS REQUEST")
@@ -855,18 +836,11 @@ class Extract(FPDF):
             if urlparse(url).hostname != 'localhost': # pragma: no cover
                 h.pop('Host')
 
-            #~ if topicid in self.appconfig.ch_topics:
-                #~ try:
-                    #~ resp, content = http.request(url, method='GET', headers=h)
-                #~ except: # pragma: no cover
-                    #~ errors.append("Unable to do GetMap request for url %s" % url)
-                    #~ return None, errors
-            #~ else:
             try:
                 resp, content = http.request(url, method='GET', headers=h)
             except: # pragma: no cover
-                errors.append("Unable to do GetMap request for url %s" % url)
-                return None, errors
+                self.log.error("Unable to do GetMap request for url %s" % url)
+                return None
 
             if topicid in self.appconfig.ch_topics:
                 front = Image.open(StringIO(content))
@@ -917,8 +891,8 @@ class Extract(FPDF):
         try:
             resp, content = http.request(url, method='GET', headers=h)
         except: # pragma: no cover
-            errors.append("Unable to do GetMap request for url %s" % url)
-            return None, errors
+            self.log.error("Unable to do GetMap request for url %s" % url)
+            return None
 
         if self.log:
             self.log.warning("DONE WMS REQUEST")
@@ -928,7 +902,7 @@ class Extract(FPDF):
 
         front_img = Image.open(StringIO(content))
         if restriction_layer.topicfk in self.appconfig.ch_topics:
-            # reduce the opacity of the overlay image to 50%
+            # reduce the opacity of the overlay image to 50% - it's a workaround for a transparency/FPDF/PNG issue
             front_img = front_img.point(lambda x: x*0.5)
         back_img = self.basemap
         back_img = back_img.convert('RGBA')
@@ -943,7 +917,6 @@ class Extract(FPDF):
         mappath = self.appconfig.tempdir+self.filename+'_'+str(topicid)+'.png'
         # Add the path to the thematic map and it's legendfile to the topiclist
         self.topiclist[topicid].update({'mappath':mappath,'legendpath':legend_path})
-        #return mappath, legend_path
 
     def add_toc_entry(self, topicid, num, label, categorie, appendices):
         self.toc_entries[str(topicid)]={'no_page':num, 'title':label, 'categorie':int(categorie), 'appendices':set()}
