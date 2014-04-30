@@ -1008,7 +1008,7 @@ class Extract(FPDF):
         self.ln()
         self.ln()
         self.set_font(*pdfconfig.textstyles['tocbold'])
-        self.multi_cell(0, 5, translations['notconcerndbyrestrictionlabel'], 'B', 1, 'L')
+        self.multi_cell(0, 6, translations['notconcerndbyrestrictionlabel'], 'B', 1, 'L')
         self.ln()
 
         for entry, column in self.topiclist.iteritems() :
@@ -1020,15 +1020,15 @@ class Extract(FPDF):
 
         self.ln()
         self.set_font(*pdfconfig.textstyles['tocbold'])
-        self.multi_cell(0, 5, translations['restrictionnotavailablelabel'], 'B', 1, 'L')
+        self.multi_cell(0, 6, translations['restrictionnotavailablelabel'], 'B', 1, 'L')
         self.ln()
         
         for entry, column in self.topiclist.iteritems() :
             if column['categorie'] == 0 :
                 self.set_font(*pdfconfig.textstyles['tocbold'])
-                self.cell(118,6,column['topicname'],0,0,'L')
-                self.cell(15,6,'',0,0,'L')
-                self.cell(15,6,'',0,1,'L')
+                self.cell(118, 6,column['topicname'],0,0,'L')
+                self.cell(15, 6,'',0,0,'L')
+                self.cell(15, 6,'',0,1,'L')
                 
         self.ln()
         self.set_font(*pdfconfig.textstyles['tocbold'])
