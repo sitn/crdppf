@@ -322,7 +322,6 @@ body {
 
 /*infoPanel*/
 .infoPanelCls{
-
 }
 
 /*fulltextsearch group */
@@ -346,6 +345,29 @@ body {
     margin-left: 10px;
 }
 
+.pdfDownloadCls{
+	background-color:#FFFFFF !important;
+	padding: 10px !important;
+	font-weight:bold !important;
+	}
+
+.fakeButton{
+	padding:5px !important;
+	border:1px solid #C1C1C1;
+	background-color:#eee;
+	}
+	
+span.fakeButton:hover{
+	border:1px solid #990000;
+	background-color:#FFD6CC;
+	}
+
+.fakeButton{
+	padding:2px;
+	border:1px solid #777;
+	background-color:#eee;
+	}
+	
 /* OL ScaleLine */
 .olControlScaleLineTop{
     color: red; 
