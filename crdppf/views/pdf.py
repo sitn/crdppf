@@ -1,5 +1,4 @@
 # -*- coding: UTF-8 -*-
-from pyramid.response import FileResponse
 from pyramid.view import view_config
 
 from crdppf.models import DBSession
@@ -16,7 +15,7 @@ import logging
 
 log = logging.getLogger(__name__)
 
-@view_config(route_name='create_extract')
+@view_config(route_name='create_extract', renderer='json')
 def create_extract(request):
     """The function collects alle the necessary data from the subfunctions and classes
        and then writes the pdf file of the extract."""
@@ -132,7 +131,7 @@ def create_extract(request):
     municipality = featureInfo['nomcom'].strip()
 
     if logon is True:
-        log.warning(municipality)
+        log.warning('Town: %s', municipality)
 
     # AS does the german language, the french contains a few accents we have to replace to fetch the banner which has no accents in its pathname...
     conversion = [
@@ -176,10 +175,20 @@ def create_extract(request):
                 xml_layers.append(xml_layer.layername)
             get_XML(extract.featureInfo['geom'],topic.topicid, pdfconfig.timestamp,lang)
 
+
+    # Create basemap
+    extract.get_basemap()
+
     # 4) Create the title page for the pdf extract
     #--------------------------------------------------
+    if logon is True:
+        log.warning('get_site_map')
+
     extract.get_site_map()
-    
+
+    if logon is True:
+        log.warning('get_site_map DONE')
+
     # 5) Create the pages of the extract for each topic in the list
     #---------------------------------------------------
     # Thematic pages
@@ -273,11 +282,6 @@ def create_extract(request):
 
     extract.clean_up_temp_files()
 
-    response = FileResponse(
-        pdfconfig.pdfpath + pdfconfig.pdfname + '.pdf',
-        request,
-        None,
-        'application/pdf'
-    )
-    response. content_disposition='attachment; filename='+ pdfconfig.pdfname +'.pdf'
-    return response
+    pdffile = {'pdfurl':request.static_url('crdppf:static/public/pdf/'+pdfconfig.pdfname+'.pdf')}
+
+    return pdffile

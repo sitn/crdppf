@@ -3,6 +3,11 @@ CRDPPF
 
 # Getting started
 
+Create an empty folder on your disk and prepare it for the git project from your console
+
+    $ cd [path to your directory]
+    $ git init
+    
 Checkout the source code:
 
     $ git clone https://github.com/sitn/crdppf.git

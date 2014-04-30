@@ -29,8 +29,8 @@ app_config:
     - la3_limites_communales
   wms_srs: EPSG:21781
   wms_version: 1.1.1
-  wms_transparency: TRUE
-  wms_imageformat: image/png; mode=24bit
+  wms_transparency: 'TRUE'
+  wms_imageformat: image/png
   
 pdf_config:
   defaultlanguage: ${vars:default_language}

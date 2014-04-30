@@ -11,25 +11,25 @@
  * @include Crdppf/measureTools.js
  */
 
-// VARIABLES
-var mapPanel;
-var winWait;
 var layerList;
-// MAIN USER INTERFACE
 
+// MAIN USER INTERFACE
 Ext.onReady(function() {
+    
+    Ext.namespace('Crdppf');
+    Crdppf.layerList = '';
+    Crdppf.labels = '' ;
+    Crdppf.baseLayersList = '';
+    
     // set the application language to the user session settings
     var lang = ''; // The current session language
-    var translations = {}; // The interface translations
-    var baseLayers = {};
-    var parameters = {};
     // We need to ensure all json data are recieved by the client before starting the application
     var loadingCounter = 0;
     
     var triggerFunction = function(counter) {
         if (counter == 4) {
-            Ext.MessageBox.buttonText.yes = translations.disclaimerAcceptance;
-            Ext.MessageBox.buttonText.no = translations.diclaimerRefusal;
+            Ext.MessageBox.buttonText.yes = Crdppf.labels.disclaimerAcceptance;
+            Ext.MessageBox.buttonText.no = Crdppf.labels.diclaimerRefusal;
             var dlg = Ext.MessageBox.getDialog();
             var buttons = dlg.buttons;
             for (var i = 0; i < buttons.length; i++){
@@ -37,8 +37,8 @@ Ext.onReady(function() {
             }
             
             Ext.Msg.show({
-               title: translations.disclaimerWindowTitle,
-               msg: translations.disclaimerMsg,
+               title: Crdppf.labels.disclaimerWindowTitle,
+               msg: Crdppf.labels.disclaimerMsg,
                buttons: Ext.Msg.YESNO,
                fn: redirectAfterDisclaimer,
                animEl: 'elId',
@@ -49,9 +49,9 @@ Ext.onReady(function() {
     
     var redirectAfterDisclaimer = function(userChoice){
         if (userChoice == 'yes'){
-            Crdppf.init_main(lang, parameters, baseLayers, translations);
+            Crdppf.init_main(lang);
         } else {
-            window.open(translations.disclaimerRedirectUrl, "_self");
+            window.open(Crdppf.labels.disclaimerRedirectUrl, "_self");
         }  
     };
 
@@ -61,27 +61,36 @@ Ext.onReady(function() {
         success: function(response) {
             var lang_json = Ext.decode(response.responseText);
             lang = lang_json['lang'];
-            OpenLayers.Lang.setCode(lang); 
+            OpenLayers.Lang.setCode(lang);
+            if (lang !== '' && lang == 'Fr'){
+                OpenLayers.Util.extend(OpenLayers.Lang.fr, Crdppf.labels);
+            } else if (lang !== '' && lang == 'De') {
+                OpenLayers.Util.extend(OpenLayers.Lang.de, Crdppf.labels);
+            } else if (lang !== '' && lang == 'en') {
+                OpenLayers.Util.extend(OpenLayers.Lang.en, Crdppf.labels);
+            } else if (lang !== '') {
+                OpenLayers.Util.extend(OpenLayers.Lang.fr, Crdppf.labels);
+            }
             loadingCounter += 1;
             triggerFunction(loadingCounter);            
         },
         method: 'POST',
         failure: function () {
-            Ext.Msg.alert(labels.serverErrorMessage);
+            Ext.Msg.alert(Crdppf.labels.serverErrorMessage);
         }
     }); 
     
-    // Load the interface's translations
+    // Load the interface's Crdppf.labels
     Ext.Ajax.request({
         url: Crdppf.getTranslationDictionaryUrl,
         success: function(response) {
-            translations = Ext.decode(response.responseText);
+            Crdppf.labels = Ext.decode(response.responseText);
             loadingCounter += 1; 
             triggerFunction(loadingCounter);            
         },
         method: 'POST',
         failure: function () {
-            Ext.Msg.alert(labels.serverErrorMessage);
+            Ext.Msg.alert(Crdppf.labels.serverErrorMessage);
         }
     });
 
@@ -89,13 +98,13 @@ Ext.onReady(function() {
     Ext.Ajax.request({
         url: Crdppf.getBaselayerConfigUrl,
         success: function(response) {
-            baseLayers = Ext.decode(response.responseText);
+            Crdppf.baseLayersList = Ext.decode(response.responseText);
             loadingCounter += 1; 
             triggerFunction(loadingCounter);            
         },
         method: 'POST',
         failure: function () {
-            Ext.Msg.alert(labels.serverErrorMessage);
+            Ext.Msg.alert(Crdppf.labels.serverErrorMessage);
         }
     });     
     
@@ -103,32 +112,21 @@ Ext.onReady(function() {
     Ext.Ajax.request({
         url: Crdppf.getInterfaceConfigUrl,
         success: function(response) {
-            parameters = Ext.decode(response.responseText);
-            if (lang !== '' && lang == 'Fr'){
-                OpenLayers.Util.extend(OpenLayers.Lang.fr,translations);
-            } else if (lang !== '' && lang == 'De') {
-                OpenLayers.Util.extend(OpenLayers.Lang.de,translations);
-            } else if (lang !== '' && lang == 'en') {
-                OpenLayers.Util.extend(OpenLayers.Lang.en,translations);
-            } else if (lang !== '') {
-                OpenLayers.Util.extend(OpenLayers.Lang.fr,translations);
-            }
+            Crdppf.layerList = Ext.decode(response.responseText);
+
             loadingCounter += 1;
             triggerFunction(loadingCounter);        
         },
         method: 'POST',
         failure: function () {
-            Ext.Msg.alert(labels.serverErrorMessage);
+            Ext.Msg.alert(Crdppf.labels.serverErrorMessage);
         }
     }); 
 });
 
 Ext.namespace('Crdppf');
 
-Crdppf.init_main = function(lang, parameters, baseLayers, translations) {
-    layerList = parameters;
-    labels = translations;
-    baseLayersList = baseLayers;
+Crdppf.init_main = function(lang) {
 
     Ext.QuickTips.init();
 
@@ -144,13 +142,13 @@ Crdppf.init_main = function(lang, parameters, baseLayers, translations) {
     var mapOptions = {
         divMousePosition: 'mousepos'
     };
-    MapO = new Crdppf.Map(mapOptions);
+    MapO = new Crdppf.Map(mapOptions,Crdppf.labels);
     var map = MapO.map;
 
     // getFeatureInfo button: activates the Openlayers infoControl
     var infoButton = new Ext.Button({
         xtype: 'button',
-        tooltip: labels.infoButtonTlp,
+        tooltip: Crdppf.labels.infoButtonTlp,
         margins: '0 0 0 20',
         id: 'infoButton',
         width: 40,
@@ -169,7 +167,7 @@ Crdppf.init_main = function(lang, parameters, baseLayers, translations) {
     // clearSelection button: empty the current selection
     var clearSelectionButton = new Ext.Button({
         xtype: 'button',
-        tooltip: labels.clearSelectionButtonTlp,
+        tooltip: Crdppf.labels.clearSelectionButtonTlp,
         margins: '0 0 0 20',
         id: 'clearSelectionButton',
         width: 40,
@@ -194,8 +192,8 @@ Crdppf.init_main = function(lang, parameters, baseLayers, translations) {
     
     var lineMeasureButton = new Ext.Button({
         xtype: 'button',
-        tooltip: labels.infoButtonTlp,
-        text: labels.measureToolDistanceTxt,
+        tooltip: Crdppf.labels.infoButtonTlp,
+        text: Crdppf.labels.measureToolDistanceTxt,
         margins: '0 0 0 20',
         id: 'distanceButton',
         width: 40,
@@ -216,8 +214,8 @@ Crdppf.init_main = function(lang, parameters, baseLayers, translations) {
     
     var polygonMeasureButton = new Ext.Button({
         xtype: 'button',
-        tooltip: labels.infoButtonTlp,
-        text: labels.measureToolSurfaceTxt,
+        tooltip: Crdppf.labels.infoButtonTlp,
+        text: Crdppf.labels.measureToolSurfaceTxt,
         margins: '0 0 0 20',
         id: 'polygonButton',
         width: 40,
@@ -237,7 +235,7 @@ Crdppf.init_main = function(lang, parameters, baseLayers, translations) {
     });
 
     var measureToolsMenu = new Ext.SplitButton({
-        text: labels.measureToolTxt,
+        text: Crdppf.labels.measureToolTxt,
         showText: true,
         menu: new Ext.menu.Menu({
             items: [
@@ -246,112 +244,152 @@ Crdppf.init_main = function(lang, parameters, baseLayers, translations) {
             ]
         })
     });
+ 
+    // Panel to display the link to the PDF once generated
+    var pdfDisplayPanel = new Ext.Panel({
+        id:'pdfDisplayPanel',
+        cls:'pdfDownloadCls',
+        hidden: true,
+        border: false,
+        height:100,
+        items: [{
+            xtype: 'button',
+            id: 'pdfDisplayButton',
+            cls: 'msgButtonStyle',
+            text: Crdppf.labels.extractPDFDisplayMsg,
+            listeners: {
+                click: function() {
+                    Ext.getCmp('pdfExtractWindow').hide();
+                    },
+                }
+            }
+        ]
+    });
+
+    // Panel to render the PDF extract type choices
+    var pdfChoicePanel = new Ext.Panel({
+        id: 'pdfChoicePanel',
+        cls:'extractChoiceBody',
+        border: false,
+        hidden: false,
+        layout:'auto',
+        items: [{
+            xtype: 'spacer',
+            height: 5
+        },{
+            xtype: 'label',
+            text: Crdppf.labels.chooseExtractMsg,
+            cls: 'textExtractCls'
+        },{
+            xtype: 'label',
+            id: 'pdfLoadDiv'
+        },{
+            xtype: 'spacer',
+            height: 5
+        },{
+            xtype: 'radiogroup',
+            id: 'extractRadioGroup',
+            fieldLabel: 'Auto Layout',
+            items: [
+                {boxLabel: Crdppf.labels.reducedExtract, name: 'rb-auto', inputValue: 'reduced',  cls: 'radioExtractCls', checked: true},
+                {boxLabel: Crdppf.labels.extendedExtract, name: 'rb-auto', inputValue: 'standard',  cls: 'radioExtractCls'}
+            ]
+        },{
+            xtype: 'buttongroup',
+            cls: 'extractButtonCls',
+            fieldLabel: 'Auto Layout',
+            items: [{
+                xtype: 'button',
+                text: Crdppf.labels.generateExtract,  
+                cls: 'msgButtonStyle',
+                listeners: {
+                    click: function(){
+                        var pdfMask = new Ext.LoadMask(Ext.getCmp('pdfExtractWindow').body, {msg: Crdppf.labels.pdfLoadMessage});
+                        pdfMask.show();
+                        var urlToOpen = Crdppf.printUrl + '?id=' + select.features[0].attributes.idemai;
+                        var selectedRadio = Ext.getCmp('extractRadioGroup').getValue();
+                        urlToOpen += '&type=' + selectedRadio.inputValue;
+                        
+                        Ext.Ajax.request({
+                            url: urlToOpen,
+                            success: function(response) {
+                                var result = Ext.util.JSON.decode(response.responseText);
+                                var pdfurl = result['pdfurl'];
+                                var button = Ext.getCmp('pdfDisplayButton');
+                                button.setHandler(function() {window.open(pdfurl);});
+                                Ext.getCmp('pdfDisplayPanel').show();
+                                Ext.getCmp('pdfChoicePanel').hide();
+                                pdfMask.hide();
+                            },
+                            method: 'POST',
+                            timeout : 300000,
+                            failure: function () {
+                                Ext.Msg.alert(Crdppf.labels.serverErrorMessage);
+                            }
+                        }); 
+                    }
+                }
+            },{
+                    xtype: 'button',
+                    cls: 'msgButtonStyle',
+                    height: 20,
+                    width: 100,    
+                    text: Crdppf.labels.cancelExtract,
+                    listeners: {
+                        click: function(){
+                            chooseExtract.hide();
+                            }
+                        }
+                    }
+                ]
+            }
+        ]
+    });
+        
+    var chooseExtract = new Ext.Window({
+        id: 'pdfExtractWindow',
+        title: Crdppf.labels.chooseExtractTypeMsg,
+        width: 300,
+        height: 115,
+        layout:'fit',
+        closeAction: 'hide',
+        items: [
+            pdfChoicePanel,
+            pdfDisplayPanel
+        ],
+        listeners: {
+            hide: function() {
+                Ext.getCmp('pdfDisplayPanel').hide();
+                Ext.getCmp('pdfChoicePanel').show();
+            }
+        }
+    });
     
     // generate the pdf file of the current map
     var printButton = new Ext.Button({
         xtype: 'button',
-        tooltip: labels.printButtonTlp,
+        tooltip: Crdppf.labels.printButtonTlp,
         width: 40,
         enableToggle: true,
         iconCls: 'crdppf_printbutton',
         listeners:{
             click: function (){
                 if(select.features.length == 1){
-                    var chooseExtract = new Ext.Window({
-                        id: 'extractChoiceWindow',
-                        title: labels.chooseExtractTypeMsg,
-                        width: 300,
-                        height: 110,
-                        items: [
-                            {
-                                xtype: 'spacer',
-                                height: 5
-                            },{
-                                xtype: 'label',
-                                text: labels.chooseExtractMsg,
-                                cls: 'textExtractCls'
-                            },{
-                                xtype: 'label',
-                                id: 'pdfLoadDiv'
-                            },{
-                                xtype: 'spacer',
-                                height: 5
-                            },{
-                                xtype: 'radiogroup',
-                                id: 'extractRadioGroup',
-                                fieldLabel: 'Auto Layout',
-                                items: [
-                                    {boxLabel: labels.reducedExtract, name: 'rb-auto', inputValue: 'reduced',  cls: 'radioExtractCls', checked: true},
-                                    {boxLabel: labels.extendedExtract, name: 'rb-auto', inputValue: 'standard',  cls: 'radioExtractCls'}
-                                ]
-                            },{
-                                xtype: 'buttongroup',
-                                cls: 'extractButtonCls',
-                                fieldLabel: 'Auto Layout',
-                                items: [
-                                    {
-                                        xtype: 'button',
-                                        text: labels.generateExtract,  
-                                        height: 20,
-                                        width: 100,    
-                                        cls: 'msgButtonStyle',
-                                        listeners: {
-                                            click: function(){
-                                                var pdfMask = new Ext.LoadMask(Ext.getCmp('extractChoiceWindow').body, {msg: labels.pdfLoadMessage});
-                                                pdfMask.show();
-                                                var urlToOpen = Crdppf.printUrl + '?id=' + select.features[0].attributes.idemai;
-                                                var selectedRadio = Ext.getCmp('extractRadioGroup').getValue();
-                                                urlToOpen += '&type=' + selectedRadio.inputValue;
-                                                
-                                                Ext.Ajax.request({
-                                                    url: urlToOpen,
-                                                    success: function(response) {
-                                                        var filename = response.getResponseHeader('Content-Disposition').split('filename=')[1];
-                                                        var outputUrl = Crdppf.baseUrl + 'static/public/pdf/' + filename;
-                                                        window.open(outputUrl);
-                                                        pdfMask.hide();                                                        
-                                                    },
-                                                    method: 'POST',
-                                                    timeout : 300000,
-                                                    failure: function () {
-                                                        Ext.Msg.alert(labels.serverErrorMessage);
-                                                    }
-                                                }); 
-                                            }
-                                        }
-                                    },{
-                                        xtype: 'button',
-                                        cls: 'msgButtonStyle',
-                                        height: 20,
-                                        width: 100,    
-                                        text: labels.cancelExtract,
-                                        listeners: {
-                                            click: function(){
-                                                chooseExtract.destroy();
-                                            }
-                                            
-                                        }
-                                    }
-                                ]
-                            }
-                            
-                        ]
-                        
-                    });
                     chooseExtract.show();
                 }
                 else {
-                    Ext.Msg.alert(labels.infoMsgTitle, labels.noSelectedParcelMessage);
+                    Ext.Msg.alert(Crdppf.labels.infoMsgTitle, Crdppf.labels.noSelectedParcelMessage);
                     infoButton.toggle(true);
                 }
             }
-        }
+        },
+        scope: this
     });
 
     // activate the standard pan button
     var panButton = new Ext.Button({
         pressed: true,
-        tooltip: labels.panButtonTlp,
+        tooltip: Crdppf.labels.panButtonTlp,
         xtype: 'button',
         margins: '0 0 0 20',
         width: 40,
@@ -369,7 +407,7 @@ Crdppf.init_main = function(lang, parameters, baseLayers, translations) {
     // zoom in button
     var zoomInButton = new Ext.Button({
         pressed: false,
-        tooltip: labels.zoomInButtonTlp,
+        tooltip: Crdppf.labels.zoomInButtonTlp,
         xtype: 'button',
         margins: '0 0 0 20',
         width: 40,
@@ -385,7 +423,7 @@ Crdppf.init_main = function(lang, parameters, baseLayers, translations) {
     // zoom out Button
         var zoomOutButton = new Ext.Button({
         pressed: false,
-        tooltip: labels.zoomOutButtonTlp,
+        tooltip: Crdppf.labels.zoomOutButtonTlp,
         xtype: 'button',
         margins: '0 0 0 20',
         width: 40,
@@ -488,9 +526,9 @@ Crdppf.init_main = function(lang, parameters, baseLayers, translations) {
     });
 
     // Status & disclaimer bar visible at the bottom of the map panel
-    var bottomToolBarHtml = '<span style="padding: 0 20px;">' + labels.mapBottomTxt + '</span>';
+    var bottomToolBarHtml = '<span style="padding: 0 20px;">' + Crdppf.labels.mapBottomTxt + '</span>';
     bottomToolBarHtml += '<span id="mousepos" style="padding: 0 20px;"></span>';
-    bottomToolBarHtml += '<div style="padding: 0 20px; margin-top: 3px;">'+ labels.disclaimerTxt + '</div>';
+    bottomToolBarHtml += '<div style="padding: 0 20px; margin-top: 3px;">'+ Crdppf.labels.disclaimerTxt + '</div>';
     
     var bottomToolBar = new Ext.Toolbar({
         autoWidth: true,
@@ -501,7 +539,7 @@ Crdppf.init_main = function(lang, parameters, baseLayers, translations) {
     // create the mapContainer: one Ext.Panel with a map & a toolbar
    var mapContainer = new Ext.Panel({
         region: "center",
-        title: labels.mapContainerTab,
+        title: Crdppf.labels.mapContainerTab,
         margins: '5 5 0 0',
         layout: 'border',
         items: [
@@ -518,10 +556,8 @@ Crdppf.init_main = function(lang, parameters, baseLayers, translations) {
         contentEl: 'header'
     });
 
-    layerTreeO = new Crdppf.LayerTree();
-    layerTree = layerTreeO.makeLayerTree();
-    themeSelectorO = new Crdppf.ThemeSelector();
-    themeSelector = themeSelectorO.makeThemeSelector();
+    layerTree = Crdppf.LayerTree(Crdppf.labels, Crdppf.layerList, Crdppf.baseLayersList);
+    themeSelector = Crdppf.ThemeSelector(Crdppf.labels, Crdppf.layerList);
 
     // create the CGPX searchbox
     var searcher = new Crdppf.SearchBox({
@@ -532,14 +568,18 @@ Crdppf.init_main = function(lang, parameters, baseLayers, translations) {
     // Create the navigation panel
     var navigationPanel = new Ext.Panel({
         region: 'west',
-        title: labels.navPanelLabel,
+        title: Crdppf.labels.navPanelLabel,
         layout:'vbox',
         flex: 1.0,
         split: true,
         collapseMode: 'mini',
         width: 250,
         boxMinWidth: 225,
-        items:[searcher,themeSelector,layerTree],
+        items: [
+            searcher, 
+            themeSelector, 
+            layerTree
+        ],
         layoutConfig: {
             align: 'stretch'
         }
@@ -547,7 +587,7 @@ Crdppf.init_main = function(lang, parameters, baseLayers, translations) {
 
    // featureTree displayed in infoPanel as a global view 
     featureTree = new Ext.tree.TreePanel({
-        title: labels.restrictionPanelTitle,
+        title: Crdppf.labels.restrictionPanelTitle,
         cls: 'featureTreeCls',
         collapsed: false,
         useArrows:false,
@@ -561,7 +601,7 @@ Crdppf.init_main = function(lang, parameters, baseLayers, translations) {
         height:300,
         autoScroll: true
     });
-
+    
     root = new Ext.tree.TreeNode({
         text: 'Thèmes',
         draggable:false,
@@ -569,33 +609,34 @@ Crdppf.init_main = function(lang, parameters, baseLayers, translations) {
     });
 
     featureTree.setRootNode(root);
-
     var layerStore = new GeoExt.data.LayerStore({
         map: MapO.map
     });
-
+    
+    //legend panel in the lower east layout part - serves to display the layer legends
     var legendPanel = new GeoExt.LegendPanel({
         collapsible:true, 
         map: MapO.map,
         cls:'legendPanelCls',
-        title: labels.legendPanelTitle,
+        title: Crdppf.labels.legendPanelTitle,
         autoScroll: true,
         flex: 1.0,
         defaults: {
             style: 'padding:5px',
             baseParams: {
-                FORMAT: 'image/png',
-                LEGEND_OPTIONS: 'forceLabels:on'
+            FORMAT: 'image/png',
+            LEGEND_OPTIONS: 'forceLabels:on'
             }
         }
     });
-
+    
+    //query info display panel in the upper east part of the layout - serves to display the feature info
     infoPanel = new Ext.Panel({
         header: false,
         layout: 'vbox',
         width: 300,
         region: 'east',
-        title: labels.infoTabLabel,
+        title: Crdppf.labels.infoTabLabel,
         collapseMode: 'mini',
         id: 'infoPanel',
         cls: 'infoPanelCls',
@@ -604,32 +645,39 @@ Crdppf.init_main = function(lang, parameters, baseLayers, translations) {
         layoutConfig: {
             align: 'stretch'
         },
-        items:[featureTree, legendPanel]
+        items: [
+            featureTree,
+            legendPanel
+        ]
     });
-
+    
+    // Container for the map and legal documents display
     centerPanel = new Ext.TabPanel({
         region: 'center',
         activeTab: 0, // index or id
         autoScroll: true,
         items:[
             mapContainer,
-            Crdppf.legalDocuments()
+            Crdppf.legalDocuments(Crdppf.labels)
         ]
     });
-
+    
+    // Main window layout
     var crdppf = new Ext.Viewport({
         layout: 'border',
         renderTo:'main',
         id:'viewPort',
         border:true,
-        items: [headerPanel,
+        items: [
+            headerPanel,
             navigationPanel,
             infoPanel, 
-            centerPanel]
+            centerPanel
+        ]
     });
+
     mapPanel = Ext.getCmp('mappanel');    
 	// Refait la mise en page si la fenêtre change de taille
 	//pass along browser window resize events to the panel
 	Ext.EventManager.onWindowResize(crdppf.doLayout,crdppf);
-
 };
