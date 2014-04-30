@@ -42,7 +42,7 @@ Ext.onReady(function() {
                buttons: Ext.Msg.YESNO,
                fn: redirectAfterDisclaimer,
                animEl: 'elId',
-               icon: Ext.MessageBox.WARNING,
+               icon: Ext.MessageBox.WARNING
             });
         }
     };
@@ -252,20 +252,19 @@ Crdppf.init_main = function(lang) {
         hidden: true,
         border: false,
         height:100,
-        items: [
-            {
-                xtype: 'button',
-                id: 'pdfDisplayButton',
-                cls: 'msgButtonStyle',
-                text: Crdppf.labels.extractPDFDisplayMsg,
-                listeners: {
-                    click: function() {
-                        Ext.getCmp('pdfExtractWindow').hide();
-                        },
-                    }
+        items: [{
+            xtype: 'button',
+            id: 'pdfDisplayButton',
+            cls: 'msgButtonStyle',
+            text: Crdppf.labels.extractPDFDisplayMsg,
+            listeners: {
+                click: function() {
+                    Ext.getCmp('pdfExtractWindow').hide();
+                    },
                 }
-            ]
-        });
+            }
+        ]
+    });
 
     // Panel to render the PDF extract type choices
     var pdfChoicePanel = new Ext.Panel({
@@ -274,80 +273,78 @@ Crdppf.init_main = function(lang) {
         border: false,
         hidden: false,
         layout:'auto',
-        items: [
-            {
-                xtype: 'spacer',
-                height: 5
-            },{
-                xtype: 'label',
-                text: Crdppf.labels.chooseExtractMsg,
-                cls: 'textExtractCls'
-            },{
-                xtype: 'label',
-                id: 'pdfLoadDiv'
-            },{
-                xtype: 'spacer',
-                height: 5
-            },{
-                xtype: 'radiogroup',
-                id: 'extractRadioGroup',
-                fieldLabel: 'Auto Layout',
-                items: [
-                    {boxLabel: Crdppf.labels.reducedExtract, name: 'rb-auto', inputValue: 'reduced',  cls: 'radioExtractCls', checked: true},
-                    {boxLabel: Crdppf.labels.extendedExtract, name: 'rb-auto', inputValue: 'standard',  cls: 'radioExtractCls'}
-                ]
-            },{
-                xtype: 'buttongroup',
-                cls: 'extractButtonCls',
-                fieldLabel: 'Auto Layout',
-                items: [
-                    {
-                        xtype: 'button',
-                        text: Crdppf.labels.generateExtract,  
-                        cls: 'msgButtonStyle',
-                        listeners: {
-                            click: function(){
-                                var pdfMask = new Ext.LoadMask(Ext.getCmp('pdfExtractWindow').body, {msg: Crdppf.labels.pdfLoadMessage});
-                                pdfMask.show();
-                                var urlToOpen = Crdppf.printUrl + '?id=' + select.features[0].attributes.idemai;
-                                var selectedRadio = Ext.getCmp('extractRadioGroup').getValue();
-                                urlToOpen += '&type=' + selectedRadio.inputValue;
-                                
-                                Ext.Ajax.request({
-                                    url: urlToOpen,
-                                    success: function(response) {
-                                        var result = Ext.util.JSON.decode(response.responseText);
-                                        var pdfurl = result['pdfurl'];
-                                        var button = Ext.getCmp('pdfDisplayButton');
-                                        button.setHandler(function() {window.open(pdfurl);});
-                                        Ext.getCmp('pdfDisplayPanel').show();
-                                        Ext.getCmp('pdfChoicePanel').hide();
-                                        pdfMask.hide();
-                                    },
-                                    method: 'POST',
-                                    timeout : 300000,
-                                    failure: function () {
-                                        Ext.Msg.alert(Crdppf.labels.serverErrorMessage);
-                                    }
-                                }); 
-                            }
-                        }
-                    },{
-                        xtype: 'button',
-                        cls: 'msgButtonStyle',
-                        height: 20,
-                        width: 100,    
-                        text: Crdppf.labels.cancelExtract,
-                        listeners: {
-                            click: function(){
-                                chooseExtract.hide();
-                                }
-                            }
-                        }
-                    ]
-                }
+        items: [{
+            xtype: 'spacer',
+            height: 5
+        },{
+            xtype: 'label',
+            text: Crdppf.labels.chooseExtractMsg,
+            cls: 'textExtractCls'
+        },{
+            xtype: 'label',
+            id: 'pdfLoadDiv'
+        },{
+            xtype: 'spacer',
+            height: 5
+        },{
+            xtype: 'radiogroup',
+            id: 'extractRadioGroup',
+            fieldLabel: 'Auto Layout',
+            items: [
+                {boxLabel: Crdppf.labels.reducedExtract, name: 'rb-auto', inputValue: 'reduced',  cls: 'radioExtractCls', checked: true},
+                {boxLabel: Crdppf.labels.extendedExtract, name: 'rb-auto', inputValue: 'standard',  cls: 'radioExtractCls'}
             ]
-        });
+        },{
+            xtype: 'buttongroup',
+            cls: 'extractButtonCls',
+            fieldLabel: 'Auto Layout',
+            items: [{
+                xtype: 'button',
+                text: Crdppf.labels.generateExtract,  
+                cls: 'msgButtonStyle',
+                listeners: {
+                    click: function(){
+                        var pdfMask = new Ext.LoadMask(Ext.getCmp('pdfExtractWindow').body, {msg: Crdppf.labels.pdfLoadMessage});
+                        pdfMask.show();
+                        var urlToOpen = Crdppf.printUrl + '?id=' + select.features[0].attributes.idemai;
+                        var selectedRadio = Ext.getCmp('extractRadioGroup').getValue();
+                        urlToOpen += '&type=' + selectedRadio.inputValue;
+                        
+                        Ext.Ajax.request({
+                            url: urlToOpen,
+                            success: function(response) {
+                                var result = Ext.util.JSON.decode(response.responseText);
+                                var pdfurl = result['pdfurl'];
+                                var button = Ext.getCmp('pdfDisplayButton');
+                                button.setHandler(function() {window.open(pdfurl);});
+                                Ext.getCmp('pdfDisplayPanel').show();
+                                Ext.getCmp('pdfChoicePanel').hide();
+                                pdfMask.hide();
+                            },
+                            method: 'POST',
+                            timeout : 300000,
+                            failure: function () {
+                                Ext.Msg.alert(Crdppf.labels.serverErrorMessage);
+                            }
+                        }); 
+                    }
+                }
+            },{
+                    xtype: 'button',
+                    cls: 'msgButtonStyle',
+                    height: 20,
+                    width: 100,    
+                    text: Crdppf.labels.cancelExtract,
+                    listeners: {
+                        click: function(){
+                            chooseExtract.hide();
+                            }
+                        }
+                    }
+                ]
+            }
+        ]
+    });
         
     var chooseExtract = new Ext.Window({
         id: 'pdfExtractWindow',
@@ -366,7 +363,6 @@ Crdppf.init_main = function(lang) {
                 Ext.getCmp('pdfChoicePanel').show();
             }
         }
-        
     });
     
     // generate the pdf file of the current map
@@ -616,6 +612,8 @@ Crdppf.init_main = function(lang) {
     var layerStore = new GeoExt.data.LayerStore({
         map: MapO.map
     });
+    
+    //legend panel in the lower east layout part - serves to display the layer legends
     var legendPanel = new GeoExt.LegendPanel({
         collapsible:true, 
         map: MapO.map,
@@ -631,6 +629,8 @@ Crdppf.init_main = function(lang) {
             }
         }
     });
+    
+    //query info display panel in the upper east part of the layout - serves to display the feature info
     infoPanel = new Ext.Panel({
         header: false,
         layout: 'vbox',
@@ -650,6 +650,8 @@ Crdppf.init_main = function(lang) {
             legendPanel
         ]
     });
+    
+    // Container for the map and legal documents display
     centerPanel = new Ext.TabPanel({
         region: 'center',
         activeTab: 0, // index or id
@@ -659,6 +661,8 @@ Crdppf.init_main = function(lang) {
             Crdppf.legalDocuments(Crdppf.labels)
         ]
     });
+    
+    // Main window layout
     var crdppf = new Ext.Viewport({
         layout: 'border',
         renderTo:'main',
