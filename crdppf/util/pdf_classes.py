@@ -189,22 +189,22 @@ class Extract(FPDF):
             'TRANSPARENT': 'false'
         }
 
-        url = self.crdppf_wms
+        getmapurl = self.crdppf_wms
 
-        if url.find('?') < 0:
-            url += '?'
-        url = url + '&'.join(['%s=%s' % (key, value) for (key, value) in params.items()])
+        if getmapurl.find('?') < 0:
+            getmapurl += '?'
+        getmapurl = getmapurl + '&'.join(['%s=%s' % (key, value) for (key, value) in params.items()])
 
         http = httplib2.Http()
 
         h = dict(self.request.headers)
-        if urlparse(url).hostname != 'localhost': # pragma: no cover
+        if urlparse(getmapurl).hostname != 'localhost': # pragma: no cover
             h.pop('Host')
 
         try:
-            resp, content = http.request(url, method='GET', headers=h)
+            resp, content = http.request(getmapurl, method='GET', headers=h)
         except: # pragma: no cover
-            errors.append("Unable to do GetMap request for url %s" % url)
+            self.log.error("Unable to do GetMap request for url %s" % getmapurl)
             return None
 
         self.basemap = Image.open(StringIO(content))
@@ -510,22 +510,22 @@ class Extract(FPDF):
             'TRANSPARENT': 'false'
         }
 
-        url = self.crdppf_wms
+        getmapurl = self.crdppf_wms
 
-        if url.find('?') < 0:
-            url += '?'
-        url = url + '&'.join(['%s=%s' % (key, value) for (key, value) in params.items()])
+        if getmapurl.find('?') < 0:
+            getmapurl += '?'
+        getmapurl = getmapurl + '&'.join(['%s=%s' % (key, value) for (key, value) in params.items()])
 
         http = httplib2.Http()
 
         h = dict(self.request.headers)
-        if urlparse(url).hostname != 'localhost': # pragma: no cover
+        if urlparse(getmapurl).hostname != 'localhost': # pragma: no cover
             h.pop('Host')
 
         try:
-            resp, content = http.request(url, method='GET', headers=h)
+            resp, content = http.request(getmapurl, method='GET', headers=h)
         except: # pragma: no cover
-            self.log.error("Unable to do GetMap request for url %s" % url)
+            self.log.error("Unable to do GetMap request for url %s" % getmapurl)
             return None
 
         out = open(self.appconfig.tempdir+self.pdfconfig.siteplanname+'.png', 'wb')
@@ -755,27 +755,27 @@ class Extract(FPDF):
             self.wms_get_legend['FORMAT'] = 'image/png'
             self.wms_get_legend['TRANSPARENT'] = self.wms_transparency
 
-            url = self.wms_url
+            getstylesurl = self.wms_url
 
-            if url.find('?') < 0:
-                url += '?'
-            url = url + '&'.join(['%s=%s' % (key, value) for (key, value) in self.wms_get_styles.items()])
-                
+            if getstylesurl.find('?') < 0:
+                getstylesurl += '?'
+            getstylesurl = getstylesurl + '&'.join(['%s=%s' % (key, value) for (key, value) in self.wms_get_styles.items()])
+
             http = httplib2.Http()
 
             h = dict(self.request.headers)
-            if urlparse(url).hostname != 'localhost': # pragma: no cover
+            if urlparse(getstylesurl).hostname != 'localhost': # pragma: no cover
                 h.pop('Host')
 
             if self.log:
                 self.log.warning("WMS REQUEST")
-                self.log.warning("on URL: %s", url)
+                self.log.warning("on URL: %s", getstylesurl)
                 self.log.warning('Doing layer: %s', restriction_layer.topicfk)
 
             try:
-                resp, content = http.request(url, method='GET', headers=h)
+                resp, content = http.request(getstylesurl, method='GET', headers=h)
             except: # pragma: no cover
-                self.log.error("Unable to do GetStyles request for url %s" % url)
+                self.log.error("Unable to do GetStyles request for url %s" % getstylesurl)
                 return None
 
             if self.log:
@@ -810,13 +810,6 @@ class Extract(FPDF):
             if 'SLD' in self.wms_get_legend:
                 del self.wms_get_legend['SLD']
 
-            if topicid in self.appconfig.ch_topics:
-                #complet_legend_path = urllib2.urlopen(self.wms_url+"?"+complet_legend_body)
-                pass
-            else:
-                #complet_legend_path = urllib2.urlopen(self.crdppf_wms+"?"+complet_legend_body)
-                pass
-
             if self.log:
                 self.log.warning("DONE Applying SLD")
 
@@ -824,22 +817,22 @@ class Extract(FPDF):
                 legend_sld = self.sld_url+self.filename+str('_')+str(restriction_layer.layername)+'_legend_sld.xml'
                 self.wms_get_legend['SLD'] = str(legend_sld)
 
-            url = self.wms_url
+            getsldurl = self.wms_url
 
-            if url.find('?') < 0:
-                url += '?'
-            url = url + '&'.join(['%s=%s' % (key, value) for (key, value) in self.wms_get_legend.items()])
+            if getsldurl.find('?') < 0:
+                getsldurl += '?'
+            getsldurl = getsldurl + '&'.join(['%s=%s' % (key, value) for (key, value) in self.wms_get_legend.items()])
 
             http = httplib2.Http()
 
             h = dict(self.request.headers)
-            if urlparse(url).hostname != 'localhost': # pragma: no cover
+            if urlparse(getsldurl).hostname != 'localhost': # pragma: no cover
                 h.pop('Host')
 
             try:
-                resp, content = http.request(url, method='GET', headers=h)
+                resp, content = http.request(getsldurl, method='GET', headers=h)
             except: # pragma: no cover
-                self.log.error("Unable to do GetMap request for url %s" % url)
+                self.log.error("Unable to do GetMap request for url %s" % getsldurl)
                 return None
 
             if topicid in self.appconfig.ch_topics:
@@ -873,25 +866,25 @@ class Extract(FPDF):
             ('TRANSPARENT', 'true')
         )
 
-        url = self.wms_url
+        getmapurl = self.wms_url
             
-        if url.find('?') < 0:
-            url += '?'
-        url = url + '&'.join(['='.join(p) for p in params])
+        if getmapurl.find('?') < 0:
+            getmapurl += '?'
+        getmapurl = getmapurl + '&'.join(['='.join(p) for p in params])
 
         if self.log:
-            self.log.warning("On URL: %s", url)
+            self.log.warning("On URL: %s", getmapurl)
 
         http = httplib2.Http()
 
         h = dict(self.request.headers)
-        if urlparse(url).hostname != 'localhost': # pragma: no cover
+        if urlparse(getmapurl).hostname != 'localhost': # pragma: no cover
             h.pop('Host')
 
         try:
-            resp, content = http.request(url, method='GET', headers=h)
+            resp, content = http.request(getmapurl, method='GET', headers=h)
         except: # pragma: no cover
-            self.log.error("Unable to do GetMap request for url %s" % url)
+            self.log.error("Unable to do GetMap request for url %s" % getmapurl)
             return None
 
         if self.log:
@@ -902,8 +895,8 @@ class Extract(FPDF):
 
         front_img = Image.open(StringIO(content))
         if restriction_layer.topicfk in self.appconfig.ch_topics:
-            # reduce the opacity of the overlay image to 50% - it's a workaround for a transparency/FPDF/PNG issue
-            front_img = front_img.point(lambda x: x*0.5)
+            # reduce the opacity of the overlay image to 80% - it's a workaround for a transparency issue with FPDF and PNG 32bit
+            front_img = front_img.point(lambda x: x*0.8)
         back_img = self.basemap
         back_img = back_img.convert('RGBA')
         back_img.paste(front_img, (0, 0), front_img)
