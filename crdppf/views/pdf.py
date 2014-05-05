@@ -166,22 +166,26 @@ def create_extract(request):
 
     extract.municipality = municipality # to clean up once code modified
 
-    # === TO IMPROVE thus code is left commented
     # Get the data for the federal data layers using the map extend
-    #~ for topic in extract.topics:
-        #~ if topic.topicid in extract.appconfig.ch_topics:
-            #~ xml_layers = []
-            #~ for xml_layer in topic.layers:
-                #~ xml_layers.append(xml_layer.layername)
-            #~ get_XML(extract.featureInfo['geom'],topic.topicid)
+    if logon is True:
+        log.warning('get XML from CH feature service')
+        
+    for topic in extract.topics:
+        # for the federal data layers we get the restrictions calling the feature service and store the result in the DB
+        if topic.topicid in extract.appconfig.ch_topics:
+            xml_layers = []
+            for xml_layer in topic.layers:
+                xml_layers.append(xml_layer.layername)
+            get_XML(extract.featureInfo['geom'], topic.topicid, pdfconfig.timestamp, lang, translations)
 
+    if logon is True:
+        log.warning('get XML from CH feature service DONE')
 
     # Create basemap
     extract.get_basemap()
 
     # 4) Create the title page for the pdf extract
     #--------------------------------------------------
-
     if logon is True:
         log.warning('get_site_map')
 
