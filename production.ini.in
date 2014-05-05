@@ -28,13 +28,10 @@ app.cfg = %(here)s/config_pdf.yaml
 
 logon = ${vars:logon}
 
-proxy_enabled = ${vars:proxy_enabled}
-proxy_conf = http://${vars:proxy_user}:${vars:proxy_pass}@${vars:proxy_server}:${vars:proxy_port}
-
 [server:main]
 use = egg:waitress#main
 host = 0.0.0.0
-port = 6543
+port = ${vars:waitress_port}
 
 # Begin logging configuration
 

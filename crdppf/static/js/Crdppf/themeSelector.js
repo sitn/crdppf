@@ -1,13 +1,8 @@
 ﻿Ext.namespace('Crdppf');
 
 // create layer tree and append nodes & subnodes to it
-Crdppf.ThemeSelector = function createThemeSelector () {
-    this.makeThemeSelector = makeThemeSelector;
-};
-
-var makeThemeSelector = function makeThemeSelector(){
-
-    var myReader = new Ext.data.JsonReader({
+Crdppf.ThemeSelector = function(labels, layerList) {
+       var myReader = new Ext.data.JsonReader({
         idProperty: 'id',
         root: 'themes',
         fields: [
@@ -15,13 +10,13 @@ var makeThemeSelector = function makeThemeSelector(){
             {name: 'image', mapping: 'image'}
         ]
     });
+    
     var myStore = new Ext.data.Store({
         reader: myReader
     });
-
     // load data and create listView
-
     myStore.loadData(layerList);
+    
     var themeTemplate = new Ext.XTemplate(
         '<p style="padding-top:6px">{[this.getTranslation(values.name)]}</p>',
         {
@@ -69,6 +64,7 @@ var makeThemeSelector = function makeThemeSelector(){
             }
         }
     });
+    
     // insert listView into a nice looking panel
     var themePanel = new Ext.Panel({
         id:'images-view',
@@ -78,5 +74,6 @@ var makeThemeSelector = function makeThemeSelector(){
         title:labels.themeSelectorLabel,
         items: listView
     });
+
     return themePanel;
 };
