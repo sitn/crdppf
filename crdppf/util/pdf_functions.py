@@ -43,6 +43,7 @@ def get_translations(lang):
 
     return locals
 
+# STILL to implement if valdiation is not done automatically by minidom
 def validate_XML(xmlparser, xmlfilename):
     try:
         with open(xmlfilename, 'r') as f:
@@ -66,7 +67,7 @@ def validate_XML(xmlparser, xmlfilename):
 
     return xmlvalid
 
-def get_XML(geometry, topicid, extracttime, lang):
+def get_XML(geometry, topicid, extracttime, lang, translations):
     """Gets the XML extract of the federal data feature service for a given topic
         and validates it against the schema.
     """
@@ -98,9 +99,6 @@ def get_XML(geometry, topicid, extracttime, lang):
         }
     
     coords = geometry.coords(DBSession)
-    #~ if len(coords) > 1:
-        #~ for ring in coords:
-            #~ sdf
     # Stupid ESRI stuff: double quotes are needed to call the feature service, thus we have to hardcode "rings"
     esrifeature = '{"rings":'+ str(coords)+'}'
 
@@ -140,15 +138,6 @@ def get_XML(geometry, topicid, extracttime, lang):
     transferstructure = xmldoc.getElementsByTagName("OeREBKRM09trsfr.Transferstruktur")
     
     if len(transferstructure[0].childNodes) > 0:
-        #~ d = {}
-        #~ for node in transferstructure[0].childNodes:
-            #~ tag = node.tagName
-            #~ d[tag] = node
-            #~ if len(d[tag].childNodes) > 0:
-                #~ for child in d[tag].childNodes:
-                    #~ childtag = child.tagName
-                    #~ d[tag][childtag] = child
-        #~ sdf
         
         # Get the competent authority for the legal provisions
         vsauthority = {
@@ -272,22 +261,22 @@ def get_XML(geometry, topicid, extracttime, lang):
         for geometry in geometries:
             if topicid ==  '103':
                 xml_model = CHAirportProjectZonesPDF()
-                xml_model.theme = u'Zones réservées des installations aéroportuaires' # to replace by translations['CHAirportSecurityZonesThemeLabel']
-                xml_model.teneur = u'Limitation de la hauteur des bâtiments et autres obstacles' # to replace by translations['CHAirportSecurityZonesContentLabel']
+                xml_model.theme = translations['CHAirportProjectZonesThemeLabel'] # u'Zones réservées des installations aéroportuaires'
+                xml_model.teneur = translations['CHAirportProjectZonesContentLabel'] # u'Limitation de la hauteur des bâtiments et autres obstacles'
             elif topicid ==  u'108':
                 xml_model = CHAirportSecurityZonesPDF()
-                xml_model.theme = u'Plan de la zone de sécurité des aéroports' # to replace by translations['CHAirportSecurityZonesThemeLabel']
-                xml_model.teneur = u'Limitation de la hauteur des bâtiments et autres obstacles' # to replace by translations['CHAirportSecurityZonesContentLabel']
+                xml_model.theme = translations['CHAirportSecurityZonesThemeLabel'] # u'Plan de la zone de sécurité des aéroports' 
+                xml_model.teneur = translations['CHAirportSecurityZonesContentLabel'] # u'Limitation de la hauteur des bâtiments et autres obstacles'
             elif topicid ==  u'119':
                 xml_model = CHPollutedSitesPublicTransportsPDF()
-                xml_model.theme = u'Cadastre des sites pollués - domaine des transports publics' # to replace by translations['CHAirportSecurityZonesThemeLabel']
-                xml_model.teneur = u'Sites pollué' # to replace by translations['CHAirportSecurityZonesThemeLabel']
+                xml_model.theme = translations['CHPollutedSitesPublicTransportsThemeLabel'] # u'Cadastre des sites pollués - domaine des transports publics'
+                xml_model.teneur = translations['CHPollutedSitesPublicTransportsContentLabel'] # u'Sites pollués' 
 
             xml_model.codegenre = None
             if geometry['legalstate'] ==  u'inKraft':
-                xml_model.statutjuridique = u'En vigueur' # to replace by translations['legalstateLabelvalid']
+                xml_model.statutjuridique = translations['legalstateLabelvalid'] # u'En vigueur' 
             else:
-                xml_model.statutjuridique = u'En cours d\'approbation' # to replace by translations['legalstateLabelmodification']
+                xml_model.statutjuridique = translations['legalstateLabelmodification'] # u'En cours d\'approbation' 
             if geometry['publishedsince']:
                 xml_model.datepublication = geometry['publishedsince']
             else:
