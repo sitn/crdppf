@@ -260,7 +260,7 @@ Crdppf.init_main = function(lang) {
             listeners: {
                 click: function() {
                     Ext.getCmp('pdfExtractWindow').hide();
-                    },
+                    }
                 }
             }
         ]
