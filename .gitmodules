@@ -1,6 +1,3 @@
-[submodule "crdppf/static/lib/openlayers"]
-	path = crdppf/static/lib/openlayers
-	url = https://github.com/openlayers/openlayers.git
-[submodule "crdppf/static/lib/geoext"]
-	path = crdppf/static/lib/geoext
-	url = https://github.com/geoext/geoext.git
+[submodule "crdppf_core"]
+	path = crdppf_core
+	url = https://github.com/sitn/crdppf_core.git
