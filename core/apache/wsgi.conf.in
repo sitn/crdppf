@@ -1,3 +1,0 @@
-WSGIScriptAlias /${vars:instanceid} ${buildout:directory/buildout/parts/modwsgi/wsgi}
-
-WSGIPassAuthorization On
