@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+  xmlns="http://www.interlis.ch/irf/1.0/OeREBKRM09"
+  targetNamespace="http://www.interlis.ch/irf/1.0/OeREBKRM09"
+  xmlns:geom="http://www.interlis.ch/geometry/1.0"
+  xmlns:ili="http://www.interlis.ch/irf/1.0/INTERLIS"
+  xmlns:ili2c="http://www.interlis.ch/ili2c"
+  xmlns:MultilingualText09="http://www.interlis.ch/irf/1.0/MultilingualText09"
+  elementFormDefault="qualified" attributeFormDefault="unqualified">
+<xsd:annotation>
+  <xsd:appinfo source="http://www.interlis.ch/ili2c/ili2cversion">4.4.12-20130513</xsd:appinfo>
+  <xsd:appinfo source="http://www.interlis.ch/ili2c">
+    <ili2c:model>OeREBKRM09</ili2c:model>
+    <ili2c:modelVersion>2010-10-26</ili2c:modelVersion>
+    <ili2c:modelVersionExplanation> Entwurf nach der Anhörung </ili2c:modelVersionExplanation>
+    <ili2c:modelAt>mailto:ce@eisenhutinformatik.ch</ili2c:modelAt>
+  </xsd:appinfo>
+</xsd:annotation>
+<xsd:import namespace="http://www.interlis.ch/geometry/1.0"/>
+<xsd:import namespace="http://www.interlis.ch/irf/1.0/INTERLIS"/>
+<xsd:import namespace="http://www.interlis.ch/irf/1.0/MultilingualText09"/>
+<xsd:simpleType name="ArtEigentumsbeschraenkung">
+  <xsd:restriction base="xsd:normalizedString">
+    <xsd:maxLength value="40"/>
+  </xsd:restriction>
+</xsd:simpleType>
+<xsd:simpleType name="ArtikelInhalt">
+  <xsd:restriction base="xsd:string">
+  </xsd:restriction>
+</xsd:simpleType>
+<xsd:simpleType name="ArtikelNummer">
+  <xsd:restriction base="xsd:normalizedString">
+    <xsd:maxLength value="20"/>
+  </xsd:restriction>
+</xsd:simpleType>
+<xsd:simpleType name="Datum">
+  <xsd:restriction base="xsd:date">
+  </xsd:restriction>
+</xsd:simpleType>
+<xsd:complexType name="LKoord">
+  <xsd:sequence>
+    <xsd:element ref="geom:point"/>
+  </xsd:sequence>
+</xsd:complexType>
+<xsd:simpleType name="OEREBOID">
+  <xsd:restriction base="xsd:token"/>
+</xsd:simpleType>
+<xsd:simpleType name="RechtsStatus">
+  <xsd:restriction base="xsd:normalizedString">
+    <xsd:enumeration value="inKraft"/>
+    <xsd:enumeration value="laufendeAenderung"/>
+  </xsd:restriction>
+</xsd:simpleType>
+<xsd:simpleType name="Thema">
+  <xsd:restriction base="xsd:normalizedString">
+    <xsd:enumeration value="Nutzungsplanung"/>
+    <xsd:enumeration value="ProjektierungszonenNationalstrassen"/>
+    <xsd:enumeration value="BaulinienNationalstrassen"/>
+    <xsd:enumeration value="ProjektierungszonenEisenbahnanlagen"/>
+    <xsd:enumeration value="BaulinienEisenbahnanlagen"/>
+    <xsd:enumeration value="ProjektierungszonenFlughafenanlagen"/>
+    <xsd:enumeration value="BaulinienFlughafenanlagen"/>
+    <xsd:enumeration value="SicherheitszonenplanFlughafen"/>
+    <xsd:enumeration value="BelasteteStandorte"/>
+    <xsd:enumeration value="BelasteteStandorteMilitaer"/>
+    <xsd:enumeration value="BelasteteStandorteZivileFlugplaetze"/>
+    <xsd:enumeration value="BelasteteStandorteOeffentlicherVerkehr"/>
+    <xsd:enumeration value="Grundwasserschutzzonen"/>
+    <xsd:enumeration value="Grundwasserschutzareale"/>
+    <xsd:enumeration value="Laermemfindlichkeitsstufen"/>
+    <xsd:enumeration value="Waldgrenzen"/>
+    <xsd:enumeration value="Waldabstandslinien"/>
+  </xsd:restriction>
+</xsd:simpleType>
+<xsd:simpleType name="WebReferenz">
+  <xsd:restriction base="xsd:anyURI">
+    <xsd:maxLength value="1023"/>
+  </xsd:restriction>
+</xsd:simpleType>
+<xsd:element name="ArtikelNummer_" type="ArtikelNummer_Type"/>
+<xsd:complexType  name="ArtikelNummer_Type">
+  <xsd:sequence>
+    <xsd:element name="value" type="ArtikelNummer"/>
+  </xsd:sequence>
+  <xsd:attribute name="TID" type="ili:TID"/>
+</xsd:complexType>
+<xsd:element name="Datum_" type="Datum_Type"/>
+<xsd:complexType  name="Datum_Type">
+  <xsd:sequence>
+    <xsd:element name="value" type="Datum"/>
+  </xsd:sequence>
+  <xsd:attribute name="TID" type="ili:TID"/>
+</xsd:complexType>
+<xsd:element name="Thema_" type="Thema_Type"/>
+<xsd:complexType  name="Thema_Type">
+  <xsd:sequence>
+    <xsd:element name="value" type="Thema"/>
+  </xsd:sequence>
+  <xsd:attribute name="TID" type="ili:TID"/>
+</xsd:complexType>
+<xsd:element name="WebReferenz_" type="WebReferenz_Type"/>
+<xsd:complexType  name="WebReferenz_Type">
+  <xsd:sequence>
+    <xsd:element name="value" type="WebReferenz"/>
+  </xsd:sequence>
+  <xsd:attribute name="TID" type="ili:TID"/>
+</xsd:complexType>
+<xsd:element name="ArtikelInhaltMehrsprachig" type="ArtikelInhaltMehrsprachigType" substitutionGroup="MultilingualText09:MultilingualMText"/>
+<xsd:complexType  name="ArtikelInhaltMehrsprachigType">
+  <xsd:complexContent>
+    <xsd:extension base="MultilingualText09:MultilingualMTextType">
+      <xsd:sequence>
+      </xsd:sequence>
+    </xsd:extension>
+  </xsd:complexContent>
+</xsd:complexType>
+</xsd:schema>
