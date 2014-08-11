@@ -13,6 +13,7 @@ production.ini
 mapserver/crdppf.map
 *.egg-info/
 crdppfportal/static/public/temp_files
+crdppfportal/baselayers.map
 buildout_olivier.cfg
 buildout_nesitnd1.cfg
 buildout_michael.cfg
