@@ -8,7 +8,7 @@ except ImportError:
     from setuptools import setup, find_packages
     
 setup(
-    name='sitncrdppf',
+    name='crdppfportal',
     version='1.0',
     description='sitn, a crdppf project',
     author='sitn',

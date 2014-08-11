@@ -1,0 +1,20 @@
+<?xml version="1.0"?>
+<definitions name="ZuStWsSvcSample"
+
+targetNamespace="http://www.interlis.ch/OeREBKRM09trsfr/ZuStWsSvcSample/1.0"
+           xmlns:tns="http://www.interlis.ch/OeREBKRM09trsfr/ZuStWsSvcSample/1.0"
+          xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/"
+          xmlns:defs="http://www.interlis.ch/OeREBKRM09trsfr/ZuStWsSvc/1.0"
+          xmlns="http://schemas.xmlsoap.org/wsdl/">
+
+    <import namespace="http://www.interlis.ch/OeREBKRM09trsfr/ZuStWsSvc/1.0"
+           location="OeREBK-ZuStWsSvc.wsdl"/>
+
+
+    <service name="ZuStWsSvcSampleInstance">
+        <port name="MasterdataServicePort" binding="defs:ZuStWsSvcSoapHttpBinding">
+            <soap:address location="http://example.com/ZuStWsSvc/1.0"/>
+        </port>
+    </service>
+</definitions>
+

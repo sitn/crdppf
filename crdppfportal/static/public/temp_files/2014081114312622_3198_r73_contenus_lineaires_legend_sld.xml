@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?><StyledLayerDescriptor version="1.0.0" xmlns="http://www.opengis.net/sld" xmlns:gml="http://www.opengis.net/gml" xmlns:ogc="http://www.opengis.net/ogc" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.opengis.net/sld http://schemas.opengis.net/sld/1.0.0/StyledLayerDescriptor.xsd">
+<NamedLayer>
+<Name>r73_contenus_lineaires</Name>
+<UserStyle>
+<FeatureTypeStyle>
+
+<Rule>
+<Name>Terr. en nature de vigne</Name>
+<ogc:Filter><ogc:PropertyIsLike escape="\" singleChar="." wildCard="*"><ogc:PropertyName>codegenre</ogc:PropertyName><ogc:Literal>7102</ogc:Literal></ogc:PropertyIsLike></ogc:Filter>
+<LineSymbolizer>
+<Stroke>
+<CssParameter name="stroke">#646464</CssParameter>
+<CssParameter name="stroke-width">2.00</CssParameter>
+<CssParameter name="stroke-dasharray">4.00 4.00 </CssParameter>
+</Stroke>
+</LineSymbolizer>
+</Rule>
+<Rule>
+<Name>Limite zone viticole</Name>
+<ogc:Filter><ogc:PropertyIsLike escape="\" singleChar="." wildCard="*"><ogc:PropertyName>codegenre</ogc:PropertyName><ogc:Literal>7103</ogc:Literal></ogc:PropertyIsLike></ogc:Filter>
+<LineSymbolizer>
+<Stroke>
+<CssParameter name="stroke">#ff00ff</CssParameter>
+<CssParameter name="stroke-width">2.00</CssParameter>
+<CssParameter name="stroke-dasharray">4.00 4.00 </CssParameter>
+</Stroke>
+</LineSymbolizer>
+</Rule>
+
+
+
+
+
+
+
+</FeatureTypeStyle>
+</UserStyle>
+</NamedLayer>
+</StyledLayerDescriptor>

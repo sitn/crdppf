@@ -1,5 +1,5 @@
 [app:main]
-use = egg:sitncrdppf
+use = egg:crdppfportal
 
 pyramid.reload_templates = false
 pyramid.debug_authorization = false
@@ -13,6 +13,7 @@ sqlalchemy.url = postgresql://${vars:dbuser}:${vars:dbpassword}@${vars:dbhost}:$
 
 jsbuild_cfg = ${jsbuild:config}
 jsbuild_root_dir = ${buildout:directory}
+specific_root_dir = ${buildout:directory}/crdppfportal
 
 db.cfg = %(here)s/${vars:yaml_dbconfig_file}
 

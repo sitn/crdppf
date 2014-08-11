@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="utf-8"?><StyledLayerDescriptor version="1.0.0" xmlns="http://www.opengis.net/sld" xmlns:gml="http://www.opengis.net/gml" xmlns:ogc="http://www.opengis.net/ogc" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.opengis.net/sld http://schemas.opengis.net/sld/1.0.0/StyledLayerDescriptor.xsd">
+<NamedLayer>
+<Name>r73_affectations_primaires</Name>
+<UserStyle>
+<FeatureTypeStyle>
+
+
+<Rule>
+<Name>Moyenne densité</Name>
+<ogc:Filter><ogc:PropertyIsLike escape="\" singleChar="." wildCard="*"><ogc:PropertyName>codegenre</ogc:PropertyName><ogc:Literal>1103</ogc:Literal></ogc:PropertyIsLike></ogc:Filter>
+<PolygonSymbolizer>
+<Fill>
+<CssParameter name="fill">#f0b400</CssParameter>
+</Fill>
+</PolygonSymbolizer>
+</Rule>
+<Rule>
+<Name>Forte densité</Name>
+<ogc:Filter><ogc:PropertyIsLike escape="\" singleChar="." wildCard="*"><ogc:PropertyName>codegenre</ogc:PropertyName><ogc:Literal>1104</ogc:Literal></ogc:PropertyIsLike></ogc:Filter>
+<PolygonSymbolizer>
+<Fill>
+<CssParameter name="fill">#ff0000</CssParameter>
+</Fill>
+</PolygonSymbolizer>
+</Rule>
+
+
+<Rule>
+<Name>Plan spécial a</Name>
+<ogc:Filter><ogc:PropertyIsLike escape="\" singleChar="." wildCard="*"><ogc:PropertyName>codegenre</ogc:PropertyName><ogc:Literal>1107</ogc:Literal></ogc:PropertyIsLike></ogc:Filter>
+<PolygonSymbolizer>
+<Fill>
+<CssParameter name="fill">#ff0000</CssParameter>
+</Fill>
+</PolygonSymbolizer>
+</Rule>
+
+
+
+
+
+<Rule>
+<Name>Industrielle</Name>
+<ogc:Filter><ogc:PropertyIsLike escape="\" singleChar="." wildCard="*"><ogc:PropertyName>codegenre</ogc:PropertyName><ogc:Literal>1205</ogc:Literal></ogc:PropertyIsLike></ogc:Filter>
+<PolygonSymbolizer>
+<Fill>
+<CssParameter name="fill">#000080</CssParameter>
+</Fill>
+</PolygonSymbolizer>
+</Rule>
+<Rule>
+<Name>Mixte</Name>
+<ogc:Filter><ogc:PropertyIsLike escape="\" singleChar="." wildCard="*"><ogc:PropertyName>codegenre</ogc:PropertyName><ogc:Literal>1301</ogc:Literal></ogc:PropertyIsLike></ogc:Filter>
+<PolygonSymbolizer>
+<Fill>
+<CssParameter name="fill">#ff00ff</CssParameter>
+</Fill>
+</PolygonSymbolizer>
+</Rule>
+
+
+<Rule>
+<Name>Centre ville</Name>
+<ogc:Filter><ogc:PropertyIsLike escape="\" singleChar="." wildCard="*"><ogc:PropertyName>codegenre</ogc:PropertyName><ogc:Literal>1403</ogc:Literal></ogc:PropertyIsLike></ogc:Filter>
+<PolygonSymbolizer>
+<Fill>
+<CssParameter name="fill">#e03800</CssParameter>
+</Fill>
+</PolygonSymbolizer>
+</Rule>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</FeatureTypeStyle>
+</UserStyle>
+</NamedLayer>
+</StyledLayerDescriptor>

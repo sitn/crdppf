@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+        <sld:StyledLayerDescriptor version="1.0.0" xmlns="http://www.opengis.net/ogc" xmlns:sld="http://www.opengis.net/sld" xmlns:ogc="http://www.opengis.net/ogc" xmlns:gml="http://www.opengis.net/gml" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.opengis.net/sld http://schemas.opengis.net/sld/1.0.0/StyledLayerDescriptor.xsd">
+        <sld:NamedLayer>
+        <sld:Name>parcelles</sld:Name>
+        <sld:UserStyle>
+        <sld:Name>propertyIsEqualTo</sld:Name>
+        <sld:Title>propertyIsEqualTo</sld:Title>
+        <sld:FeatureTypeStyle>
+        <sld:Rule>
+        <ogc:Filter>
+        <ogc:PropertyIsEqualTo>
+        <ogc:PropertyName>idemai</ogc:PropertyName>
+        <ogc:Literal>22_3198</ogc:Literal>
+        </ogc:PropertyIsEqualTo>
+        </ogc:Filter>
+        <sld:PolygonSymbolizer>
+        <sld:Stroke>
+        <sld:CssParameter name="stroke">#ff0000</sld:CssParameter>
+        <sld:CssParameter name="stroke-opacity">1</sld:CssParameter>
+        <sld:CssParameter name="stroke-width">5</sld:CssParameter>
+        </sld:Stroke>
+        </sld:PolygonSymbolizer>
+        <sld:TextSymbolizer>
+        <sld:Label>
+        <ogc:PropertyName>nummai</ogc:PropertyName>
+        </sld:Label> 
+        <sld:Font>
+        <sld:CssParameter name="font-family">pdfconfig.fontfamily</sld:CssParameter> 
+        <sld:CssParameter name="font-weight">bold</sld:CssParameter> 
+        <sld:CssParameter name="font-size">16</sld:CssParameter> 
+        </sld:Font>
+        <sld:Fill>
+        <sld:CssParameter name="fill">#000000</sld:CssParameter> 
+        </sld:Fill>
+        </sld:TextSymbolizer>
+        </sld:Rule>
+        </sld:FeatureTypeStyle>
+        </sld:UserStyle>
+        </sld:NamedLayer>
+        </sld:StyledLayerDescriptor>
