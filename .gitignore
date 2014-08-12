@@ -1,5 +1,6 @@
 .installed.cfg
 *.pyc
+*CRDPPF.pdf
 apache/mapserver.conf
 apache/wsgi.conf
 buildout/bin/
@@ -27,3 +28,4 @@ MANIFEST
 tile_date.yaml
 config_db.yaml
 config_pdf.yaml
+crdppfportal/baselayers.map
