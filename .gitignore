@@ -1,5 +1,6 @@
 .installed.cfg
 *.pyc
+*CRDPPF.pdf
 apache/mapserver.conf
 apache/wsgi.conf
 buildout/bin/
@@ -12,16 +13,15 @@ development.ini
 production.ini
 mapserver/crdppf.map
 *.egg-info/
-crdppf/static/build/*.js
-crdppf/static/build/*.css
+crdppfportal/baselayers.map
 buildout_olivier.cfg
 buildout_nesitnd1.cfg
 buildout_michael.cfg
 buildout_francois.cfg
 buildout_nesitn2.cfg
 buildout_nesitn2_prepub.cfg
-crdppf/static/public/temp_files/*.png
-crdppf/static/public/temp_files/*.xml
+crdppfportal/static/public/temp_files/*.png
+crdppfportal/static/public/temp_files/*.xml
 crdppf/static/public/pdf/*.pdf
 MANIFEST
 tile_date.yaml

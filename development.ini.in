@@ -1,5 +1,6 @@
 [app:main]
-use = egg:crdppf
+use = egg:crdppfportal
+project = crdppf
 
 pyramid.reload_templates = true
 pyramid.debug_authorization = false
@@ -14,6 +15,7 @@ sqlalchemy.url = postgresql://${vars:dbuser}:${vars:dbpassword}@${vars:dbhost}:$
 
 jsbuild_cfg = ${jsbuild:config}
 jsbuild_root_dir = ${buildout:directory}
+specific_root_dir = ${buildout:directory}/crdppfportal
 
 db.cfg = %(here)s/${vars:yaml_dbconfig_file}
 
@@ -33,7 +35,7 @@ logon = ${vars:logon}
 use = egg:waitress#main
 host = 0.0.0.0
 port = ${vars:waitress_port}
-
+    
 # Begin logging configuration
 
 [loggers]

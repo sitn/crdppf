@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<definitions name="ZuStWsSvc"
+
+targetNamespace="http://www.interlis.ch/OeREBKRM09trsfr/ZuStWsSvc/1.0"
+          xmlns:tns="http://www.interlis.ch/OeREBKRM09trsfr/ZuStWsSvc/1.0"
+          xmlns:usr="http://www.interlis.ch/irf/1.0/OeREBKRM09trsfr"
+          xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/"
+          xmlns="http://schemas.xmlsoap.org/wsdl/">
+
+    <types>
+	   <xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema">      
+	   <xsd:import namespace="http://www.interlis.ch/irf/1.0/OeREBKRM09trsfr"
+		   schemaLocation="OeREBKRM09trsfr.xsd"/>
+	    </xsd:schema>   
+    </types>  
+  
+    <message name="GetTransferstrukturByBboxInput">
+        <part name="parameters" element="usr:GetTransferstrukturByBbox"/>
+    </message>
+
+    <message name="GetTransferstrukturByBboxOutput">
+        <part name="parameters" element="usr:GetTransferstrukturByBboxResponse"/>
+    </message>
+
+    <message name="GetTransferstrukturByBboxFault">
+        <part name="parameters" element="usr:Exception"/>
+    </message>
+
+    <message name="GetTransferstrukturByPerimeterInput">
+        <part name="parameters" element="usr:GetTransferstrukturByPerimeter"/>
+    </message>
+    
+    <message name="GetTransferstrukturByPerimeterOutput">
+        <part name="parameters" element="usr:GetTransferstrukturByPerimeterResponse"/>
+    </message>
+    
+    <message name="GetTransferstrukturByPerimeterFault">
+        <part name="parameters" element="usr:Exception"/>
+    </message>
+    
+    <portType name="ZuStWsSvcPortType">
+        <operation name="GetTransferstrukturByBbox">
+           <input message="tns:GetTransferstrukturByBboxInput"/>
+           <output message="tns:GetTransferstrukturByBboxOutput"/>
+           <fault name="GetTransferstrukturByBboxFault" message="tns:GetTransferstrukturByBboxFault"/>
+        </operation>
+        <operation name="GetTransferstrukturByPerimeter">
+            <input message="tns:GetTransferstrukturByPerimeterInput"/>
+            <output message="tns:GetTransferstrukturByPerimeterOutput"/>
+            <fault name="GetTransferstrukturByPerimeterFault" message="tns:GetTransferstrukturByPerimeterFault"/>
+        </operation>
+    </portType>
+
+    <binding name="ZuStWsSvcSoapHttpBinding" type="tns:ZuStWsSvcPortType">
+        <soap:binding style="document" transport="http://schemas.xmlsoap.org/soap/http"/>
+        <operation name="GetTransferstrukturByBbox">
+           <soap:operation soapAction="http://www.interlis.ch/OeREBKRM09trsfr/ZuStWsSvc/1.0/GetTransferstrukturByBbox" style="document"/>
+           <input>
+               <soap:body use="literal" />
+           </input>
+           <output>
+               <soap:body use="literal" />
+           </output>
+           <fault name="GetTransferstrukturByBboxFault">
+               <soap:fault name="GetTransferstrukturByBboxFault" use="literal" />
+           </fault>
+        </operation>
+        <operation name="GetTransferstrukturByPerimeter">
+            <soap:operation soapAction="http://www.interlis.ch/OeREBKRM09trsfr/ZuStWsSvc/1.0/GetTransferstrukturByPerimeter" style="document"/>
+            <input>
+                <soap:body use="literal" />
+            </input>
+            <output>
+                <soap:body use="literal" />
+            </output>
+            <fault name="GetTransferstrukturByPerimeterFault">
+                <soap:fault name="GetTransferstrukturByPerimeterFault" use="literal" />
+            </fault>
+        </operation>
+    </binding>
+    
+</definitions>
+

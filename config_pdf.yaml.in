@@ -17,7 +17,7 @@ app_config:
     - parcelles
     - ag1_parcellaire_provisoire
     - mo9_immeubles
-#  - mo9_text_group
+    - mo9_text_group
     - mo7_obj_divers_lineaire
     - mo7_obj_divers_couvert
     - mo7_obj_divers_piscine
