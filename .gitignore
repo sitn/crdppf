@@ -1,8 +1,8 @@
 .installed.cfg
 *.pyc
 *CRDPPF.pdf
-apache/mapserver.conf
-apache/wsgi.conf
+crdppf_core/apache/mapserver.conf
+crdpff_core/apache/wsgi.conf
 buildout/bin/
 buildout/develop-eggs/
 buildout/eggs/
@@ -22,7 +22,7 @@ buildout_nesitn2.cfg
 buildout_nesitn2_prepub.cfg
 crdppfportal/static/public/temp_files/*.png
 crdppfportal/static/public/temp_files/*.xml
-crdppf/static/public/pdf/*.pdf
+crdppfportal/static/public/pdf/*.pdf
 MANIFEST
 tile_date.yaml
 config_db.yaml
