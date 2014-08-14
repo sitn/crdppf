@@ -1,0 +1,11 @@
+ScriptAlias /${vars:instanceid}/wmscrdppf ${mapserverexec}
+<Location /${vars:instanceid}/wmscrdppf>
+   # If you use tilecache and want to prevent direct WMS access, uncomment 
+   # the following lines:
+   Order Deny,Allow
+   Deny from all
+   ${vars:mapserv_allow}
+   SetHandler cgi-script
+   SetEnv MS_MAPFILE ${buildout:directory}/crdppf_core/mapserver/crdppf.map
+</Location>
+
