@@ -2,6 +2,7 @@
 *.pyc
 *CRDPPF.pdf
 *.egg-info/
+apache/*.conf
 buildout_olivier.cfg
 buildout_nesitnd1.cfg
 buildout_michael.cfg
