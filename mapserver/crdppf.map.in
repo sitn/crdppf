@@ -1,6 +1,1213 @@
+MAP
+NAME CRDPPF
+STATUS ON
+SIZE 400 300
+UNITS METERS
+TRANSPARENT on
+MAXSIZE 4096
+SYMBOLSET "crdppf.sym"
+FONTSET fonts.txt
+
+#CONFIG "MS_ERRORFILE" "/tmp/ms.log"
+DEBUG 3
+EXTENT 496748.9216 183451.7632 598251.0784 226548.2368
+
+WEB
+  IMAGEPATH "/tmp"
+  METADATA
+    "ows_title"                         "CRDPPF OWS server"
+    "ows_enable_request"          "*"
+    "wfs_encoding"                   "utf-8"
+    "wms_title"                        "${vars:instanceid} WMS Server"
+    "wms_onlineresource"          "http://${vars:host}/${vars:instanceid}/wmscrdppf"
+    "wms_srs"                         "EPSG:21781" 
+  END
+END
+
+IMAGETYPE png24
+IMAGECOLOR 255 255 255
+TRANSPARENT OFF
+
+RESOLUTION 150
+
+OUTPUTFORMAT
+  NAME png24
+  DRIVER "AGG/PNG"
+  MIMETYPE "image/png"
+  IMAGEMODE "RGB"
+  EXTENSION "png"
+END
+
+OUTPUTFORMAT
+  NAME jpeg
+  DRIVER "AGG/JPEG"
+  MIMETYPE "image/jpeg"
+  EXTENSION "jpeg"
+  FORMATOPTION QUALITY=88
+END
+
+PROJECTION
+  "init=epsg:21781"   ##required
+END
+
+LEGEND
+ STATUS ON        # Draw legend in the map
+ KEYSIZE 20 15      # Define the size of the legend icon.
+ LABEL            # Used only for embedded legend (in the map)
+   TYPE TRUETYPE
+   FONT "verdana"
+   COLOR 0 0 0
+   SIZE 8
+   ANTIALIAS TRUE
+ END
+END
+
+
+ # A scalebar object is defined one level below the map object.  This object 
+  # controls how a scalebar is drawn by MapServer.  Scalebars can be embedded 
+  # in the map itself or can be created as a separate image.  It has an 
+  # associated MapServer CGI variable called "scalebar" (or [scalebar] when 
+  # used in the HTML template).
+  SCALEBAR
+    IMAGECOLOR 255 255 255
+    LABEL
+      COLOR 0 0 0
+      SIZE SMALL
+    END
+    STYLE 0
+    SIZE 300 10
+    COLOR 0 0 0
+    UNITS METERS
+    INTERVALS 5
+    TRANSPARENT FALSE
+    STATUS EMBED
+  END # Scalebar object ends
+
+LAYER
+  NAME "parcelles"
+  TYPE POLYGON
+  CONNECTIONTYPE POSTGIS
+  CONNECTION "user=${vars:dbuser} password=${vars:dbpassword} dbname=${vars:db} host=${vars:dbhost} port=${vars:dbport}"
+  PROCESSING "CLOSE_CONNECTION=DEFER"
+  DATA "geom from immeubles_canton using unique noobj using srid=21781"
+  STATUS ON
+  TEMPLATE "foo"
+  CLASS
+    NAME "name1"
+    STYLE
+      OUTLINECOLOR 120 120 0
+    END 
+  END
+  METADATA
+    "ows_title" "parcelles"
+    "wms_srs" "epsg:21781"
+    "wfs_enable_request" "*"
+    "gml_types" "auto"
+    "gml_include_items" "idemai,cadastre,nummai,typimm,srfmai,source,url_terris"
+  END
+  PROJECTION
+    "init=epsg:21781"   ##required
+  END
+  MINSCALEDENOM 0
+  MAXSCALEDENOM 10001
+END
+
+######################
+# RESTRICTIONS CRDPPF - début
+######################
+
+LAYER
+  NAME "r73_contenus_ponctuels"
+  TYPE POINT
+   METADATA
+       "ows_title"                    "r73_contenus_ponctuels"
+       "wms_srs"                     "epsg:21781"
+       "wms_title"                   "${vars:instanceid} WMS Server"
+       "wms_onlineresource"     "http://${vars:host}/${vars:instanceid}/wmscrdppf"
+       "wms_srs"                    "EPSG:21781" 
+  END
+  CONNECTIONTYPE POSTGIS
+  CONNECTION "user=${vars:dbuser} password=${vars:dbpassword} dbname=${vars:db} host=${vars:dbhost} port=${vars:dbport}"
+  PROCESSING "CLOSE_CONNECTION=DEFER"
+  DATA "geom from crdppf.r73_contenus_ponctuels using unique idobj using srid=21781"
+  STATUS ON
+  CLASSITEM "codegenre" 
+  OPACITY 60
+  TEMPLATE "ttt"
+  CLASS
+    NAME "Bloc erratique"
+    EXPRESSION /8101/
+    SYMBOL "square"
+    COLOR 155 0 0
+    SIZE 5
+  END
+  CLASS
+    NAME "Arbre isolé"
+    EXPRESSION /8102/
+    SYMBOL "circle"
+    COLOR 0 180 0
+    SIZE 8
+  END
+  CLASS
+    NAME "Bâtiment intéressant"
+    EXPRESSION /8201/
+    SYMBOL "patrimoine_architectural"
+    MINSIZE 10
+    SIZE 10
+    MAXSIZE 10
+    COLOR 255 115 66
+    OUTLINECOLOR 132 0 0
+  END
+  CLASS
+    NAME "Bâtiment typique ou pittoresque"
+    EXPRESSION /8202/
+    SYMBOL "patrimoine_architectural"
+    MINSIZE 10
+    SIZE 10
+    MAXSIZE 10
+    COLOR 0 200 0
+    OUTLINECOLOR 132 0 0
+  END
+  CLASS
+    NAME "Bâtiment intéressant"
+    EXPRESSION /8201/
+    SYMBOL "patrimoine_architectural"
+    MINSIZE 10
+    SIZE 10
+    MAXSIZE 10
+    COLOR 255 115 66
+    OUTLINECOLOR 132 0 0
+  END
+  CLASS
+    NAME "Bâtiment perturbant"
+    EXPRESSION /8203/
+    SYMBOL "patrimoine_architectural"
+    MINSIZE 10
+    SIZE 10
+    MAXSIZE 10
+    COLOR 180 0 0
+    OUTLINECOLOR 132 0 0
+  END
+  CLASS
+    NAME "Autre"
+    EXPRESSION /8901/
+    SYMBOL "circle"
+    COLOR 155 0 0
+    SIZE 5
+  END
+  TOLERANCE 8
+  TOLERANCEUNITS pixels
+END
+
+LAYER
+  NAME "r73_contenus_lineaires"
+  TYPE LINE
+   METADATA
+       "ows_title"                   "r73_contenus_lineaires"
+       "wms_srs"                    "epsg:21781"
+       "wms_title"                  "${vars:instanceid} WMS Server"
+       "wms_onlineresource"    "http://${vars:host}/${vars:instanceid}/wmscrdppf"
+       "wms_srs"                   "EPSG:21781" 
+  END
+  CONNECTIONTYPE POSTGIS
+  CONNECTION "user=${vars:dbuser} password=${vars:dbpassword} dbname=${vars:db} host=${vars:dbhost} port=${vars:dbport}"
+  PROCESSING "CLOSE_CONNECTION=DEFER"
+  DATA "geom from crdppf.r73_contenus_lineaires using unique idobj using srid=21781"
+  STATUS ON
+  CLASSITEM "codegenre" 
+  OPACITY 60
+  TEMPLATE "ttt"
+  # Limites à la construction
+  CLASS
+    NAME "Limite surfaces eaux"
+    EXPRESSION /7101/
+    STYLE
+      OUTLINECOLOR 0 0 255
+      WIDTH 2
+    END
+  END
+  CLASS
+    NAME "Terr. en nature de vigne"
+    EXPRESSION /7102/
+    STYLE
+        PATTERN 4 4 END
+        WIDTH 2
+        COLOR 100 100 100
+    END
+  END
+  CLASS
+    NAME "Limite zone viticole"
+    EXPRESSION /7103/
+    STYLE
+        PATTERN 4 4 END
+        WIDTH 2
+        COLOR 255 0 255
+    END
+  END
+  CLASS
+    NAME "Limite à la forêt"
+    EXPRESSION /7104/
+    STYLE
+        PATTERN 4 4 END
+        WIDTH 2
+        COLOR 0 140 0
+    END
+  END
+  # Objets protégés
+  CLASS
+    NAME "Objet protégé - Haie"
+    EXPRESSION /7901/
+    STYLE
+      OUTLINECOLOR 0 155 0
+      WIDTH 2
+    END
+  END
+  CLASS
+    NAME "Objet protégé - Mur de pierres sèches"
+    EXPRESSION /7902/
+    STYLE
+      OUTLINECOLOR 180 100 100
+      WIDTH 2
+    END
+  END
+  CLASS
+    NAME "Objet protégé - Allée d'arbres"
+    EXPRESSION /7903/
+    STYLE
+      OUTLINECOLOR 0 90 0
+      WIDTH 2
+    END
+  END
+  CLASS
+    NAME "Objet protégé 2 - Haie"
+    EXPRESSION /7904/
+    STYLE
+      OUTLINECOLOR 0 190 0
+      WIDTH 2
+    END
+  END
+  CLASS
+    NAME "Objet protégé 2 - Mur de pierres sèches"
+    EXPRESSION /7905/
+    STYLE
+      OUTLINECOLOR 140 80 80
+      WIDTH 2
+    END
+  END
+  CLASS
+    NAME "Autre"  
+    EXPRESSION /./
+    STYLE
+      OUTLINECOLOR 0 0 0
+      WIDTH 3
+    END
+  END
+END
+
+LAYER
+  NAME "r73_perimetres_superposes"
+  TYPE LINE
+   METADATA
+       "ows_title"                  "r73_perimetres_superposes"
+       "wms_srs"                   "epsg:21781"
+       "wms_title"                  "${vars:instanceid} WMS Server"
+       "wms_onlineresource"    "http://${vars:host}/${vars:instanceid}/wmscrdppf"
+       "wms_srs"                   "EPSG:21781" 
+  END
+  CONNECTIONTYPE POSTGIS
+  CONNECTION "user=${vars:dbuser} password=${vars:dbpassword} dbname=${vars:db} host=${vars:dbhost} port=${vars:dbport}"
+  PROCESSING "CLOSE_CONNECTION=DEFER"
+  DATA "geom from crdppf.r73_perimetres_superposes using unique idobj using srid=21781"
+  STATUS ON
+  CLASSITEM "codegenre" 
+  OPACITY 90
+  TEMPLATE "ttt"
+  CLASS
+    NAME "Perim. plan spéc. en vigueur"
+    EXPRESSION /6101/
+    STYLE
+      OUTLINECOLOR 255 0 255
+      COLOR 0 255 0
+      WIDTH 5
+    END
+  END
+  CLASS
+    NAME "Perim. plan spéc. obl. pas en vigueur"
+    EXPRESSION /6201/
+    STYLE
+      OUTLINECOLOR 255 0 255
+      COLOR 255 0 0
+      WIDTH 5
+    END
+  END
+  CLASS
+    NAME "Perim. étape équipement différée"
+    EXPRESSION /6301/
+    STYLE
+      OUTLINECOLOR 255 0 255
+      COLOR 0 0 255
+      WIDTH 5
+    END
+  END
+  CLASS
+    NAME "Objet protégé - Bosquet"
+    EXPRESSION /6901/
+    STYLE
+      OUTLINECOLOR 0 155 0
+      COLOR 0 155 0
+      WIDTH 2
+    END
+  END
+  CLASS
+    NAME "Objet protégé - Doline"
+    EXPRESSION /6902/
+    STYLE
+      OUTLINECOLOR 150 0 0
+      COLOR 150 0 0
+      WIDTH 2
+    END
+  END
+    CLASS
+    NAME "Objet protégé - Surface eau"
+    EXPRESSION /6903/
+    STYLE
+      OUTLINECOLOR 0 0 255
+      COLOR 0 0 255
+      WIDTH 2
+    END
+  END
+  CLASS
+    NAME "Secteur de sites éoliens"
+    EXPRESSION /6904/
+    STYLE
+        PATTERN 6 12 END
+        OUTLINECOLOR 0 0 220
+        WIDTH 4
+    END
+  END
+  CLASS
+    NAME "Périmètre soumis à PD"
+    EXPRESSION /6905/
+    STYLE
+        PATTERN 6 10 END
+        OUTLINECOLOR 0 0 0
+        WIDTH 3
+    END
+  END
+  CLASS
+    NAME "Périmètre PD en vigueur"
+    EXPRESSION /6906/
+    STYLE
+        PATTERN 6 4 END
+        OUTLINECOLOR 0 0 0
+        WIDTH 3
+    END
+  END
+  CLASS
+    NAME "Périmètre soumis à PDQ"
+    EXPRESSION /6907/
+    STYLE
+        PATTERN 15 15 END
+        OUTLINECOLOR 0 0 0
+        WIDTH 4
+    END
+  END
+  CLASS
+    NAME "Périmètre  PDQ en vigueur"
+    EXPRESSION /6908/
+    STYLE
+        PATTERN 15 7 END
+        OUTLINECOLOR 0 0 0
+        WIDTH 4
+    END
+  END
+  CLASS
+    NAME "Périmètre soumis à PQ"
+    EXPRESSION /6909/
+    STYLE
+        PATTERN 15 15 END
+        OUTLINECOLOR 0 0 0        
+        WIDTH 2
+    END
+  END
+  CLASS
+    NAME "Périmètre PQ en vigueur"
+    EXPRESSION /6910/
+    STYLE
+        PATTERN 15 7 END
+        OUTLINECOLOR 0 0 0
+        WIDTH 2
+    END
+  END
+  CLASS
+    NAME "Périmètre de plan spécial"
+    EXPRESSION /6911/
+    STYLE
+        PATTERN 15 3 3 3 END
+        OUTLINECOLOR 0 0 0        
+        WIDTH 2
+    END
+  END
+  CLASS
+    NAME "Objet protégé 2 - Verger"
+    EXPRESSION /6912/
+    STYLE
+      OUTLINECOLOR 0 180 0
+      COLOR 0 220 0
+      WIDTH 2
+    END
+  END
+  CLASS
+    NAME "Objet protégé 2 - Bosquet"
+    EXPRESSION /6913/
+    STYLE
+      OUTLINECOLOR 0 155 0
+      COLOR 0 155 0
+      WIDTH 2
+    END
+  END
+  CLASS
+    NAME "Objet protégé 2 - Doline"
+    EXPRESSION /6914/
+    STYLE
+      OUTLINECOLOR 150 0 0
+      COLOR 150 0 0
+      WIDTH 2
+    END
+  END
+  CLASS
+    NAME "Secteur indicatif de dangers -Glissements"
+    EXPRESSION ([codegenre] = 6915 AND '[teneur]' eq 'Glissements')
+    OUTLINECOLOR 255 190 189
+  END
+  CLASS
+    NAME "Secteur indicatif de dangers -Phénomènes rocheux"
+    EXPRESSION ([codegenre] = 6915 AND '[teneur]' eq 'Phénomènes rocheux')
+    OUTLINECOLOR 255 255 189
+  END
+  CLASS
+    NAME "Secteur indicatif de dangers -Lave torrentielle"
+    EXPRESSION ([codegenre] = 6915 AND '[teneur]' eq 'Lave torrentielle')
+    OUTLINECOLOR 189 255 190
+  END
+  CLASS
+    NAME "Secteur indicatif de dangers -Inondation"
+    EXPRESSION ([codegenre] = 6915 AND '[teneur]' eq 'Inondation')
+    OUTLINECOLOR 189 190 255
+  END
+  CLASS
+    NAME "Autre"
+    EXPRESSION /./
+    STYLE
+      OUTLINECOLOR 240 240 0
+      COLOR 0 0 0
+      WIDTH 4
+    END
+  END
+END
+
+LAYER
+  NAME "r73_zones_superposees"
+  TYPE POLYGON
+   METADATA
+       "ows_title" "r73_zones_superposees"
+       "wms_srs" "epsg:21781"
+       "wms_title"           "${vars:instanceid} WMS Server"
+       "wms_onlineresource" "http://${vars:host}/${vars:instanceid}/wmscrdppf"
+       "wms_srs"            "EPSG:21781" 
+  END
+  CONNECTIONTYPE POSTGIS
+  CONNECTION "user=${vars:dbuser} password=${vars:dbpassword} dbname=${vars:db} host=${vars:dbhost} port=${vars:dbport}"
+  PROCESSING "CLOSE_CONNECTION=DEFER"
+  DATA "geom from crdppf.r73_zones_superposees using unique idobj using srid=21781"
+  STATUS ON
+  CLASSITEM "codegenre" 
+  OPACITY 90
+  TEMPLATE "ttt"
+  CLASS
+    NAME "Périmètre protection site bâti"
+    EXPRESSION /5101/
+    SYMBOL "pointilles2"
+    SIZE 4
+    OUTLINECOLOR 255 0 0
+  END
+  CLASS
+    NAME "Zone de crêtes et forêts"
+    EXPRESSION /5201/
+    COLOR 255 255 0
+    OUTLINECOLOR 0 0 0
+  END
+  CLASS
+    NAME "Zone de vignes et grèves"
+    EXPRESSION /5202/
+    COLOR 0 255 0
+    OUTLINECOLOR 0 0 0
+  END
+  CLASS
+    NAME "Réserve naturelle"
+    EXPRESSION /5203/
+     STYLE
+        OUTLINECOLOR 80 90 10
+     END
+     STYLE
+        SYMBOL "hachure3"
+        SIZE 3
+        COLOR 135 145 45
+     END    
+  END
+  CLASS
+    NAME "Biotope cantonal"
+    EXPRESSION /5204/
+    COLOR 135 145 45
+    OUTLINECOLOR 80 90 10
+  END
+  CLASS
+    NAME "Périmètres site marécageux"
+    EXPRESSION /5205/
+    STYLE
+      OUTLINECOLOR 132 132 0
+      WIDTH 3
+    END
+  END
+  CLASS
+    NAME "Périmètres paysages protégés"
+    EXPRESSION /5206/
+    STYLE
+      WIDTH 3
+      OUTLINECOLOR 40 100 40
+    END
+  END
+  CLASS
+    NAME "Danger élevé"
+    EXPRESSION /5304/
+    COLOR 255 0 0
+  END
+  CLASS
+    NAME "Danger moyen"
+    EXPRESSION /5303/
+    COLOR 0 0 255
+  END
+  CLASS
+    NAME "Danger faible"
+    EXPRESSION /5302/
+    COLOR 255 255 0
+  END
+  CLASS
+    NAME "Danger résiduel"
+    EXPRESSION /5301/
+    STYLE
+      COLOR 255 255 0
+    END
+    STYLE
+      SYMBOL "hachure7"
+    END
+  END
+  CLASS
+    NAME "Protection rives"
+    EXPRESSION /5901/
+    COLOR 135 145 45
+    OUTLINECOLOR 80 90 10
+  END
+  CLASS
+    NAME "Zones réservées"
+    EXPRESSION /5903/
+    STYLE
+      OUTLINECOLOR 0 0 0
+      WIDTH 1
+    END
+    STYLE
+      SYMBOL "hachure6"
+      COLOR 0 0 0
+      SIZE 5
+    END
+  END
+  CLASS
+    NAME "Autre"
+    EXPRESSION /./
+    COLOR 0 0 0
+    OUTLINECOLOR 0 0 0
+  END
+END
+
+LAYER
+  NAME "r73_affectations_primaires"
+  TYPE POLYGON
+   METADATA
+       "ows_title" "r73_affectations_primaires"
+       "wms_srs" "epsg:21781"
+       "wms_title"           "${vars:instanceid} WMS Server"
+       "wms_onlineresource" "http://${vars:host}/${vars:instanceid}/wmscrdppf"
+       "wms_srs"            "EPSG:21781" 
+  END
+  CONNECTIONTYPE POSTGIS
+  CONNECTION "user=${vars:dbuser} password=${vars:dbpassword} dbname=${vars:db} host=${vars:dbhost} port=${vars:dbport}"
+  PROCESSING "CLOSE_CONNECTION=DEFER"
+  DATA "geom from crdppf.r73_affectations_primaires using unique idobj using srid=21781"
+  STATUS ON
+  CLASSITEM "codegenre" 
+  OPACITY 50
+  TEMPLATE "ttt"
+  CLASS
+    NAME "Faible densité"
+    EXPRESSION /1101/
+    COLOR 255 236 176
+  END
+  CLASS
+    NAME "Résidentielle densifiée"
+    EXPRESSION /1102/
+    COLOR 255 216 96
+  END
+  CLASS
+    NAME "Moyenne densité"
+    EXPRESSION /1103/
+    COLOR 240 180 0
+  END
+  CLASS
+    NAME "Forte densité"
+    EXPRESSION /1104/
+    COLOR 255 0 0
+  END
+  CLASS
+    NAME "Chalets"
+    EXPRESSION /1105/
+    COLOR 255 255 144
+  END
+  CLASS
+    NAME "Constructions basses"
+    EXPRESSION /1106/
+    COLOR 255 0 0
+    OUTLINECOLOR 0 0 0
+  END
+  CLASS
+    NAME "Plan spécial a"
+    EXPRESSION /1107/
+    COLOR 255 0 0
+    SYMBOL 8
+    SIZE 3
+  END
+  CLASS
+    NAME "Zone spéciale a"
+    EXPRESSION /1108/
+    COLOR 128 128 128
+  END
+  CLASS
+    NAME "Activités économiques"
+    EXPRESSION /1201/
+    COLOR 128 0 128
+  END
+  CLASS
+    NAME "Artisanale"
+    EXPRESSION /1202/
+    COLOR 255 128 255
+  END
+  CLASS
+    NAME "Commerciale"
+    EXPRESSION /1203/
+    COLOR 255 0 255
+  END
+  CLASS
+    NAME "Activités économiques"
+    EXPRESSION /1204/
+    COLOR 128 0 128
+  END
+  CLASS
+    NAME "Industrielle"
+    EXPRESSION /1205/
+    COLOR 0 0 128
+  END
+  CLASS
+    NAME "Mixte"
+    EXPRESSION /1301/
+    COLOR 255 0 255
+    SYMBOL 8
+    SIZE 3
+  END
+  CLASS
+    NAME "Ancienne localité"
+    EXPRESSION /1401/
+    COLOR 112 0 0
+  END
+  CLASS
+    NAME "Ville en damier"
+    EXPRESSION /1402/
+    COLOR 112 0 0
+  END
+  CLASS
+    NAME "Centre ville"
+    EXPRESSION /1403/
+    COLOR 224 56 0
+  END
+  CLASS
+    NAME "Utilité publique"
+    EXPRESSION /1501/
+    COLOR 176 176 176
+  END
+  CLASS
+    NAME "Sports,détente et loisir"
+    EXPRESSION /1502/
+    COLOR 0 255 255
+  END
+  CLASS
+    NAME "Prot. ancienne localité"
+    EXPRESSION /1601/
+    COLOR 255 152 48
+  END
+  CLASS
+    NAME "Protection patrimoine"
+    EXPRESSION /1602/
+    COLOR 192 144 0
+  END
+  CLASS
+    NAME "Fermes"
+    EXPRESSION /1603/
+    COLOR 176 176 0
+  END  
+  CLASS
+    NAME "Verdure"
+    EXPRESSION /1604/
+    COLOR 0 255 0
+  END
+  CLASS
+    NAME "Tourisme"
+    EXPRESSION /1701/
+    COLOR 128 171 255
+  END
+  CLASS
+    NAME "Aérodrome"
+    EXPRESSION /1801/
+    COLOR 192 192 255
+  END
+  CLASS
+    NAME "Agricole"
+    EXPRESSION /2101/
+  END
+  CLASS
+    NAME "Zones viticoles"
+    EXPRESSION /2301/
+    STYLE
+        COLOR 135 0 135
+      OUTLINECOLOR 128 0 128
+      SYMBOL 9
+      SIZE 3
+    END 
+  END
+  CLASS
+    NAME "Zone de protection 1"
+    EXPRESSION /3101/
+    COLOR 0 128 0
+  END
+  CLASS
+    NAME "Haut-marais"
+    EXPRESSION /3102/
+    COLOR 135 145 45
+    OUTLINECOLOR 135 145 45
+  END
+  CLASS
+    NAME "Bas-marais"
+    EXPRESSION /3103/
+    COLOR 135 145 45
+    OUTLINECOLOR 135 145 45
+  END
+  CLASS
+    NAME "Bas-marais / Zone alluviale"
+    EXPRESSION /3104/
+    COLOR 135 145 45
+    OUTLINECOLOR 135 145 45
+  END
+  CLASS
+    NAME "Terrain agricole inclu dans biotope marécageux"
+    EXPRESSION /3105/
+    COLOR 132 132 0
+    OUTLINECOLOR 132 132 0
+    SYMBOL 'triangle'
+    SIZE 4
+  END
+  CLASS
+    NAME "Zone-tampon"
+    EXPRESSION /3106/
+    COLOR  160 153 78
+    OUTLINECOLOR 160 153 78
+    STYLE
+        SYMBOL hachure
+        COLOR 135 145 45
+        ANGLE 0
+        SIZE 5
+    END
+    STYLE
+        SYMBOL hachure
+        COLOR 135 145 45
+        ANGLE 90
+        SIZE 5
+    END
+  END
+  CLASS
+    NAME "Zone de protection"
+    EXPRESSION /3107/
+    COLOR 0 128 0
+  END
+  CLASS
+    NAME "Hameau"
+    EXPRESSION /4101/
+    COLOR 112 112 0
+  END
+  CLASS
+    NAME "Utilisation différée"
+    EXPRESSION /4301/
+    COLOR 0 0 0
+    SYMBOL 8
+    SIZE 3
+  END
+  CLASS
+    NAME "Sports,détente et loisir"
+    EXPRESSION /4901/
+    COLOR 0 255 255
+  END
+  CLASS
+    NAME "Militaire"
+    EXPRESSION /4902/
+    COLOR 0 128 128
+  END
+  CLASS
+    NAME "Traitement déchets"
+    EXPRESSION /4903/
+    COLOR 208 156 0
+  END
+  CLASS
+    NAME "Décharge"
+    EXPRESSION /4904/
+    COLOR 144 108 0
+  END
+  CLASS
+    NAME "Extraction"
+    EXPRESSION /4905/
+    COLOR 96 72 0
+  END
+  CLASS
+    NAME "Plan spécial b"
+    EXPRESSION /4906/
+    COLOR 255 0 0
+    SYMBOL 8
+    SIZE 3
+  END
+  CLASS
+    NAME "Zone spéciale b"
+    EXPRESSION /4907/
+    COLOR 128 128 128
+  END
+  CLASS
+    NAME "autre"
+    EXPRESSION /./
+    COLOR 0 0 0
+    OUTLINECOLOR 255 0 255
+    SIZE 5
+  END
+END
+
+LAYER
+  NAME "r103_bazl_projektierungszonen_flughafenanlagen"
+  STATUS ON
+  METADATA
+       "ows_title"                      "r103_bazl_projektierungszonen_flughafenanlagen"
+       "wms_srs"                    "epsg:21781"
+       "wms_title"                      "${vars:instanceid} WMS Server"
+       "wms_onlineresource"     "http://${vars:host}/${vars:instanceid}/wmscrdppf"
+       "wms_srs"                    "EPSG:21781" 
+  END
+  CONNECTIONTYPE POSTGIS
+  CONNECTION "user=${vars:dbuser} password=${vars:dbpassword} dbname=${vars:db} host=${vars:dbhost} port=${vars:dbport}"
+  PROCESSING "CLOSE_CONNECTION=DEFER"
+  DATA "geom from crdppf.r103_bazl_projektierungszonen_flughafenanlagen using unique idobj using srid=21781"
+  TYPE POLYGON
+  TEMPLATE "ttt"
+  OPACITY 60
+  CLASS
+    NAME "Zones rés. des install. aéroportuaires"
+    COLOR 255 230 180
+    OUTLINECOLOR 255 170 0
+   END
+END
+
+LAYER
+  NAME "r108_bazl_sicherheitszonenplan"
+  STATUS ON
+  METADATA
+       "ows_title"                      "r108_bazl_sicherheitszonenplan"
+       "wms_srs"                    "epsg:21781"
+       "wms_title"                      "${vars:instanceid} WMS Server"
+       "wms_onlineresource"     "http://${vars:host}/${vars:instanceid}/wmscrdppf"
+       "wms_srs"                    "EPSG:21781" 
+  END
+  CONNECTIONTYPE POSTGIS
+  CONNECTION "user=${vars:dbuser} password=${vars:dbpassword} dbname=${vars:db} host=${vars:dbhost} port=${vars:dbport}"
+  PROCESSING "CLOSE_CONNECTION=DEFER"
+  DATA "geom from crdppf.r108_bazl_sicherheitszonenplan using unique idobj using srid=21781"
+  TYPE POLYGON
+  TEMPLATE "ttt"
+  OPACITY 60
+  CLASS
+    NAME "Zone de sécurité aéroportuaire"
+    COLOR 200 70 255
+    OUTLINECOLOR 192 0 192
+   END
+END
+
+LAYER
+  STATUS ON
+  NAME "r116_sites_pollues"
+  METADATA
+       "ows_title"                      "r116_sites_pollues"
+       "wms_srs"                    "epsg:21781"
+       "wms_title"                      "${vars:instanceid} WMS Server"
+       "wms_onlineresource"     "http://${vars:host}/${vars:instanceid}/wmscrdppf"
+       "wms_srs"                    "EPSG:21781" 
+  END
+  CONNECTIONTYPE POSTGIS
+  CONNECTION "user=${vars:dbuser} password=${vars:dbpassword} dbname=${vars:db} host=${vars:dbhost} port=${vars:dbport}"
+  PROCESSING "CLOSE_CONNECTION=DEFER"
+  DATA "geom from crdppf.r116_sites_pollues using unique idobj using srid=21781"
+  TYPE POLYGON
+  CLASSITEM "codegenre"
+  TEMPLATE "ttt"
+  OPACITY 60
+  CLASS
+    NAME "Sites pollués - accidents "
+    EXPRESSION /9901/
+    COLOR  140 0 0
+    OUTLINECOLOR 140 0 0
+  END
+  CLASS
+    NAME "Sites pollués - décharges"
+    EXPRESSION /9902/
+    COLOR 200 130 0
+    OUTLINECOLOR 200 130 0
+   END
+   CLASS
+    NAME "Sites pollués - entreprises"
+    EXPRESSION /9903/
+    COLOR 0 0 255
+    OUTLINECOLOR 0 0 255
+   END
+END
+
+LAYER
+  STATUS ON
+  NAME "r119_bav_belastete_standorte_oev"
+  METADATA
+       "ows_title"                   "r119_bav_belastete_standorte_oev"
+       "wms_srs"                    "epsg:21781"
+       "wms_title"                  "${vars:instanceid} WMS Server"
+       "wms_onlineresource"    "http://${vars:host}/${vars:instanceid}/wmscrdppf"
+       "wms_srs"                   "EPSG:21781" 
+  END
+  CONNECTIONTYPE POSTGIS
+  CONNECTION "user=${vars:dbuser} password=${vars:dbpassword} dbname=${vars:db} host=${vars:dbhost} port=${vars:dbport}"
+  PROCESSING "CLOSE_CONNECTION=DEFER"
+  DATA "geom from crdppf.r119_bav_belastete_standorte_oev using unique idobj using srid=21781"
+  TYPE POLYGON
+  TEMPLATE "ttt"
+  OPACITY 60
+   CLASS
+    NAME "Sites pollués - domaine transports publics"
+    COLOR 255 255 0
+    OUTLINECOLOR 0 0 0
+   END
+END
+
+LAYER
+  NAME "r131_zone_prot_eau"
+  STATUS ON
+  METADATA
+       "ows_title"                   "r131_zone_prot_eau"
+       "wms_srs"                    "epsg:21781"
+       "wms_title"                  "${vars:instanceid} WMS Server"
+       "wms_onlineresource"    "http://${vars:host}/${vars:instanceid}/wmscrdppf"
+       "wms_srs"                   "EPSG:21781" 
+  END
+  CONNECTIONTYPE POSTGIS
+  CONNECTION "user=${vars:dbuser} password=${vars:dbpassword} dbname=${vars:db} host=${vars:dbhost} port=${vars:dbport}"
+  PROCESSING "CLOSE_CONNECTION=DEFER"
+  DATA "geom from crdppf.r131_zone_prot_eau using unique idobj using srid=21781"
+  TYPE POLYGON
+  TEMPLATE "ttt"
+  OPACITY 60
+  CLASSITEM "teneur"
+  CLASS
+    NAME "Zone S1"
+    EXPRESSION /S1/
+    COLOR 255 0 0
+    OUTLINECOLOR 255 0 0
+  END
+  CLASS
+    NAME "Zone S2"
+    EXPRESSION /S2/
+    COLOR 255 152 48
+    OUTLINECOLOR 0 0 0
+  END
+  CLASS
+    NAME "S2 à efficacité limitée"
+    EXPRESSION /S2EL/
+    COLOR 255 196 176
+    OUTLINECOLOR 0 0 0
+  END
+  CLASS
+    NAME "Zone S3"
+    EXPRESSION /S3/
+    COLOR 255 255 0
+    OUTLINECOLOR 0 0 0
+  END
+  CLASS
+    NAME "Aire Zu"
+    EXPRESSION /A. ZU/
+    COLOR 192 128 255
+    OUTLINECOLOR 0 0 0
+  END
+END
+
+LAYER
+  NAME "r132_perimetre_prot_eau"
+  STATUS ON
+  METADATA
+       "ows_title"                   "r132_perimetre_prot_eau"
+       "wms_srs"                    "epsg:21781"
+       "wms_title"                  "${vars:instanceid} WMS Server"
+       "wms_onlineresource"    "http://${vars:host}/${vars:instanceid}/wmscrdppf"
+       "wms_srs"                   "EPSG:21781" 
+  END
+  CONNECTIONTYPE POSTGIS
+  CONNECTION "user=${vars:dbuser} password=${vars:dbpassword} dbname=${vars:db} host=${vars:dbhost} port=${vars:dbport}"
+  PROCESSING "CLOSE_CONNECTION=DEFER"
+  DATA "geom from crdppf.r132_perimetre_prot_eau using unique idobj using srid=21781"
+  TYPE POLYGON
+  TEMPLATE "ttt"
+  OPACITY 60
+  CLASSITEM "teneur"
+  CLASS
+    NAME "ÜB"
+    EXPRESSION /ÜB/
+    STYLE
+      OUTLINECOLOR 0 180 0
+      WIDTH 2
+    END
+  END
+  CLASS
+    NAME "secteur Ao et Au"
+    EXPRESSION /./
+    COLOR 0 0 255
+    OUTLINECOLOR 0 0 0
+  END
+END
+
+LAYER
+ NAME "r145_sens_bruit"
+  TYPE POLYGON
+   METADATA
+       "ows_title" "r145_sens_bruit"
+       "wms_srs" "epsg:21781"
+       "wms_title"           "${vars:instanceid} WMS Server"
+       "wms_onlineresource" "http://${vars:host}/${vars:instanceid}/wmscrdppf"
+       "wms_srs"            "EPSG:21781"
+  END
+  CONNECTIONTYPE POSTGIS
+  CONNECTION "user=${vars:dbuser} password=${vars:dbpassword} dbname=${vars:db} host=${vars:dbhost} port=${vars:dbport}"
+  PROCESSING "CLOSE_CONNECTION=DEFER"
+  DATA "geom from crdppf.r145_sens_bruit using unique idobj using srid=21781"
+  STATUS ON
+  CLASSITEM "teneur" 
+  OPACITY 50
+  TEMPLATE "ttt"
+  CLASS
+    NAME "IV"
+    EXPRESSION /DS IV/
+    COLOR 0 0 255
+    OUTLINECOLOR 0 0 0
+  END
+  CLASS
+    NAME "III"
+    EXPRESSION /DS III/
+    COLOR 255 0 0
+    OUTLINECOLOR 0 0 0
+  END
+  CLASS
+    NAME "II"
+    EXPRESSION /DS II/
+    COLOR 0 130 0
+    OUTLINECOLOR 0 0 0
+  END
+  CLASS
+    NAME "I"
+    EXPRESSION /DS I/
+    COLOR 255 255 148
+    OUTLINECOLOR 0 0 0
+  END
+END
+
+LAYER
+  NAME "r157_lim_foret"
+  TYPE LINE
+  METADATA
+       "ows_title" "r157_lim_foret"
+       "wms_srs"                    "epsg:21781"
+       "wms_title"                      "${vars:instanceid} WMS Server"
+       "wms_onlineresource"     "http://${vars:host}/${vars:instanceid}/wmscrdppf"
+       "wms_srs"                    "EPSG:21781" 
+  END
+  CONNECTIONTYPE POSTGIS
+  CONNECTION "user=${vars:dbuser} password=${vars:dbpassword} dbname=${vars:db} host=${vars:dbhost} port=${vars:dbport}"
+  PROCESSING "CLOSE_CONNECTION=DEFER"
+  DATA "geom from crdppf.r157_lim_foret using unique idobj using srid=21781"
+  STATUS ON
+  TEMPLATE "ttt"
+  CLASSITEM "teneur"
+  CLASS
+    NAME "Limite légale de forêt"
+    EXPRESSION /./
+    STYLE
+        PATTERN 4 4 END
+        WIDTH 2
+        COLOR 0 140 0
+    END
+  END
+  TOLERANCE 5
+  TOLERANCEUNITS pixels
+END
+
+LAYER
+  NAME "r159_dist_foret"
+  TYPE LINE
+  METADATA
+       "ows_title" "r159_dist_foret"
+       "wms_srs"                    "epsg:21781"
+       "wms_title"                      "${vars:instanceid} WMS Server"
+       "wms_onlineresource"     "http://${vars:host}/${vars:instanceid}/wmscrdppf"
+       "wms_srs"                    "EPSG:21781" 
+  END
+  CONNECTIONTYPE POSTGIS
+  CONNECTION "user=${vars:dbuser} password=${vars:dbpassword} dbname=${vars:db} host=${vars:dbhost} port=${vars:dbport}"
+  PROCESSING "CLOSE_CONNECTION=DEFER"
+  DATA "geom from crdppf.r159_dist_foret using unique idobj using srid=21781"
+  STATUS ON
+  TEMPLATE "ttt"
+  TOLERANCE 5
+  TOLERANCEUNITS pixels
+  CLASSITEM "codegenre"
+  CLASS
+    NAME "Distance légale à la forêt"
+    EXPRESSION /7104/
+    STYLE
+        PATTERN 4 4 END
+        WIDTH 2
+        COLOR 0 0 140
+    END
+  END
+END
 
 #####################
-# Am�nagement
+# RESTRICTIONS CRDPPF - fin
+#####################
+
+
+#####################
+# Aménagement
 #####################
 
 LAYER
@@ -40,7 +1247,7 @@ LAYER
   STATUS ON
   TEMPLATE "ttt"
   CLASS
-    NAME "P�rim�tres arch�ologiques"
+    NAME "Périmètres archéologiques"
     SYMBOL "pointilles2"
     SIZE 4	
     OUTLINECOLOR 0 0 0
@@ -62,7 +1269,7 @@ LAYER
   STATUS ON
   TEMPLATE "ttt"
   CLASS
-    NAME "P�rim�tres de tir"
+    NAME "Périmètres de tir"
     STYLE
         OUTLINECOLOR 0 0 0
         PATTERN 7 4 7 4 3 4 3 4 3 4 END
@@ -177,7 +1384,7 @@ LAYER
   TEMPLATE "ttt"
   LABELITEM "egid"
   CLASS
-    NAME "B�t. f�d�raux (EGID)"
+    NAME "Bât. fédéraux (EGID)"
     SYMBOL "circle"
     SIZE 3
     COLOR 128 0 0
@@ -853,7 +2060,7 @@ LAYER
     END  
   END
   CLASS
-    NAME "Lin�aires"
+    NAME "Linéaires"
     EXPRESSION /20/
     STYLE
         COLOR 255 255 255
@@ -1317,7 +2524,7 @@ LAYER
     LABELMAXSCALEDENOM 6000
     CLASSITEM "provenance"
     CLASS
-        NAME "N� parcelle"
+        NAME "N° parcelle"
         EXPRESSION /officiel/
         LABEL
             TYPE TRUETYPE
@@ -1334,7 +2541,7 @@ LAYER
         END
     END
     CLASS
-        NAME "N� parcelle provisoire"
+        NAME "N° parcelle provisoire"
         EXPRESSION /provisoire/
         LABEL
             TYPE TRUETYPE
@@ -1454,8 +2661,8 @@ LAYER
         SIZE 10
     END
     CLASS
-        NAME "Sans v�g�tation"
-        EXPRESSION /rocher|�boulis|gravi�re|d�charge|enrochement|inculte/
+        NAME "Sans végétation"
+        EXPRESSION /rocher|éboulis|gravière|décharge|enrochement|inculte/
         STYLE
             SYMBOL "IcePack"
         END
@@ -1584,7 +2791,7 @@ LAYER
   LABELMAXSCALE 1500
   TEMPLATE "ttt"
   CLASS
-    NAME "B�timents projet�s"
+    NAME "Bâtiments projetés"
     EXPRESSION ([curr_fao]>=0)
     STYLE
       COLOR 0 0 255
@@ -1617,7 +2824,7 @@ LAYER
   CLASSITEM "typcou"
   TEMPLATE "ttt"
   CLASS
-    NAME "B�timents ordinaires"
+    NAME "Bâtiments ordinaires"
     EXPRESSION /ordinaire/
     STYLE
       COLOR 200 200 200 
@@ -1625,7 +2832,7 @@ LAYER
     END
   END
   CLASS
-    NAME "B�timents souterrains"
+    NAME "Bâtiments souterrains"
     EXPRESSION /souterrain/
     STYLE
       OPACITY 40    
@@ -1658,7 +2865,7 @@ LAYER
   CLASSITEM "typcou"
   TEMPLATE "ttt"
   CLASS
-    NAME "B�timents provisoires"
+    NAME "Bâtiments provisoires"
     #EXPRESSION /ordinaire/
     STYLE
       COLOR 200 200 200 
@@ -1668,3 +2875,7 @@ LAYER
   MINSCALEDENOM 50
   MAXSCALEDENOM 7500
 END
+
+END
+
+

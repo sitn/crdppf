@@ -22,7 +22,7 @@ setup(
     zip_safe=False,
     entry_points={
         'paste.app_factory': [
-            'main = crdppf:main',
+            'main = crdppfportal:main',
         ],
     },
 )
