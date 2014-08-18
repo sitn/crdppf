@@ -114,7 +114,7 @@ SYMBOL
 END
 
 SYMBOL
-    Name "hachure3" # ¦¦¦
+    Name "hachure3" # Â¦Â¦Â¦
     TRANSPARENT 0
     Type VECTOR
     Points
@@ -189,7 +189,7 @@ SYMBOL
 END
 
 SYMBOL
-    Name "hachure5" # ___ épais
+    Name "hachure5" # ___ Ã©pais
     TRANSPARENT 0
     Type VECTOR
     Points
@@ -344,7 +344,7 @@ SYMBOL
     Name "triangles2"
     Type TRUETYPE
     FONT "esri17" 
-    CHARACTER "¨" 
+    CHARACTER "Â¨" 
 END
 
 SYMBOL
