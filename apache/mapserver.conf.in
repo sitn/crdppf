@@ -6,6 +6,6 @@ ScriptAlias /${vars:instanceid}/wmscrdppf ${mapserverexec}
    Deny from all
    ${vars:mapserv_allow}
    SetHandler cgi-script
-   SetEnv MS_MAPFILE ${buildout:directory}/crdppf_core/mapserver/crdppf.map
+   SetEnv MS_MAPFILE ${buildout:directory}/mapserver/crdppf.map
 </Location>
 

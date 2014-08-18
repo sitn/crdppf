@@ -36,8 +36,7 @@ def main(global_config, **settings):
     
     #specific_tmp_path = os.path.join(settings['specific_root_dir'], 'templates')
     #specific_static_path = os.path.join(settings['specific_root_dir'], 'static')
-
-    #settings.setdefault('mako.directories',['crdppf:templates', specific_tmp_path])
+    
     #settings.setdefault('mako.directories',['crdppf:templates', specific_tmp_path])
     #settings.setdefault('reload_templates',True)
 
@@ -47,8 +46,9 @@ def main(global_config, **settings):
 
     config.set_request_property(read_tile_date, name='tile_date', reify=True)
 
-#    config.add_static_view('static', 'crdppf:static', cache_max_age=3600)
-    config.add_static_view('proj', 'crdppfportal:static', cache_max_age=3600)
+    # add the static view (for static resources)
+    #config.add_static_view('static', 'crdppf:static', cache_max_age=3600)
+    #config.add_static_view('proj', 'crdppfportal:static', cache_max_age=3600)
 
     # ROUTES
     #config.add_route('home', '/')
