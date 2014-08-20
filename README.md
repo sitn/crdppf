@@ -3,11 +3,7 @@ CRDPPF Portal
 
 # Getting started
 
-Create an empty folder on your disk and prepare it for the git project from your console
-
-    $ cd [path to the crdppf project folder]
-    $ git init
-    
+  
 Checkout the source code:
 
     $ git clone https://github.com/sitn/crdppf.git
@@ -22,6 +18,20 @@ Bootstrap and buildout
         http://pypi.camptocamp.net/distribute-0.6.22_fix-issue-227/ --setup-source \
         http://pypi.camptocamp.net/distribute-0.6.22_fix-issue-227/distribute_setup.py
 
+Get the submodule crdppf_core (https://github.com/sitn/crdppf_core.git if you'd like to get the core project too)
+
+    $ git submodule update --init
+    
+Once it is installed get all the libraries of the submodule (ext, openlayers, ...)
+
+    $ cd crdppf_core
+    $ git submodule update --init
+     
+maybe a 
+
+    $ git submodule foreach git submodule update --init
+
+does also the trick
 Create your own buildout file by:
 * Copy-paste `buildout.cfg`
 * Rename the new file `buildout_<user>.cfg`
@@ -42,6 +52,8 @@ Adapt the `overwrite_me` values to your environment:
 Run buildout
 
     $ ./buildout/bin/buildout -c buildout_<user>.cfg
+
+# Upgrade existing project
 
 To upgrade an existing version of the project go into the root folder of your project
 Make sure your on the master branch or the branch you want to be on:
@@ -66,7 +78,7 @@ if you are updating the inital install to the generalized version you probably g
 
     $ rm -r crdppf
 
-Get the submodule crdppf_core
+Get the submodule crdppf_core (https://github.com/sitn/crdppf_core.git if you'd like to get the core project too)
 
     $ git submodule update --init
     
