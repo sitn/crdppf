@@ -4,19 +4,21 @@ db_config:
   srid: 21781
 
   tables:
-
+    # table containing the municipality or cadastral boundaries : NE = cadastres
     town:
       tablename: la02_cadastres
      # tablename: la3_limites_communales
       schema: general
+      # primary key
       att_id: idobj
-      # optional:
+      # optional - if subdivision in cadastres :
       att_cadastre_number: numcad
-      # optional:
+      # optional - if subdivision in cadastres :
       att_cadastre_name: cadnom
       att_commune_number: numcom
       att_commune_name: comnom
       att_federal_number: nufeco
+    # table containing the properties
     property:
       tablename: immeubles_canton
       schema: public

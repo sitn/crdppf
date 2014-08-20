@@ -1,14 +1,15 @@
 app_config:  
- # CHlogopath: ecussons/Logo_Schweiz_Eidgen.png
- # cantonlogopath: ecussons/06ne_ch_RVB.jpg
  # lang: ${vars:default_language}
  # defaultfontfamily: Arial
+  # topics provided by the confederation
   ch_topics: ['103','108','119']
+  # wms and feature service name of the layers used by the confederation
   ch_legend_layers:
     '103': ch.bazl.projektierungszonen-flughafenanlagen.oereb
     '108': ch.bazl.sicherheitszonenplan.oereb
     '119': ch.bav.kataster-belasteter-standorte-oev.oereb
 
+  #  configuration and list of the wms layers used for the background image in the pdf
   crdppf_wms_layers:
     - mo6_couverture_sol_nb
     - mo22_batiments
@@ -31,8 +32,10 @@ app_config:
   wms_version: 1.1.1
   wms_transparency: 'TRUE'
   wms_imageformat: image/png
-  
+ 
+# Parameters for the PDF extract layout - only modify if you know what you do (may affect the layout)!! 
 pdf_config:
+  # default language of the pdf extract
   defaultlanguage: ${vars:default_language}
   pdfformat: A4
   pdforientation: portrait
@@ -46,6 +49,7 @@ pdf_config:
   headermargin: 50
   footermargin: 20
   fontfamily: Arial
+  # text formats : b = bold, n= normal, i=italic ; size in pt
   textstyles:
     title1: [B, 22]
     title2: [B, 18]
@@ -57,9 +61,14 @@ pdf_config:
     tocbold: [B, 11]
     tocurl: [N, 9]
     tocnormal: [N, 11]
+  # color for links - default is standard blue
   urlcolor: [0, 0, 255]
+  # default color for text - black
   defaultcolor: [0, 0, 0]
+  # Max ratio property bbox/map bbox - to insure that the property occupies at most 90% of the map and leaves 10% space around it
   fitratio: 0.9
+  # path to the logo of the confederation
   CHlogopath: ecussons/Logo_Schweiz_Eidgen.png
+  # path to the logo of the canton
   cantonlogopath: ecussons/06ne_ch_RVB.jpg
   
