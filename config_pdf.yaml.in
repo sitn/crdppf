@@ -1,3 +1,6 @@
+wmts_openlayers:
+  mapproxyurl: ['http://tile1-sitn.ne.ch/mapproxy/wmts', 'http://tile2-sitn.ne.ch/mapproxy/wmts', 'http://tile3-sitn.ne.ch/mapproxy/wmts', 'http://tile4-sitn.ne.ch/mapproxy/wmts', 'http://tile5-sitn.ne.ch/mapproxy/wmts']
+
 app_config:  
  # lang: ${vars:default_language}
  # defaultfontfamily: Arial

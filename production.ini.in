@@ -26,6 +26,16 @@ default_language = ${vars:default_language}
 fulltextsearch_url = ${vars:fulltextsearch_url}
 mapproxyurl = ${vars:mapproxyurl}
 mapMatrixSet = ${vars:mapMatrixSet}
+mapExtent = ${vars:mapExtent}
+mapMaxExtent = ${vars:mapMaxExtent}
+mapCenter = ${vars:mapCenter}
+mapSRS = ${vars:mapSRS}
+mapResolutions = ${vars:mapResolutions}
+mapMatrixSet = ${vars:mapMatrixSet}
+mapOverviewExtent = ${vars:mapOverviewExtent}
+mapOverviewSizeW = ${vars:mapOverviewSizeW}
+mapOverviewSizeH = ${vars:mapOverviewSizeH}
+keymap = ${vars:keymap}
 app.cfg = %(here)s/config_pdf.yaml
 
 logon = ${vars:logon}
