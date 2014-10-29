@@ -399,6 +399,14 @@ Symbol
   END
 END
 
+# symbol 124
+SYMBOL
+  NAME "hachure7"
+  TYPE PIXMAP
+  IMAGE "images/hachure.png"
+  TRANSPARENT 1
+END
+
 SYMBOL
     NAME "IcePack"
     TYPE PIXMAP
