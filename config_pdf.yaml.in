@@ -5,11 +5,13 @@ app_config:
  # lang: ${vars:default_language}
  # defaultfontfamily: Arial
   # topics provided by the confederation
-  ch_topics: ['103','108','119']
+  ch_topics: ['103','108','118','119']
+  emptytopics: ['87','96','97','104']
   # wms and feature service name of the layers used by the confederation
   ch_legend_layers:
     '103': ch.bazl.projektierungszonen-flughafenanlagen.oereb
     '108': ch.bazl.sicherheitszonenplan.oereb
+    '118': ch.bazl.kataster-belasteter-standorte-zivilflugplaetze.oereb
     '119': ch.bav.kataster-belasteter-standorte-oev.oereb
 
   #  configuration and list of the wms layers used for the background image in the pdf
@@ -72,6 +74,11 @@ pdf_config:
   fitratio: 0.9
   # path to the logo of the confederation
   CHlogopath: ecussons/Logo_Schweiz_Eidgen.png
-  # path to the logo of the canton
-  cantonlogopath: ecussons/06ne_ch_RVB.jpg
-  
+  # path and dimensions of cantonal logo
+  cantonlogo:
+    path: ecussons/06ne_ch_RVB.jpg
+    width: 43.4
+    height: 13.8
+  placeholder: Placeholder.jpg
+  pdfbasename: _ExtraitCRDPPF
+  siteplanbasename: _siteplan
