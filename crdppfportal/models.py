@@ -20,4 +20,3 @@ Base = sqlahelper.get_base()
 class Paper(Base):
     __tablename__ = 'paperformats'
     __table_args__ = {'schema': db_config['schema'], 'autoload': True}
- 
