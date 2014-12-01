@@ -1,6 +1,7 @@
 # Database schema containing the data
 db_config:
   schema: crdppf
+  topickey: idobj
   srid: 21781
 
   tables:
@@ -33,3 +34,7 @@ db_config:
       schema: public
       att_id: idcnlo
       att_local_name: nomloc
+
+  restrictions:
+      forestlimits
+      forestdistances
