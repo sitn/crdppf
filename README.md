@@ -12,12 +12,6 @@ or when you're using ssh key (see https://help.github.com/articles/generating-ss
 
     $ git clone git@github.com:sitn/crdppf.git
 
-Bootstrap and buildout
-
-    $ python bootstrap.py --version 1.5.2 --distribute --download-base \
-        http://pypi.camptocamp.net/distribute-0.6.22_fix-issue-227/ --setup-source \
-        http://pypi.camptocamp.net/distribute-0.6.22_fix-issue-227/distribute_setup.py
-
 Get the submodule crdppf_core (https://github.com/sitn/crdppf_core.git if you'd like to get the core project too)
 
     $ git submodule update --init
@@ -32,6 +26,13 @@ maybe a
     $ git submodule foreach git submodule update --init
 
 does also the trick
+
+Bootstrap and buildout
+
+    $ python bootstrap.py --version 1.5.2 --distribute --download-base \
+        http://pypi.camptocamp.net/distribute-0.6.22_fix-issue-227/ --setup-source \
+        http://pypi.camptocamp.net/distribute-0.6.22_fix-issue-227/distribute_setup.py
+
 Create your own buildout file by:
 * Copy-paste `buildout.cfg`
 * Rename the new file `buildout_<user>.cfg`
