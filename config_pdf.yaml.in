@@ -2,10 +2,11 @@ wmts_openlayers:
   mapproxyurl: ['http://tile1-sitn.ne.ch/mapproxy/wmts', 'http://tile2-sitn.ne.ch/mapproxy/wmts', 'http://tile3-sitn.ne.ch/mapproxy/wmts', 'http://tile4-sitn.ne.ch/mapproxy/wmts', 'http://tile5-sitn.ne.ch/mapproxy/wmts']
 
 app_config:  
- # lang: ${vars:default_language}
- # defaultfontfamily: Arial
+  # lang: ${vars:default_language}
+  # defaultfontfamily: Arial
   # topics provided by the confederation
   ch_topics: ['103','108','119']
+  emptytopics: ['88','96','97','104']
   # wms and feature service name of the layers used by the confederation
   ch_legend_layers:
     '103': ch.bazl.projektierungszonen-flughafenanlagen.oereb
@@ -38,17 +39,17 @@ app_config:
  
 # Parameters for the PDF extract layout - only modify if you know what you do (may affect the layout)!! 
 pdf_config:
-  # default language of the pdf extract
+  # zdefault language of the pdf extract
   defaultlanguage: ${vars:default_language}
   pdfformat: A4
   pdforientation: portrait
-# left margin
+  # left margin
   leftmargin: 25
-# right margin
+  # right margin
   rightmargin: 25
-# top margin for text
+  # top margin for text
   topmargin: 55
- # margin from header for the map placement
+  # margin from header for the map placement
   headermargin: 50
   footermargin: 20
   fontfamily: Arial
@@ -73,5 +74,11 @@ pdf_config:
   # path to the logo of the confederation
   CHlogopath: ecussons/Logo_Schweiz_Eidgen.png
   # path to the logo of the canton
-  cantonlogopath: ecussons/06ne_ch_RVB.jpg
+  cantonlogo:
+    path: ecussons/06ne_ch_RVB.jpg
+    width: 43.4
+    height: 13.8
+  placeholder: Placeholder.jpg
+  pdfbasename: _ExtraitCRDPPF
+  siteplanbasename: _siteplan
   
