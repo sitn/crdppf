@@ -25,8 +25,8 @@ def read_tile_date(request):
         for layer, date in tile_date_file:
             tile_date[layer] = date
         return tile_date
-        #return tile_date['plan_cadastral'], tile_date['plan_ville']
-    return 'c2c', 'c2c'
+    else:
+        return 'c2c', 'c2c'
 
 def main(global_config, **settings):
     """ This function returns a Pyramid WSGI application.
