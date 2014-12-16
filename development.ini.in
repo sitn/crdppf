@@ -27,6 +27,7 @@ ch_wms = ${vars:ch_wms}
 default_language = ${vars:default_language}
 fulltextsearch_url = ${vars:fulltextsearch_url}
 mapproxyurl = ${vars:mapproxyurl}
+tilesImageFormat = ${vars:tilesImageFormat}
 mapMatrixSet = ${vars:mapMatrixSet}
 mapExtent = ${vars:mapExtent}
 mapMaxExtent = ${vars:mapMaxExtent}
