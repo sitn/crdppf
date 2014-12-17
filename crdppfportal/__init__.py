@@ -24,7 +24,7 @@ def read_tile_date(request):
         tile_dates = yaml.load(file(tile_date_file))
         for layer, date in tile_date_file:
             tile_date[layer] = date
-        return [tile_date*]
+        return tile_date
     else:
         return 'c2c', 'c2c'
 
@@ -37,14 +37,14 @@ def main(global_config, **settings):
     # Get tht Python stuff inside the crdppf_core folder (it's the crdppf folder which contains __init__.py)
     # this includes all routes and views needed by the crdppf application
     config.include('crdppf')
+    
+    config.scan()
 
     # Load the parameters regarding the tiles creation date needed for the url
-    if request.registry.settings['tile_date_file']:
-        set_request_property(read_tile_date, name='tile_date', reify=True)
-    else:
-        pass
-
-    config.scan()
+    #if request.registry.settings['tile_date_file']:
+    config.set_request_property(read_tile_date, name='tile_date', reify=True)
+    #else:
+    #    pass
 
     return config.make_wsgi_app()
 
