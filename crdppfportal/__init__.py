@@ -11,23 +11,6 @@ import papyrus
 import os
 import yaml
 
-
-def read_tile_date(request):
-    """
-    Read the tile date from tile date file. Return "c2c", "c2c"
-    if there's no tile date file. "c2c" corresponds to a static
-    tile set that is always exists on the server.
-    """
-
-    tile_date_file = request.registry.settings['tile_date_file']
-    if os.path.exists(tile_date_file):
-        tile_dates = yaml.load(file(tile_date_file))
-        for layer, date in tile_date_file:
-            tile_date[layer] = date
-        return tile_date
-    else:
-        return 'c2c', 'c2c'
-
 def main(global_config, **settings):
     """ This function returns a Pyramid WSGI application.
     """
@@ -39,12 +22,6 @@ def main(global_config, **settings):
     config.include('crdppf')
     
     config.scan()
-
-    # Load the parameters regarding the tiles creation date needed for the url
-    #if request.registry.settings['tile_date_file']:
-    config.set_request_property(read_tile_date, name='tile_date', reify=True)
-    #else:
-    #    pass
 
     return config.make_wsgi_app()
 
