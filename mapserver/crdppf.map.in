@@ -1003,7 +1003,11 @@ LAYER
   CONNECTIONTYPE POSTGIS
   CONNECTION "user=${vars:dbuser} password=${vars:dbpassword} dbname=${vars:db} host=${vars:dbhost} port=${vars:dbport}"
   PROCESSING "CLOSE_CONNECTION=DEFER"
-  DATA "geom from crdppf.r118_bazl_belastete_standorte_zivilflugplaetze using unique idobj using srid=21781"
+  DATA "geom from (
+    select *
+    from crdppf.r118_bazl_belastete_standorte_zivilflugplaetze 
+    WHERE  st_geometrytype(geom) like 'ST_Point'  
+    ) as foo using unique idobj using srid=21781"
   TYPE POINT
   TEMPLATE "ttt"
   OPACITY 60
