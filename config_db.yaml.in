@@ -36,5 +36,10 @@ db_config:
       att_local_name: nomloc
 
   restrictions:
-      forestlimits
-      forestdistances
+      airport_security_zones
+      airport_project_zones
+      airport_polluted_sites
+      transportation_polluted_sites
+      road_noise
+      forest_limits
+      forest_distances
