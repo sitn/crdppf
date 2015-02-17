@@ -41,7 +41,7 @@ app_config:
  
 # Parameters for the PDF extract layout - only modify if you know what you do (may affect the layout)!! 
 pdf_config:
-  # zdefault language of the pdf extract
+  # default language of the pdf extract
   defaultlanguage: ${vars:default_language}
   pdfformat: A4
   pdforientation: portrait
@@ -83,4 +83,3 @@ pdf_config:
   placeholder: Placeholder.jpg
   pdfbasename: _ExtraitCRDPPF
   siteplanbasename: _siteplan
-
