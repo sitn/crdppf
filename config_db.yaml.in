@@ -21,7 +21,7 @@ db_config:
       att_federal_number: nufeco
     # table containing the properties
     property:
-      tablename: immeubles_canton_mp
+      tablename: immeubles_canton
       schema: public
       att_id: noobj
       att_id_property: idemai
