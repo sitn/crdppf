@@ -2574,7 +2574,7 @@ LAYER
     CONNECTIONTYPE POSTGIS
     CONNECTION "user=${vars:dbuser} password=${vars:dbpassword} dbname=${vars:db} host=${vars:dbhost} port=${vars:dbport}"
     PROCESSING "CLOSE_CONNECTION=DEFER"
-    DATA "geom from mensuration.v_immeubles_txt using unique oid using srid=21781"
+    DATA "geom from mensuration.v_immeubles_txt using unique idobj using srid=21781"
     STATUS ON
     LABELITEM "numero"
     MAXSCALEDENOM 6000

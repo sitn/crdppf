@@ -30,8 +30,8 @@ db_config:
       att_property_source: source
     #optional:
     local_names:
-      tablename: nom_local_lieu_dit
-      schema: public
+      tablename: mo25_noms_locaux
+      schema: mensuration
       att_id: idcnlo
       att_local_name: nomloc
 
