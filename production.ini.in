@@ -23,6 +23,7 @@ crdppf_wms = ${vars:crdppf_wms}
 ch_wms = ${vars:ch_wms}
 chfs_baseurl = ${vars:chfs_baseurl}
 default_language = ${vars:default_language}
+disclaimer = ${vars:disclaimer}
 fulltextsearch_url = ${vars:fulltextsearch_url}
 mapproxyurl = ${vars:mapproxyurl}
 defaultTiles = ${vars:defaultTiles}

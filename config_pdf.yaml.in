@@ -83,3 +83,4 @@ pdf_config:
   placeholder: Placeholder.jpg
   pdfbasename: _ExtraitCRDPPF
   siteplanbasename: _siteplan
+  optionaltopics: false
