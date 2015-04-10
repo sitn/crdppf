@@ -12,6 +12,7 @@ arial                           fonts/arial.ttf
 ariali                          fonts/ariali.ttf
 arialbi                         fonts/arialbi.ttf
 arialbd                         fonts/arialbd.ttf
+arial-bold                         fonts/arialbd.ttf
 arialn                          fonts/arialn.ttf
 arialni                         fonts/arialni.ttf
 arialnb                         fonts/arialnb.ttf
