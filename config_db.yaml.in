@@ -29,15 +29,19 @@ db_config:
       att_property_type: typimm
       att_property_source: source
     #optional:
-    local_names:
-      tablename: mo25_noms_locaux
-      schema: mensuration
-      att_id: idcnlo
-      att_local_name: nomloc
+    #~ local_names:
+      #~ tablename: mo25_noms_locaux
+      #~ schema: mensuration
+      #~ att_id: idcnlo
+      #~ att_local_name: nomloc
 
   restrictions:
+      railways_project_zones
+      railways_construction_limits
+      highways_project_zones
       airport_security_zones
       airport_project_zones
+      airport_construction_limits
       airport_polluted_sites
       transportation_polluted_sites
       road_noise
