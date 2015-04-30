@@ -83,4 +83,11 @@ pdf_config:
   pdfbasename: _ExtraitCRDPPF
   siteplanbasename: _siteplan
 
+# URL to localhost Tomcat server webapp
 print_url: http://localhost:8080/print-${vars:instanceid}/print/crdppf
+
+# URL to internal instance
+localhost_url: http://localhost/${vars:instanceid}
+
+# URL to internal MapServer instance
+mapserver_url: http://localhost/${vars:instanceid}/wmscrdppf
