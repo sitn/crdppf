@@ -22,6 +22,8 @@ buildout/parts/
 crdppfportal/static/public/temp_files/*.png
 crdppfportal/static/public/temp_files/*.xml
 crdppfportal/static/public/pdf/*.pdf
+crdppfportal/static/public/reglements/
+crdppfportal/documents_legaux/*.*
 deploy/deploy.cfg
 deploy/hooks/post-restore-database
 mapserver/*.map
