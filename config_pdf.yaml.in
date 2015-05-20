@@ -93,3 +93,6 @@ localhost_url: http://localhost/${vars:instanceid}
 
 # URL to internal MapServer instance
 mapserver_url: http://localhost/${vars:instanceid}/wmscrdppf
+
+# URL to WMTS getCapabilities
+wmts_getcapabilities_url: http://sitn.ne.ch/mapproxy/service/?SERVICE=WMTS&REQUEST=GetCapabilities&VERSION=1.0.0
