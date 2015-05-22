@@ -86,7 +86,7 @@ pdf_config:
   optionaltopics: false
 
 # URL to localhost Tomcat server webapp
-print_url: http://localhost:8080/print-${vars:instanceid}/print/crdppf
+print_url: http://localhost:8080/print-${vars:instanceid}/print
 
 # URL to internal instance
 localhost_url: http://localhost/${vars:instanceid}
