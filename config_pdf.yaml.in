@@ -1,3 +1,4 @@
+# WMTS server urls
 wmts_openlayers:
   mapproxyurl: ['http://tile1-sitn.ne.ch/mapproxy/wmts', 'http://tile2-sitn.ne.ch/mapproxy/wmts', 'http://tile3-sitn.ne.ch/mapproxy/wmts', 'http://tile4-sitn.ne.ch/mapproxy/wmts', 'http://tile5-sitn.ne.ch/mapproxy/wmts']
 
@@ -5,15 +6,16 @@ app_config:
   # lang: ${vars:default_language}
   # defaultfontfamily: Arial
   # topics provided by the confederation
-  ch_topics: ['103','108','118','119']
-  emptytopics: ['87','96','97','104']
+  ch_topics: ['R103','R108','R118','R119']
+  # federal topics with certificate but empty no content/layers
+  emptytopics: ['R087','R096','R097','R104']
 
   # wms and feature service name of the layers used by the confederation
   ch_legend_layers:
-    '103': ch.bazl.projektierungszonen-flughafenanlagen.oereb
-    '108': ch.bazl.sicherheitszonenplan.oereb
-    '118': ch.bazl.kataster-belasteter-standorte-zivilflugplaetze.oereb
-    '119': ch.bav.kataster-belasteter-standorte-oev.oereb
+    'R103': ch.bazl.projektierungszonen-flughafenanlagen.oereb
+    'R108': ch.bazl.sicherheitszonenplan.oereb
+    'R118': ch.bazl.kataster-belasteter-standorte-zivilflugplaetze.oereb
+    'R119': ch.bav.kataster-belasteter-standorte-oev.oereb
 
   #  configuration and list of the wms layers used for the background image in the pdf
   crdppf_wms_layers:
@@ -34,16 +36,22 @@ app_config:
     - mo4_pfp_3
     - mo4_pfp_1_2
     - la3_limites_communales
+  # coordinate system to be used by the wms
   wms_srs: EPSG:21781
+  # version of the wms
   wms_version: 1.1.1
+  # default transparency setting of the wms
   wms_transparency: 'TRUE'
+  # default image format of the wms
   wms_imageformat: image/png
  
 # Parameters for the PDF extract layout - only modify if you know what you do (may affect the layout)!! 
 pdf_config:
   # default language of the pdf extract
   defaultlanguage: ${vars:default_language}
+  # Page format of the PDF extract
   pdfformat: A4
+  # Page orientation of the PDF extract
   pdforientation: portrait
   # left margin
   leftmargin: 25
@@ -54,6 +62,7 @@ pdf_config:
   # margin from header for the map placement
   headermargin: 50
   footermargin: 20
+  # Default text font
   fontfamily: Arial
   # text formats : b = bold, n= normal, i=italic ; size in pt
   textstyles:
@@ -75,15 +84,26 @@ pdf_config:
   fitratio: 0.9
   # path to the logo of the confederation
   CHlogopath: ecussons/Logo_Schweiz_Eidgen.png
-  # path and dimensions of cantonal logo
+  # path and dimensions in mm of cantonal logo
   cantonlogo:
     path: ecussons/06ne_ch_RVB.jpg
     width: 43.4
     height: 13.8
+  # Default image file for missing armories picture of a municipality
   placeholder: Placeholder.jpg
+  # Default base name for the PDF extract
   pdfbasename: _ExtraitCRDPPF
+  # Default prefix/suffix for all the basemap files to ditinguish them from topic files
   siteplanbasename: _siteplan
+  # Activates (true) or not cantonal and other optional topics (to be specified in crdppfportal/models.py)
   optionaltopics: false
+  # Activates the signature block on the title pageof the PDF 
+  # - IF and ONLY IF the report type is set to certified/reducedcertified
+  signature: false
+  # Allows to activate (true) or deactivate pilote phase text
+  pilotphase: true
+  # Activates (true) or not the disclaimer text on the title page of the PDF
+  disclaimer: true
 
 # URL to localhost Tomcat server webapp
 print_url: http://localhost:8080/print-${vars:instanceid}/print
