@@ -2661,7 +2661,7 @@ END
 LAYER
     NAME "v_immeubles_txt"
     GROUP "mo9_text_group"
-    TYPE ANNOTATION
+    TYPE POINT
     METADATA
         "ows_title" "v_immeubles_txt"
         "wms_srs" "epsg:21781"
