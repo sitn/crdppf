@@ -104,3 +104,15 @@ pdf_config:
   pilotphase: true
   # Activates (true) or not the disclaimer text on the title page of the PDF
   disclaimer: true
+
+# URL to localhost Tomcat server webapp
+print_url: http://localhost:8080/print-${vars:instanceid}/print
+
+# URL to internal instance
+localhost_url: http://localhost/${vars:instanceid}
+
+# URL to internal MapServer instance
+mapserver_url: http://localhost/${vars:instanceid}/wmscrdppf
+
+# URL to WMTS getCapabilities
+wmts_getcapabilities_url: http://sitn.ne.ch/mapproxy/service/?SERVICE=WMTS&REQUEST=GetCapabilities&VERSION=1.0.0
