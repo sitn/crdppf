@@ -29,9 +29,7 @@ does also the trick
 
 Bootstrap and buildout
 
-    $ python bootstrap.py --version 1.5.2 --distribute --download-base \
-        http://pypi.camptocamp.net/distribute-0.6.22_fix-issue-227/ --setup-source \
-        http://pypi.camptocamp.net/distribute-0.6.22_fix-issue-227/distribute_setup.py
+    $ python bootstrap-buildout.py --allow-site-packages
 
 Create your own buildout file by:
 * Copy-paste `buildout.cfg`
