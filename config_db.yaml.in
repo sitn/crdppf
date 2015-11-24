@@ -29,18 +29,11 @@ db_config:
       att_property_type: typimm
       att_property_source: source
     #optional:
-    # dev instance
     local_names:
-      tablename: nom_local_lieu_dit
-      schema: public
+      tablename: mo25_noms_locaux
+      schema: mensuration
       att_id: idcnlo
       att_local_name: nomloc
-    # prod instance
-    #~ local_names:
-      #~ tablename: mo25_noms_locaux
-      #~ schema: mensuration
-      #~ att_id: idcnlo
-      #~ att_local_name: nomloc
 
   restrictions:
       railways_project_zones
