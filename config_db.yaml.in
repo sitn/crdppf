@@ -32,7 +32,7 @@ db_config:
     local_names:
       tablename: mo25_noms_locaux
       schema: mensuration
-      att_id: noclass
+      att_id: idcnlo
       att_local_name: nomloc
 
   restrictions:
