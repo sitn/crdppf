@@ -4,7 +4,6 @@ from pyramid.config import Configurator
 from sqlalchemy import engine_from_config
 import sqlahelper
 from pyramid.session import UnencryptedCookieSessionFactoryConfig
-from pyramid.mako_templating import renderer_factory as mako_renderer_factory
 from papyrus.renderers import GeoJSON
 import papyrus
 
