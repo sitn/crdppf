@@ -682,9 +682,11 @@ LAYER
   CLASS
     NAME "Plan spécial a"
     EXPRESSION /1107/
-    COLOR 255 0 0
-    SYMBOL 8
-    SIZE 3
+    STYLE
+      SYMBOL 'circle'
+      COLOR 255 0 0
+      SIZE 3
+    END
   END
   CLASS
     NAME "Zone spéciale a"
@@ -719,9 +721,11 @@ LAYER
   CLASS
     NAME "Mixte"
     EXPRESSION /1301/
-    COLOR 255 0 255
-    SYMBOL 8
-    SIZE 3
+    STYLE
+      COLOR 255 0 255
+      SYMBOL 'circle'
+      SIZE 3
+    END
   END
   CLASS
     NAME "Ancienne localité"
@@ -786,7 +790,7 @@ LAYER
     NAME "Zones viticoles"
     EXPRESSION /2301/
     STYLE
-        COLOR 135 0 135
+      COLOR 135 0 135
       OUTLINECOLOR 128 0 128
       SYMBOL 9
       SIZE 3
@@ -854,9 +858,11 @@ LAYER
   CLASS
     NAME "Utilisation différée"
     EXPRESSION /4301/
-    COLOR 0 0 0
-    SYMBOL 8
-    SIZE 3
+    STYLE
+      SYMBOL 'circle'
+      COLOR 0 0 0
+      SIZE 3
+    END
   END
   CLASS
     NAME "Sports,détente et loisir"
@@ -886,9 +892,11 @@ LAYER
   CLASS
     NAME "Plan spécial b"
     EXPRESSION /4906/
-    COLOR 255 0 0
-    SYMBOL 8
-    SIZE 3
+    STYLE
+      SYMBOL 'circle'
+      COLOR 255 0 0
+      SIZE 3
+    END
   END
   CLASS
     NAME "Zone spéciale b"
