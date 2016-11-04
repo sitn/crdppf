@@ -27,9 +27,13 @@ maybe a
 
 does also the trick
 
-Bootstrap and buildout
+## Bootstrap and buildout
 
-    $ python bootstrap-buildout.py --allow-site-packages
+Not that you have to fix the setuptool and zc.buildout versions regarding what
+is written in the version file
+https://github.com/sitn/crdppf_core/blob/master/versions.cfg:
+
+    $ python bootstrap-buildout.py -v 2.5.0 --allow-site-packages --setuptools-version 16.0
 
 Create your own buildout file by:
 * Copy-paste `buildout.cfg`
