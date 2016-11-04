@@ -84,24 +84,33 @@ pdf_config:
   fitratio: 0.9
   # path to the logo of the confederation
   CHlogopath: ecussons/Logo_Schweiz_Eidgen.png
+  # path to the logo of the confederation
+  crdppflogopath: ecussons/cadastrerdppfargb.png
   # path and dimensions in mm of cantonal logo
   cantonlogo:
     path: ecussons/06ne_ch_RVB.jpg
     width: 43.4
     height: 13.8
+  
   # Default image file for missing armories picture of a municipality
   placeholder: Placeholder.jpg
+  
   # Default base name for the PDF extract
   pdfbasename: _ExtraitCRDPPF
+  
   # Default prefix/suffix for all the basemap files to ditinguish them from topic files
   siteplanbasename: _siteplan
+  
   # Activates (true) or not cantonal and other optional topics (to be specified in crdppfportal/models.py)
   optionaltopics: false
+  
   # Activates the signature block on the title pageof the PDF 
   # - IF and ONLY IF the report type is set to certified/reducedcertified
   signature: false
+  
   # Allows to activate (true) or deactivate pilote phase text
   pilotphase: true
+  
   # Activates (true) or not the disclaimer text on the title page of the PDF
   disclaimer: true
 
