@@ -90,7 +90,7 @@ LAYER
   CONNECTIONTYPE POSTGIS
   CONNECTION "user=${vars:dbuser} password=${vars:dbpassword} dbname=${vars:db} host=${vars:dbhost} port=${vars:dbport}"
   PROCESSING "CLOSE_CONNECTION=DEFER"
-  DATA "geom from immeubles_canton using unique noobj using srid=2056"
+  DATA "geom from mensuration.mo9_immeubles using unique idobj using srid=2056"
   STATUS ON
   TEMPLATE "foo"
   CLASS
@@ -104,7 +104,7 @@ LAYER
     "wms_srs" "epsg:2056"
     "wfs_enable_request" "*"
     "gml_types" "auto"
-    "gml_include_items" "idemai,cadastre,nummai,typimm,srfmai,source,nufeco,valide"
+    "gml_include_items" "idemai,cadastre,nummai,typimm,srfmai,nufeco,valide"
   END
   PROJECTION
     "init=epsg:2056"   ##required
@@ -2897,41 +2897,6 @@ LAYER
       OUTLINECOLOR 0 0 0
       WIDTH 1
     END
-  END
-  MINSCALEDENOM 50
-  MAXSCALEDENOM 15000
-END
-
-LAYER
-  NAME "ag1_parcellaire_provisoire"
-  TYPE POLYGON
-  METADATA
-       "ows_title" "ag1_parcellaire_provisoire"
-       " wms_srs" "epsg:2056"
-  END
-  CONNECTIONTYPE POSTGIS
-  CONNECTION "user=${vars:dbuser} password=${vars:dbpassword} dbname=${vars:db} host=${vars:dbhost} port=${vars:dbport}"
-  PROCESSING "CLOSE_CONNECTION=DEFER"
-  DATA "geom from mensuration.ag1_parcellaire_provisoire using unique idobj using srid=2056"
-  STATUS ON
-  LABELMAXSCALE 2500
-  TEMPLATE "ttt"
-  CLASS
-    NAME "Parcel. provisoire"
-    STYLE
-      OUTLINECOLOR 49 48 198
-      WIDTH 1
-    END
-#    TEXT ([nummai])
-#    LABEL
-#      TYPE TRUETYPE
-#      FONT arialn
-#      SIZE 9
-#      ANTIALIAS TRUE
-#      COLOR 49 48 198
-#      OUTLINECOLOR 255 255 255
-#      MINFEATURESIZE 50
-#    END
   END
   MINSCALEDENOM 50
   MAXSCALEDENOM 15000

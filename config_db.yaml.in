@@ -23,7 +23,7 @@ db_config:
     property:
       tablename: mo9_immeubles
       schema: mensuration
-      att_id: noobj
+      att_id: idobj
       att_id_property: idemai
       att_property_number: nummai
       att_property_type: typimm

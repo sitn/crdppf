@@ -21,16 +21,13 @@ app_config:
   crdppf_wms_layers:
     - mo6_couverture_sol_nb
     - mo22_batiments
-    - mo21_batiments_provisoires
     - mo23_batiments_projetes
     - parcelles
-    - ag1_parcellaire_provisoire
     - mo9_immeubles
     # not working on dev - mo9_text_group
-    - mo7_obj_divers_lineaire
-    - mo7_obj_divers_couvert
-    - mo7_obj_divers_piscine
-    - mo7_obj_divers_cordbois
+    #- mo7_obj_divers_lineaire_n
+    #- mo7_obj_divers_surface
+    #- mo7_obj_divers_surface_lig
     - mo5_point_de_detail
     - mo4_pfa_1
     - mo4_pfp_3
