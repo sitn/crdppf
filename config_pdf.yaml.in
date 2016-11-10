@@ -31,10 +31,6 @@ app_config:
     - parcelles
     - mo9_immeubles
     # not working on dev - mo9_text_group
-    - mo7_obj_divers_lineaire
-    - mo7_obj_divers_couvert
-    - mo7_obj_divers_piscine
-    - mo7_obj_divers_cordbois
     #- mo7_obj_divers_lineaire_n
     #- mo7_obj_divers_surface
     #- mo7_obj_divers_surface_lig
