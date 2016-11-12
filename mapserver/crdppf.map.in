@@ -2268,7 +2268,7 @@ LAYER
 END
 
 LAYER
-    NAME "obj_divers_surface_lig"
+    NAME "mo7_obj_divers_surface_lig"
     METADATA
         "wms_title" "Objets divers surfaciques (lignes)"
         "wms_srs" "EPSG:2056"
