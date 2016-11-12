@@ -2134,18 +2134,21 @@ LAYER
   CONNECTIONTYPE POSTGIS
   CONNECTION "user=${vars:dbuser} password=${vars:dbpassword} dbname=${vars:db} host=${vars:dbhost} port=${vars:dbport}"
   PROCESSING "CLOSE_CONNECTION=DEFER"
-  DATA "geom from mensuration.mo7_obj_divers_cordbois using unique idobj using srid=2056"
-  STATUS ON
-  MINSCALEDENOM 0
-  MAXSCALEDENOM 3001
-  CLASS
-    NAME "Cordons boises"
-    STYLE
-        PATTERN 7 7 END
-        OUTLINECOLOR 130 130 130
-        WIDTH 1
-    END  
-  END
+  DATA "geom from (SELECT
+        *
+        FROM mensuration.mo7_obj_divers_surface
+        WHERE genre = 27
+        ) as foo using unique idobj using srid=2056"
+    STATUS ON
+    MINSCALEDENOM 0
+    MAXSCALEDENOM 2499
+    CLASS
+        STYLE
+            OUTLINECOLOR 0 0 0
+            SYMBOL "bois"
+            SIZE 0.5
+        END
+    END
 END
 
 LAYER
@@ -2158,18 +2161,21 @@ LAYER
   CONNECTIONTYPE POSTGIS
   CONNECTION "user=${vars:dbuser} password=${vars:dbpassword} dbname=${vars:db} host=${vars:dbhost} port=${vars:dbport}"
   PROCESSING "CLOSE_CONNECTION=DEFER"
-  DATA "geom from mensuration.mo7_obj_divers_piscine using unique idobj using srid=2056"
-  STATUS ON
-  MINSCALEDENOM 0
-  MAXSCALEDENOM 3001
-  CLASS
-    NAME "Piscines"
-    STYLE
-        OUTLINECOLOR 130 130 130
-        PATTERN 5 5 END
-        WIDTH 1
+  DATA "geom from (SELECT
+        *
+        FROM mensuration.mo7_obj_divers_surface
+        WHERE genre = 44
+        ) as foo using unique idobj using srid=2056"
+    STATUS ON
+    MINSCALEDENOM 0
+    MAXSCALEDENOM 2499
+    CLASS
+        STYLE
+            COLOR 0 0 0
+            PATTERN 5 5 END
+            WIDTH 0.5
+        END
     END
-  END
 END
 
 LAYER
@@ -2206,41 +2212,124 @@ LAYER
   CONNECTIONTYPE POSTGIS
   CONNECTION "user=${vars:dbuser} password=${vars:dbpassword} dbname=${vars:db} host=${vars:dbhost} port=${vars:dbport}"
   PROCESSING "CLOSE_CONNECTION=DEFER"
-  DATA "geom from mensuration.mo7_obj_divers_lineaire using unique idobj using srid=2056"
-  STATUS ON
-  MINSCALEDENOM 0
-  MAXSCALEDENOM 3001
-  CLASSITEM "penpatter"
-  CLASS
-    NAME "Non visible"
-    EXPRESSION /5|9|15/
-    STYLE
-        PATTERN 7 7 END
-        OUTLINECOLOR 130 130 130
-        WIDTH 1
-    END  
-  END
-  CLASS
-    NAME "Linéaires"
-    EXPRESSION /20/
-    STYLE
-        COLOR 255 255 255
-        WIDTH 2
+    DATA "geom from (SELECT
+        *
+        FROM mensuration.mo7_obj_divers_lineaire_n
+        WHERE genre not in (1, 14, 27, 44)
+        ) as foo using unique idobj using srid=2056"
+    STATUS ON
+    MINSCALEDENOM 0
+    MAXSCALEDENOM 2499
+    CLASSITEM "typline"
+    CLASS
+        # DISCONTINU2
+        EXPRESSION "3"
+        STYLE
+            COLOR 80 80 80
+            PATTERN 7 7 END
+            WIDTH 0.5
+        END
     END
-    STYLE
-        COLOR 0 0 0
-        PATTERN 7 7 END
-        WIDTH 0.75
+    CLASS
+        # CONTINU
+        EXPRESSION "0"
+        STYLE
+          WIDTH 0.5
+          COLOR 100 100 100
+        END
     END
-  END
-  CLASS
-    NAME "visible"
-    EXPRESSION /./
-    STYLE
-      WIDTH 1
-      COLOR 130 130 130
+    CLASS
+        # POINTILLE
+        EXPRESSION "5"
+        STYLE
+            COLOR 80 80 80
+            PATTERN 2 2 END
+            WIDTH 0.5
+        END
     END
-  END
+    CLASS
+        # MIXTE 1
+        EXPRESSION "6"
+        STYLE
+            COLOR 80 80 80
+            PATTERN 28 4 4 4 END
+            WIDTH 0.5
+        END
+    END
+    CLASS
+        # MIXTE 2
+        EXPRESSION "7"
+        STYLE
+            COLOR 80 80 80
+            PATTERN 28 4 4 4 4 4 END
+            WIDTH 0.5
+        END
+    END
+END
+
+LAYER
+    NAME "obj_divers_surface_lig"
+    METADATA
+        "wms_title" "Objets divers surfaciques (lignes)"
+        "wms_srs" "EPSG:2056"
+    END
+    TYPE LINE
+    CONNECTIONTYPE POSTGIS
+    CONNECTION "user=${vars:dbuser} password=${vars:dbpassword} dbname=${vars:db} host=${vars:dbhost} port=${vars:dbport}"
+    PROCESSING "CLOSE_CONNECTION=DEFER"
+    DATA "geom from (SELECT
+        *
+        FROM mensuration.mo7_obj_divers_surface_lig
+        WHERE genre not in (1, 14, 27, 44)
+        ) as foo using unique idobj using srid=2056"
+    STATUS ON
+    MINSCALEDENOM 0
+    MAXSCALEDENOM 25001
+    CLASSITEM "typline"
+CLASS
+        # DISCONTINU2
+        EXPRESSION "3"
+        STYLE
+            COLOR 80 80 80
+            PATTERN 7 7 END
+            WIDTH 0.5
+        END
+    END
+    CLASS
+        # CONTINU
+        EXPRESSION "0"
+        STYLE
+          WIDTH 0.5
+          COLOR 100 100 100
+        END
+    END
+    CLASS
+        # POINTILLE
+        EXPRESSION "5"
+        STYLE
+            COLOR 80 80 80
+            PATTERN 2 2 END
+            WIDTH 0.5
+        END
+    END
+    CLASS
+        # MIXTE 1
+        EXPRESSION "6"
+        STYLE
+            COLOR 80 80 80
+            PATTERN 28 4 4 4 END
+            WIDTH 0.5
+        END
+    END
+    CLASS
+        # MIXTE 2
+        EXPRESSION "7"
+        STYLE
+            COLOR 80 80 80
+            PATTERN 28 4 4 4 4 4 END
+            WIDTH 0.5
+        END
+    END
 END
 
 #######################################################################
@@ -2677,7 +2766,7 @@ LAYER
     CONNECTIONTYPE POSTGIS
     CONNECTION "user=${vars:dbuser} password=${vars:dbpassword} dbname=${vars:db} host=${vars:dbhost} port=${vars:dbport}"
     PROCESSING "CLOSE_CONNECTION=DEFER"
-    DATA "geom from mensuration.v_immeubles_txt using unique idobj using srid=2056"
+    DATA "geom from mensuration.mo9_immeubles_txt using unique idobj using srid=2056"
     STATUS ON
     LABELITEM "numero"
     MAXSCALEDENOM 6000
