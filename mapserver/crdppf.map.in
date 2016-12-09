@@ -81,7 +81,7 @@ END
     UNITS METERS
     INTERVALS 5
     TRANSPARENT FALSE
-    STATUS EMBED
+    STATUS OFF
   END # Scalebar object ends
 
 LAYER
