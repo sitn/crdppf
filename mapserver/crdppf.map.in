@@ -189,13 +189,6 @@ LAYER
     COLOR 180 0 0
     OUTLINECOLOR 132 0 0
   END
-  CLASS
-    NAME "Autre"
-    EXPRESSION /8901/
-    SYMBOL "circle"
-    COLOR 155 0 0
-    SIZE 5
-  END
   TOLERANCE 8
   TOLERANCEUNITS pixels
 END
@@ -293,14 +286,6 @@ LAYER
     STYLE
       OUTLINECOLOR 140 80 80
       WIDTH 2
-    END
-  END
-  CLASS
-    NAME "Autre"  
-    EXPRESSION /./
-    STYLE
-      OUTLINECOLOR 0 0 0
-      WIDTH 3
     END
   END
 END
@@ -496,15 +481,6 @@ LAYER
     EXPRESSION ([codegenre] = 6915 AND '[teneur]' eq 'Inondation')
     OUTLINECOLOR 189 190 255
   END
-  CLASS
-    NAME "Autre"
-    EXPRESSION /./
-    STYLE
-      OUTLINECOLOR 240 240 0
-      COLOR 0 0 0
-      WIDTH 4
-    END
-  END
 END
 
 LAYER
@@ -621,12 +597,6 @@ LAYER
       COLOR 0 0 0
       SIZE 5
     END
-  END
-  CLASS
-    NAME "Autre"
-    EXPRESSION /./
-    COLOR 0 0 0
-    OUTLINECOLOR 0 0 0
   END
 END
 
@@ -902,13 +872,6 @@ LAYER
     NAME "Zone spéciale b"
     EXPRESSION /4907/
     COLOR 128 128 128
-  END
-  CLASS
-    NAME "autre"
-    EXPRESSION /./
-    COLOR 0 0 0
-    OUTLINECOLOR 255 0 255
-    SIZE 5
   END
 END
 
@@ -1252,7 +1215,7 @@ LAYER
   END
   CLASS
     NAME "secteur Ao et Au"
-    EXPRESSION /./
+    EXPRESSION /secteur Ao et Au/
     COLOR 0 0 255
     OUTLINECOLOR 0 0 0
   END
@@ -1321,7 +1284,7 @@ LAYER
   CLASSITEM "teneur"
   CLASS
     NAME "Limite légale de forêt"
-    EXPRESSION /./
+    EXPRESSION /1/
     STYLE
         PATTERN 4 4 END
         WIDTH 2
