@@ -53,7 +53,7 @@ END
 
 LEGEND
  STATUS ON        # Draw legend in the map
- KEYSIZE 20 15      # Define the size of the legend icon.
+ KEYSIZE 17 10      # Define the size of the legend icon.
  LABEL            # Used only for embedded legend (in the map)
    TYPE TRUETYPE
    FONT "verdana"
