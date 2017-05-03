@@ -2134,7 +2134,7 @@ LAYER
     MAXSCALEDENOM 2499
     CLASS
         STYLE
-            COLOR 0 0 0
+            OUTLINECOLOR 0 0 0
             PATTERN 5 5 END
             WIDTH 0.5
         END
@@ -2970,7 +2970,7 @@ LAYER
   TEMPLATE "ttt"
   CLASS
     NAME "Bâtiments projetés"
-    EXPRESSION ([curr_fao]>=0)
+    EXPRESSION ([affichage]>=0)
     STYLE
       COLOR 0 0 255
       SYMBOL "hachure2"
