@@ -1,6 +1,12 @@
 # WMTS server urls
 wmts_openlayers:
-  mapproxyurl: ['http://tile1-sitn.ne.ch/mapproxy95/wmts', 'http://tile2-sitn.ne.ch/mapproxy95/wmts', 'http://tile3-sitn.ne.ch/mapproxy95/wmts', 'http://tile4-sitn.ne.ch/mapproxy95/wmts', 'http://tile5-sitn.ne.ch/mapproxy95/wmts']
+  mapproxyurl: [
+        'http://tile1-sitn.ne.ch/mapproxy95/wmts',
+        'http://tile2-sitn.ne.ch/mapproxy95/wmts',
+        'http://tile3-sitn.ne.ch/mapproxy95/wmts',
+        'http://tile4-sitn.ne.ch/mapproxy95/wmts',
+        'http://tile5-sitn.ne.ch/mapproxy95/wmts'
+    ]
 
 app_config:  
   # lang: ${vars:default_language}
@@ -21,14 +27,12 @@ app_config:
   crdppf_wms_layers:
     - mo6_couverture_sol_nb
     - mo22_batiments
-    - mo21_batiments_provisoires
     - mo23_batiments_projetes
     - parcelles
-    - ag1_parcellaire_provisoire
     - mo9_immeubles
-    # not working on dev - mo9_text_group
+    - mo9_text_group
     - mo7_obj_divers_lineaire
-    - mo7_obj_divers_couvert
+    - mo7_obj_divers_surface_lig
     - mo7_obj_divers_piscine
     - mo7_obj_divers_cordbois
     - mo5_point_de_detail

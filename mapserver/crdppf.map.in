@@ -90,7 +90,7 @@ LAYER
   CONNECTIONTYPE POSTGIS
   CONNECTION "user=${vars:dbuser} password=${vars:dbpassword} dbname=${vars:db} host=${vars:dbhost} port=${vars:dbport}"
   PROCESSING "CLOSE_CONNECTION=DEFER"
-  DATA "geom from immeubles_canton using unique noobj using srid=2056"
+  DATA "geom from mensuration.mo9_immeubles using unique idobj using srid=2056"
   STATUS ON
   TEMPLATE "foo"
   CLASS
@@ -101,10 +101,10 @@ LAYER
   END
   METADATA
     "ows_title" "parcelles"
-    "wms_srs" "epsg:2056"
+    "wms_srs" "EPSG:2056"
     "wfs_enable_request" "*"
     "gml_types" "auto"
-    "gml_include_items" "idemai,cadastre,nummai,typimm,srfmai,source,nufeco,valide"
+    "gml_include_items" "idemai,cadastre,nummai,typimm,srfmai,nufeco,valide"
   END
   PROJECTION
     "init=epsg:2056"   ##required
@@ -122,10 +122,10 @@ LAYER
   TYPE POINT
    METADATA
        "ows_title"                    "r73_contenus_ponctuels"
-       "wms_srs"                     "epsg:2056"
+       "wms_srs"                     "EPSG:2056"
        "wms_title"                   "${vars:instanceid} WMS Server"
        "wms_onlineresource"     "http://${vars:host}/${vars:instanceid}/wmscrdppf"
-       "wms_srs"                    "epsg:2056" 
+       "wms_srs"                    "EPSG:2056" 
   END
   CONNECTIONTYPE POSTGIS
   CONNECTION "user=${vars:dbuser} password=${vars:dbpassword} dbname=${vars:db} host=${vars:dbhost} port=${vars:dbport}"
@@ -189,13 +189,6 @@ LAYER
     COLOR 180 0 0
     OUTLINECOLOR 132 0 0
   END
-  CLASS
-    NAME "Autre"
-    EXPRESSION /8901/
-    SYMBOL "circle"
-    COLOR 155 0 0
-    SIZE 5
-  END
   TOLERANCE 8
   TOLERANCEUNITS pixels
 END
@@ -205,10 +198,10 @@ LAYER
   TYPE LINE
    METADATA
        "ows_title"                   "r73_contenus_lineaires"
-       "wms_srs"                    "epsg:2056"
+       "wms_srs"                    "EPSG:2056"
        "wms_title"                  "${vars:instanceid} WMS Server"
        "wms_onlineresource"    "http://${vars:host}/${vars:instanceid}/wmscrdppf"
-       "wms_srs"                   "epsg:2056" 
+       "wms_srs"                   "EPSG:2056" 
   END
   CONNECTIONTYPE POSTGIS
   CONNECTION "user=${vars:dbuser} password=${vars:dbpassword} dbname=${vars:db} host=${vars:dbhost} port=${vars:dbport}"
@@ -295,14 +288,6 @@ LAYER
       WIDTH 2
     END
   END
-  CLASS
-    NAME "Autre"  
-    EXPRESSION /./
-    STYLE
-      OUTLINECOLOR 0 0 0
-      WIDTH 3
-    END
-  END
 END
 
 LAYER
@@ -310,10 +295,10 @@ LAYER
   TYPE LINE
    METADATA
        "ows_title"                  "r73_perimetres_superposes"
-       "wms_srs"                   "epsg:2056"
+       "wms_srs"                   "EPSG:2056"
        "wms_title"                  "${vars:instanceid} WMS Server"
        "wms_onlineresource"    "http://${vars:host}/${vars:instanceid}/wmscrdppf"
-       "wms_srs"                   "epsg:2056" 
+       "wms_srs"                   "EPSG:2056" 
   END
   CONNECTIONTYPE POSTGIS
   CONNECTION "user=${vars:dbuser} password=${vars:dbpassword} dbname=${vars:db} host=${vars:dbhost} port=${vars:dbport}"
@@ -496,15 +481,6 @@ LAYER
     EXPRESSION ([codegenre] = 6915 AND '[teneur]' eq 'Inondation')
     OUTLINECOLOR 189 190 255
   END
-  CLASS
-    NAME "Autre"
-    EXPRESSION /./
-    STYLE
-      OUTLINECOLOR 240 240 0
-      COLOR 0 0 0
-      WIDTH 4
-    END
-  END
 END
 
 LAYER
@@ -512,10 +488,10 @@ LAYER
   TYPE POLYGON
    METADATA
        "ows_title" "r73_zones_superposees"
-       "wms_srs" "epsg:2056"
+       "wms_srs" "EPSG:2056"
        "wms_title"           "${vars:instanceid} WMS Server"
        "wms_onlineresource" "http://${vars:host}/${vars:instanceid}/wmscrdppf"
-       "wms_srs"            "epsg:2056" 
+       "wms_srs"            "EPSG:2056" 
   END
   CONNECTIONTYPE POSTGIS
   CONNECTION "user=${vars:dbuser} password=${vars:dbpassword} dbname=${vars:db} host=${vars:dbhost} port=${vars:dbport}"
@@ -622,12 +598,6 @@ LAYER
       SIZE 5
     END
   END
-  CLASS
-    NAME "Autre"
-    EXPRESSION /./
-    COLOR 0 0 0
-    OUTLINECOLOR 0 0 0
-  END
 END
 
 LAYER
@@ -635,10 +605,10 @@ LAYER
   TYPE POLYGON
    METADATA
        "ows_title" "r73_affectations_primaires"
-       "wms_srs" "epsg:2056"
+       "wms_srs" "EPSG:2056"
        "wms_title"           "${vars:instanceid} WMS Server"
        "wms_onlineresource" "http://${vars:host}/${vars:instanceid}/wmscrdppf"
-       "wms_srs"            "epsg:2056" 
+       "wms_srs"            "EPSG:2056" 
   END
   CONNECTIONTYPE POSTGIS
   CONNECTION "user=${vars:dbuser} password=${vars:dbpassword} dbname=${vars:db} host=${vars:dbhost} port=${vars:dbport}"
@@ -903,13 +873,6 @@ LAYER
     EXPRESSION /4907/
     COLOR 128 128 128
   END
-  CLASS
-    NAME "autre"
-    EXPRESSION /./
-    COLOR 0 0 0
-    OUTLINECOLOR 255 0 255
-    SIZE 5
-  END
 END
 
 LAYER
@@ -917,10 +880,10 @@ LAYER
   STATUS ON
   METADATA
        "ows_title"                      "r87_astra_projektierungszonen_nationalstrassen"
-       "wms_srs"                    "epsg:2056"
+       "wms_srs"                    "EPSG:2056"
        "wms_title"                      "${vars:instanceid} WMS Server"
        "wms_onlineresource"     "http://${vars:host}/${vars:instanceid}/wmscrdppf"
-       "wms_srs"                    "epsg:2056" 
+       "wms_srs"                    "EPSG:2056" 
   END
   CONNECTIONTYPE POSTGIS
   CONNECTION "user=${vars:dbuser} password=${vars:dbpassword} dbname=${vars:db} host=${vars:dbhost} port=${vars:dbport}"
@@ -941,10 +904,10 @@ LAYER
   STATUS ON
   METADATA
        "ows_title"                      "r96_bav_projektierungszonen_eisenbahnanlagen"
-       "wms_srs"                    "epsg:2056"
+       "wms_srs"                    "EPSG:2056"
        "wms_title"                      "${vars:instanceid} WMS Server"
        "wms_onlineresource"     "http://${vars:host}/${vars:instanceid}/wmscrdppf"
-       "wms_srs"                    "epsg:2056" 
+       "wms_srs"                    "EPSG:2056" 
   END
   CONNECTIONTYPE POSTGIS
   CONNECTION "user=${vars:dbuser} password=${vars:dbpassword} dbname=${vars:db} host=${vars:dbhost} port=${vars:dbport}"
@@ -965,10 +928,10 @@ LAYER
   STATUS ON
   METADATA
        "ows_title"                      "r97_bav_baulinien_eisenbahnanlagen"
-       "wms_srs"                    "epsg:2056"
+       "wms_srs"                    "EPSG:2056"
        "wms_title"                      "${vars:instanceid} WMS Server"
        "wms_onlineresource"     "http://${vars:host}/${vars:instanceid}/wmscrdppf"
-       "wms_srs"                    "epsg:2056" 
+       "wms_srs"                    "EPSG:2056" 
   END
   CONNECTIONTYPE POSTGIS
   CONNECTION "user=${vars:dbuser} password=${vars:dbpassword} dbname=${vars:db} host=${vars:dbhost} port=${vars:dbport}"
@@ -988,10 +951,10 @@ LAYER
   STATUS ON
   METADATA
        "ows_title"                      "r103_bazl_projektierungszonen_flughafenanlagen"
-       "wms_srs"                    "epsg:2056"
+       "wms_srs"                    "EPSG:2056"
        "wms_title"                      "${vars:instanceid} WMS Server"
        "wms_onlineresource"     "http://${vars:host}/${vars:instanceid}/wmscrdppf"
-       "wms_srs"                    "epsg:2056" 
+       "wms_srs"                    "EPSG:2056" 
   END
   CONNECTIONTYPE POSTGIS
   CONNECTION "user=${vars:dbuser} password=${vars:dbpassword} dbname=${vars:db} host=${vars:dbhost} port=${vars:dbport}"
@@ -1012,10 +975,10 @@ LAYER
   STATUS ON
   METADATA
        "ows_title"                      "r104_bazl_baulinien_flughafenanlagen"
-       "wms_srs"                    "epsg:2056"
+       "wms_srs"                    "EPSG:2056"
        "wms_title"                      "${vars:instanceid} WMS Server"
        "wms_onlineresource"     "http://${vars:host}/${vars:instanceid}/wmscrdppf"
-       "wms_srs"                    "epsg:2056" 
+       "wms_srs"                    "EPSG:2056" 
   END
   CONNECTIONTYPE POSTGIS
   CONNECTION "user=${vars:dbuser} password=${vars:dbpassword} dbname=${vars:db} host=${vars:dbhost} port=${vars:dbport}"
@@ -1035,10 +998,10 @@ LAYER
   STATUS ON
   METADATA
        "ows_title"                      "r108_bazl_sicherheitszonenplan"
-       "wms_srs"                    "epsg:2056"
+       "wms_srs"                    "EPSG:2056"
        "wms_title"                      "${vars:instanceid} WMS Server"
        "wms_onlineresource"     "http://${vars:host}/${vars:instanceid}/wmscrdppf"
-       "wms_srs"                    "epsg:2056" 
+       "wms_srs"                    "EPSG:2056" 
   END
   CONNECTIONTYPE POSTGIS
   CONNECTION "user=${vars:dbuser} password=${vars:dbpassword} dbname=${vars:db} host=${vars:dbhost} port=${vars:dbport}"
@@ -1059,10 +1022,10 @@ LAYER
   NAME "r116_sites_pollues"
   METADATA
        "ows_title"                      "r116_sites_pollues"
-       "wms_srs"                    "epsg:2056"
+       "wms_srs"                    "EPSG:2056"
        "wms_title"                      "${vars:instanceid} WMS Server"
        "wms_onlineresource"     "http://${vars:host}/${vars:instanceid}/wmscrdppf"
-       "wms_srs"                    "epsg:2056" 
+       "wms_srs"                    "EPSG:2056" 
   END
   CONNECTIONTYPE POSTGIS
   CONNECTION "user=${vars:dbuser} password=${vars:dbpassword} dbname=${vars:db} host=${vars:dbhost} port=${vars:dbport}"
@@ -1098,10 +1061,10 @@ LAYER
   GROUP "r118_bazl_belastete_standorte_zivilflugplaetze"
   METADATA
        "ows_title"                   "r118_bazl_belastete_standorte_zivilflugplaetze_pts"
-       "wms_srs"                    "epsg:2056"
+       "wms_srs"                    "EPSG:2056"
        "wms_title"                  "${vars:instanceid} WMS Server"
        "wms_onlineresource"    "http://${vars:host}/${vars:instanceid}/wmscrdppf"
-       "wms_srs"                   "epsg:2056" 
+       "wms_srs"                   "EPSG:2056" 
   END
   CONNECTIONTYPE POSTGIS
   CONNECTION "user=${vars:dbuser} password=${vars:dbpassword} dbname=${vars:db} host=${vars:dbhost} port=${vars:dbport}"
@@ -1130,10 +1093,10 @@ LAYER
   GROUP "r118_bazl_belastete_standorte_zivilflugplaetze"
   METADATA
        "ows_title"                   "r118_bazl_belastete_standorte_zivilflugplaetze_poly"
-       "wms_srs"                    "epsg:2056"
+       "wms_srs"                    "EPSG:2056"
        "wms_title"                  "${vars:instanceid} WMS Server"
        "wms_onlineresource"    "http://${vars:host}/${vars:instanceid}/wmscrdppf"
-       "wms_srs"                   "epsg:2056" 
+       "wms_srs"                   "EPSG:2056" 
   END
   CONNECTIONTYPE POSTGIS
   CONNECTION "user=${vars:dbuser} password=${vars:dbpassword} dbname=${vars:db} host=${vars:dbhost} port=${vars:dbport}"
@@ -1155,10 +1118,10 @@ LAYER
   NAME "r119_bav_belastete_standorte_oev"
   METADATA
        "ows_title"                   "r119_bav_belastete_standorte_oev"
-       "wms_srs"                    "epsg:2056"
+       "wms_srs"                    "EPSG:2056"
        "wms_title"                  "${vars:instanceid} WMS Server"
        "wms_onlineresource"    "http://${vars:host}/${vars:instanceid}/wmscrdppf"
-       "wms_srs"                   "epsg:2056" 
+       "wms_srs"                   "EPSG:2056" 
   END
   CONNECTIONTYPE POSTGIS
   CONNECTION "user=${vars:dbuser} password=${vars:dbpassword} dbname=${vars:db} host=${vars:dbhost} port=${vars:dbport}"
@@ -1179,10 +1142,10 @@ LAYER
   STATUS ON
   METADATA
        "ows_title"                   "r131_zone_prot_eau"
-       "wms_srs"                    "epsg:2056"
+       "wms_srs"                    "EPSG:2056"
        "wms_title"                  "${vars:instanceid} WMS Server"
        "wms_onlineresource"    "http://${vars:host}/${vars:instanceid}/wmscrdppf"
-       "wms_srs"                   "epsg:2056" 
+       "wms_srs"                   "EPSG:2056" 
   END
   CONNECTIONTYPE POSTGIS
   CONNECTION "user=${vars:dbuser} password=${vars:dbpassword} dbname=${vars:db} host=${vars:dbhost} port=${vars:dbport}"
@@ -1229,10 +1192,10 @@ LAYER
   STATUS ON
   METADATA
        "ows_title"                   "r132_perimetre_prot_eau"
-       "wms_srs"                    "epsg:2056"
+       "wms_srs"                    "EPSG:2056"
        "wms_title"                  "${vars:instanceid} WMS Server"
        "wms_onlineresource"    "http://${vars:host}/${vars:instanceid}/wmscrdppf"
-       "wms_srs"                   "epsg:2056" 
+       "wms_srs"                   "EPSG:2056" 
   END
   CONNECTIONTYPE POSTGIS
   CONNECTION "user=${vars:dbuser} password=${vars:dbpassword} dbname=${vars:db} host=${vars:dbhost} port=${vars:dbport}"
@@ -1252,7 +1215,7 @@ LAYER
   END
   CLASS
     NAME "secteur Ao et Au"
-    EXPRESSION /./
+    EXPRESSION /secteur Ao et Au/
     COLOR 0 0 255
     OUTLINECOLOR 0 0 0
   END
@@ -1263,10 +1226,10 @@ LAYER
   TYPE POLYGON
    METADATA
        "ows_title" "r145_sens_bruit"
-       "wms_srs" "epsg:2056"
+       "wms_srs" "EPSG:2056"
        "wms_title"           "${vars:instanceid} WMS Server"
        "wms_onlineresource" "http://${vars:host}/${vars:instanceid}/wmscrdppf"
-       "wms_srs"            "epsg:2056"
+       "wms_srs"            "EPSG:2056"
   END
   CONNECTIONTYPE POSTGIS
   CONNECTION "user=${vars:dbuser} password=${vars:dbpassword} dbname=${vars:db} host=${vars:dbhost} port=${vars:dbport}"
@@ -1307,10 +1270,10 @@ LAYER
   TYPE LINE
   METADATA
        "ows_title" "r157_lim_foret"
-       "wms_srs"                    "epsg:2056"
+       "wms_srs"                    "EPSG:2056"
        "wms_title"                      "${vars:instanceid} WMS Server"
        "wms_onlineresource"     "http://${vars:host}/${vars:instanceid}/wmscrdppf"
-       "wms_srs"                    "epsg:2056" 
+       "wms_srs"                    "EPSG:2056" 
   END
   CONNECTIONTYPE POSTGIS
   CONNECTION "user=${vars:dbuser} password=${vars:dbpassword} dbname=${vars:db} host=${vars:dbhost} port=${vars:dbport}"
@@ -1321,7 +1284,7 @@ LAYER
   CLASSITEM "teneur"
   CLASS
     NAME "Limite légale de forêt"
-    EXPRESSION /./
+    EXPRESSION /1/
     STYLE
         PATTERN 4 4 END
         WIDTH 2
@@ -1337,10 +1300,10 @@ LAYER
   TYPE LINE
   METADATA
        "ows_title" "r159_dist_foret"
-       "wms_srs"                    "epsg:2056"
+       "wms_srs"                    "EPSG:2056"
        "wms_title"                      "${vars:instanceid} WMS Server"
        "wms_onlineresource"     "http://${vars:host}/${vars:instanceid}/wmscrdppf"
-       "wms_srs"                    "epsg:2056" 
+       "wms_srs"                    "EPSG:2056" 
   END
   CONNECTIONTYPE POSTGIS
   CONNECTION "user=${vars:dbuser} password=${vars:dbpassword} dbname=${vars:db} host=${vars:dbhost} port=${vars:dbport}"
@@ -1387,7 +1350,7 @@ LAYER
   END
   METADATA
     "ows_title" "la3_limites_communales"
-    "wms_srs" "epsg:2056"
+    "wms_srs" "EPSG:2056"
   END
   PROJECTION
     "init=epsg:2056"   ##required
@@ -1399,7 +1362,7 @@ LAYER
   TYPE POLYGON
   METADATA
        "ows_title" "at23_perimetres_archeologiques"
-       " wms_srs" "epsg:2056"
+       " wms_srs" "EPSG:2056"
   END
   CONNECTIONTYPE POSTGIS
   CONNECTION "user=${vars:dbuser} password=${vars:dbpassword} dbname=${vars:db} host=${vars:dbhost} port=${vars:dbport}"
@@ -1421,7 +1384,7 @@ LAYER
   TYPE POLYGON
   METADATA
        "ows_title" "at24_perimetres_tir"
-       " wms_srs" "epsg:2056"
+       " wms_srs" "EPSG:2056"
   END
   CONNECTIONTYPE POSTGIS
   CONNECTION "user=${vars:dbuser} password=${vars:dbpassword} dbname=${vars:db} host=${vars:dbhost} port=${vars:dbport}"
@@ -1444,7 +1407,7 @@ LAYER
   TYPE POLYGON
   METADATA
        "ows_title" "clo_couloirs"
-       " wms_srs" "epsg:2056"
+       " wms_srs" "EPSG:2056"
   END
   CONNECTIONTYPE POSTGIS
   CONNECTION "user=${vars:dbuser} password=${vars:dbpassword} dbname=${vars:db} host=${vars:dbhost} port=${vars:dbport}"
@@ -1469,7 +1432,7 @@ LAYER
   TYPE POLYGON
   METADATA
        "ows_title" "clo_cotes_altitude_surfaces"
-       " wms_srs" "epsg:2056"
+       " wms_srs" "EPSG:2056"
   END
   CONNECTIONTYPE POSTGIS
   CONNECTION "user=${vars:dbuser} password=${vars:dbpassword} dbname=${vars:db} host=${vars:dbhost} port=${vars:dbport}"
@@ -1508,7 +1471,7 @@ LAYER
   TYPE LINE
   METADATA
        "ows_title" "ex01_cours_eau"
-       " wms_srs" "epsg:2056"
+       " wms_srs" "EPSG:2056"
   END
   CONNECTIONTYPE POSTGIS
   CONNECTION "user=${vars:dbuser} password=${vars:dbpassword} dbname=${vars:db} host=${vars:dbhost} port=${vars:dbport}"
@@ -1535,7 +1498,7 @@ LAYER
   TYPE POINT
   METADATA
        "ows_title" "batiments_ofs"
-       " wms_srs" "epsg:2056"
+       " wms_srs" "EPSG:2056"
   END
   CONNECTIONTYPE POSTGIS
   CONNECTION "user=${vars:dbuser} password=${vars:dbpassword} dbname=${vars:db} host=${vars:dbhost} port=${vars:dbport}"
@@ -1570,7 +1533,7 @@ LAYER
   TYPE POLYGON
   METADATA
        "ows_title" "mo_distr_plans"
-       " wms_srs" "epsg:2056"
+       " wms_srs" "EPSG:2056"
   END
   CONNECTIONTYPE POSTGIS
   CONNECTION "user=${vars:dbuser} password=${vars:dbpassword} dbname=${vars:db} host=${vars:dbhost} port=${vars:dbport}"
@@ -1609,7 +1572,7 @@ LAYER
   TYPE POLYGON
   METADATA
        "ows_title" "mo25_noms_locaux"
-       " wms_srs" "epsg:2056"
+       " wms_srs" "EPSG:2056"
   END
   CONNECTIONTYPE POSTGIS
   CONNECTION "user=${vars:dbuser} password=${vars:dbpassword} dbname=${vars:db} host=${vars:dbhost} port=${vars:dbport}"
@@ -2009,7 +1972,7 @@ LAYER
   TYPE POINT
   METADATA
        "ows_title" "mo4_pfp_1_2"
-       " wms_srs" "epsg:2056"
+       " wms_srs" "EPSG:2056"
   END
   CONNECTIONTYPE POSTGIS
   CONNECTION "user=${vars:dbuser} password=${vars:dbpassword} dbname=${vars:db} host=${vars:dbhost} port=${vars:dbport}"
@@ -2061,7 +2024,7 @@ LAYER
   TYPE POINT
   METADATA
        "ows_title" "mo4_pfp_3"
-       " wms_srs" "epsg:2056"
+       " wms_srs" "EPSG:2056"
   END
   CONNECTIONTYPE POSTGIS
   CONNECTION "user=${vars:dbuser} password=${vars:dbpassword} dbname=${vars:db} host=${vars:dbhost} port=${vars:dbport}"
@@ -2094,7 +2057,7 @@ LAYER
   TYPE POINT
   METADATA
        "ows_title" "mo4_pfa_1"
-       " wms_srs" "epsg:2056"
+       " wms_srs" "EPSG:2056"
   END
   CONNECTIONTYPE POSTGIS
   CONNECTION "user=${vars:dbuser} password=${vars:dbpassword} dbname=${vars:db} host=${vars:dbhost} port=${vars:dbport}"
@@ -2129,23 +2092,26 @@ LAYER
   TYPE POLYGON
   METADATA
        "ows_title" "mo7_obj_divers_cordbois"
-       " wms_srs" "epsg:2056"
+       " wms_srs" "EPSG:2056"
   END
   CONNECTIONTYPE POSTGIS
   CONNECTION "user=${vars:dbuser} password=${vars:dbpassword} dbname=${vars:db} host=${vars:dbhost} port=${vars:dbport}"
   PROCESSING "CLOSE_CONNECTION=DEFER"
-  DATA "geom from mensuration.mo7_obj_divers_cordbois using unique idobj using srid=2056"
-  STATUS ON
-  MINSCALEDENOM 0
-  MAXSCALEDENOM 3001
-  CLASS
-    NAME "Cordons boises"
-    STYLE
-        PATTERN 7 7 END
-        OUTLINECOLOR 130 130 130
-        WIDTH 1
-    END  
-  END
+  DATA "geom from (SELECT
+        *
+        FROM mensuration.mo7_obj_divers_surface
+        WHERE genre = 27
+        ) as foo using unique idobj using srid=2056"
+    STATUS ON
+    MINSCALEDENOM 0
+    MAXSCALEDENOM 2499
+    CLASS
+        STYLE
+            OUTLINECOLOR 0 0 0
+            SYMBOL "bois"
+            SIZE 0.5
+        END
+    END
 END
 
 LAYER
@@ -2153,23 +2119,26 @@ LAYER
   TYPE POLYGON
   METADATA
        "ows_title" "mo7_obj_divers_piscine"
-       " wms_srs" "epsg:2056"
+       " wms_srs" "EPSG:2056"
   END
   CONNECTIONTYPE POSTGIS
   CONNECTION "user=${vars:dbuser} password=${vars:dbpassword} dbname=${vars:db} host=${vars:dbhost} port=${vars:dbport}"
   PROCESSING "CLOSE_CONNECTION=DEFER"
-  DATA "geom from mensuration.mo7_obj_divers_piscine using unique idobj using srid=2056"
-  STATUS ON
-  MINSCALEDENOM 0
-  MAXSCALEDENOM 3001
-  CLASS
-    NAME "Piscines"
-    STYLE
-        OUTLINECOLOR 130 130 130
-        PATTERN 5 5 END
-        WIDTH 1
+  DATA "geom from (SELECT
+        *
+        FROM mensuration.mo7_obj_divers_surface
+        WHERE genre = 44
+        ) as foo using unique idobj using srid=2056"
+    STATUS ON
+    MINSCALEDENOM 0
+    MAXSCALEDENOM 2499
+    CLASS
+        STYLE
+            OUTLINECOLOR 0 0 0
+            PATTERN 5 5 END
+            WIDTH 0.5
+        END
     END
-  END
 END
 
 LAYER
@@ -2177,7 +2146,7 @@ LAYER
   TYPE POLYGON
   METADATA
        "ows_title" "mo7_obj_divers_couvert"
-       " wms_srs" "epsg:2056"
+       " wms_srs" "EPSG:2056"
   END
   CONNECTIONTYPE POSTGIS
   CONNECTION "user=${vars:dbuser} password=${vars:dbpassword} dbname=${vars:db} host=${vars:dbhost} port=${vars:dbport}"
@@ -2201,46 +2170,129 @@ LAYER
   TYPE LINE
   METADATA
        "ows_title" "mo7_obj_divers_lineaire"
-       " wms_srs" "epsg:2056"
+       " wms_srs" "EPSG:2056"
   END
   CONNECTIONTYPE POSTGIS
   CONNECTION "user=${vars:dbuser} password=${vars:dbpassword} dbname=${vars:db} host=${vars:dbhost} port=${vars:dbport}"
   PROCESSING "CLOSE_CONNECTION=DEFER"
-  DATA "geom from mensuration.mo7_obj_divers_lineaire using unique idobj using srid=2056"
-  STATUS ON
-  MINSCALEDENOM 0
-  MAXSCALEDENOM 3001
-  CLASSITEM "penpatter"
-  CLASS
-    NAME "Non visible"
-    EXPRESSION /5|9|15/
-    STYLE
-        PATTERN 7 7 END
-        OUTLINECOLOR 130 130 130
-        WIDTH 1
-    END  
-  END
-  CLASS
-    NAME "Linéaires"
-    EXPRESSION /20/
-    STYLE
-        COLOR 255 255 255
-        WIDTH 2
+    DATA "geom from (SELECT
+        *
+        FROM mensuration.mo7_obj_divers_lineaire_n
+        WHERE genre not in (1, 14, 27, 44)
+        ) as foo using unique idobj using srid=2056"
+    STATUS ON
+    MINSCALEDENOM 0
+    MAXSCALEDENOM 2499
+    CLASSITEM "typline"
+    CLASS
+        # DISCONTINU2
+        EXPRESSION "3"
+        STYLE
+            COLOR 80 80 80
+            PATTERN 7 7 END
+            WIDTH 0.5
+        END
     END
-    STYLE
-        COLOR 0 0 0
-        PATTERN 7 7 END
-        WIDTH 0.75
+    CLASS
+        # CONTINU
+        EXPRESSION "0"
+        STYLE
+          WIDTH 0.5
+          COLOR 100 100 100
+        END
     END
-  END
-  CLASS
-    NAME "visible"
-    EXPRESSION /./
-    STYLE
-      WIDTH 1
-      COLOR 130 130 130
+    CLASS
+        # POINTILLE
+        EXPRESSION "5"
+        STYLE
+            COLOR 80 80 80
+            PATTERN 2 2 END
+            WIDTH 0.5
+        END
     END
-  END
+    CLASS
+        # MIXTE 1
+        EXPRESSION "6"
+        STYLE
+            COLOR 80 80 80
+            PATTERN 28 4 4 4 END
+            WIDTH 0.5
+        END
+    END
+    CLASS
+        # MIXTE 2
+        EXPRESSION "7"
+        STYLE
+            COLOR 80 80 80
+            PATTERN 28 4 4 4 4 4 END
+            WIDTH 0.5
+        END
+    END
+END
+
+LAYER
+    NAME "mo7_obj_divers_surface_lig"
+    METADATA
+        "wms_title" "Objets divers surfaciques (lignes)"
+        "wms_srs" "EPSG:2056"
+    END
+    TYPE LINE
+    CONNECTIONTYPE POSTGIS
+    CONNECTION "user=${vars:dbuser} password=${vars:dbpassword} dbname=${vars:db} host=${vars:dbhost} port=${vars:dbport}"
+    PROCESSING "CLOSE_CONNECTION=DEFER"
+    DATA "geom from (SELECT
+        *
+        FROM mensuration.mo7_obj_divers_surface_lig
+        WHERE genre not in (1, 14, 27, 44)
+        ) as foo using unique idobj using srid=2056"
+    STATUS ON
+    MINSCALEDENOM 0
+    MAXSCALEDENOM 25001
+    CLASSITEM "typline"
+CLASS
+        # DISCONTINU2
+        EXPRESSION "3"
+        STYLE
+            COLOR 80 80 80
+            PATTERN 7 7 END
+            WIDTH 0.5
+        END
+    END
+    CLASS
+        # CONTINU
+        EXPRESSION "0"
+        STYLE
+          WIDTH 0.5
+          COLOR 100 100 100
+        END
+    END
+    CLASS
+        # POINTILLE
+        EXPRESSION "5"
+        STYLE
+            COLOR 80 80 80
+            PATTERN 2 2 END
+            WIDTH 0.5
+        END
+    END
+    CLASS
+        # MIXTE 1
+        EXPRESSION "6"
+        STYLE
+            COLOR 80 80 80
+            PATTERN 28 4 4 4 END
+            WIDTH 0.5
+        END
+    END
+    CLASS
+        # MIXTE 2
+        EXPRESSION "7"
+        STYLE
+            COLOR 80 80 80
+            PATTERN 28 4 4 4 4 4 END
+            WIDTH 0.5
+        END
+    END
 END
 
 #######################################################################
@@ -2250,7 +2302,7 @@ LAYER
   TYPE LINE
   METADATA
        "ows_title" "mo14_servitudes_c_lig"
-       " wms_srs" "epsg:2056"
+       " wms_srs" "EPSG:2056"
   END
   CONNECTIONTYPE POSTGIS
   CONNECTION "user=${vars:dbuser} password=${vars:dbpassword} dbname=${vars:db} host=${vars:dbhost} port=${vars:dbport}"
@@ -2275,7 +2327,7 @@ LAYER
   TYPE POLYGON
   METADATA
        "ows_title" "mo14_servitudes_c_surf_autre"
-       " wms_srs" "epsg:2056"
+       " wms_srs" "EPSG:2056"
   END
   CONNECTIONTYPE POSTGIS
   CONNECTION "user=${vars:dbuser} password=${vars:dbpassword} dbname=${vars:db} host=${vars:dbhost} port=${vars:dbport}"
@@ -2321,7 +2373,7 @@ LAYER
   TYPE POLYGON
   METADATA
        "ows_title" "mo14_servitudes_c_surf"
-       " wms_srs" "epsg:2056"
+       " wms_srs" "EPSG:2056"
   END
   CONNECTIONTYPE POSTGIS
   CONNECTION "user=${vars:dbuser} password=${vars:dbpassword} dbname=${vars:db} host=${vars:dbhost} port=${vars:dbport}"
@@ -2368,7 +2420,7 @@ LAYER
   TYPE LINE
   METADATA
        "ows_title" "mo14_servitudes_a_lig"
-       " wms_srs" "epsg:2056"
+       " wms_srs" "EPSG:2056"
   END
   CONNECTIONTYPE POSTGIS
   CONNECTION "user=${vars:dbuser} password=${vars:dbpassword} dbname=${vars:db} host=${vars:dbhost} port=${vars:dbport}"
@@ -2409,7 +2461,7 @@ LAYER
   TYPE POLYGON
   METADATA
        "ows_title" "mo14_servitudes_a_surf"
-       " wms_srs" "epsg:2056"
+       " wms_srs" "EPSG:2056"
   END
   CONNECTIONTYPE POSTGIS
   CONNECTION "user=${vars:dbuser} password=${vars:dbpassword} dbname=${vars:db} host=${vars:dbhost} port=${vars:dbport}"
@@ -2460,7 +2512,7 @@ LAYER
   TYPE LINE
   METADATA
        "ows_title" "mo14_servitudes_g_lig"
-       " wms_srs" "epsg:2056"
+       " wms_srs" "EPSG:2056"
   END
   CONNECTIONTYPE POSTGIS
   CONNECTION "user=${vars:dbuser} password=${vars:dbpassword} dbname=${vars:db} host=${vars:dbhost} port=${vars:dbport}"
@@ -2501,7 +2553,7 @@ LAYER
   TYPE POINT
   METADATA
        "ows_title" "mo14_servitudes_g_pts"
-       " wms_srs" "epsg:2056"
+       " wms_srs" "EPSG:2056"
   END
   CONNECTIONTYPE POSTGIS
   CONNECTION "user=${vars:dbuser} password=${vars:dbpassword} dbname=${vars:db} host=${vars:dbhost} port=${vars:dbport}"
@@ -2548,7 +2600,7 @@ LAYER
   TYPE POLYGON
   METADATA
        "ows_title" "mo14_servitudes_g_surf"
-       " wms_srs" "epsg:2056"
+       " wms_srs" "EPSG:2056"
   END
   CONNECTIONTYPE POSTGIS
   CONNECTION "user=${vars:dbuser} password=${vars:dbpassword} dbname=${vars:db} host=${vars:dbhost} port=${vars:dbport}"
@@ -2599,7 +2651,7 @@ NAME "mo5_point_de_detail"
   TYPE POINT
   METADATA
        "ows_title" "mo5_point_de_detail"
-       " wms_srs" "epsg:2056"
+       " wms_srs" "EPSG:2056"
   END
   CONNECTIONTYPE POSTGIS
   CONNECTION "user=${vars:dbuser} password=${vars:dbpassword} dbname=${vars:db} host=${vars:dbhost} port=${vars:dbport}"
@@ -2672,12 +2724,12 @@ LAYER
     TYPE POINT
     METADATA
         "ows_title" "v_immeubles_txt"
-        "wms_srs" "epsg:2056"
+        "wms_srs" "EPSG:2056"
     END
     CONNECTIONTYPE POSTGIS
     CONNECTION "user=${vars:dbuser} password=${vars:dbpassword} dbname=${vars:db} host=${vars:dbhost} port=${vars:dbport}"
     PROCESSING "CLOSE_CONNECTION=DEFER"
-    DATA "geom from mensuration.v_immeubles_txt using unique idobj using srid=2056"
+    DATA "geom from mensuration.mo9_immeubles_txt using unique idobj using srid=2056"
     STATUS ON
     LABELITEM "numero"
     MAXSCALEDENOM 6000
@@ -2744,7 +2796,7 @@ LAYER
     TYPE LINE
     METADATA
         "ows_title" "mo9_immeubles_txt_rappel"
-        "wms_srs" "epsg:2056"
+        "wms_srs" "EPSG:2056"
     END
     CONNECTIONTYPE POSTGIS
     CONNECTION "user=${vars:dbuser} password=${vars:dbpassword} dbname=${vars:db} host=${vars:dbhost} port=${vars:dbport}"
@@ -2765,7 +2817,7 @@ LAYER
     NAME "mo6_couverture_sol_nb_1"
     METADATA
         "wms_title" "Couverture du sol noir-blanc"
-        "wms_srs" "epsg:2056"
+        "wms_srs" "EPSG:2056"
     END
     GROUP "mo6_couverture_sol_nb"
     TYPE POLYGON
@@ -2802,7 +2854,7 @@ LAYER
     NAME "mo6_couverture_sol_nb_2"
     METADATA
         "wms_title" "Couverture du sol noir-blanc 2"
-        "wms_srs" "epsg:2056"
+        "wms_srs" "EPSG:2056"
     END
     GROUP "mo6_couverture_sol_nb"
     TYPE POLYGON
@@ -2837,7 +2889,7 @@ LAYER
   TYPE POLYGON
   METADATA
        "ows_title" "domaine_lac_remblaye"
-       " wms_srs" "epsg:2056"
+       " wms_srs" "EPSG:2056"
   END
   CONNECTIONTYPE POSTGIS
   CONNECTION "user=${vars:dbuser} password=${vars:dbpassword} dbname=${vars:db} host=${vars:dbhost} port=${vars:dbport}"
@@ -2863,7 +2915,7 @@ LAYER
   TYPE POLYGON
   METADATA
        "ows_title" "mo9_immeubles"
-       " wms_srs" "epsg:2056"
+       " wms_srs" "EPSG:2056"
   END
   CONNECTIONTYPE POSTGIS
   CONNECTION "user=${vars:dbuser} password=${vars:dbpassword} dbname=${vars:db} host=${vars:dbhost} port=${vars:dbport}"
@@ -2903,46 +2955,11 @@ LAYER
 END
 
 LAYER
-  NAME "ag1_parcellaire_provisoire"
-  TYPE POLYGON
-  METADATA
-       "ows_title" "ag1_parcellaire_provisoire"
-       " wms_srs" "epsg:2056"
-  END
-  CONNECTIONTYPE POSTGIS
-  CONNECTION "user=${vars:dbuser} password=${vars:dbpassword} dbname=${vars:db} host=${vars:dbhost} port=${vars:dbport}"
-  PROCESSING "CLOSE_CONNECTION=DEFER"
-  DATA "geom from mensuration.ag1_parcellaire_provisoire using unique idobj using srid=2056"
-  STATUS ON
-  LABELMAXSCALE 2500
-  TEMPLATE "ttt"
-  CLASS
-    NAME "Parcel. provisoire"
-    STYLE
-      OUTLINECOLOR 49 48 198
-      WIDTH 1
-    END
-#    TEXT ([nummai])
-#    LABEL
-#      TYPE TRUETYPE
-#      FONT arialn
-#      SIZE 9
-#      ANTIALIAS TRUE
-#      COLOR 49 48 198
-#      OUTLINECOLOR 255 255 255
-#      MINFEATURESIZE 50
-#    END
-  END
-  MINSCALEDENOM 50
-  MAXSCALEDENOM 15000
-END
-
-LAYER
   NAME "mo23_batiments_projetes"
   TYPE POLYGON
   METADATA
        "ows_title" "mo23_batiments_projetes"
-       " wms_srs" "epsg:2056"
+       " wms_srs" "EPSG:2056"
   END
   CONNECTIONTYPE POSTGIS
   CONNECTION "user=${vars:dbuser} password=${vars:dbpassword} dbname=${vars:db} host=${vars:dbhost} port=${vars:dbport}"
@@ -2953,7 +2970,7 @@ LAYER
   TEMPLATE "ttt"
   CLASS
     NAME "Bâtiments projetés"
-    EXPRESSION ([curr_fao]>=0)
+    EXPRESSION ([affichage]>=2)
     STYLE
       COLOR 0 0 255
       SYMBOL "hachure2"
@@ -2974,7 +2991,7 @@ LAYER
   TYPE POLYGON
   METADATA
        "ows_title" "mo22_batiments"
-       " wms_srs" "epsg:2056"
+       " wms_srs" "EPSG:2056"
   END
   CONNECTIONTYPE POSTGIS
   CONNECTION "user=${vars:dbuser} password=${vars:dbpassword} dbname=${vars:db} host=${vars:dbhost} port=${vars:dbport}"
@@ -3015,7 +3032,7 @@ LAYER
   TYPE POLYGON
   METADATA
        "ows_title" "mo21_batiments_provisoires"
-       " wms_srs" "epsg:2056"
+       " wms_srs" "EPSG:2056"
   END
   CONNECTIONTYPE POSTGIS
   CONNECTION "user=${vars:dbuser} password=${vars:dbpassword} dbname=${vars:db} host=${vars:dbhost} port=${vars:dbport}"
