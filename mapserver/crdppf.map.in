@@ -2970,7 +2970,7 @@ LAYER
   TEMPLATE "ttt"
   CLASS
     NAME "Bâtiments projetés"
-    EXPRESSION ([affichage]>=0)
+    EXPRESSION ([affichage]>=2)
     STYLE
       COLOR 0 0 255
       SYMBOL "hachure2"
