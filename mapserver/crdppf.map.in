@@ -20,7 +20,7 @@ WEB
     "wfs_encoding"                   "utf-8"
     "wms_title"                        "${vars:instanceid} WMS Server"
     "wms_onlineresource"          "http://${vars:host}/${vars:instanceid}/wmscrdppf"
-    "wms_srs"                         "EPSG:21781" 
+    "wms_srs"                         "EPSG:2056" 
   END
 END
 
@@ -48,7 +48,7 @@ OUTPUTFORMAT
 END
 
 PROJECTION
-  "init=epsg:21781"   ##required
+  "init=epsg:2056"   ##required
 END
 
 LEGEND
@@ -90,7 +90,7 @@ LAYER
   CONNECTIONTYPE POSTGIS
   CONNECTION "user=${vars:dbuser} password=${vars:dbpassword} dbname=${vars:db} host=${vars:dbhost} port=${vars:dbport}"
   PROCESSING "CLOSE_CONNECTION=DEFER"
-  DATA "geom from immeubles_canton using unique noobj using srid=21781"
+  DATA "geom from mensuration.mo9_immeubles using unique idobj using srid=2056"
   STATUS ON
   TEMPLATE "foo"
   CLASS
@@ -101,13 +101,13 @@ LAYER
   END
   METADATA
     "ows_title" "parcelles"
-    "wms_srs" "epsg:21781"
+    "wms_srs" "EPSG:2056"
     "wfs_enable_request" "*"
     "gml_types" "auto"
-    "gml_include_items" "idemai,cadastre,nummai,typimm,srfmai,source,nufeco,valide"
+    "gml_include_items" "idemai,cadastre,nummai,typimm,srfmai,nufeco,valide"
   END
   PROJECTION
-    "init=epsg:21781"   ##required
+    "init=epsg:2056"   ##required
   END
   MINSCALEDENOM 0
   MAXSCALEDENOM 10001
@@ -122,15 +122,15 @@ LAYER
   TYPE POINT
    METADATA
        "ows_title"                    "r73_contenus_ponctuels"
-       "wms_srs"                     "epsg:21781"
+       "wms_srs"                     "EPSG:2056"
        "wms_title"                   "${vars:instanceid} WMS Server"
        "wms_onlineresource"     "http://${vars:host}/${vars:instanceid}/wmscrdppf"
-       "wms_srs"                    "EPSG:21781" 
+       "wms_srs"                    "EPSG:2056" 
   END
   CONNECTIONTYPE POSTGIS
   CONNECTION "user=${vars:dbuser} password=${vars:dbpassword} dbname=${vars:db} host=${vars:dbhost} port=${vars:dbport}"
   PROCESSING "CLOSE_CONNECTION=DEFER"
-  DATA "geom from crdppf.r73_contenus_ponctuels using unique idobj using srid=21781"
+  DATA "geom from crdppf.r73_contenus_ponctuels using unique idobj using srid=2056"
   STATUS ON
   CLASSITEM "codegenre" 
   OPACITY 60
@@ -198,15 +198,15 @@ LAYER
   TYPE LINE
    METADATA
        "ows_title"                   "r73_contenus_lineaires"
-       "wms_srs"                    "epsg:21781"
+       "wms_srs"                    "EPSG:2056"
        "wms_title"                  "${vars:instanceid} WMS Server"
        "wms_onlineresource"    "http://${vars:host}/${vars:instanceid}/wmscrdppf"
-       "wms_srs"                   "EPSG:21781" 
+       "wms_srs"                   "EPSG:2056" 
   END
   CONNECTIONTYPE POSTGIS
   CONNECTION "user=${vars:dbuser} password=${vars:dbpassword} dbname=${vars:db} host=${vars:dbhost} port=${vars:dbport}"
   PROCESSING "CLOSE_CONNECTION=DEFER"
-  DATA "geom from crdppf.r73_contenus_lineaires using unique idobj using srid=21781"
+  DATA "geom from crdppf.r73_contenus_lineaires using unique idobj using srid=2056"
   STATUS ON
   CLASSITEM "codegenre" 
   OPACITY 60
@@ -295,15 +295,15 @@ LAYER
   TYPE LINE
    METADATA
        "ows_title"                  "r73_perimetres_superposes"
-       "wms_srs"                   "epsg:21781"
+       "wms_srs"                   "EPSG:2056"
        "wms_title"                  "${vars:instanceid} WMS Server"
        "wms_onlineresource"    "http://${vars:host}/${vars:instanceid}/wmscrdppf"
-       "wms_srs"                   "EPSG:21781" 
+       "wms_srs"                   "EPSG:2056" 
   END
   CONNECTIONTYPE POSTGIS
   CONNECTION "user=${vars:dbuser} password=${vars:dbpassword} dbname=${vars:db} host=${vars:dbhost} port=${vars:dbport}"
   PROCESSING "CLOSE_CONNECTION=DEFER"
-  DATA "geom from crdppf.r73_perimetres_superposes using unique idobj using srid=21781"
+  DATA "geom from crdppf.r73_perimetres_superposes using unique idobj using srid=2056"
   STATUS ON
   CLASSITEM "codegenre" 
   OPACITY 90
@@ -488,15 +488,15 @@ LAYER
   TYPE POLYGON
    METADATA
        "ows_title" "r73_zones_superposees"
-       "wms_srs" "epsg:21781"
+       "wms_srs" "EPSG:2056"
        "wms_title"           "${vars:instanceid} WMS Server"
        "wms_onlineresource" "http://${vars:host}/${vars:instanceid}/wmscrdppf"
-       "wms_srs"            "EPSG:21781" 
+       "wms_srs"            "EPSG:2056" 
   END
   CONNECTIONTYPE POSTGIS
   CONNECTION "user=${vars:dbuser} password=${vars:dbpassword} dbname=${vars:db} host=${vars:dbhost} port=${vars:dbport}"
   PROCESSING "CLOSE_CONNECTION=DEFER"
-  DATA "geom from crdppf.r73_zones_superposees using unique idobj using srid=21781"
+  DATA "geom from crdppf.r73_zones_superposees using unique idobj using srid=2056"
   STATUS ON
   CLASSITEM "codegenre" 
   OPACITY 90
@@ -605,15 +605,15 @@ LAYER
   TYPE POLYGON
    METADATA
        "ows_title" "r73_affectations_primaires"
-       "wms_srs" "epsg:21781"
+       "wms_srs" "EPSG:2056"
        "wms_title"           "${vars:instanceid} WMS Server"
        "wms_onlineresource" "http://${vars:host}/${vars:instanceid}/wmscrdppf"
-       "wms_srs"            "EPSG:21781" 
+       "wms_srs"            "EPSG:2056" 
   END
   CONNECTIONTYPE POSTGIS
   CONNECTION "user=${vars:dbuser} password=${vars:dbpassword} dbname=${vars:db} host=${vars:dbhost} port=${vars:dbport}"
   PROCESSING "CLOSE_CONNECTION=DEFER"
-  DATA "geom from crdppf.r73_affectations_primaires using unique idobj using srid=21781"
+  DATA "geom from crdppf.r73_affectations_primaires using unique idobj using srid=2056"
   STATUS ON
   CLASSITEM "codegenre" 
   OPACITY 50
@@ -880,15 +880,15 @@ LAYER
   STATUS ON
   METADATA
        "ows_title"                      "r87_astra_projektierungszonen_nationalstrassen"
-       "wms_srs"                    "epsg:21781"
+       "wms_srs"                    "EPSG:2056"
        "wms_title"                      "${vars:instanceid} WMS Server"
        "wms_onlineresource"     "http://${vars:host}/${vars:instanceid}/wmscrdppf"
-       "wms_srs"                    "EPSG:21781" 
+       "wms_srs"                    "EPSG:2056" 
   END
   CONNECTIONTYPE POSTGIS
   CONNECTION "user=${vars:dbuser} password=${vars:dbpassword} dbname=${vars:db} host=${vars:dbhost} port=${vars:dbport}"
   PROCESSING "CLOSE_CONNECTION=DEFER"
-  DATA "geom from crdppf.r87_astra_projektierungszonen_nationalstrassen using unique idobj using srid=21781"
+  DATA "geom from crdppf.r87_astra_projektierungszonen_nationalstrassen using unique idobj using srid=2056"
   TYPE POLYGON
   TEMPLATE "ttt"
   OPACITY 60
@@ -904,15 +904,15 @@ LAYER
   STATUS ON
   METADATA
        "ows_title"                      "r96_bav_projektierungszonen_eisenbahnanlagen"
-       "wms_srs"                    "epsg:21781"
+       "wms_srs"                    "EPSG:2056"
        "wms_title"                      "${vars:instanceid} WMS Server"
        "wms_onlineresource"     "http://${vars:host}/${vars:instanceid}/wmscrdppf"
-       "wms_srs"                    "EPSG:21781" 
+       "wms_srs"                    "EPSG:2056" 
   END
   CONNECTIONTYPE POSTGIS
   CONNECTION "user=${vars:dbuser} password=${vars:dbpassword} dbname=${vars:db} host=${vars:dbhost} port=${vars:dbport}"
   PROCESSING "CLOSE_CONNECTION=DEFER"
-  DATA "geom from crdppf.r96_bav_projektierungszonen_eisenbahnanlagen using unique idobj using srid=21781"
+  DATA "geom from crdppf.r96_bav_projektierungszonen_eisenbahnanlagen using unique idobj using srid=2056"
   TYPE POLYGON
   TEMPLATE "ttt"
   OPACITY 60
@@ -928,15 +928,15 @@ LAYER
   STATUS ON
   METADATA
        "ows_title"                      "r97_bav_baulinien_eisenbahnanlagen"
-       "wms_srs"                    "epsg:21781"
+       "wms_srs"                    "EPSG:2056"
        "wms_title"                      "${vars:instanceid} WMS Server"
        "wms_onlineresource"     "http://${vars:host}/${vars:instanceid}/wmscrdppf"
-       "wms_srs"                    "EPSG:21781" 
+       "wms_srs"                    "EPSG:2056" 
   END
   CONNECTIONTYPE POSTGIS
   CONNECTION "user=${vars:dbuser} password=${vars:dbpassword} dbname=${vars:db} host=${vars:dbhost} port=${vars:dbport}"
   PROCESSING "CLOSE_CONNECTION=DEFER"
-  DATA "geom from crdppf.r97_bav_baulinien_eisenbahnanlagen using unique idobj using srid=21781"
+  DATA "geom from crdppf.r97_bav_baulinien_eisenbahnanlagen using unique idobj using srid=2056"
   TYPE LINE
   TEMPLATE "ttt"
   OPACITY 60
@@ -951,15 +951,15 @@ LAYER
   STATUS ON
   METADATA
        "ows_title"                      "r103_bazl_projektierungszonen_flughafenanlagen"
-       "wms_srs"                    "epsg:21781"
+       "wms_srs"                    "EPSG:2056"
        "wms_title"                      "${vars:instanceid} WMS Server"
        "wms_onlineresource"     "http://${vars:host}/${vars:instanceid}/wmscrdppf"
-       "wms_srs"                    "EPSG:21781" 
+       "wms_srs"                    "EPSG:2056" 
   END
   CONNECTIONTYPE POSTGIS
   CONNECTION "user=${vars:dbuser} password=${vars:dbpassword} dbname=${vars:db} host=${vars:dbhost} port=${vars:dbport}"
   PROCESSING "CLOSE_CONNECTION=DEFER"
-  DATA "geom from crdppf.r103_bazl_projektierungszonen_flughafenanlagen using unique idobj using srid=21781"
+  DATA "geom from crdppf.r103_bazl_projektierungszonen_flughafenanlagen using unique idobj using srid=2056"
   TYPE POLYGON
   TEMPLATE "ttt"
   OPACITY 60
@@ -975,15 +975,15 @@ LAYER
   STATUS ON
   METADATA
        "ows_title"                      "r104_bazl_baulinien_flughafenanlagen"
-       "wms_srs"                    "epsg:21781"
+       "wms_srs"                    "EPSG:2056"
        "wms_title"                      "${vars:instanceid} WMS Server"
        "wms_onlineresource"     "http://${vars:host}/${vars:instanceid}/wmscrdppf"
-       "wms_srs"                    "EPSG:21781" 
+       "wms_srs"                    "EPSG:2056" 
   END
   CONNECTIONTYPE POSTGIS
   CONNECTION "user=${vars:dbuser} password=${vars:dbpassword} dbname=${vars:db} host=${vars:dbhost} port=${vars:dbport}"
   PROCESSING "CLOSE_CONNECTION=DEFER"
-  DATA "geom from crdppf.r104_bazl_baulinien_flughafenanlagen using unique idobj using srid=21781"
+  DATA "geom from crdppf.r104_bazl_baulinien_flughafenanlagen using unique idobj using srid=2056"
   TYPE LINE
   TEMPLATE "ttt"
   OPACITY 60
@@ -998,15 +998,15 @@ LAYER
   STATUS ON
   METADATA
        "ows_title"                      "r108_bazl_sicherheitszonenplan"
-       "wms_srs"                    "epsg:21781"
+       "wms_srs"                    "EPSG:2056"
        "wms_title"                      "${vars:instanceid} WMS Server"
        "wms_onlineresource"     "http://${vars:host}/${vars:instanceid}/wmscrdppf"
-       "wms_srs"                    "EPSG:21781" 
+       "wms_srs"                    "EPSG:2056" 
   END
   CONNECTIONTYPE POSTGIS
   CONNECTION "user=${vars:dbuser} password=${vars:dbpassword} dbname=${vars:db} host=${vars:dbhost} port=${vars:dbport}"
   PROCESSING "CLOSE_CONNECTION=DEFER"
-  DATA "geom from crdppf.r108_bazl_sicherheitszonenplan using unique idobj using srid=21781"
+  DATA "geom from crdppf.r108_bazl_sicherheitszonenplan using unique idobj using srid=2056"
   TYPE POLYGON
   TEMPLATE "ttt"
   OPACITY 60
@@ -1022,15 +1022,15 @@ LAYER
   NAME "r116_sites_pollues"
   METADATA
        "ows_title"                      "r116_sites_pollues"
-       "wms_srs"                    "epsg:21781"
+       "wms_srs"                    "EPSG:2056"
        "wms_title"                      "${vars:instanceid} WMS Server"
        "wms_onlineresource"     "http://${vars:host}/${vars:instanceid}/wmscrdppf"
-       "wms_srs"                    "EPSG:21781" 
+       "wms_srs"                    "EPSG:2056" 
   END
   CONNECTIONTYPE POSTGIS
   CONNECTION "user=${vars:dbuser} password=${vars:dbpassword} dbname=${vars:db} host=${vars:dbhost} port=${vars:dbport}"
   PROCESSING "CLOSE_CONNECTION=DEFER"
-  DATA "geom from crdppf.r116_sites_pollues using unique idobj using srid=21781"
+  DATA "geom from crdppf.r116_sites_pollues using unique idobj using srid=2056"
   TYPE POLYGON
   CLASSITEM "codegenre"
   TEMPLATE "ttt"
@@ -1061,10 +1061,10 @@ LAYER
   GROUP "r118_bazl_belastete_standorte_zivilflugplaetze"
   METADATA
        "ows_title"                   "r118_bazl_belastete_standorte_zivilflugplaetze_pts"
-       "wms_srs"                    "epsg:21781"
+       "wms_srs"                    "EPSG:2056"
        "wms_title"                  "${vars:instanceid} WMS Server"
        "wms_onlineresource"    "http://${vars:host}/${vars:instanceid}/wmscrdppf"
-       "wms_srs"                   "EPSG:21781" 
+       "wms_srs"                   "EPSG:2056" 
   END
   CONNECTIONTYPE POSTGIS
   CONNECTION "user=${vars:dbuser} password=${vars:dbpassword} dbname=${vars:db} host=${vars:dbhost} port=${vars:dbport}"
@@ -1073,7 +1073,7 @@ LAYER
     select *
     from crdppf.r118_bazl_belastete_standorte_zivilflugplaetze 
     WHERE  st_geometrytype(geom) like 'ST_Point'  
-    ) as foo using unique idobj using srid=21781"
+    ) as foo using unique idobj using srid=2056"
   TYPE POINT
   TEMPLATE "ttt"
   OPACITY 60
@@ -1093,15 +1093,15 @@ LAYER
   GROUP "r118_bazl_belastete_standorte_zivilflugplaetze"
   METADATA
        "ows_title"                   "r118_bazl_belastete_standorte_zivilflugplaetze_poly"
-       "wms_srs"                    "epsg:21781"
+       "wms_srs"                    "EPSG:2056"
        "wms_title"                  "${vars:instanceid} WMS Server"
        "wms_onlineresource"    "http://${vars:host}/${vars:instanceid}/wmscrdppf"
-       "wms_srs"                   "EPSG:21781" 
+       "wms_srs"                   "EPSG:2056" 
   END
   CONNECTIONTYPE POSTGIS
   CONNECTION "user=${vars:dbuser} password=${vars:dbpassword} dbname=${vars:db} host=${vars:dbhost} port=${vars:dbport}"
   PROCESSING "CLOSE_CONNECTION=DEFER"
-  DATA "geom from crdppf.r118_bazl_belastete_standorte_zivilflugplaetze using unique idobj using srid=21781"
+  DATA "geom from crdppf.r118_bazl_belastete_standorte_zivilflugplaetze using unique idobj using srid=2056"
   TYPE POLYGON
   TEMPLATE "ttt"
   OPACITY 60
@@ -1118,15 +1118,15 @@ LAYER
   NAME "r119_bav_belastete_standorte_oev"
   METADATA
        "ows_title"                   "r119_bav_belastete_standorte_oev"
-       "wms_srs"                    "epsg:21781"
+       "wms_srs"                    "EPSG:2056"
        "wms_title"                  "${vars:instanceid} WMS Server"
        "wms_onlineresource"    "http://${vars:host}/${vars:instanceid}/wmscrdppf"
-       "wms_srs"                   "EPSG:21781" 
+       "wms_srs"                   "EPSG:2056" 
   END
   CONNECTIONTYPE POSTGIS
   CONNECTION "user=${vars:dbuser} password=${vars:dbpassword} dbname=${vars:db} host=${vars:dbhost} port=${vars:dbport}"
   PROCESSING "CLOSE_CONNECTION=DEFER"
-  DATA "geom from crdppf.r119_bav_belastete_standorte_oev using unique idobj using srid=21781"
+  DATA "geom from crdppf.r119_bav_belastete_standorte_oev using unique idobj using srid=2056"
   TYPE POLYGON
   TEMPLATE "ttt"
   OPACITY 60
@@ -1142,15 +1142,15 @@ LAYER
   STATUS ON
   METADATA
        "ows_title"                   "r131_zone_prot_eau"
-       "wms_srs"                    "epsg:21781"
+       "wms_srs"                    "EPSG:2056"
        "wms_title"                  "${vars:instanceid} WMS Server"
        "wms_onlineresource"    "http://${vars:host}/${vars:instanceid}/wmscrdppf"
-       "wms_srs"                   "EPSG:21781" 
+       "wms_srs"                   "EPSG:2056" 
   END
   CONNECTIONTYPE POSTGIS
   CONNECTION "user=${vars:dbuser} password=${vars:dbpassword} dbname=${vars:db} host=${vars:dbhost} port=${vars:dbport}"
   PROCESSING "CLOSE_CONNECTION=DEFER"
-  DATA "geom from crdppf.r131_zone_prot_eau using unique idobj using srid=21781"
+  DATA "geom from crdppf.r131_zone_prot_eau using unique idobj using srid=2056"
   TYPE POLYGON
   TEMPLATE "ttt"
   OPACITY 60
@@ -1192,15 +1192,15 @@ LAYER
   STATUS ON
   METADATA
        "ows_title"                   "r132_perimetre_prot_eau"
-       "wms_srs"                    "epsg:21781"
+       "wms_srs"                    "EPSG:2056"
        "wms_title"                  "${vars:instanceid} WMS Server"
        "wms_onlineresource"    "http://${vars:host}/${vars:instanceid}/wmscrdppf"
-       "wms_srs"                   "EPSG:21781" 
+       "wms_srs"                   "EPSG:2056" 
   END
   CONNECTIONTYPE POSTGIS
   CONNECTION "user=${vars:dbuser} password=${vars:dbpassword} dbname=${vars:db} host=${vars:dbhost} port=${vars:dbport}"
   PROCESSING "CLOSE_CONNECTION=DEFER"
-  DATA "geom from crdppf.r132_perimetre_prot_eau using unique idobj using srid=21781"
+  DATA "geom from crdppf.r132_perimetre_prot_eau using unique idobj using srid=2056"
   TYPE POLYGON
   TEMPLATE "ttt"
   OPACITY 60
@@ -1226,15 +1226,15 @@ LAYER
   TYPE POLYGON
    METADATA
        "ows_title" "r145_sens_bruit"
-       "wms_srs" "epsg:21781"
+       "wms_srs" "EPSG:2056"
        "wms_title"           "${vars:instanceid} WMS Server"
        "wms_onlineresource" "http://${vars:host}/${vars:instanceid}/wmscrdppf"
-       "wms_srs"            "EPSG:21781"
+       "wms_srs"            "EPSG:2056"
   END
   CONNECTIONTYPE POSTGIS
   CONNECTION "user=${vars:dbuser} password=${vars:dbpassword} dbname=${vars:db} host=${vars:dbhost} port=${vars:dbport}"
   PROCESSING "CLOSE_CONNECTION=DEFER"
-  DATA "geom from crdppf.r145_sens_bruit using unique idobj using srid=21781"
+  DATA "geom from crdppf.r145_sens_bruit using unique idobj using srid=2056"
   STATUS ON
   CLASSITEM "teneur" 
   OPACITY 50
@@ -1270,15 +1270,15 @@ LAYER
   TYPE LINE
   METADATA
        "ows_title" "r157_lim_foret"
-       "wms_srs"                    "epsg:21781"
+       "wms_srs"                    "EPSG:2056"
        "wms_title"                      "${vars:instanceid} WMS Server"
        "wms_onlineresource"     "http://${vars:host}/${vars:instanceid}/wmscrdppf"
-       "wms_srs"                    "EPSG:21781" 
+       "wms_srs"                    "EPSG:2056" 
   END
   CONNECTIONTYPE POSTGIS
   CONNECTION "user=${vars:dbuser} password=${vars:dbpassword} dbname=${vars:db} host=${vars:dbhost} port=${vars:dbport}"
   PROCESSING "CLOSE_CONNECTION=DEFER"
-  DATA "geom from crdppf.r157_lim_foret using unique idobj using srid=21781"
+  DATA "geom from crdppf.r157_lim_foret using unique idobj using srid=2056"
   STATUS ON
   TEMPLATE "ttt"
   CLASSITEM "teneur"
@@ -1300,15 +1300,15 @@ LAYER
   TYPE LINE
   METADATA
        "ows_title" "r159_dist_foret"
-       "wms_srs"                    "epsg:21781"
+       "wms_srs"                    "EPSG:2056"
        "wms_title"                      "${vars:instanceid} WMS Server"
        "wms_onlineresource"     "http://${vars:host}/${vars:instanceid}/wmscrdppf"
-       "wms_srs"                    "EPSG:21781" 
+       "wms_srs"                    "EPSG:2056" 
   END
   CONNECTIONTYPE POSTGIS
   CONNECTION "user=${vars:dbuser} password=${vars:dbpassword} dbname=${vars:db} host=${vars:dbhost} port=${vars:dbport}"
   PROCESSING "CLOSE_CONNECTION=DEFER"
-  DATA "geom from crdppf.r159_dist_foret using unique idobj using srid=21781"
+  DATA "geom from crdppf.r159_dist_foret using unique idobj using srid=2056"
   STATUS ON
   TEMPLATE "ttt"
   TOLERANCE 5
@@ -1340,7 +1340,7 @@ LAYER
   CONNECTIONTYPE POSTGIS
   CONNECTION "user=${vars:dbuser} password=${vars:dbpassword} dbname=${vars:db} host=${vars:dbhost} port=${vars:dbport}"
   PROCESSING "CLOSE_CONNECTION=DEFER"
-  DATA "geom from general.la3_limites_communales using unique numcom using srid=21781"
+  DATA "geom from general.la3_limites_communales using unique numcom using srid=2056"
   STATUS ON
   CLASS
     NAME "Limites communales"
@@ -1350,10 +1350,10 @@ LAYER
   END
   METADATA
     "ows_title" "la3_limites_communales"
-    "wms_srs" "epsg:21781"
+    "wms_srs" "EPSG:2056"
   END
   PROJECTION
-    "init=epsg:21781"   ##required
+    "init=epsg:2056"   ##required
   END
 END
 
@@ -1362,12 +1362,12 @@ LAYER
   TYPE POLYGON
   METADATA
        "ows_title" "at23_perimetres_archeologiques"
-       " wms_srs" "epsg:21781"
+       " wms_srs" "EPSG:2056"
   END
   CONNECTIONTYPE POSTGIS
   CONNECTION "user=${vars:dbuser} password=${vars:dbpassword} dbname=${vars:db} host=${vars:dbhost} port=${vars:dbport}"
   PROCESSING "CLOSE_CONNECTION=DEFER"
-  DATA "geom from amenagement.at23_perimetres_archeologiques using unique idobj using srid=21781"
+  DATA "geom from amenagement.at23_perimetres_archeologiques using unique idobj using srid=2056"
   STATUS ON
   TEMPLATE "ttt"
   CLASS
@@ -1384,12 +1384,12 @@ LAYER
   TYPE POLYGON
   METADATA
        "ows_title" "at24_perimetres_tir"
-       " wms_srs" "epsg:21781"
+       " wms_srs" "EPSG:2056"
   END
   CONNECTIONTYPE POSTGIS
   CONNECTION "user=${vars:dbuser} password=${vars:dbpassword} dbname=${vars:db} host=${vars:dbhost} port=${vars:dbport}"
   PROCESSING "CLOSE_CONNECTION=DEFER"
-  DATA "geom from amenagement.at24_perimetres_tir using unique idobj using srid=21781"
+  DATA "geom from amenagement.at24_perimetres_tir using unique idobj using srid=2056"
   STATUS ON
   TEMPLATE "ttt"
   CLASS
@@ -1407,12 +1407,12 @@ LAYER
   TYPE POLYGON
   METADATA
        "ows_title" "clo_couloirs"
-       " wms_srs" "epsg:21781"
+       " wms_srs" "EPSG:2056"
   END
   CONNECTIONTYPE POSTGIS
   CONNECTION "user=${vars:dbuser} password=${vars:dbpassword} dbname=${vars:db} host=${vars:dbhost} port=${vars:dbport}"
   PROCESSING "CLOSE_CONNECTION=DEFER"
-  DATA "geom from amenagement.clo_couloirs using unique idobj using srid=21781"
+  DATA "geom from amenagement.clo_couloirs using unique idobj using srid=2056"
   STATUS ON
   TEMPLATE "ttt"
   CLASS
@@ -1432,12 +1432,12 @@ LAYER
   TYPE POLYGON
   METADATA
        "ows_title" "clo_cotes_altitude_surfaces"
-       " wms_srs" "epsg:21781"
+       " wms_srs" "EPSG:2056"
   END
   CONNECTIONTYPE POSTGIS
   CONNECTION "user=${vars:dbuser} password=${vars:dbpassword} dbname=${vars:db} host=${vars:dbhost} port=${vars:dbport}"
   PROCESSING "CLOSE_CONNECTION=DEFER"
-  DATA "geom from amenagement.clo_cotes_altitude_surfaces using unique idobj using srid=21781"
+  DATA "geom from amenagement.clo_cotes_altitude_surfaces using unique idobj using srid=2056"
   STATUS ON
   TEMPLATE "ttt" 
   LABELITEM "cote_alt_obstacles_maximum"
@@ -1471,12 +1471,12 @@ LAYER
   TYPE LINE
   METADATA
        "ows_title" "ex01_cours_eau"
-       " wms_srs" "epsg:21781"
+       " wms_srs" "EPSG:2056"
   END
   CONNECTIONTYPE POSTGIS
   CONNECTION "user=${vars:dbuser} password=${vars:dbpassword} dbname=${vars:db} host=${vars:dbhost} port=${vars:dbport}"
   PROCESSING "CLOSE_CONNECTION=DEFER"
-  DATA "geom from environnement.ex01_cours_eau using unique idobj using srid=21781"
+  DATA "geom from environnement.ex01_cours_eau using unique idobj using srid=2056"
   STATUS ON
   TEMPLATE "ttt"
   CLASS
@@ -1498,12 +1498,12 @@ LAYER
   TYPE POINT
   METADATA
        "ows_title" "batiments_ofs"
-       " wms_srs" "epsg:21781"
+       " wms_srs" "EPSG:2056"
   END
   CONNECTIONTYPE POSTGIS
   CONNECTION "user=${vars:dbuser} password=${vars:dbpassword} dbname=${vars:db} host=${vars:dbhost} port=${vars:dbport}"
   PROCESSING "CLOSE_CONNECTION=DEFER"
-  DATA "geom from batiments_ofs using unique egid using srid=21781"
+  DATA "geom from batiments_ofs using unique egid using srid=2056"
   STATUS ON
   TEMPLATE "ttt"
   LABELITEM "egid"
@@ -1533,12 +1533,12 @@ LAYER
   TYPE POLYGON
   METADATA
        "ows_title" "mo_distr_plans"
-       " wms_srs" "epsg:21781"
+       " wms_srs" "EPSG:2056"
   END
   CONNECTIONTYPE POSTGIS
   CONNECTION "user=${vars:dbuser} password=${vars:dbpassword} dbname=${vars:db} host=${vars:dbhost} port=${vars:dbport}"
   PROCESSING "CLOSE_CONNECTION=DEFER"
-  DATA "geom from mensuration.mo_distr_plans using unique idobj using srid=21781"
+  DATA "geom from mensuration.mo_distr_plans using unique idobj using srid=2056"
   STATUS ON
   TEMPLATE "ttt"
   LABELITEM "planno"
@@ -1572,12 +1572,12 @@ LAYER
   TYPE POLYGON
   METADATA
        "ows_title" "mo25_noms_locaux"
-       " wms_srs" "epsg:21781"
+       " wms_srs" "EPSG:2056"
   END
   CONNECTIONTYPE POSTGIS
   CONNECTION "user=${vars:dbuser} password=${vars:dbpassword} dbname=${vars:db} host=${vars:dbhost} port=${vars:dbport}"
   PROCESSING "CLOSE_CONNECTION=DEFER"
-  DATA "geom from mensuration.mo25_noms_locaux using unique idobj using srid=21781"
+  DATA "geom from mensuration.mo25_noms_locaux using unique idobj using srid=2056"
   STATUS ON
   TEMPLATE "ttt"
   MINSCALEDENOM 0
@@ -1972,12 +1972,12 @@ LAYER
   TYPE POINT
   METADATA
        "ows_title" "mo4_pfp_1_2"
-       " wms_srs" "epsg:21781"
+       " wms_srs" "EPSG:2056"
   END
   CONNECTIONTYPE POSTGIS
   CONNECTION "user=${vars:dbuser} password=${vars:dbpassword} dbname=${vars:db} host=${vars:dbhost} port=${vars:dbport}"
   PROCESSING "CLOSE_CONNECTION=DEFER"
-  DATA "geom from mensuration.mo4_pfp_1_2 using unique idobj using srid=21781"
+  DATA "geom from mensuration.mo4_pfp_1_2 using unique idobj using srid=2056"
   STATUS ON
   TEMPLATE "ttt"
   LABELITEM "nopoin"
@@ -2024,12 +2024,12 @@ LAYER
   TYPE POINT
   METADATA
        "ows_title" "mo4_pfp_3"
-       " wms_srs" "epsg:21781"
+       " wms_srs" "EPSG:2056"
   END
   CONNECTIONTYPE POSTGIS
   CONNECTION "user=${vars:dbuser} password=${vars:dbpassword} dbname=${vars:db} host=${vars:dbhost} port=${vars:dbport}"
   PROCESSING "CLOSE_CONNECTION=DEFER"
-  DATA "geom from mensuration.mo4_pfp_3 using unique idobj using srid=21781"
+  DATA "geom from mensuration.mo4_pfp_3 using unique idobj using srid=2056"
   STATUS ON
   TEMPLATE "ttt"
   CLASS
@@ -2057,12 +2057,12 @@ LAYER
   TYPE POINT
   METADATA
        "ows_title" "mo4_pfa_1"
-       " wms_srs" "epsg:21781"
+       " wms_srs" "EPSG:2056"
   END
   CONNECTIONTYPE POSTGIS
   CONNECTION "user=${vars:dbuser} password=${vars:dbpassword} dbname=${vars:db} host=${vars:dbhost} port=${vars:dbport}"
   PROCESSING "CLOSE_CONNECTION=DEFER"
-  DATA "geom from mensuration.mo4_pfa_1 using unique idobj using srid=21781"
+  DATA "geom from mensuration.mo4_pfa_1 using unique idobj using srid=2056"
   STATUS ON
   CLASSITEM "valeur"
   TEMPLATE "ttt"
@@ -2092,23 +2092,26 @@ LAYER
   TYPE POLYGON
   METADATA
        "ows_title" "mo7_obj_divers_cordbois"
-       " wms_srs" "epsg:21781"
+       " wms_srs" "EPSG:2056"
   END
   CONNECTIONTYPE POSTGIS
   CONNECTION "user=${vars:dbuser} password=${vars:dbpassword} dbname=${vars:db} host=${vars:dbhost} port=${vars:dbport}"
   PROCESSING "CLOSE_CONNECTION=DEFER"
-  DATA "geom from mensuration.mo7_obj_divers_cordbois using unique idobj using srid=21781"
-  STATUS ON
-  MINSCALEDENOM 0
-  MAXSCALEDENOM 3001
-  CLASS
-    NAME "Cordons boises"
-    STYLE
-        PATTERN 7 7 END
-        OUTLINECOLOR 130 130 130
-        WIDTH 1
-    END  
-  END
+  DATA "geom from (SELECT
+        *
+        FROM mensuration.mo7_obj_divers_surface
+        WHERE genre = 27
+        ) as foo using unique idobj using srid=2056"
+    STATUS ON
+    MINSCALEDENOM 0
+    MAXSCALEDENOM 2499
+    CLASS
+        STYLE
+            OUTLINECOLOR 0 0 0
+            SYMBOL "bois"
+            SIZE 0.5
+        END
+    END
 END
 
 LAYER
@@ -2116,23 +2119,26 @@ LAYER
   TYPE POLYGON
   METADATA
        "ows_title" "mo7_obj_divers_piscine"
-       " wms_srs" "epsg:21781"
+       " wms_srs" "EPSG:2056"
   END
   CONNECTIONTYPE POSTGIS
   CONNECTION "user=${vars:dbuser} password=${vars:dbpassword} dbname=${vars:db} host=${vars:dbhost} port=${vars:dbport}"
   PROCESSING "CLOSE_CONNECTION=DEFER"
-  DATA "geom from mensuration.mo7_obj_divers_piscine using unique idobj using srid=21781"
-  STATUS ON
-  MINSCALEDENOM 0
-  MAXSCALEDENOM 3001
-  CLASS
-    NAME "Piscines"
-    STYLE
-        OUTLINECOLOR 130 130 130
-        PATTERN 5 5 END
-        WIDTH 1
+  DATA "geom from (SELECT
+        *
+        FROM mensuration.mo7_obj_divers_surface
+        WHERE genre = 44
+        ) as foo using unique idobj using srid=2056"
+    STATUS ON
+    MINSCALEDENOM 0
+    MAXSCALEDENOM 2499
+    CLASS
+        STYLE
+            COLOR 0 0 0
+            PATTERN 5 5 END
+            WIDTH 0.5
+        END
     END
-  END
 END
 
 LAYER
@@ -2140,12 +2146,12 @@ LAYER
   TYPE POLYGON
   METADATA
        "ows_title" "mo7_obj_divers_couvert"
-       " wms_srs" "epsg:21781"
+       " wms_srs" "EPSG:2056"
   END
   CONNECTIONTYPE POSTGIS
   CONNECTION "user=${vars:dbuser} password=${vars:dbpassword} dbname=${vars:db} host=${vars:dbhost} port=${vars:dbport}"
   PROCESSING "CLOSE_CONNECTION=DEFER"
-  DATA "geom from mensuration.mo7_obj_divers_couvert using unique idobj using srid=21781"
+  DATA "geom from mensuration.mo7_obj_divers_couvert using unique idobj using srid=2056"
   STATUS ON
   MINSCALEDENOM 0
   MAXSCALEDENOM 3001
@@ -2164,46 +2170,129 @@ LAYER
   TYPE LINE
   METADATA
        "ows_title" "mo7_obj_divers_lineaire"
-       " wms_srs" "epsg:21781"
+       " wms_srs" "EPSG:2056"
   END
   CONNECTIONTYPE POSTGIS
   CONNECTION "user=${vars:dbuser} password=${vars:dbpassword} dbname=${vars:db} host=${vars:dbhost} port=${vars:dbport}"
   PROCESSING "CLOSE_CONNECTION=DEFER"
-  DATA "geom from mensuration.mo7_obj_divers_lineaire using unique idobj using srid=21781"
-  STATUS ON
-  MINSCALEDENOM 0
-  MAXSCALEDENOM 3001
-  CLASSITEM "penpatter"
-  CLASS
-    NAME "Non visible"
-    EXPRESSION /5|9|15/
-    STYLE
-        PATTERN 7 7 END
-        OUTLINECOLOR 130 130 130
-        WIDTH 1
-    END  
-  END
-  CLASS
-    NAME "Linéaires"
-    EXPRESSION /20/
-    STYLE
-        COLOR 255 255 255
-        WIDTH 2
+    DATA "geom from (SELECT
+        *
+        FROM mensuration.mo7_obj_divers_lineaire_n
+        WHERE genre not in (1, 14, 27, 44)
+        ) as foo using unique idobj using srid=2056"
+    STATUS ON
+    MINSCALEDENOM 0
+    MAXSCALEDENOM 2499
+    CLASSITEM "typline"
+    CLASS
+        # DISCONTINU2
+        EXPRESSION "3"
+        STYLE
+            COLOR 80 80 80
+            PATTERN 7 7 END
+            WIDTH 0.5
+        END
     END
-    STYLE
-        COLOR 0 0 0
-        PATTERN 7 7 END
-        WIDTH 0.75
+    CLASS
+        # CONTINU
+        EXPRESSION "0"
+        STYLE
+          WIDTH 0.5
+          COLOR 100 100 100
+        END
     END
-  END
-  CLASS
-    NAME "visible"
-    EXPRESSION /./
-    STYLE
-      WIDTH 1
-      COLOR 130 130 130
+    CLASS
+        # POINTILLE
+        EXPRESSION "5"
+        STYLE
+            COLOR 80 80 80
+            PATTERN 2 2 END
+            WIDTH 0.5
+        END
     END
-  END
+    CLASS
+        # MIXTE 1
+        EXPRESSION "6"
+        STYLE
+            COLOR 80 80 80
+            PATTERN 28 4 4 4 END
+            WIDTH 0.5
+        END
+    END
+    CLASS
+        # MIXTE 2
+        EXPRESSION "7"
+        STYLE
+            COLOR 80 80 80
+            PATTERN 28 4 4 4 4 4 END
+            WIDTH 0.5
+        END
+    END
+END
+
+LAYER
+    NAME "mo7_obj_divers_surface_lig"
+    METADATA
+        "wms_title" "Objets divers surfaciques (lignes)"
+        "wms_srs" "EPSG:2056"
+    END
+    TYPE LINE
+    CONNECTIONTYPE POSTGIS
+    CONNECTION "user=${vars:dbuser} password=${vars:dbpassword} dbname=${vars:db} host=${vars:dbhost} port=${vars:dbport}"
+    PROCESSING "CLOSE_CONNECTION=DEFER"
+    DATA "geom from (SELECT
+        *
+        FROM mensuration.mo7_obj_divers_surface_lig
+        WHERE genre not in (1, 14, 27, 44)
+        ) as foo using unique idobj using srid=2056"
+    STATUS ON
+    MINSCALEDENOM 0
+    MAXSCALEDENOM 25001
+    CLASSITEM "typline"
+CLASS
+        # DISCONTINU2
+        EXPRESSION "3"
+        STYLE
+            COLOR 80 80 80
+            PATTERN 7 7 END
+            WIDTH 0.5
+        END
+    END
+    CLASS
+        # CONTINU
+        EXPRESSION "0"
+        STYLE
+          WIDTH 0.5
+          COLOR 100 100 100
+        END
+    END
+    CLASS
+        # POINTILLE
+        EXPRESSION "5"
+        STYLE
+            COLOR 80 80 80
+            PATTERN 2 2 END
+            WIDTH 0.5
+        END
+    END
+    CLASS
+        # MIXTE 1
+        EXPRESSION "6"
+        STYLE
+            COLOR 80 80 80
+            PATTERN 28 4 4 4 END
+            WIDTH 0.5
+        END
+    END
+    CLASS
+        # MIXTE 2
+        EXPRESSION "7"
+        STYLE
+            COLOR 80 80 80
+            PATTERN 28 4 4 4 4 4 END
+            WIDTH 0.5
+        END
+    END
 END
 
 #######################################################################
@@ -2213,12 +2302,12 @@ LAYER
   TYPE LINE
   METADATA
        "ows_title" "mo14_servitudes_c_lig"
-       " wms_srs" "epsg:21781"
+       " wms_srs" "EPSG:2056"
   END
   CONNECTIONTYPE POSTGIS
   CONNECTION "user=${vars:dbuser} password=${vars:dbpassword} dbname=${vars:db} host=${vars:dbhost} port=${vars:dbport}"
   PROCESSING "CLOSE_CONNECTION=DEFER"
-  DATA "geom from mensuration.mo14_servitudes_c_lig using unique idobj using srid=21781"
+  DATA "geom from mensuration.mo14_servitudes_c_lig using unique idobj using srid=2056"
   STATUS ON
   TEMPLATE "ttt"
   MINSCALEDENOM 0
@@ -2238,12 +2327,12 @@ LAYER
   TYPE POLYGON
   METADATA
        "ows_title" "mo14_servitudes_c_surf_autre"
-       " wms_srs" "epsg:21781"
+       " wms_srs" "EPSG:2056"
   END
   CONNECTIONTYPE POSTGIS
   CONNECTION "user=${vars:dbuser} password=${vars:dbpassword} dbname=${vars:db} host=${vars:dbhost} port=${vars:dbport}"
   PROCESSING "CLOSE_CONNECTION=DEFER"
-  DATA "geom from mensuration.mo14_servitudes_c_surf_autre using unique idobj using srid=21781"
+  DATA "geom from mensuration.mo14_servitudes_c_surf_autre using unique idobj using srid=2056"
   STATUS ON
   TEMPLATE "ttt"
   LABELITEM "text10"
@@ -2284,12 +2373,12 @@ LAYER
   TYPE POLYGON
   METADATA
        "ows_title" "mo14_servitudes_c_surf"
-       " wms_srs" "epsg:21781"
+       " wms_srs" "EPSG:2056"
   END
   CONNECTIONTYPE POSTGIS
   CONNECTION "user=${vars:dbuser} password=${vars:dbpassword} dbname=${vars:db} host=${vars:dbhost} port=${vars:dbport}"
   PROCESSING "CLOSE_CONNECTION=DEFER"
-  DATA "geom from mensuration.mo14_servitudes_c_surf using unique idobj using srid=21781"
+  DATA "geom from mensuration.mo14_servitudes_c_surf using unique idobj using srid=2056"
   STATUS ON
   TEMPLATE "ttt"
   OPACITY 50
@@ -2331,12 +2420,12 @@ LAYER
   TYPE LINE
   METADATA
        "ows_title" "mo14_servitudes_a_lig"
-       " wms_srs" "epsg:21781"
+       " wms_srs" "EPSG:2056"
   END
   CONNECTIONTYPE POSTGIS
   CONNECTION "user=${vars:dbuser} password=${vars:dbpassword} dbname=${vars:db} host=${vars:dbhost} port=${vars:dbport}"
   PROCESSING "CLOSE_CONNECTION=DEFER"
-  DATA "geom from mensuration.mo14_servitudes_a_lig using unique idobj using srid=21781"
+  DATA "geom from mensuration.mo14_servitudes_a_lig using unique idobj using srid=2056"
   STATUS ON
   TEMPLATE "ttt"
   MINSCALEDENOM 0
@@ -2372,12 +2461,12 @@ LAYER
   TYPE POLYGON
   METADATA
        "ows_title" "mo14_servitudes_a_surf"
-       " wms_srs" "epsg:21781"
+       " wms_srs" "EPSG:2056"
   END
   CONNECTIONTYPE POSTGIS
   CONNECTION "user=${vars:dbuser} password=${vars:dbpassword} dbname=${vars:db} host=${vars:dbhost} port=${vars:dbport}"
   PROCESSING "CLOSE_CONNECTION=DEFER"
-  DATA "geom from mensuration.mo14_servitudes_a_surf using unique idobj using srid=21781"
+  DATA "geom from mensuration.mo14_servitudes_a_surf using unique idobj using srid=2056"
   STATUS ON
   TEMPLATE "ttt"
   LABELMAXSCALE 2000
@@ -2423,12 +2512,12 @@ LAYER
   TYPE LINE
   METADATA
        "ows_title" "mo14_servitudes_g_lig"
-       " wms_srs" "epsg:21781"
+       " wms_srs" "EPSG:2056"
   END
   CONNECTIONTYPE POSTGIS
   CONNECTION "user=${vars:dbuser} password=${vars:dbpassword} dbname=${vars:db} host=${vars:dbhost} port=${vars:dbport}"
   PROCESSING "CLOSE_CONNECTION=DEFER"
-  DATA "geom from mensuration.mo14_servitudes_g_lig using unique idobj using srid=21781"
+  DATA "geom from mensuration.mo14_servitudes_g_lig using unique idobj using srid=2056"
   STATUS ON
   TEMPLATE "ttt"
   LABELMAXSCALE 2000
@@ -2464,12 +2553,12 @@ LAYER
   TYPE POINT
   METADATA
        "ows_title" "mo14_servitudes_g_pts"
-       " wms_srs" "epsg:21781"
+       " wms_srs" "EPSG:2056"
   END
   CONNECTIONTYPE POSTGIS
   CONNECTION "user=${vars:dbuser} password=${vars:dbpassword} dbname=${vars:db} host=${vars:dbhost} port=${vars:dbport}"
   PROCESSING "CLOSE_CONNECTION=DEFER"
-  DATA "geom from mensuration.mo14_servitudes_g_pts using unique idobj using srid=21781"
+  DATA "geom from mensuration.mo14_servitudes_g_pts using unique idobj using srid=2056"
   STATUS ON
   TEMPLATE "ttt"
   LABELMAXSCALE 2000
@@ -2511,12 +2600,12 @@ LAYER
   TYPE POLYGON
   METADATA
        "ows_title" "mo14_servitudes_g_surf"
-       " wms_srs" "epsg:21781"
+       " wms_srs" "EPSG:2056"
   END
   CONNECTIONTYPE POSTGIS
   CONNECTION "user=${vars:dbuser} password=${vars:dbpassword} dbname=${vars:db} host=${vars:dbhost} port=${vars:dbport}"
   PROCESSING "CLOSE_CONNECTION=DEFER"
-  DATA "geom from mensuration.mo14_servitudes_g_surf using unique idobj using srid=21781"
+  DATA "geom from mensuration.mo14_servitudes_g_surf using unique idobj using srid=2056"
   STATUS ON
   TEMPLATE "ttt"
   LABELMAXSCALE 2000
@@ -2562,12 +2651,12 @@ NAME "mo5_point_de_detail"
   TYPE POINT
   METADATA
        "ows_title" "mo5_point_de_detail"
-       " wms_srs" "epsg:21781"
+       " wms_srs" "EPSG:2056"
   END
   CONNECTIONTYPE POSTGIS
   CONNECTION "user=${vars:dbuser} password=${vars:dbpassword} dbname=${vars:db} host=${vars:dbhost} port=${vars:dbport}"
   PROCESSING "CLOSE_CONNECTION=DEFER"
-  DATA "geom from mensuration.mo5_point_de_detail using unique idobj using srid=21781"
+  DATA "geom from mensuration.mo5_point_de_detail using unique idobj using srid=2056"
   STATUS ON
   MINSCALEDENOM 0
   MAXSCALEDENOM 2001
@@ -2635,12 +2724,12 @@ LAYER
     TYPE POINT
     METADATA
         "ows_title" "v_immeubles_txt"
-        "wms_srs" "epsg:21781"
+        "wms_srs" "EPSG:2056"
     END
     CONNECTIONTYPE POSTGIS
     CONNECTION "user=${vars:dbuser} password=${vars:dbpassword} dbname=${vars:db} host=${vars:dbhost} port=${vars:dbport}"
     PROCESSING "CLOSE_CONNECTION=DEFER"
-    DATA "geom from mensuration.v_immeubles_txt using unique idobj using srid=21781"
+    DATA "geom from mensuration.mo9_immeubles_txt using unique idobj using srid=2056"
     STATUS ON
     LABELITEM "numero"
     MAXSCALEDENOM 6000
@@ -2707,12 +2796,12 @@ LAYER
     TYPE LINE
     METADATA
         "ows_title" "mo9_immeubles_txt_rappel"
-        "wms_srs" "epsg:21781"
+        "wms_srs" "EPSG:2056"
     END
     CONNECTIONTYPE POSTGIS
     CONNECTION "user=${vars:dbuser} password=${vars:dbpassword} dbname=${vars:db} host=${vars:dbhost} port=${vars:dbport}"
     PROCESSING "CLOSE_CONNECTION=DEFER"
-    DATA "geom from mensuration.mo9_immeubles_txt_rappel using unique idobj using srid=21781"
+    DATA "geom from mensuration.mo9_immeubles_txt_rappel using unique idobj using srid=2056"
     STATUS ON
     MINSCALEDENOM 0
     MAXSCALEDENOM 4000
@@ -2728,7 +2817,7 @@ LAYER
     NAME "mo6_couverture_sol_nb_1"
     METADATA
         "wms_title" "Couverture du sol noir-blanc"
-        "wms_srs" "EPSG:21781"
+        "wms_srs" "EPSG:2056"
     END
     GROUP "mo6_couverture_sol_nb"
     TYPE POLYGON
@@ -2736,7 +2825,7 @@ LAYER
     CONNECTIONTYPE POSTGIS
     CONNECTION "user=${vars:dbuser} password=${vars:dbpassword} dbname=${vars:db} host=${vars:dbhost} port=${vars:dbport}"
     PROCESSING "CLOSE_CONNECTION=DEFER"
-    DATA "geom from mensuration.mo6_couverture_du_sol_surf_tot using unique idobj using srid=21781"
+    DATA "geom from mensuration.mo6_couverture_du_sol_surf_tot using unique idobj using srid=2056"
     TEMPLATE "ttt"
     CLASSITEM "typcou"
     CLASS
@@ -2765,7 +2854,7 @@ LAYER
     NAME "mo6_couverture_sol_nb_2"
     METADATA
         "wms_title" "Couverture du sol noir-blanc 2"
-        "wms_srs" "EPSG:21781"
+        "wms_srs" "EPSG:2056"
     END
     GROUP "mo6_couverture_sol_nb"
     TYPE POLYGON
@@ -2773,7 +2862,7 @@ LAYER
     CONNECTIONTYPE POSTGIS
     CONNECTION "user=${vars:dbuser} password=${vars:dbpassword} dbname=${vars:db} host=${vars:dbhost} port=${vars:dbport}"
     PROCESSING "CLOSE_CONNECTION=DEFER"
-    DATA "geom from mensuration.mo6_couverture_du_sol_surf_tot using unique idobj using srid=21781"
+    DATA "geom from mensuration.mo6_couverture_du_sol_surf_tot using unique idobj using srid=2056"
     TEMPLATE "ttt"
     CLASSITEM "desnat"
     CLASS
@@ -2800,12 +2889,12 @@ LAYER
   TYPE POLYGON
   METADATA
        "ows_title" "domaine_lac_remblaye"
-       " wms_srs" "epsg:21781"
+       " wms_srs" "EPSG:2056"
   END
   CONNECTIONTYPE POSTGIS
   CONNECTION "user=${vars:dbuser} password=${vars:dbpassword} dbname=${vars:db} host=${vars:dbhost} port=${vars:dbport}"
   PROCESSING "CLOSE_CONNECTION=DEFER"
-  DATA "geom from mensuration.domaine_lac_remblaye using unique idobj using srid=21781"
+  DATA "geom from mensuration.domaine_lac_remblaye using unique idobj using srid=2056"
   STATUS ON
   CLASS
     STYLE
@@ -2826,12 +2915,12 @@ LAYER
   TYPE POLYGON
   METADATA
        "ows_title" "mo9_immeubles"
-       " wms_srs" "epsg:21781"
+       " wms_srs" "EPSG:2056"
   END
   CONNECTIONTYPE POSTGIS
   CONNECTION "user=${vars:dbuser} password=${vars:dbpassword} dbname=${vars:db} host=${vars:dbhost} port=${vars:dbport}"
   PROCESSING "CLOSE_CONNECTION=DEFER"
-  DATA "geom from mensuration.mo9_immeubles using unique idobj using srid=21781"
+  DATA "geom from mensuration.mo9_immeubles using unique idobj using srid=2056"
   STATUS ON
   TEMPLATE "ttt"
   CLASSITEM "typimm"
@@ -2866,51 +2955,16 @@ LAYER
 END
 
 LAYER
-  NAME "ag1_parcellaire_provisoire"
-  TYPE POLYGON
-  METADATA
-       "ows_title" "ag1_parcellaire_provisoire"
-       " wms_srs" "epsg:21781"
-  END
-  CONNECTIONTYPE POSTGIS
-  CONNECTION "user=${vars:dbuser} password=${vars:dbpassword} dbname=${vars:db} host=${vars:dbhost} port=${vars:dbport}"
-  PROCESSING "CLOSE_CONNECTION=DEFER"
-  DATA "geom from mensuration.ag1_parcellaire_provisoire using unique idobj using srid=21781"
-  STATUS ON
-  LABELMAXSCALE 2500
-  TEMPLATE "ttt"
-  CLASS
-    NAME "Parcel. provisoire"
-    STYLE
-      OUTLINECOLOR 49 48 198
-      WIDTH 1
-    END
-#    TEXT ([nummai])
-#    LABEL
-#      TYPE TRUETYPE
-#      FONT arialn
-#      SIZE 9
-#      ANTIALIAS TRUE
-#      COLOR 49 48 198
-#      OUTLINECOLOR 255 255 255
-#      MINFEATURESIZE 50
-#    END
-  END
-  MINSCALEDENOM 50
-  MAXSCALEDENOM 15000
-END
-
-LAYER
   NAME "mo23_batiments_projetes"
   TYPE POLYGON
   METADATA
        "ows_title" "mo23_batiments_projetes"
-       " wms_srs" "epsg:21781"
+       " wms_srs" "EPSG:2056"
   END
   CONNECTIONTYPE POSTGIS
   CONNECTION "user=${vars:dbuser} password=${vars:dbpassword} dbname=${vars:db} host=${vars:dbhost} port=${vars:dbport}"
   PROCESSING "CLOSE_CONNECTION=DEFER"
-  DATA "geom from mensuration.mo23_batiments_projetes using unique idobj using srid=21781"
+  DATA "geom from mensuration.mo23_batiments_projetes using unique idobj using srid=2056"
   STATUS ON
   LABELMAXSCALE 1500
   TEMPLATE "ttt"
@@ -2937,12 +2991,12 @@ LAYER
   TYPE POLYGON
   METADATA
        "ows_title" "mo22_batiments"
-       " wms_srs" "epsg:21781"
+       " wms_srs" "EPSG:2056"
   END
   CONNECTIONTYPE POSTGIS
   CONNECTION "user=${vars:dbuser} password=${vars:dbpassword} dbname=${vars:db} host=${vars:dbhost} port=${vars:dbport}"
   PROCESSING "CLOSE_CONNECTION=DEFER"
-  DATA "geom from mensuration.mo22_batiments using unique idobj using srid=21781"
+  DATA "geom from mensuration.mo22_batiments using unique idobj using srid=2056"
   STATUS ON
   LABELMAXSCALE 1500
   CLASSITEM "typcou"
@@ -2978,12 +3032,12 @@ LAYER
   TYPE POLYGON
   METADATA
        "ows_title" "mo21_batiments_provisoires"
-       " wms_srs" "epsg:21781"
+       " wms_srs" "EPSG:2056"
   END
   CONNECTIONTYPE POSTGIS
   CONNECTION "user=${vars:dbuser} password=${vars:dbpassword} dbname=${vars:db} host=${vars:dbhost} port=${vars:dbport}"
   PROCESSING "CLOSE_CONNECTION=DEFER"
-  DATA "geom from mensuration.mo21_batiments_provisoires using unique idobj using srid=21781"
+  DATA "geom from mensuration.mo21_batiments_provisoires using unique idobj using srid=2056"
   STATUS ON
   LABELMAXSCALE 1500
   CLASSITEM "typcou"
