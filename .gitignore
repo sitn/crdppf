@@ -8,6 +8,7 @@ buildout_nesitnd1.cfg
 buildout_michael.cfg
 buildout_francois.cfg
 buildout_francois_MN03.cfg
+buildout_francois.cfg.old
 buildout_nesitn2.cfg
 buildout_nesitn2_prepub.cfg
 buildout_nesitn7.cfg
