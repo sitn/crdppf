@@ -2,7 +2,7 @@
 db_config:
   schema: crdppf
   topickey: idobj
-  srid: 21781
+  srid: 2056
 
   tables:
     # table containing the municipality or cadastral boundaries : NE = cadastres
@@ -21,26 +21,19 @@ db_config:
       att_federal_number: nufeco
     # table containing the properties
     property:
-      tablename: immeubles_canton
-      schema: public
-      att_id: noobj
-      att_id_property: idemai
+      tablename: mo9_immeubles
+      schema: mensuration
+      att_id: idobj
+      att_id_property: id
       att_property_number: nummai
       att_property_type: typimm
-      att_property_source: source
+      #att_property_source: source
     #optional:
-    # dev instance
     local_names:
-      tablename: nom_local_lieu_dit
-      schema: public
+      tablename: mo25_noms_locaux
+      schema: mensuration
       att_id: idcnlo
       att_local_name: nomloc
-    # prod instance
-    #~ local_names:
-      #~ tablename: mo25_noms_locaux
-      #~ schema: mensuration
-      #~ att_id: idcnlo
-      #~ att_local_name: nomloc
 
   restrictions:
       railways_project_zones

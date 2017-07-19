@@ -1,6 +1,12 @@
 # WMTS server urls
 wmts_openlayers:
-  mapproxyurl: ['http://tile1-sitn.ne.ch/mapproxy/wmts', 'http://tile2-sitn.ne.ch/mapproxy/wmts', 'http://tile3-sitn.ne.ch/mapproxy/wmts', 'http://tile4-sitn.ne.ch/mapproxy/wmts', 'http://tile5-sitn.ne.ch/mapproxy/wmts']
+  mapproxyurl: [
+        'http://tile1-sitn.ne.ch/mapproxy95/wmts',
+        'http://tile2-sitn.ne.ch/mapproxy95/wmts',
+        'http://tile3-sitn.ne.ch/mapproxy95/wmts',
+        'http://tile4-sitn.ne.ch/mapproxy95/wmts',
+        'http://tile5-sitn.ne.ch/mapproxy95/wmts'
+    ]
 
 app_config:  
   # lang: ${vars:default_language}
@@ -21,23 +27,21 @@ app_config:
   crdppf_wms_layers:
     - mo6_couverture_sol_nb
     - mo22_batiments
-    - mo21_batiments_provisoires
     - mo23_batiments_projetes
     - parcelles
-    - ag1_parcellaire_provisoire
     - mo9_immeubles
-    # not working on dev - mo9_text_group
+    - mo9_text_group
     - mo7_obj_divers_lineaire
-    - mo7_obj_divers_couvert
-    - mo7_obj_divers_piscine
-    - mo7_obj_divers_cordbois
+    #~ - mo7_obj_divers_surface_lig
+    #~ - mo7_obj_divers_piscine
+    #~ - mo7_obj_divers_cordbois
     - mo5_point_de_detail
     - mo4_pfa_1
     - mo4_pfp_3
     - mo4_pfp_1_2
     - la3_limites_communales
   # coordinate system to be used by the wms
-  wms_srs: EPSG:21781
+  wms_srs: EPSG:2056
   # version of the wms
   wms_version: 1.1.1
   # default transparency setting of the wms
@@ -84,24 +88,33 @@ pdf_config:
   fitratio: 0.9
   # path to the logo of the confederation
   CHlogopath: ecussons/Logo_Schweiz_Eidgen.png
+  # path to the logo of the confederation
+  crdppflogopath: ecussons/cadastrerdppfargb.png
   # path and dimensions in mm of cantonal logo
   cantonlogo:
     path: ecussons/06ne_ch_RVB.jpg
     width: 43.4
     height: 13.8
+  
   # Default image file for missing armories picture of a municipality
   placeholder: Placeholder.jpg
+  
   # Default base name for the PDF extract
   pdfbasename: _ExtraitCRDPPF
+  
   # Default prefix/suffix for all the basemap files to ditinguish them from topic files
   siteplanbasename: _siteplan
+  
   # Activates (true) or not cantonal and other optional topics (to be specified in crdppfportal/models.py)
   optionaltopics: false
+  
   # Activates the signature block on the title pageof the PDF 
   # - IF and ONLY IF the report type is set to certified/reducedcertified
   signature: false
+  
   # Allows to activate (true) or deactivate pilote phase text
   pilotphase: true
+  
   # Activates (true) or not the disclaimer text on the title page of the PDF
   disclaimer: true
 
@@ -115,4 +128,4 @@ localhost_url: http://localhost/${vars:instanceid}
 mapserver_url: http://localhost/${vars:instanceid}/wmscrdppf
 
 # URL to WMTS getCapabilities
-wmts_getcapabilities_url: http://sitn.ne.ch/mapproxy/service/?SERVICE=WMTS&REQUEST=GetCapabilities&VERSION=1.0.0
+wmts_getcapabilities_url: http://sitn.ne.ch/mapproxy95/service/?SERVICE=WMTS&REQUEST=GetCapabilities&VERSION=1.0.0
