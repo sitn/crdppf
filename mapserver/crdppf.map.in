@@ -1281,7 +1281,7 @@ LAYER
   DATA "geom from crdppf.r157_lim_foret using unique idobj using srid=2056"
   STATUS ON
   TEMPLATE "ttt"
-  CLASSITEM "teneur"
+  CLASSITEM "codegenre"
   CLASS
     NAME "Limite légale de forêt"
     EXPRESSION /1/
