@@ -53,7 +53,7 @@ END
 
 LEGEND
  STATUS ON        # Draw legend in the map
- KEYSIZE 20 15      # Define the size of the legend icon.
+ KEYSIZE 17 10      # Define the size of the legend icon.
  LABEL            # Used only for embedded legend (in the map)
    TYPE TRUETYPE
    FONT "verdana"
@@ -81,7 +81,7 @@ END
     UNITS METERS
     INTERVALS 5
     TRANSPARENT FALSE
-    STATUS EMBED
+    STATUS OFF
   END # Scalebar object ends
 
 LAYER
@@ -104,7 +104,7 @@ LAYER
     "wms_srs" "EPSG:2056"
     "wfs_enable_request" "*"
     "gml_types" "auto"
-    "gml_include_items" "idemai,cadastre,nummai,typimm,srfmai,nufeco,valide"
+    "gml_include_items" "id,idemai,cadastre,nummai,typimm,srfmai,nufeco,valide"
   END
   PROJECTION
     "init=epsg:2056"   ##required
