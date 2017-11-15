@@ -1032,26 +1032,38 @@ LAYER
   PROCESSING "CLOSE_CONNECTION=DEFER"
   DATA "geom from crdppf.r116_sites_pollues using unique idobj using srid=2056"
   TYPE POLYGON
-  CLASSITEM "codegenre"
   TEMPLATE "ttt"
   OPACITY 60
-  CLASS
-    NAME "Sites pollués - accidents "
-    EXPRESSION /9901/
-    COLOR  140 0 0
-    OUTLINECOLOR 140 0 0
-  END
-  CLASS
-    NAME "Sites pollués - décharges"
-    EXPRESSION /9902/
-    COLOR 200 130 0
-    OUTLINECOLOR 200 130 0
-   END
+  CLASSITEM "teneur"
    CLASS
-    NAME "Sites pollués - entreprises"
+    NAME "Pollué, investigation nécessaire"
     EXPRESSION /9903/
     COLOR 0 0 255
-    OUTLINECOLOR 0 0 255
+   END
+   CLASS
+    NAME "Pollué, pas d’atteinte nuisible ou incommodante à attendre"
+    EXPRESSION /9904/
+    COLOR 0 0 255
+   END
+   CLASS
+    NAME "Pollué, ne nécessite ni surveillance ni assainissement"
+    EXPRESSION /9905/
+    COLOR 255 204 0
+   END
+   CLASS
+    NAME "Pollué, nécessite une surveillance"
+    EXPRESSION /9906/
+    COLOR 255 210 5
+   END
+   CLASS
+    NAME "Pollué, nécessite un assainissement"
+    EXPRESSION /9907/
+    COLOR 255 0 0
+   END
+   CLASS
+    NAME "Pollué, nécessitée d'une investigation non encore évaluée"
+    EXPRESSION /9908/
+    COLOR 95 95 95
    END
 END
 
@@ -1307,7 +1319,7 @@ LAYER
   DATA "geom from crdppf.r157_lim_foret using unique idobj using srid=2056"
   STATUS ON
   TEMPLATE "ttt"
-  CLASSITEM "teneur"
+  CLASSITEM "codegenre"
   CLASS
     NAME "Limite légale de forêt"
     EXPRESSION /1/
@@ -1342,7 +1354,7 @@ LAYER
   CLASSITEM "codegenre"
   CLASS
     NAME "Distance légale à la forêt"
-    EXPRESSION /7104/
+    EXPRESSION /7105/
     STYLE
         PATTERN 4 4 END
         WIDTH 2
