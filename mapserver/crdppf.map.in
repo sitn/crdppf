@@ -1078,37 +1078,54 @@ LAYER
   TEMPLATE "ttt"
   OPACITY 60
   CLASSITEM "codegenre"
-   CLASS
+  CLASS
     NAME "Pollué, investigation nécessaire"
+    SYMBOL "circle"
     EXPRESSION /9903/
     COLOR 0 0 255
-   END
-   CLASS
-    NAME "Pollué, pas d’atteinte nuisible ou incommodante à attendre"
+    OUTLINECOLOR 0 0 255
+    SIZE 7
+  END
+  CLASS
+    NAME "Pollué, pas d'atteinte nuisible ou incommodante à attendre"
+    SYMBOL "circle"
     EXPRESSION /9904/
-    COLOR 0 0 255
+    COLOR 255 255 0
+    OUTLINECOLOR 255 255 0
+    SIZE 7
    END
    CLASS
     NAME "Pollué, ne nécessite ni surveillance ni assainissement"
+    SYMBOL "circle"
     EXPRESSION /9905/
     COLOR 255 204 0
+    OUTLINECOLOR 255 204 0
+    SIZE 7
    END
    CLASS
     NAME "Pollué, nécessite une surveillance"
+    SYMBOL "circle"
     EXPRESSION /9906/
-    COLOR 255 210 5
+    COLOR 255 102 5
+    OUTLINECOLOR 255 102 5
+    SIZE 7
    END
    CLASS
     NAME "Pollué, nécessite un assainissement"
+    SYMBOL "circle"
     EXPRESSION /9907/
     COLOR 255 0 0
+    OUTLINECOLOR 255 0 0
+    SIZE 7
    END
    CLASS
     NAME "Pollué, nécessitée d'une investigation non encore évaluée"
+    SYMBOL "circle"
     EXPRESSION /9908/
     COLOR 95 95 95
+    OUTLINECOLOR 95 95 95
+    SIZE 7
    END
-  MAXSCALEDENOM 100000
 END
 
 LAYER
@@ -1130,37 +1147,42 @@ LAYER
   TEMPLATE "ttt"
   OPACITY 60
   CLASSITEM "codegenre"
-   CLASS
+  CLASS
     NAME "Pollué, investigation nécessaire"
     EXPRESSION /9903/
     COLOR 0 0 255
-   END
-   CLASS
-    NAME "Pollué, pas d’atteinte nuisible ou incommodante à attendre"
+    OUTLINECOLOR 0 0 255
+  END
+  CLASS
+    NAME "Pollué, pas d'atteinte nuisible ou incommodante à attendre"
     EXPRESSION /9904/
-    COLOR 0 0 255
+    COLOR 255 255 0
+    OUTLINECOLOR 255 255 0
    END
    CLASS
     NAME "Pollué, ne nécessite ni surveillance ni assainissement"
     EXPRESSION /9905/
     COLOR 255 204 0
+    OUTLINECOLOR 255 204 0
    END
    CLASS
     NAME "Pollué, nécessite une surveillance"
     EXPRESSION /9906/
-    COLOR 255 210 5
+    COLOR 255 102 5
+    OUTLINECOLOR 255 102 5
    END
    CLASS
     NAME "Pollué, nécessite un assainissement"
     EXPRESSION /9907/
     COLOR 255 0 0
+    OUTLINECOLOR 255 0 0
    END
    CLASS
     NAME "Pollué, nécessitée d'une investigation non encore évaluée"
     EXPRESSION /9908/
     COLOR 95 95 95
+    OUTLINECOLOR 95 95 95
    END
-  MAXSCALEDENOM 100000
 END
 
 LAYER
@@ -1181,35 +1203,41 @@ LAYER
   TEMPLATE "ttt"
   OPACITY 60
   CLASSITEM "codegenre"
-   CLASS
+  CLASS
     NAME "Pollué, investigation nécessaire"
     EXPRESSION /9903/
     COLOR 0 0 255
-   END
-   CLASS
-    NAME "Pollué, pas d’atteinte nuisible ou incommodante à attendre"
-    EXPRESSION /9904/
-    COLOR 0 0 255
-   END
+    OUTLINECOLOR 0 0 255
+  END
    CLASS
     NAME "Pollué, ne nécessite ni surveillance ni assainissement"
     EXPRESSION /9905/
     COLOR 255 204 0
+    OUTLINECOLOR 255 204 0
    END
    CLASS
     NAME "Pollué, nécessite une surveillance"
     EXPRESSION /9906/
-    COLOR 255 210 5
+    COLOR 255 102 5
+    OUTLINECOLOR 255 102 5
    END
    CLASS
     NAME "Pollué, nécessite un assainissement"
     EXPRESSION /9907/
     COLOR 255 0 0
+    OUTLINECOLOR 255 0 0
    END
    CLASS
     NAME "Pollué, nécessitée d'une investigation non encore évaluée"
     EXPRESSION /9908/
     COLOR 95 95 95
+    OUTLINECOLOR 95 95 95
+   END
+  CLASS
+    NAME "Pollué, pas d'atteinte nuisible ou incommodante à attendre"
+    EXPRESSION /9904/
+    COLOR 255 255 0
+    OUTLINECOLOR 255 255 0
    END
 END
 
@@ -3131,5 +3159,3 @@ LAYER
 END
 
 END
-
-
