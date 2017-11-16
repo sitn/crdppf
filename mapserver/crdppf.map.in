@@ -1034,7 +1034,50 @@ LAYER
   TYPE POLYGON
   TEMPLATE "ttt"
   OPACITY 60
-  CLASSITEM "teneur"
+  CLASSITEM "codegenre"
+  CLASS
+    NAME "Sites pollués - accidents "
+    EXPRESSION /9901/
+    COLOR  140 0 0
+    OUTLINECOLOR 140 0 0
+  END
+  CLASS
+    NAME "Sites pollués - décharges"
+    EXPRESSION /9902/
+    COLOR 200 130 0
+    OUTLINECOLOR 200 130 0
+   END
+   CLASS
+    NAME "Sites pollués - entreprises"
+    EXPRESSION /9903/
+    COLOR 0 0 255
+    OUTLINECOLOR 0 0 255
+    END
+END
+
+LAYER
+  STATUS ON
+  NAME "r118_bazl_belastete_standorte_zivilflugplaetze_pts"
+  GROUP "r118_bazl_belastete_standorte_zivilflugplaetze"
+  METADATA
+       "ows_title"                   "r118_bazl_belastete_standorte_zivilflugplaetze_pts"
+       "wms_srs"                    "EPSG:2056"
+       "wms_title"                  "${vars:instanceid} WMS Server"
+       "wms_onlineresource"    "http://${vars:host}/${vars:instanceid}/wmscrdppf"
+       "wms_srs"                   "EPSG:2056" 
+  END
+  CONNECTIONTYPE POSTGIS
+  CONNECTION "user=${vars:dbuser} password=${vars:dbpassword} dbname=${vars:db} host=${vars:dbhost} port=${vars:dbport}"
+  PROCESSING "CLOSE_CONNECTION=DEFER"
+  DATA "geom from (
+    select *
+    from crdppf.r118_bazl_belastete_standorte_zivilflugplaetze 
+    WHERE  st_geometrytype(geom) like 'ST_Point'  
+    ) as foo using unique idobj using srid=2056"
+  TYPE POINT
+  TEMPLATE "ttt"
+  OPACITY 60
+  CLASSITEM "codegenre"
    CLASS
     NAME "Pollué, investigation nécessaire"
     EXPRESSION /9903/
@@ -1065,37 +1108,6 @@ LAYER
     EXPRESSION /9908/
     COLOR 95 95 95
    END
-END
-
-LAYER
-  STATUS ON
-  NAME "r118_bazl_belastete_standorte_zivilflugplaetze_pts"
-  GROUP "r118_bazl_belastete_standorte_zivilflugplaetze"
-  METADATA
-       "ows_title"                   "r118_bazl_belastete_standorte_zivilflugplaetze_pts"
-       "wms_srs"                    "EPSG:2056"
-       "wms_title"                  "${vars:instanceid} WMS Server"
-       "wms_onlineresource"    "http://${vars:host}/${vars:instanceid}/wmscrdppf"
-       "wms_srs"                   "EPSG:2056" 
-  END
-  CONNECTIONTYPE POSTGIS
-  CONNECTION "user=${vars:dbuser} password=${vars:dbpassword} dbname=${vars:db} host=${vars:dbhost} port=${vars:dbport}"
-  PROCESSING "CLOSE_CONNECTION=DEFER"
-  DATA "geom from (
-    select *
-    from crdppf.r118_bazl_belastete_standorte_zivilflugplaetze 
-    WHERE  st_geometrytype(geom) like 'ST_Point'  
-    ) as foo using unique idobj using srid=2056"
-  TYPE POINT
-  TEMPLATE "ttt"
-  OPACITY 60
-   CLASS
-    NAME "Sites pollués - domaine des aérodromes civils"
-    SYMBOL "circle"
-    COLOR 255 255 0
-    OUTLINECOLOR 0 0 0
-    SIZE 6
-   END
   MAXSCALEDENOM 100000
 END
 
@@ -1117,10 +1129,36 @@ LAYER
   TYPE POLYGON
   TEMPLATE "ttt"
   OPACITY 60
+  CLASSITEM "codegenre"
    CLASS
-    NAME "Sites pollués - domaine des aérodromes civils"
-    COLOR 255 255 0
-    OUTLINECOLOR 0 0 0
+    NAME "Pollué, investigation nécessaire"
+    EXPRESSION /9903/
+    COLOR 0 0 255
+   END
+   CLASS
+    NAME "Pollué, pas d’atteinte nuisible ou incommodante à attendre"
+    EXPRESSION /9904/
+    COLOR 0 0 255
+   END
+   CLASS
+    NAME "Pollué, ne nécessite ni surveillance ni assainissement"
+    EXPRESSION /9905/
+    COLOR 255 204 0
+   END
+   CLASS
+    NAME "Pollué, nécessite une surveillance"
+    EXPRESSION /9906/
+    COLOR 255 210 5
+   END
+   CLASS
+    NAME "Pollué, nécessite un assainissement"
+    EXPRESSION /9907/
+    COLOR 255 0 0
+   END
+   CLASS
+    NAME "Pollué, nécessitée d'une investigation non encore évaluée"
+    EXPRESSION /9908/
+    COLOR 95 95 95
    END
   MAXSCALEDENOM 100000
 END

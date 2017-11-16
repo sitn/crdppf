@@ -42,6 +42,7 @@ db_config:
       airport_security_zones
       airport_project_zones
       airport_construction_limits
+      military_polluted_sites
       airport_polluted_sites
       transportation_polluted_sites
       road_noise
