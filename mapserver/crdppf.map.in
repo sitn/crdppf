@@ -1370,17 +1370,18 @@ LAYER
     END
   END
   CLASS
-  NAME "Aire Zu"
-  EXPRESSION /A. ZU/
-  STYLE
-    COLOR 0 0 0
-    OUTLINECOLOR 170 102 204
-  END
-  STYLE
-    SYMBOL "hachure1"
-    ANGLE 90
-    COLOR 170 102 204
-    SIZE 5
+    NAME "Aire Zu"
+    EXPRESSION /A. ZU/
+    STYLE
+      COLOR 0 0 0
+      OUTLINECOLOR 170 102 204
+    END
+    STYLE
+      SYMBOL "hachure1"
+      ANGLE 90
+      COLOR 170 102 204
+      SIZE 5
+    END
   END
 END
 
