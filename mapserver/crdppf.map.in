@@ -1345,24 +1345,31 @@ LAYER
   CLASS
     NAME "secteur Ao et Au"
     EXPRESSION /secteur Ao et Au/
-    COLOR 255 0 0
-    OUTLINECOLOR 255 0 0
-    OPACITY 40
+    STYLE
+      COLOR 255 0 0
+      OUTLINECOLOR 255 0 0
+      OPACITY 40
+    END
   END
   CLASS
     NAME "secteur Au"
     EXPRESSION /secteur Au/
-    COLOR 255 0 0
-    OUTLINECOLOR 255 0 0
-    OPACITY 40
+    STYLE
+      COLOR 255 0 0
+      OUTLINECOLOR 255 0 0
+      OPACITY 40
+    END
   END
   CLASS
     NAME "secteur Ao"
     EXPRESSION /secteur Ao/
-    COLOR 255 218 191
-    OUTLINECOLOR 255 218 191
-    OPACITY 60
+    STYLE
+      COLOR 255 218 191
+      OUTLINECOLOR 255 218 191
+      OPACITY 60
+    END
   END
+  CLASS
   NAME "Aire Zu"
   EXPRESSION /A. ZU/
   STYLE
