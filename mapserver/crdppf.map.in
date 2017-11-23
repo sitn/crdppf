@@ -1310,8 +1310,8 @@ LAYER
     OUTLINECOLOR 0 0 128
   END
   CLASS
-    NAME "Aire Zu"
-    EXPRESSION /A. ZU/
+    NAME "S3Zu"
+    EXPRESSION /S3ZU/
     STYLE
       COLOR 179 210 255
       OUTLINECOLOR 0 0 128
@@ -1341,21 +1341,39 @@ LAYER
   DATA "geom from crdppf.r132_perimetre_prot_eau using unique idobj using srid=2056"
   TYPE POLYGON
   TEMPLATE "ttt"
-  OPACITY 60
   CLASSITEM "teneur"
-  CLASS
-    NAME "ÜB"
-    EXPRESSION /ÜB/
-    STYLE
-      OUTLINECOLOR 0 180 0
-      WIDTH 2
-    END
-  END
   CLASS
     NAME "secteur Ao et Au"
     EXPRESSION /secteur Ao et Au/
-    COLOR 0 0 255
-    OUTLINECOLOR 0 0 0
+    COLOR 255 0 0
+    OUTLINECOLOR 255 0 0
+    OPACITY 40
+  END
+  CLASS
+    NAME "secteur Au"
+    EXPRESSION /secteur Au/
+    COLOR 255 0 0
+    OUTLINECOLOR 255 0 0
+    OPACITY 40
+  END
+  CLASS
+    NAME "secteur Ao"
+    EXPRESSION /secteur Ao/
+    COLOR 255 218 191
+    OUTLINECOLOR 255 218 191
+    OPACITY 60
+  END
+  NAME "Aire Zu"
+  EXPRESSION /A. ZU/
+  STYLE
+    COLOR 0 0 0
+    OUTLINECOLOR 170 102 204
+  END
+  STYLE
+    SYMBOL "hachure1"
+    ANGLE 90
+    COLOR 170 102 204
+    SIZE 5
   END
 END
 
