@@ -31,3 +31,4 @@ crdppfportal/documents_legaux/*.*
 deploy/deploy.cfg
 deploy/hooks/post-restore-database
 mapserver/*.map
+*.pdf
