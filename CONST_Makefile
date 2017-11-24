@@ -14,6 +14,8 @@ PIP_VERSION ?= pip>=9
 SETUPTOOL_VERSION ?= setuptools>=36
 
 
+OUTPUT_DIR = $(SUB_PACKAGE)/static/build
+
 # Make rules
 
 # Requirements
@@ -30,7 +32,7 @@ REQUIREMENTS += -r $(CONST_REQUIREMENT)
 TEMPLATES_FILES = $(shell find $(PACKAGE)/templates -type f -print) $(shell find $(SUB_PACKAGE)/templates -type f -print)
 
 # Templates
-TEMPLATE_EXCLUDE += $(PACKAGE)/static $(SUBPACKAGE)/static
+TEMPLATE_EXCLUDE += .build $(PACKAGE)/static $(SUB_PACKAGE)/static $(SUB_PACKAGE)/templates $(PACKAGE)/templates
 
 FIND_OPTS = $(foreach ELEM, $(TEMPLATE_EXCLUDE),-path ./$(ELEM) -prune -o) -type f
 TEMPLATE_FILES = $(shell find $(FIND_OPTS) -name "*.in" -print)
@@ -43,7 +45,7 @@ CONFIG_VARS += \
 	sqlalchemy.url \
 	instanceid \
 	specific_root_dir \
-	db.cfg  \
+	database.cfg \
 	tile_date_file \
 	ch_wms \
 	default_language \
@@ -76,10 +78,31 @@ C2C_TEMPLATE_CMD = $(ENVIRONMENT_VARS) $(VENV_BIN)/c2c-template --vars $(VARS_FI
 MAKE_FILES = $(shell ls -1 *.mk) CONST_Makefile
 PY_FILES = $(shell find $(PACKAGE) -type f -name '*.py' -print)
 
-DEFAULT_BUILD_RULES ?= .build/requirements.timestamp build-javascript build-server
+JSBUILD_MAIN_FILES = $(shell find $(SUB_PACKAGE)/static/lib $(SUB_PACKAGE)/static/js -name "*.js" -print 2> /dev/null)
+JSBUILD_MAIN_CONFIG = $(SUB_PROJECT)/jsbuild/app.cfg
+JSBUILD_MAIN_OUTPUT_FILES ?= crdppf.js
+JSBUILD_MAIN_OUTPUT_FILES := $(addprefix $(OUTPUT_DIR)/, $(JSBUILD_MAIN_OUTPUT_FILES))
 
+
+TOMCAT_START_COMMAND ?= net START Tomcat8
+TOMCAT_STOP_COMMAND ?= net STOP Tomcat8
+PRINT_TMP = tmp
+PRINT_BASE_DIR ?= print
+PRINT_WAR ?= print-$(INSTANCE_ID).war
+PRINT_OUTPUT ?= D:/Applications/ApacheTomcat/webapps
+PRINT_OUTPUT_WAR = $(PRINT_OUTPUT)/$(PRINT_WAR)
+PRINT_BASE_WAR ?= print-servlet-2.0-SNAPSHOT-IMG-MAGICK.war
+PRINT_INPUT_LS += config.yaml WEB-INF/classes/log4j.properties
+PRINT_INPUT_FIND += *.tif *.bmp *.jpg *.jpeg *.gif *.png *.pdf *.xml
+PRINT_INPUT += $(shell cd $(PRINT_BASE_DIR) && ls -1 $(PRINT_INPUT_LS) 2> /dev/null)
+PRINT_INPUT += $(foreach INPUT, $(PRINT_INPUT_FIND), $(shell cd $(PRINT_BASE_DIR) && find -name '$(INPUT)' -type f))
+PRINT_REQUIREMENT += $(addprefix $(PRINT_BASE_DIR)/, $(PRINT_INPUT))
+
+PRINT_REQUIREMENT += $(PRINT_BASE_DIR)/$(PRINT_BASE_WAR)
+
+
+DEFAULT_BUILD_RULES ?= .build/requirements.timestamp update-git-submodules build-javascript build-server
 DEFAULT_BUILD_RULES += print
-
 BUILD_RULES ?= $(PRE_RULES) $(filter-out $(DISABLE_BUILD_RULES),$(DEFAULT_BUILD_RULES)) $(POST_RULES)
 
 
@@ -93,6 +116,7 @@ help:
 	@echo  "Main targets:"
 	@echo
 	@echo  "- build			Build and configure the project"
+	@echo  "- update-git-submodules	Update and clean the Git submodules"
 	@echo  "- checks		Perform a number of checks on the code"
 	@echo  "- serve			Run the development server (Pserve)"
 	@echo  "- clean			Remove generated files"
@@ -103,8 +127,10 @@ endif
 	@echo
 	@echo  "Secondary targets:"
 	@echo
+	@echo  "- build-javascript	Build the javascript"
 	@echo  "- template-clean	Clean the template file"
 	@echo  "- template-generate	Generate the template file"
+	@echo  "- print	Generate the print templates"
 ifdef SECONDARY_HELP
 	@echo $(SECONDARY_HELP)
 endif
@@ -112,6 +138,14 @@ endif
 
 .PHONY: build
 build: $(BUILD_RULES)
+
+.PHONY: update-git-submodules
+update-git-submodules:
+	cd $(SUB_PROJECT) && git submodule sync
+	cd $(SUB_PROJECT) && git submodule update --init
+
+.PHONY: build-server
+build-server: template-generate
 
 .PHONY: checks
 checks: flake8 $(CLIENT_CHECK_RULE) $(WEB_RULE)
@@ -129,12 +163,30 @@ cleanall: clean
 flake8: $(VENV_BIN)/flake8
 	$(VENV_BIN)/flake8 $(PACKAGE)
 
-.PHONY: build-server
-build-server: template-generate
-
 .PHONY: serve
 serve: build development.ini
 	$(VENV_BIN)/pserve --reload --monitor-restart development.ini
+
+.PHONY: print
+print: $(PRINT_OUTPUT)/$(PRINT_WAR)
+
+$(PRINT_OUTPUT)/$(PRINT_WAR): $(PRINT_REQUIREMENT)
+	mkdir -p $(PRINT_BASE_DIR)/$(PRINT_TMP)
+	cp $(PRINT_BASE_DIR)/$(PRINT_BASE_WAR) $(PRINT_BASE_DIR)/$(PRINT_TMP)/$(PRINT_WAR)
+	cd $(PRINT_BASE_DIR) && jar -uf $(PRINT_TMP)/$(PRINT_WAR) $(PRINT_INPUT)
+
+ifneq ($(TOMCAT_STOP_COMMAND),)
+	$(TOMCAT_STOP_COMMAND)
+endif
+	$(TOMCAT_OUTPUT_CMD_PREFIX) rm -f $(PRINT_OUTPUT)/$(PRINT_WAR)
+	$(TOMCAT_OUTPUT_CMD_PREFIX) rm -rf $(PRINT_OUTPUT)/$(PRINT_WAR:.war=)
+
+	mv $(PRINT_BASE_DIR)/$(PRINT_TMP)/$(PRINT_WAR) $(PRINT_OUTPUT)
+	cd $(PRINT_BASE_DIR) && rm -fd $(PRINT_TMP)
+
+ifneq ($(TOMCAT_START_COMMAND),)
+	$(TOMCAT_START_COMMAND)
+endif
 
 # Templates
 
@@ -191,9 +243,17 @@ $(VENV_BIN)/flake8: .build/dev-requirements.timestamp
 
 .build/requirements.timestamp: $(EGGS_DEPENDENCIES)
 	$(PIP_CMD) $(PIP_INSTALL_ARGS) $(REQUIREMENTS) $(PIP_REDIRECT)
-	@echo "BOUM"
+	@echo "BOUM - We got an error"
 	touch $@
 
 $(CONST_REQUIREMENT_LOCAL_FILE):
 	$(PIP_CMD) $(PIP_INSTALL_ARGS) -r $(CONST_REQUIREMENT_LOCAL_FILE)
+	touch $@
+
+.PHONY: build-javascript
+build-javascript: .build/jsbuild.timestamp
+
+.build/jsbuild.timestamp: $(JSBUILD_MAIN_FILES) $(JSBUILD_MAIN_CONFIG)
+	mkdir -p $(OUTPUT_DIR)
+	$(VENV_BIN)/jsbuild $(JSBUILD_MAIN_CONFIG) -o $(OUTPUT_DIR)
 	touch $@

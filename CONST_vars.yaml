@@ -78,16 +78,18 @@ vars:
     tomcat_webapp_folder: OVERWRITEME
     
     directory: __import__('os').getcwd()
-        python_path: __import__('distutils').sysconfig.get_python_lib()
+    python_path: __import__('distutils').sysconfig.get_python_lib()
 
     sqlalchemy:
         url: postgresql://{dbuser}:{dbpassword}@{dbhost}:{dbport}/{db}
-    db:
-        cfg: {directory}/{yaml_dbconfig_file}
+
+    database:
+        cfg: "{directory}/{yaml_dbconfig_file}"
     app:
-        cfg: {directory}/config_pdf.yaml
-    
-    tile_date_file: {directory}/tile_date.yaml
+        cfg: "{directory}/config_pdf.yaml"
+
+    tile_date_file: "{directory}/tile_date.yaml"
+    specific_root_dir: "{directory}/crdppfportal"
   
 interpreted:
     python:
