@@ -1,0 +1,97 @@
+vars:
+    # Project instance_id
+    instanceid: INSTANCE_ID
+    
+    # Host of the application
+    host: overwrite_me
+
+    # DATABASE
+    # database user
+    dbuser: overwrite_me
+    # database password
+    dbpassword: overwrite_me
+    # database host
+    dbhost: overwrite_me
+    # database port
+    dbport: overwrite_me
+    # database name
+    db: overwrite_me
+
+    # Application configuration
+    yaml_dbconfig_file: config_db.yaml
+
+    # default language (currently Fr or De)
+    default_language: Fr
+    
+    disclaimer: overwrite_me
+
+    # APACHE
+    apache24_location: ""
+
+    # MAPSERVER
+    mapserv_allow: overwrite_me
+    mapserverexec: overwrite_me
+    mapserv_access_control: |
+        Order Deny,Allow
+        Deny from all
+
+    # CRDPPF webapp definitions
+    crdppf_wms: http://localhost/{instanceid}/wmscrdppf
+
+    # FEDERAL WEBSERVICES
+    ch_wms: http://wms.geo.admin.ch/
+    # Federal feature service base url
+    chfs_baseurl: https://api3.geo.admin.ch/rest/services/api/MapServer/identify
+
+    # FULLTEXTSEARCH - Define a fulltextsearchURL
+    fulltextsearch_url: overwrite_me
+
+    # BACKGROUND LAYERS - Define a mapproxyurl and other OpenLayers parameters for map.js and layertree.js
+    mapproxyurl: overwrite_me
+    tilesImageFormat: overwrite_me
+    mapExtent: overwrite_me
+    mapMaxExtent: overwrite_me
+    mapCenter: overwrite_me
+    mapSRS: overwrite_me
+    mapResolutions: overwrite_me
+    mapMatrixSet: overwrite_me
+    mapOverviewExtent: overwrite_me
+    mapOverviewSizeW: overwrite_me
+    mapOverviewSizeH: overwrite_me
+    keymap: overwrite_me
+
+    # MAPSERVER map extent
+    mapExtentMinX: overwrite_me
+    mapExtentMinY: overwrite_me
+    mapExtentMaxX: overwrite_me
+    mapExtentMaxY: overwrite_me
+
+    # Logon -> Should the system write to the log (pserve console or Apache error.log file)
+    logon: overwrite_me
+
+    # Waitress port
+    waitress_port: overwrite_me
+
+    # Print level logger (DEBUG if development else ERROR)
+    print_level_logger: ERROR
+
+    tomcat_webapp_folder: OVERWRITEME
+    
+    directory: __import__('os').getcwd()
+        python_path: __import__('distutils').sysconfig.get_python_lib()
+
+    sqlalchemy:
+        url: postgresql://{dbuser}:{dbpassword}@{dbhost}:{dbport}/{db}
+    db:
+        cfg: {directory}/{yaml_dbconfig_file}
+    app:
+        cfg: {directory}/config_pdf.yaml
+    
+    tile_date_file: {directory}/tile_date.yaml
+  
+interpreted:
+    python:
+    - python_path
+    - directory
+    environment:
+    - instanceid

@@ -1,0 +1,199 @@
+
+VENV_BIN ?= .build/venv/bin
+
+
+PYTHON_VERSION = $(shell $(VENV_BIN)/python -c "import sys; print('%i.%i' % (sys.version_info.major, sys.version_info.minor))" 2> /dev/null)
+
+PACKAGE = crdppfportal
+SUB_PROJECT = crdppf_core
+SUB_PACKAGE = $(SUB_PROJECT)/crdppf
+
+PIP_CMD ?= $(VENV_BIN)/pip
+PIP_INSTALL_ARGS += install
+PIP_VERSION ?= pip>=9
+SETUPTOOL_VERSION ?= setuptools>=36
+
+
+# Make rules
+
+# Requirements
+CONST_REQUIREMENT_FILE ?= CONST_requirements.txt
+CONST_REQUIREMENT ?= $(SUB_PROJECT)/$(CONST_REQUIREMENT_FILE)
+
+CONST_REQUIREMENT_LOCAL_FILE ?= CONST_requirements.txt
+
+EGGS_DEPENDENCIES += .build/venv.timestamp-noclean $(CONST_REQUIREMENT_LOCAL_FILE) setup.py $(SUB_PROJECT)/setup.py $(SUB_PROJECT)/CONST_versions.txt $(CONST_REQUIREMENT)
+
+REQUIREMENTS += -r $(CONST_REQUIREMENT)
+
+
+TEMPLATES_FILES = $(shell find $(PACKAGE)/templates -type f -print) $(shell find $(SUB_PACKAGE)/templates -type f -print)
+
+# Templates
+TEMPLATE_EXCLUDE += $(PACKAGE)/static $(SUBPACKAGE)/static
+
+FIND_OPTS = $(foreach ELEM, $(TEMPLATE_EXCLUDE),-path ./$(ELEM) -prune -o) -type f
+TEMPLATE_FILES = $(shell find $(FIND_OPTS) -name "*.in" -print)
+MAKO_FILES = $(shell find $(FIND_OPTS) -name "*.mako" -print)
+JINJA_FILES = $(shell find $(FIND_OPTS) -name "*.jinja" -print)
+VARS_FILES += CONST_vars.yaml
+VARS_DEPENDS += $(VARS_FILES)
+
+CONFIG_VARS += \
+	sqlalchemy.url \
+	instanceid \
+	specific_root_dir \
+	db.cfg  \
+	tile_date_file \
+	ch_wms \
+	default_language \
+	fulltextsearch_url \
+	defaultTiles \
+	mapproxyurl \
+	mapMatrixSet \
+	mapExtent \
+	mapMaxExtent \
+	mapCenter \
+	mapSRS \
+	mapResolutions \
+	mapMatrixSet \
+	mapOverviewExtent \
+	mapOverviewSizeW \
+	mapOverviewSizeH \
+	keymap \
+	app.cfg \
+	logon
+
+APACHE_ENTRY_POINT ?= /$(INSTANCE_ID)/
+
+ENVIRONMENT_VARS += INSTANCE_ID=${INSTANCE_ID} \
+	APACHE_ENTRY_POINT=$(APACHE_ENTRY_POINT) \
+	DEVELOPMENT=${DEVELOPMENT} \
+	PACKAGE=${PACKAGE} \
+	SUBPACKAGE=${SUBPACKAGE}
+
+C2C_TEMPLATE_CMD = $(ENVIRONMENT_VARS) $(VENV_BIN)/c2c-template --vars $(VARS_FILE)
+MAKE_FILES = $(shell ls -1 *.mk) CONST_Makefile
+PY_FILES = $(shell find $(PACKAGE) -type f -name '*.py' -print)
+
+DEFAULT_BUILD_RULES ?= .build/requirements.timestamp build-javascript build-server
+
+DEFAULT_BUILD_RULES += print
+
+BUILD_RULES ?= $(PRE_RULES) $(filter-out $(DISABLE_BUILD_RULES),$(DEFAULT_BUILD_RULES)) $(POST_RULES)
+
+
+# Disabling Make built-in rules to speed up execution time
+.SUFFIXES:
+
+.PHONY: help
+help:
+	@echo  "Usage: make <target>"
+	@echo
+	@echo  "Main targets:"
+	@echo
+	@echo  "- build			Build and configure the project"
+	@echo  "- checks		Perform a number of checks on the code"
+	@echo  "- serve			Run the development server (Pserve)"
+	@echo  "- clean			Remove generated files"
+	@echo  "- cleanall		Remove all the build artefacts"
+ifdef UTILITY_HELP
+	@echo $(UTILITY_HELP)
+endif
+	@echo
+	@echo  "Secondary targets:"
+	@echo
+	@echo  "- template-clean	Clean the template file"
+	@echo  "- template-generate	Generate the template file"
+ifdef SECONDARY_HELP
+	@echo $(SECONDARY_HELP)
+endif
+	@echo
+
+.PHONY: build
+build: $(BUILD_RULES)
+
+.PHONY: checks
+checks: flake8 $(CLIENT_CHECK_RULE) $(WEB_RULE)
+
+.PHONY: clean
+clean: template-clean
+	rm -f .build/*.timestamp
+	rm -f $(APACHE_CONF_DIR)/$(INSTANCE_ID).conf
+
+.PHONY: cleanall
+cleanall: clean
+	rm -rf .build
+
+.PHONY: flake8
+flake8: $(VENV_BIN)/flake8
+	$(VENV_BIN)/flake8 $(PACKAGE)
+
+.PHONY: build-server
+build-server: template-generate
+
+.PHONY: serve
+serve: build development.ini
+	$(VENV_BIN)/pserve --reload --monitor-restart development.ini
+
+# Templates
+
+.PHONY: template-clean
+template-clean:
+	rm -f $(TEMPLATE_FILES:.in=)
+	rm -f $(MAKO_FILES:.mako=)
+	rm -f $(JINJA_FILES:.jinja=)
+	rm -f .build/config.yaml
+
+.PHONY: template-generate
+template-generate: $(TEMPLATE_FILES:.in=) $(MAKO_FILES:.mako=) $(JINJA_FILES:.jinja=) .build/config.yaml
+
+$(TEMPLATE_FILES:.in=) $(MAKO_FILES:.mako=) $(JINJA_FILES:.jinja=): $(VENV_BIN)/c2c-template $(VARS_DEPENDS)
+
+%: %.in $(INSTANCE_ID_MARKER)
+ifeq ($(origin VARS_FILE), undefined)
+	@echo "Error: the variable VARS_FILE is required."
+	exit 1
+endif
+	$(C2C_TEMPLATE_CMD) --engine template --files $<
+
+%: %.mako $(INSTANCE_ID_MARKER)
+ifeq ($(origin VARS_FILE), undefined)
+	@echo "Error: the variable VARS_FILE is required."
+	exit 1
+endif
+	$(C2C_TEMPLATE_CMD) --engine mako --files $<
+
+%: %.jinja $(INSTANCE_ID_MARKER)
+ifeq ($(origin VARS_FILE), undefined)
+	@echo "Error: the variable VARS_FILE is required."
+	exit 1
+endif
+	$(C2C_TEMPLATE_CMD) --engine jinja --files $<
+
+#$(VENV_BIN)/c2c-template: .build/dev-requirements.timestamp
+
+.build/config.yaml: $(INSTANCE_ID_MARKER) $(VENV_BIN)/c2c-template $(VARS_DEPENDS) $(MAKE_FILES)
+	$(C2C_TEMPLATE_CMD) --get-config .build/config.yaml $(CONFIG_VARS)
+
+$(VENV_BIN)/gjslint: .build/dev-requirements.timestamp
+
+$(VENV_BIN)/flake8: .build/dev-requirements.timestamp
+
+# Venv
+
+.build/venv.timestamp-noclean:
+	mkdir -p $(dir $@)
+	virtualenv --setuptools --no-site-packages .build/venv
+	$(PIP_CMD) install \
+		'$(PIP_VERSION)' '$(SETUPTOOL_VERSION)'
+	touch $@
+
+.build/requirements.timestamp: $(EGGS_DEPENDENCIES)
+	$(PIP_CMD) $(PIP_INSTALL_ARGS) $(REQUIREMENTS) $(PIP_REDIRECT)
+	@echo "BOUM"
+	touch $@
+
+$(CONST_REQUIREMENT_LOCAL_FILE):
+	$(PIP_CMD) $(PIP_INSTALL_ARGS) -r $(CONST_REQUIREMENT_LOCAL_FILE)
+	touch $@
