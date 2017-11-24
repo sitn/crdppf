@@ -5,9 +5,10 @@ crdppf_core
 *CRDPPF.pdf
 *.egg-info/
 apache/*.conf
+vars_michael.yaml
+michael.mk
 vars_francois.yaml
 francois.mk
-config_db.yaml
 config_pdf.yaml
 development.ini
 MANIFEST

@@ -1,7 +1,4 @@
-
 VENV_BIN ?= .build/venv/bin
-
-
 PYTHON_VERSION = $(shell $(VENV_BIN)/python -c "import sys; print('%i.%i' % (sys.version_info.major, sys.version_info.minor))" 2> /dev/null)
 
 PACKAGE = crdppfportal
@@ -24,7 +21,7 @@ CONST_REQUIREMENT ?= $(SUB_PROJECT)/$(CONST_REQUIREMENT_FILE)
 
 CONST_REQUIREMENT_LOCAL_FILE ?= CONST_requirements.txt
 
-EGGS_DEPENDENCIES += .build/venv.timestamp-noclean $(CONST_REQUIREMENT_LOCAL_FILE) setup.py $(SUB_PROJECT)/setup.py $(SUB_PROJECT)/CONST_versions.txt $(CONST_REQUIREMENT)
+EGGS_DEPENDENCIES += .build/venv.timestamp-noclean .build/crdppf_core.timestamp $(CONST_REQUIREMENT_LOCAL_FILE) setup.py $(CONST_REQUIREMENT) $(SUB_PROJECT)/setup.py $(SUB_PROJECT)/CONST_versions.txt
 
 REQUIREMENTS += -r $(CONST_REQUIREMENT)
 
@@ -63,7 +60,8 @@ CONFIG_VARS += \
 	mapOverviewSizeW \
 	mapOverviewSizeH \
 	keymap \
-	app.cfg \
+	disclaimer \
+	pdf.cfg \
 	logon
 
 APACHE_ENTRY_POINT ?= /$(INSTANCE_ID)/
@@ -83,26 +81,8 @@ JSBUILD_MAIN_CONFIG = $(SUB_PROJECT)/jsbuild/app.cfg
 JSBUILD_MAIN_OUTPUT_FILES ?= crdppf.js
 JSBUILD_MAIN_OUTPUT_FILES := $(addprefix $(OUTPUT_DIR)/, $(JSBUILD_MAIN_OUTPUT_FILES))
 
-
-TOMCAT_START_COMMAND ?= net START Tomcat8
-TOMCAT_STOP_COMMAND ?= net STOP Tomcat8
-PRINT_TMP = tmp
-PRINT_BASE_DIR ?= print
-PRINT_WAR ?= print-$(INSTANCE_ID).war
-PRINT_OUTPUT ?= D:/Applications/ApacheTomcat/webapps
-PRINT_OUTPUT_WAR = $(PRINT_OUTPUT)/$(PRINT_WAR)
-PRINT_BASE_WAR ?= print-servlet-2.0-SNAPSHOT-IMG-MAGICK.war
-PRINT_INPUT_LS += config.yaml WEB-INF/classes/log4j.properties
-PRINT_INPUT_FIND += *.tif *.bmp *.jpg *.jpeg *.gif *.png *.pdf *.xml
-PRINT_INPUT += $(shell cd $(PRINT_BASE_DIR) && ls -1 $(PRINT_INPUT_LS) 2> /dev/null)
-PRINT_INPUT += $(foreach INPUT, $(PRINT_INPUT_FIND), $(shell cd $(PRINT_BASE_DIR) && find -name '$(INPUT)' -type f))
-PRINT_REQUIREMENT += $(addprefix $(PRINT_BASE_DIR)/, $(PRINT_INPUT))
-
-PRINT_REQUIREMENT += $(PRINT_BASE_DIR)/$(PRINT_BASE_WAR)
-
-
 DEFAULT_BUILD_RULES ?= .build/requirements.timestamp update-git-submodules build-javascript build-server
-DEFAULT_BUILD_RULES += print
+# DEFAULT_BUILD_RULES += print
 BUILD_RULES ?= $(PRE_RULES) $(filter-out $(DISABLE_BUILD_RULES),$(DEFAULT_BUILD_RULES)) $(POST_RULES)
 
 
@@ -117,8 +97,6 @@ help:
 	@echo
 	@echo  "- build			Build and configure the project"
 	@echo  "- update-git-submodules	Update and clean the Git submodules"
-	@echo  "- checks		Perform a number of checks on the code"
-	@echo  "- serve			Run the development server (Pserve)"
 	@echo  "- clean			Remove generated files"
 	@echo  "- cleanall		Remove all the build artefacts"
 ifdef UTILITY_HELP
@@ -139,16 +117,8 @@ endif
 .PHONY: build
 build: $(BUILD_RULES)
 
-.PHONY: update-git-submodules
-update-git-submodules:
-	cd $(SUB_PROJECT) && git submodule sync
-	cd $(SUB_PROJECT) && git submodule update --init
-
 .PHONY: build-server
 build-server: template-generate
-
-.PHONY: checks
-checks: flake8 $(CLIENT_CHECK_RULE) $(WEB_RULE)
 
 .PHONY: clean
 clean: template-clean
@@ -159,37 +129,11 @@ clean: template-clean
 cleanall: clean
 	rm -rf .build
 
-.PHONY: flake8
-flake8: $(VENV_BIN)/flake8
-	$(VENV_BIN)/flake8 $(PACKAGE)
-
-.PHONY: serve
-serve: build development.ini
-	$(VENV_BIN)/pserve --reload --monitor-restart development.ini
-
-.PHONY: print
-print: $(PRINT_OUTPUT)/$(PRINT_WAR)
-
-$(PRINT_OUTPUT)/$(PRINT_WAR): $(PRINT_REQUIREMENT)
-	mkdir -p $(PRINT_BASE_DIR)/$(PRINT_TMP)
-	cp $(PRINT_BASE_DIR)/$(PRINT_BASE_WAR) $(PRINT_BASE_DIR)/$(PRINT_TMP)/$(PRINT_WAR)
-	cd $(PRINT_BASE_DIR) && jar -uf $(PRINT_TMP)/$(PRINT_WAR) $(PRINT_INPUT)
-
-ifneq ($(TOMCAT_STOP_COMMAND),)
-	$(TOMCAT_STOP_COMMAND)
-endif
-	$(TOMCAT_OUTPUT_CMD_PREFIX) rm -f $(PRINT_OUTPUT)/$(PRINT_WAR)
-	$(TOMCAT_OUTPUT_CMD_PREFIX) rm -rf $(PRINT_OUTPUT)/$(PRINT_WAR:.war=)
-
-	mv $(PRINT_BASE_DIR)/$(PRINT_TMP)/$(PRINT_WAR) $(PRINT_OUTPUT)
-	cd $(PRINT_BASE_DIR) && rm -fd $(PRINT_TMP)
-
-ifneq ($(TOMCAT_START_COMMAND),)
-	$(TOMCAT_START_COMMAND)
-endif
+.PHONY: echostuff
+echostuff:
+	@echo $(MAKO_FILES:.mako=)
 
 # Templates
-
 .PHONY: template-clean
 template-clean:
 	rm -f $(TEMPLATE_FILES:.in=)
@@ -223,12 +167,8 @@ ifeq ($(origin VARS_FILE), undefined)
 endif
 	$(C2C_TEMPLATE_CMD) --engine jinja --files $<
 
-#$(VENV_BIN)/c2c-template: .build/dev-requirements.timestamp
-
 .build/config.yaml: $(INSTANCE_ID_MARKER) $(VENV_BIN)/c2c-template $(VARS_DEPENDS) $(MAKE_FILES)
 	$(C2C_TEMPLATE_CMD) --get-config .build/config.yaml $(CONFIG_VARS)
-
-$(VENV_BIN)/gjslint: .build/dev-requirements.timestamp
 
 $(VENV_BIN)/flake8: .build/dev-requirements.timestamp
 
@@ -246,7 +186,7 @@ $(VENV_BIN)/flake8: .build/dev-requirements.timestamp
 	@echo "BOUM - We got an error"
 	touch $@
 
-$(CONST_REQUIREMENT_LOCAL_FILE):
+.build/crdppf_core.timestamp:
 	$(PIP_CMD) $(PIP_INSTALL_ARGS) -r $(CONST_REQUIREMENT_LOCAL_FILE)
 	touch $@
 
@@ -256,4 +196,13 @@ build-javascript: .build/jsbuild.timestamp
 .build/jsbuild.timestamp: $(JSBUILD_MAIN_FILES) $(JSBUILD_MAIN_CONFIG)
 	mkdir -p $(OUTPUT_DIR)
 	$(VENV_BIN)/jsbuild $(JSBUILD_MAIN_CONFIG) -o $(OUTPUT_DIR)
+	touch $@
+    
+    
+.PHONY: update-git-submodules
+update-git-submodules:  .build/git-submodules.timestamp
+
+.build/git-submodules.timestamp: 
+	cd $(SUB_PROJECT) && git submodule sync
+	cd $(SUB_PROJECT) && git submodule update --init
 	touch $@

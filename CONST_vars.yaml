@@ -85,7 +85,7 @@ vars:
 
     database:
         cfg: "{directory}/{yaml_dbconfig_file}"
-    app:
+    pdf:
         cfg: "{directory}/config_pdf.yaml"
 
     tile_date_file: "{directory}/tile_date.yaml"

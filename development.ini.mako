@@ -11,6 +11,8 @@ pyramid.includes =
     pyramid_debugtoolbar
     pyramid_tm
 
+app.cfg = %(here)s/.build/config.yaml
+
 [server:main]
 use = egg:waitress#main
 host = 0.0.0.0

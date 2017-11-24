@@ -1,1 +1,2 @@
-git+https://github.com/sitn/crdppf_core.git@master#egg=crdppf_core
+
+-e

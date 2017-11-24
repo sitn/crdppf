@@ -9,6 +9,8 @@ pyramid.default_locale_name = en
 pyramid.includes =
     pyramid_tm
 
+app.cfg = %(here)s/.build/config.yaml
+
 [server:main]
 use = egg:waitress#main
 host = 0.0.0.0

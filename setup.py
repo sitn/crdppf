@@ -15,7 +15,7 @@ setup(
     author_email='sitn@ne.ch',
     url='http://www.ne.ch/sitn',
     install_requires=[],
-    packages=find_packages(exclude=['ez_setup']),
+    packages=find_packages(),
     include_package_data=True,
     zip_safe=False,
     entry_points={

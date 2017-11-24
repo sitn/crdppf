@@ -9,7 +9,7 @@
     arrived, first used
 """
 
-ALLDIRS = ["c:\\mapfish\\crdppf\\.build\\venv\\Lib\\site-packages"]
+ALLDIRS = ["c:\\git_projects\\crdppf\\.build\\venv\\Lib\\site-packages"]
 
 import sys
 import site
@@ -31,6 +31,6 @@ sys.path[:0] = new_sys_path
 
 from pyramid.paster import get_app, setup_logging
 
-configfile = "C:\\Mapfish\\crdppf\\production.ini"
+configfile = "C:\\git_projects\\crdppf\\production.ini"
 setup_logging(configfile)
 application = get_app(configfile, 'main')
