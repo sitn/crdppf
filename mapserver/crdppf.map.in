@@ -917,7 +917,7 @@ LAYER
   TEMPLATE "ttt"
   OPACITY 60
   CLASS
-    NAME "Zones réservées des inst. ferrovières"
+    NAME "Zones réservées des inst. ferroviaires"
     COLOR 220 220 0
     OUTLINECOLOR 180 180 0
    END
@@ -941,7 +941,7 @@ LAYER
   TEMPLATE "ttt"
   OPACITY 60
   CLASS
-    NAME "Aligenements des install. ferrovières"
+    NAME "Alignements des inst. ferroviairess"
     COLOR 220 220 0
    END
 END
@@ -963,7 +963,7 @@ LAYER
   TYPE POLYGON
   TEMPLATE "ttt"
   CLASS
-    NAME "Zones rés. des install. aéroportuaires"
+    NAME "Zones réservées des inst. aéroportuaires"
     STYLE
       COLOR 255 170 0
       OPACITY 70
@@ -1014,7 +1014,7 @@ LAYER
   TYPE POLYGON
   TEMPLATE "ttt"
   CLASS
-    NAME "Zone de sécurité aéroportuaire"
+    NAME "Zone de la sécurité des aéroports"
     STYLE
       COLOR 192 0 192
       OPACITY 45
@@ -1447,7 +1447,7 @@ LAYER
   TEMPLATE "ttt"
   CLASSITEM "codegenre"
   CLASS
-    NAME "Limite légale de forêt"
+    NAME "Limite forestière statique"
     EXPRESSION /1/
     STYLE
       WIDTH 2
@@ -1478,7 +1478,7 @@ LAYER
   TOLERANCEUNITS pixels
   CLASSITEM "codegenre"
   CLASS
-    NAME "Distance légale à la forêt"
+    NAME "Distance par rapport à la forêt"
     EXPRESSION /7105/
     STYLE
         PATTERN 8 4 1 4 END
@@ -3178,6 +3178,46 @@ LAYER
     STYLE
       OPACITY 40
       COLOR 230 230 230
+     END
+     STYLE
+    OPACITY 40
+        OUTLINECOLOR 130 130 130
+        PATTERN 7 7 END
+        WIDTH 1
+    END
+  END
+  MINSCALEDENOM 50
+  MAXSCALEDENOM 7500
+END
+
+LAYER
+  NAME "mo22_batiments_blancs"
+  TYPE POLYGON
+  METADATA
+       "ows_title" "mo22_batiments"
+       " wms_srs" "EPSG:2056"
+  END
+  CONNECTIONTYPE POSTGIS
+  CONNECTION "user=${vars:dbuser} password=${vars:dbpassword} dbname=${vars:db} host=${vars:dbhost} port=${vars:dbport}"
+  PROCESSING "CLOSE_CONNECTION=DEFER"
+  DATA "geom from mensuration.mo22_batiments using unique idobj using srid=2056"
+  STATUS ON
+  LABELMAXSCALE 1500
+  CLASSITEM "typcou"
+  TEMPLATE "ttt"
+  CLASS
+    NAME "Bâtiments ordinaires"
+    EXPRESSION /ordinaire/
+    STYLE
+      COLOR 255 255 255
+      OUTLINECOLOR 130 130 130
+    END
+  END
+  CLASS
+    NAME "Bâtiments souterrains"
+    EXPRESSION /souterrain/
+    STYLE
+      COLOR 255 255 255
      END
      STYLE
     OPACITY 40
