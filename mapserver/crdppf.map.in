@@ -20,7 +20,7 @@ WEB
     "wfs_encoding"                   "utf-8"
     "wms_title"                        "${vars:instanceid} WMS Server"
     "wms_onlineresource"          "http://${vars:host}/${vars:instanceid}/wmscrdppf"
-    "wms_srs"                         "EPSG:2056" 
+    "wms_srs"                         "EPSG:2056"
   END
 END
 
@@ -64,10 +64,10 @@ LEGEND
 END
 
 
- # A scalebar object is defined one level below the map object.  This object 
-  # controls how a scalebar is drawn by MapServer.  Scalebars can be embedded 
-  # in the map itself or can be created as a separate image.  It has an 
-  # associated MapServer CGI variable called "scalebar" (or [scalebar] when 
+ # A scalebar object is defined one level below the map object.  This object
+  # controls how a scalebar is drawn by MapServer.  Scalebars can be embedded
+  # in the map itself or can be created as a separate image.  It has an
+  # associated MapServer CGI variable called "scalebar" (or [scalebar] when
   # used in the HTML template).
   SCALEBAR
     IMAGECOLOR 255 255 255
@@ -97,7 +97,7 @@ LAYER
     NAME "name1"
     STYLE
       OUTLINECOLOR 120 120 0
-    END 
+    END
   END
   METADATA
     "ows_title" "parcelles"
@@ -125,14 +125,14 @@ LAYER
        "wms_srs"                     "EPSG:2056"
        "wms_title"                   "${vars:instanceid} WMS Server"
        "wms_onlineresource"     "http://${vars:host}/${vars:instanceid}/wmscrdppf"
-       "wms_srs"                    "EPSG:2056" 
+       "wms_srs"                    "EPSG:2056"
   END
   CONNECTIONTYPE POSTGIS
   CONNECTION "user=${vars:dbuser} password=${vars:dbpassword} dbname=${vars:db} host=${vars:dbhost} port=${vars:dbport}"
   PROCESSING "CLOSE_CONNECTION=DEFER"
   DATA "geom from crdppf.r73_contenus_ponctuels using unique idobj using srid=2056"
   STATUS ON
-  CLASSITEM "codegenre" 
+  CLASSITEM "codegenre"
   OPACITY 60
   TEMPLATE "ttt"
   CLASS
@@ -201,14 +201,14 @@ LAYER
        "wms_srs"                    "EPSG:2056"
        "wms_title"                  "${vars:instanceid} WMS Server"
        "wms_onlineresource"    "http://${vars:host}/${vars:instanceid}/wmscrdppf"
-       "wms_srs"                   "EPSG:2056" 
+       "wms_srs"                   "EPSG:2056"
   END
   CONNECTIONTYPE POSTGIS
   CONNECTION "user=${vars:dbuser} password=${vars:dbpassword} dbname=${vars:db} host=${vars:dbhost} port=${vars:dbport}"
   PROCESSING "CLOSE_CONNECTION=DEFER"
   DATA "geom from crdppf.r73_contenus_lineaires using unique idobj using srid=2056"
   STATUS ON
-  CLASSITEM "codegenre" 
+  CLASSITEM "codegenre"
   OPACITY 60
   TEMPLATE "ttt"
   # Limites à la construction
@@ -298,14 +298,14 @@ LAYER
        "wms_srs"                   "EPSG:2056"
        "wms_title"                  "${vars:instanceid} WMS Server"
        "wms_onlineresource"    "http://${vars:host}/${vars:instanceid}/wmscrdppf"
-       "wms_srs"                   "EPSG:2056" 
+       "wms_srs"                   "EPSG:2056"
   END
   CONNECTIONTYPE POSTGIS
   CONNECTION "user=${vars:dbuser} password=${vars:dbpassword} dbname=${vars:db} host=${vars:dbhost} port=${vars:dbport}"
   PROCESSING "CLOSE_CONNECTION=DEFER"
   DATA "geom from crdppf.r73_perimetres_superposes using unique idobj using srid=2056"
   STATUS ON
-  CLASSITEM "codegenre" 
+  CLASSITEM "codegenre"
   OPACITY 90
   TEMPLATE "ttt"
   CLASS
@@ -412,7 +412,7 @@ LAYER
     EXPRESSION /6909/
     STYLE
         PATTERN 15 15 END
-        OUTLINECOLOR 0 0 0        
+        OUTLINECOLOR 0 0 0
         WIDTH 2
     END
   END
@@ -430,7 +430,7 @@ LAYER
     EXPRESSION /6911/
     STYLE
         PATTERN 15 3 3 3 END
-        OUTLINECOLOR 0 0 0        
+        OUTLINECOLOR 0 0 0
         WIDTH 2
     END
   END
@@ -491,14 +491,14 @@ LAYER
        "wms_srs" "EPSG:2056"
        "wms_title"           "${vars:instanceid} WMS Server"
        "wms_onlineresource" "http://${vars:host}/${vars:instanceid}/wmscrdppf"
-       "wms_srs"            "EPSG:2056" 
+       "wms_srs"            "EPSG:2056"
   END
   CONNECTIONTYPE POSTGIS
   CONNECTION "user=${vars:dbuser} password=${vars:dbpassword} dbname=${vars:db} host=${vars:dbhost} port=${vars:dbport}"
   PROCESSING "CLOSE_CONNECTION=DEFER"
   DATA "geom from crdppf.r73_zones_superposees using unique idobj using srid=2056"
   STATUS ON
-  CLASSITEM "codegenre" 
+  CLASSITEM "codegenre"
   OPACITY 90
   TEMPLATE "ttt"
   CLASS
@@ -530,7 +530,7 @@ LAYER
         SYMBOL "hachure3"
         SIZE 3
         COLOR 135 145 45
-     END    
+     END
   END
   CLASS
     NAME "Biotope cantonal"
@@ -608,14 +608,14 @@ LAYER
        "wms_srs" "EPSG:2056"
        "wms_title"           "${vars:instanceid} WMS Server"
        "wms_onlineresource" "http://${vars:host}/${vars:instanceid}/wmscrdppf"
-       "wms_srs"            "EPSG:2056" 
+       "wms_srs"            "EPSG:2056"
   END
   CONNECTIONTYPE POSTGIS
   CONNECTION "user=${vars:dbuser} password=${vars:dbpassword} dbname=${vars:db} host=${vars:dbhost} port=${vars:dbport}"
   PROCESSING "CLOSE_CONNECTION=DEFER"
   DATA "geom from crdppf.r73_affectations_primaires using unique idobj using srid=2056"
   STATUS ON
-  CLASSITEM "codegenre" 
+  CLASSITEM "codegenre"
   OPACITY 50
   TEMPLATE "ttt"
   CLASS
@@ -736,7 +736,7 @@ LAYER
     NAME "Fermes"
     EXPRESSION /1603/
     COLOR 176 176 0
-  END  
+  END
   CLASS
     NAME "Verdure"
     EXPRESSION /1604/
@@ -764,7 +764,7 @@ LAYER
       OUTLINECOLOR 128 0 128
       SYMBOL 9
       SIZE 3
-    END 
+    END
   END
   CLASS
     NAME "Zone de protection 1"
@@ -883,7 +883,7 @@ LAYER
        "wms_srs"                    "EPSG:2056"
        "wms_title"                      "${vars:instanceid} WMS Server"
        "wms_onlineresource"     "http://${vars:host}/${vars:instanceid}/wmscrdppf"
-       "wms_srs"                    "EPSG:2056" 
+       "wms_srs"                    "EPSG:2056"
   END
   CONNECTIONTYPE POSTGIS
   CONNECTION "user=${vars:dbuser} password=${vars:dbpassword} dbname=${vars:db} host=${vars:dbhost} port=${vars:dbport}"
@@ -907,7 +907,7 @@ LAYER
        "wms_srs"                    "EPSG:2056"
        "wms_title"                      "${vars:instanceid} WMS Server"
        "wms_onlineresource"     "http://${vars:host}/${vars:instanceid}/wmscrdppf"
-       "wms_srs"                    "EPSG:2056" 
+       "wms_srs"                    "EPSG:2056"
   END
   CONNECTIONTYPE POSTGIS
   CONNECTION "user=${vars:dbuser} password=${vars:dbpassword} dbname=${vars:db} host=${vars:dbhost} port=${vars:dbport}"
@@ -931,7 +931,7 @@ LAYER
        "wms_srs"                    "EPSG:2056"
        "wms_title"                      "${vars:instanceid} WMS Server"
        "wms_onlineresource"     "http://${vars:host}/${vars:instanceid}/wmscrdppf"
-       "wms_srs"                    "EPSG:2056" 
+       "wms_srs"                    "EPSG:2056"
   END
   CONNECTIONTYPE POSTGIS
   CONNECTION "user=${vars:dbuser} password=${vars:dbpassword} dbname=${vars:db} host=${vars:dbhost} port=${vars:dbport}"
@@ -954,7 +954,7 @@ LAYER
        "wms_srs"                    "EPSG:2056"
        "wms_title"                      "${vars:instanceid} WMS Server"
        "wms_onlineresource"     "http://${vars:host}/${vars:instanceid}/wmscrdppf"
-       "wms_srs"                    "EPSG:2056" 
+       "wms_srs"                    "EPSG:2056"
   END
   CONNECTIONTYPE POSTGIS
   CONNECTION "user=${vars:dbuser} password=${vars:dbpassword} dbname=${vars:db} host=${vars:dbhost} port=${vars:dbport}"
@@ -962,11 +962,15 @@ LAYER
   DATA "geom from crdppf.r103_bazl_projektierungszonen_flughafenanlagen using unique idobj using srid=2056"
   TYPE POLYGON
   TEMPLATE "ttt"
-  OPACITY 60
   CLASS
     NAME "Zones rés. des install. aéroportuaires"
-    COLOR 255 230 180
-    OUTLINECOLOR 255 170 0
+    STYLE
+      COLOR 255 170 0
+      OPACITY 70
+    END
+    STYLE
+      OUTLINECOLOR 255 170 0
+    END
    END
 END
 
@@ -978,7 +982,7 @@ LAYER
        "wms_srs"                    "EPSG:2056"
        "wms_title"                      "${vars:instanceid} WMS Server"
        "wms_onlineresource"     "http://${vars:host}/${vars:instanceid}/wmscrdppf"
-       "wms_srs"                    "EPSG:2056" 
+       "wms_srs"                    "EPSG:2056"
   END
   CONNECTIONTYPE POSTGIS
   CONNECTION "user=${vars:dbuser} password=${vars:dbpassword} dbname=${vars:db} host=${vars:dbhost} port=${vars:dbport}"
@@ -1001,7 +1005,7 @@ LAYER
        "wms_srs"                    "EPSG:2056"
        "wms_title"                      "${vars:instanceid} WMS Server"
        "wms_onlineresource"     "http://${vars:host}/${vars:instanceid}/wmscrdppf"
-       "wms_srs"                    "EPSG:2056" 
+       "wms_srs"                    "EPSG:2056"
   END
   CONNECTIONTYPE POSTGIS
   CONNECTION "user=${vars:dbuser} password=${vars:dbpassword} dbname=${vars:db} host=${vars:dbhost} port=${vars:dbport}"
@@ -1009,11 +1013,15 @@ LAYER
   DATA "geom from crdppf.r108_bazl_sicherheitszonenplan using unique idobj using srid=2056"
   TYPE POLYGON
   TEMPLATE "ttt"
-  OPACITY 60
   CLASS
     NAME "Zone de sécurité aéroportuaire"
-    COLOR 200 70 255
-    OUTLINECOLOR 192 0 192
+    STYLE
+      COLOR 192 0 192
+      OPACITY 45
+    END
+    STYLE
+      OUTLINECOLOR 192 0 192
+    END
    END
 END
 
@@ -1025,33 +1033,51 @@ LAYER
        "wms_srs"                    "EPSG:2056"
        "wms_title"                      "${vars:instanceid} WMS Server"
        "wms_onlineresource"     "http://${vars:host}/${vars:instanceid}/wmscrdppf"
-       "wms_srs"                    "EPSG:2056" 
+       "wms_srs"                    "EPSG:2056"
   END
   CONNECTIONTYPE POSTGIS
   CONNECTION "user=${vars:dbuser} password=${vars:dbpassword} dbname=${vars:db} host=${vars:dbhost} port=${vars:dbport}"
   PROCESSING "CLOSE_CONNECTION=DEFER"
   DATA "geom from crdppf.r116_sites_pollues using unique idobj using srid=2056"
   TYPE POLYGON
-  CLASSITEM "codegenre"
   TEMPLATE "ttt"
   OPACITY 60
+  CLASSITEM "codegenre"
   CLASS
-    NAME "Sites pollués - accidents "
-    EXPRESSION /9901/
-    COLOR  140 0 0
-    OUTLINECOLOR 140 0 0
-  END
-  CLASS
-    NAME "Sites pollués - décharges"
-    EXPRESSION /9902/
-    COLOR 200 130 0
-    OUTLINECOLOR 200 130 0
-   END
-   CLASS
-    NAME "Sites pollués - entreprises"
+    NAME "Pollué, investigation nécessaire"
     EXPRESSION /9903/
     COLOR 0 0 255
-    OUTLINECOLOR 0 0 255
+    OUTLINECOLOR 0 0 0
+  END
+   CLASS
+    NAME "Pollué, ne nécessite ni surveillance ni assainissement"
+    EXPRESSION /9905/
+    COLOR 255 204 0
+    OUTLINECOLOR 0 0 0
+   END
+   CLASS
+    NAME "Pollué, nécessite une surveillance"
+    EXPRESSION /9906/
+    COLOR 255 102 5
+    OUTLINECOLOR 0 0 0
+   END
+   CLASS
+    NAME "Pollué, nécessite un assainissement"
+    EXPRESSION /9907/
+    COLOR 255 0 0
+    OUTLINECOLOR 0 0 0
+   END
+   CLASS
+    NAME "Pollué, nécessitée d'une investigation non encore évaluée"
+    EXPRESSION /9908/
+    COLOR 95 95 95
+    OUTLINECOLOR 0 0 0
+   END
+  CLASS
+    NAME "Pollué, pas d'atteinte nuisible ou incommodante à attendre"
+    EXPRESSION /9904/
+    COLOR 255 255 0
+    OUTLINECOLOR 0 0 0
    END
 END
 
@@ -1064,27 +1090,68 @@ LAYER
        "wms_srs"                    "EPSG:2056"
        "wms_title"                  "${vars:instanceid} WMS Server"
        "wms_onlineresource"    "http://${vars:host}/${vars:instanceid}/wmscrdppf"
-       "wms_srs"                   "EPSG:2056" 
+       "wms_srs"                   "EPSG:2056"
   END
   CONNECTIONTYPE POSTGIS
   CONNECTION "user=${vars:dbuser} password=${vars:dbpassword} dbname=${vars:db} host=${vars:dbhost} port=${vars:dbport}"
   PROCESSING "CLOSE_CONNECTION=DEFER"
   DATA "geom from (
     select *
-    from crdppf.r118_bazl_belastete_standorte_zivilflugplaetze 
-    WHERE  st_geometrytype(geom) like 'ST_Point'  
+    from crdppf.r118_bazl_belastete_standorte_zivilflugplaetze
+    WHERE  st_geometrytype(geom) like 'ST_Point'
     ) as foo using unique idobj using srid=2056"
   TYPE POINT
   TEMPLATE "ttt"
   OPACITY 60
-   CLASS
-    NAME "Sites pollués - domaine des aérodromes civils"
+  CLASSITEM "codegenre"
+  CLASS
+    NAME "Pollué, investigation nécessaire"
     SYMBOL "circle"
+    EXPRESSION /9903/
+    COLOR 0 0 255
+    OUTLINECOLOR 0 0 0
+    SIZE 7
+  END
+  CLASS
+    NAME "Pollué, pas d'atteinte nuisible ou incommodante à attendre"
+    SYMBOL "circle"
+    EXPRESSION /9904/
     COLOR 255 255 0
     OUTLINECOLOR 0 0 0
-    SIZE 6
+    SIZE 7
    END
-  MAXSCALEDENOM 100000
+   CLASS
+    NAME "Pollué, ne nécessite ni surveillance ni assainissement"
+    SYMBOL "circle"
+    EXPRESSION /9905/
+    COLOR 255 204 0
+    OUTLINECOLOR 0 0 0
+    SIZE 7
+   END
+   CLASS
+    NAME "Pollué, nécessite une surveillance"
+    SYMBOL "circle"
+    EXPRESSION /9906/
+    COLOR 255 102 5
+    OUTLINECOLOR 0 0 0
+    SIZE 7
+   END
+   CLASS
+    NAME "Pollué, nécessite un assainissement"
+    SYMBOL "circle"
+    EXPRESSION /9907/
+    COLOR 255 0 0
+    OUTLINECOLOR 0 0 0
+    SIZE 7
+   END
+   CLASS
+    NAME "Pollué, nécessitée d'une investigation non encore évaluée"
+    SYMBOL "circle"
+    EXPRESSION /9908/
+    COLOR 95 95 95
+    OUTLINECOLOR 0 0 0
+    SIZE 7
+   END
 END
 
 LAYER
@@ -1096,7 +1163,7 @@ LAYER
        "wms_srs"                    "EPSG:2056"
        "wms_title"                  "${vars:instanceid} WMS Server"
        "wms_onlineresource"    "http://${vars:host}/${vars:instanceid}/wmscrdppf"
-       "wms_srs"                   "EPSG:2056" 
+       "wms_srs"                   "EPSG:2056"
   END
   CONNECTIONTYPE POSTGIS
   CONNECTION "user=${vars:dbuser} password=${vars:dbpassword} dbname=${vars:db} host=${vars:dbhost} port=${vars:dbport}"
@@ -1105,12 +1172,43 @@ LAYER
   TYPE POLYGON
   TEMPLATE "ttt"
   OPACITY 60
-   CLASS
-    NAME "Sites pollués - domaine des aérodromes civils"
+  CLASSITEM "codegenre"
+  CLASS
+    NAME "Pollué, investigation nécessaire"
+    EXPRESSION /9903/
+    COLOR 0 0 255
+    OUTLINECOLOR 0 0 0
+  END
+  CLASS
+    NAME "Pollué, pas d'atteinte nuisible ou incommodante à attendre"
+    EXPRESSION /9904/
     COLOR 255 255 0
     OUTLINECOLOR 0 0 0
    END
-  MAXSCALEDENOM 100000
+   CLASS
+    NAME "Pollué, ne nécessite ni surveillance ni assainissement"
+    EXPRESSION /9905/
+    COLOR 255 204 0
+    OUTLINECOLOR 0 0 0
+   END
+   CLASS
+    NAME "Pollué, nécessite une surveillance"
+    EXPRESSION /9906/
+    COLOR 255 102 5
+    OUTLINECOLOR 0 0 0
+   END
+   CLASS
+    NAME "Pollué, nécessite un assainissement"
+    EXPRESSION /9907/
+    COLOR 255 0 0
+    OUTLINECOLOR 0 0 0
+   END
+   CLASS
+    NAME "Pollué, nécessitée d'une investigation non encore évaluée"
+    EXPRESSION /9908/
+    COLOR 95 95 95
+    OUTLINECOLOR 0 0 0
+   END
 END
 
 LAYER
@@ -1121,7 +1219,7 @@ LAYER
        "wms_srs"                    "EPSG:2056"
        "wms_title"                  "${vars:instanceid} WMS Server"
        "wms_onlineresource"    "http://${vars:host}/${vars:instanceid}/wmscrdppf"
-       "wms_srs"                   "EPSG:2056" 
+       "wms_srs"                   "EPSG:2056"
   END
   CONNECTIONTYPE POSTGIS
   CONNECTION "user=${vars:dbuser} password=${vars:dbpassword} dbname=${vars:db} host=${vars:dbhost} port=${vars:dbport}"
@@ -1130,8 +1228,40 @@ LAYER
   TYPE POLYGON
   TEMPLATE "ttt"
   OPACITY 60
+  CLASSITEM "codegenre"
+  CLASS
+    NAME "Pollué, investigation nécessaire"
+    EXPRESSION /9903/
+    COLOR 0 0 255
+    OUTLINECOLOR 0 0 0
+  END
    CLASS
-    NAME "Sites pollués - domaine transports publics"
+    NAME "Pollué, ne nécessite ni surveillance ni assainissement"
+    EXPRESSION /9905/
+    COLOR 255 204 0
+    OUTLINECOLOR 0 0 0
+   END
+   CLASS
+    NAME "Pollué, nécessite une surveillance"
+    EXPRESSION /9906/
+    COLOR 255 102 5
+    OUTLINECOLOR 0 0 0
+   END
+   CLASS
+    NAME "Pollué, nécessite un assainissement"
+    EXPRESSION /9907/
+    COLOR 255 0 0
+    OUTLINECOLOR 0 0 0
+   END
+   CLASS
+    NAME "Pollué, nécessitée d'une investigation non encore évaluée"
+    EXPRESSION /9908/
+    COLOR 95 95 95
+    OUTLINECOLOR 0 0 0
+   END
+  CLASS
+    NAME "Pollué, pas d'atteinte nuisible ou incommodante à attendre"
+    EXPRESSION /9904/
     COLOR 255 255 0
     OUTLINECOLOR 0 0 0
    END
@@ -1145,7 +1275,7 @@ LAYER
        "wms_srs"                    "EPSG:2056"
        "wms_title"                  "${vars:instanceid} WMS Server"
        "wms_onlineresource"    "http://${vars:host}/${vars:instanceid}/wmscrdppf"
-       "wms_srs"                   "EPSG:2056" 
+       "wms_srs"                   "EPSG:2056"
   END
   CONNECTIONTYPE POSTGIS
   CONNECTION "user=${vars:dbuser} password=${vars:dbpassword} dbname=${vars:db} host=${vars:dbhost} port=${vars:dbport}"
@@ -1158,32 +1288,40 @@ LAYER
   CLASS
     NAME "Zone S1"
     EXPRESSION /S1/
-    COLOR 255 0 0
-    OUTLINECOLOR 255 0 0
-  END
-  CLASS
-    NAME "Zone S2"
-    EXPRESSION /S2/
-    COLOR 255 152 48
-    OUTLINECOLOR 0 0 0
+    COLOR 0 59 179
+    OUTLINECOLOR 0 0 128
   END
   CLASS
     NAME "S2 à efficacité limitée"
     EXPRESSION /S2EL/
-    COLOR 255 196 176
+    COLOR 64 124 184
     OUTLINECOLOR 0 0 0
+  END
+  CLASS
+    NAME "Zone S2"
+    EXPRESSION /S2/
+    COLOR 51 136 255
+    OUTLINECOLOR 0 0 128
   END
   CLASS
     NAME "Zone S3"
     EXPRESSION /S3/
-    COLOR 255 255 0
-    OUTLINECOLOR 0 0 0
+    COLOR 179 210 255
+    OUTLINECOLOR 0 0 128
   END
   CLASS
-    NAME "Aire Zu"
-    EXPRESSION /A. ZU/
-    COLOR 192 128 255
-    OUTLINECOLOR 0 0 0
+    NAME "S3Zu"
+    EXPRESSION /S3ZU/
+    STYLE
+      COLOR 179 210 255
+      OUTLINECOLOR 0 0 128
+    END
+    STYLE
+      SYMBOL "hachure1"
+      ANGLE 90
+      COLOR 0 0 128
+      SIZE 5
+    END
   END
 END
 
@@ -1195,7 +1333,7 @@ LAYER
        "wms_srs"                    "EPSG:2056"
        "wms_title"                  "${vars:instanceid} WMS Server"
        "wms_onlineresource"    "http://${vars:host}/${vars:instanceid}/wmscrdppf"
-       "wms_srs"                   "EPSG:2056" 
+       "wms_srs"                   "EPSG:2056"
   END
   CONNECTIONTYPE POSTGIS
   CONNECTION "user=${vars:dbuser} password=${vars:dbpassword} dbname=${vars:db} host=${vars:dbhost} port=${vars:dbport}"
@@ -1203,21 +1341,47 @@ LAYER
   DATA "geom from crdppf.r132_perimetre_prot_eau using unique idobj using srid=2056"
   TYPE POLYGON
   TEMPLATE "ttt"
-  OPACITY 60
   CLASSITEM "teneur"
-  CLASS
-    NAME "ÜB"
-    EXPRESSION /ÜB/
-    STYLE
-      OUTLINECOLOR 0 180 0
-      WIDTH 2
-    END
-  END
   CLASS
     NAME "secteur Ao et Au"
     EXPRESSION /secteur Ao et Au/
-    COLOR 0 0 255
-    OUTLINECOLOR 0 0 0
+    STYLE
+      COLOR 255 0 0
+      OUTLINECOLOR 255 0 0
+      OPACITY 40
+    END
+  END
+  CLASS
+    NAME "secteur Au"
+    EXPRESSION /secteur Au/
+    STYLE
+      COLOR 255 0 0
+      OUTLINECOLOR 255 0 0
+      OPACITY 40
+    END
+  END
+  CLASS
+    NAME "secteur Ao"
+    EXPRESSION /secteur Ao/
+    STYLE
+      COLOR 255 218 191
+      OUTLINECOLOR 255 218 191
+      OPACITY 60
+    END
+  END
+  CLASS
+    NAME "Aire Zu"
+    EXPRESSION /A. ZU/
+    STYLE
+      COLOR 0 0 0
+      OUTLINECOLOR 170 102 204
+    END
+    STYLE
+      SYMBOL "hachure1"
+      ANGLE 90
+      COLOR 170 102 204
+      SIZE 5
+    END
   END
 END
 
@@ -1236,32 +1400,32 @@ LAYER
   PROCESSING "CLOSE_CONNECTION=DEFER"
   DATA "geom from crdppf.r145_sens_bruit using unique idobj using srid=2056"
   STATUS ON
-  CLASSITEM "teneur" 
+  CLASSITEM "teneur"
   OPACITY 50
   TEMPLATE "ttt"
   CLASS
     NAME "IV"
     EXPRESSION /DS IV/
-    COLOR 0 0 255
-    OUTLINECOLOR 0 0 0
+    COLOR 230 0 0
+    # OUTLINECOLOR 0 0 0
   END
   CLASS
     NAME "III"
     EXPRESSION /DS III/
-    COLOR 255 0 0
-    OUTLINECOLOR 0 0 0
+    COLOR 255 77 0
+    # OUTLINECOLOR 0 0 0
   END
   CLASS
     NAME "II"
     EXPRESSION /DS II/
-    COLOR 0 130 0
-    OUTLINECOLOR 0 0 0
+    COLOR 255 166 0
+    # OUTLINECOLOR 0 0 0
   END
   CLASS
     NAME "I"
     EXPRESSION /DS I/
-    COLOR 255 255 148
-    OUTLINECOLOR 0 0 0
+    COLOR 255 242 0
+    # OUTLINECOLOR 0 0 0
   END
 END
 
@@ -1273,7 +1437,7 @@ LAYER
        "wms_srs"                    "EPSG:2056"
        "wms_title"                      "${vars:instanceid} WMS Server"
        "wms_onlineresource"     "http://${vars:host}/${vars:instanceid}/wmscrdppf"
-       "wms_srs"                    "EPSG:2056" 
+       "wms_srs"                    "EPSG:2056"
   END
   CONNECTIONTYPE POSTGIS
   CONNECTION "user=${vars:dbuser} password=${vars:dbpassword} dbname=${vars:db} host=${vars:dbhost} port=${vars:dbport}"
@@ -1286,9 +1450,8 @@ LAYER
     NAME "Limite légale de forêt"
     EXPRESSION /1/
     STYLE
-        PATTERN 4 4 END
-        WIDTH 2
-        COLOR 0 140 0
+      WIDTH 2
+      COLOR 230 0 0
     END
   END
   TOLERANCE 5
@@ -1303,7 +1466,7 @@ LAYER
        "wms_srs"                    "EPSG:2056"
        "wms_title"                      "${vars:instanceid} WMS Server"
        "wms_onlineresource"     "http://${vars:host}/${vars:instanceid}/wmscrdppf"
-       "wms_srs"                    "EPSG:2056" 
+       "wms_srs"                    "EPSG:2056"
   END
   CONNECTIONTYPE POSTGIS
   CONNECTION "user=${vars:dbuser} password=${vars:dbpassword} dbname=${vars:db} host=${vars:dbhost} port=${vars:dbport}"
@@ -1316,11 +1479,11 @@ LAYER
   CLASSITEM "codegenre"
   CLASS
     NAME "Distance légale à la forêt"
-    EXPRESSION /7104/
+    EXPRESSION /7105/
     STYLE
-        PATTERN 4 4 END
+        PATTERN 8 4 1 4 END
         WIDTH 2
-        COLOR 0 0 140
+        COLOR 0 255 0
     END
   END
 END
@@ -1346,7 +1509,7 @@ LAYER
     NAME "Limites communales"
     STYLE
       OUTLINECOLOR 90 90 90
-    END 
+    END
   END
   METADATA
     "ows_title" "la3_limites_communales"
@@ -1373,7 +1536,7 @@ LAYER
   CLASS
     NAME "Périmètres archéologiques"
     SYMBOL "pointilles2"
-    SIZE 4	
+    SIZE 4
     OUTLINECOLOR 0 0 0
   END
   MAXSCALEDENOM 200000
@@ -1439,7 +1602,7 @@ LAYER
   PROCESSING "CLOSE_CONNECTION=DEFER"
   DATA "geom from amenagement.clo_cotes_altitude_surfaces using unique idobj using srid=2056"
   STATUS ON
-  TEMPLATE "ttt" 
+  TEMPLATE "ttt"
   LABELITEM "cote_alt_obstacles_maximum"
   CLASS
     NAME "Cote altitude surfaces"
@@ -1519,7 +1682,7 @@ LAYER
       ANTIALIAS TRUE
       COLOR 128 0 0
       OUTLINECOLOR 255 255 255
-      POSITION uc 
+      POSITION uc
     END
   END
   MINSCALEDENOM 0
@@ -1603,7 +1766,7 @@ LAYER
   END
   CLASS
     EXPRESSION ([noclass]=2)
-    COLOR 255 232 208 
+    COLOR 255 232 208
     LABEL
         TYPE TRUETYPE
         FONT arialbd
@@ -1617,7 +1780,7 @@ LAYER
   END
   CLASS
     EXPRESSION ([noclass]=3)
-    COLOR 255 208 255 
+    COLOR 255 208 255
     LABEL
         TYPE TRUETYPE
         FONT arialbd
@@ -1631,7 +1794,7 @@ LAYER
   END
   CLASS
     EXPRESSION ([noclass]=4)
-    COLOR 255 208 64 
+    COLOR 255 208 64
     LABEL
         TYPE TRUETYPE
         FONT arialbd
@@ -1645,7 +1808,7 @@ LAYER
   END
   CLASS
     EXPRESSION ([noclass]=5)
-    COLOR 255 124 80 
+    COLOR 255 124 80
     LABEL
         TYPE TRUETYPE
         FONT arialbd
@@ -1659,7 +1822,7 @@ LAYER
   END
   CLASS
     EXPRESSION ([noclass]=6)
-    COLOR 208 156 0 
+    COLOR 208 156 0
     LABEL
         TYPE TRUETYPE
         FONT arialbd
@@ -1673,7 +1836,7 @@ LAYER
   END
   CLASS
     EXPRESSION ([noclass]=7)
-    COLOR 255 184 60 
+    COLOR 255 184 60
     LABEL
         TYPE TRUETYPE
         FONT arialbd
@@ -1687,7 +1850,7 @@ LAYER
   END
   CLASS
     EXPRESSION ([noclass]=8)
-    COLOR 160 255 208 
+    COLOR 160 255 208
     LABEL
         TYPE TRUETYPE
         FONT arialbd
@@ -1701,7 +1864,7 @@ LAYER
   END
   CLASS
     EXPRESSION ([noclass]=9)
-    COLOR 192 128 255 
+    COLOR 192 128 255
     LABEL
         TYPE TRUETYPE
         FONT arialbd
@@ -1715,7 +1878,7 @@ LAYER
   END
   CLASS
     EXPRESSION ([noclass]=10)
-    COLOR 255 128 0 
+    COLOR 255 128 0
     LABEL
         TYPE TRUETYPE
         FONT arialbd
@@ -1729,7 +1892,7 @@ LAYER
   END
   CLASS
     EXPRESSION ([noclass]=11)
-    COLOR 80 255 255 
+    COLOR 80 255 255
     LABEL
         TYPE TRUETYPE
         FONT arialbd
@@ -1743,7 +1906,7 @@ LAYER
   END
   CLASS
     EXPRESSION ([noclass]=12)
-    COLOR 255 160 160 
+    COLOR 255 160 160
     LABEL
         TYPE TRUETYPE
         FONT arialbd
@@ -1757,7 +1920,7 @@ LAYER
   END
   CLASS
     EXPRESSION ([noclass]=13)
-    COLOR 192 255 96 
+    COLOR 192 255 96
     LABEL
         TYPE TRUETYPE
         FONT arialbd
@@ -1771,7 +1934,7 @@ LAYER
   END
   CLASS
     EXPRESSION ([noclass]=14)
-    COLOR 0 128 192 
+    COLOR 0 128 192
     LABEL
         TYPE TRUETYPE
         FONT arialbd
@@ -1785,7 +1948,7 @@ LAYER
   END
   CLASS
     EXPRESSION ([noclass]=15)
-    COLOR 255 0 138 
+    COLOR 255 0 138
     LABEL
         TYPE TRUETYPE
         FONT arialbd
@@ -1799,7 +1962,7 @@ LAYER
   END
   CLASS
     EXPRESSION ([noclass]=16)
-    COLOR 255 255 0 
+    COLOR 255 255 0
     LABEL
         TYPE TRUETYPE
         FONT arialbd
@@ -1813,7 +1976,7 @@ LAYER
   END
   CLASS
     EXPRESSION ([noclass]=17)
-    COLOR 176 229 155 
+    COLOR 176 229 155
     LABEL
         TYPE TRUETYPE
         FONT arialbd
@@ -1827,7 +1990,7 @@ LAYER
   END
   CLASS
     EXPRESSION ([noclass]=18)
-    COLOR 192 0 96 
+    COLOR 192 0 96
     LABEL
         TYPE TRUETYPE
         FONT arialbd
@@ -1841,7 +2004,7 @@ LAYER
   END
   CLASS
     EXPRESSION ([noclass]=19)
-    COLOR 0 224 0 
+    COLOR 0 224 0
     LABEL
         TYPE TRUETYPE
         FONT arialbd
@@ -1855,7 +2018,7 @@ LAYER
   END
   CLASS
     EXPRESSION ([noclass]=20)
-    COLOR 144 144 255 
+    COLOR 144 144 255
     LABEL
         TYPE TRUETYPE
         FONT arialbd
@@ -1883,7 +2046,7 @@ LAYER
   END
   CLASS
     EXPRESSION ([noclass]=22)
-    COLOR 255 152 48 
+    COLOR 255 152 48
     LABEL
         TYPE TRUETYPE
         FONT arialbd
@@ -1897,7 +2060,7 @@ LAYER
   END
   CLASS
     EXPRESSION ([noclass]=23)
-    COLOR 0 128 192 
+    COLOR 0 128 192
     LABEL
         TYPE TRUETYPE
         FONT arialbd
@@ -1911,7 +2074,7 @@ LAYER
   END
   CLASS
     EXPRESSION ([noclass]=24)
-    COLOR 255 64 0 
+    COLOR 255 64 0
     LABEL
         TYPE TRUETYPE
         FONT arialbd
@@ -1925,7 +2088,7 @@ LAYER
   END
   CLASS
     EXPRESSION ([noclass]=25)
-    COLOR 0 255 0 
+    COLOR 0 255 0
     LABEL
         TYPE TRUETYPE
         FONT arialbd
@@ -1939,7 +2102,7 @@ LAYER
   END
   CLASS
     EXPRESSION ([noclass]=26)
-    COLOR 255 0 255 
+    COLOR 255 0 255
     LABEL
         TYPE TRUETYPE
         FONT arialbd
@@ -1983,18 +2146,18 @@ LAYER
   LABELITEM "nopoin"
   CLASS
     NAME "PFP1/2"
-    STYLE    
+    STYLE
         SYMBOL "triangle"
         SIZE 11
-        COLOR 255 255 255 
+        COLOR 255 255 255
     END
-    STYLE    
+    STYLE
         SYMBOL "triangle"
         SIZE 11
         OUTLINECOLOR 0 0 0
         WIDTH 1
     END
-    STYLE    
+    STYLE
         SYMBOL "triangle"
         SIZE 4.5
         COLOR 0 0 0
@@ -2046,7 +2209,7 @@ LAYER
     END
     MINSCALEDENOM 0
     MAXSCALEDENOM 7000
-  END  
+  END
   TOLERANCE 5
   TOLERANCEUNITS pixels
 END
@@ -2318,7 +2481,7 @@ LAYER
         PATTERN 7 7 END
         OUTLINECOLOR 0 0 0
         WIDTH 2
-    END 
+    END
   END
 END
 
@@ -2363,7 +2526,7 @@ LAYER
         STYLE
             GEOMTRANSFORM 'labelpoly'
             COLOR 255 255 255
-        END 
+        END
     END
   END
 END
@@ -2383,7 +2546,7 @@ LAYER
   TEMPLATE "ttt"
   OPACITY 50
   LABELITEM "text10"
-  LABELMAXSCALE 2000 
+  LABELMAXSCALE 2000
   MINSCALEDENOM 0
   MAXSCALEDENOM 5001
   CLASS
@@ -2392,7 +2555,7 @@ LAYER
       SYMBOL 0
       COLOR 220 220 220
     END
-    STYLE  
+    STYLE
       OUTLINECOLOR 0 0 0
       PATTERN 5 5 END
       WIDTH 2
@@ -2451,7 +2614,7 @@ LAYER
         STYLE
             GEOMTRANSFORM 'labelpoly'
             COLOR 255 255 255
-        END  
+        END
     END
   END
 END
@@ -2502,7 +2665,7 @@ LAYER
         STYLE
             GEOMTRANSFORM 'labelpoly'
             COLOR 255 255 255
-        END  
+        END
     END
   END
 END
@@ -2590,7 +2753,7 @@ LAYER
         STYLE
             GEOMTRANSFORM 'labelpoly'
             COLOR 255 255 255
-        END   
+        END
     END
   END
 END
@@ -2641,7 +2804,7 @@ LAYER
         STYLE
             GEOMTRANSFORM 'labelpoly'
             COLOR 255 255 255
-        END   
+        END
     END
   END
 END
@@ -2664,55 +2827,55 @@ NAME "mo5_point_de_detail"
   TEMPLATE "ttt"
   CLASS
     NAME "Borne"
-    EXPRESSION /1/	
+    EXPRESSION /1/
     SYMBOL "circle"
     SIZE 7
-    COLOR 255 255 255 
+    COLOR 255 255 255
     OUTLINECOLOR 0 0 0
   END
   CLASS
     NAME "Cheville"
-    EXPRESSION /2/	
+    EXPRESSION /2/
     SYMBOL "circle"
     SIZE 6
-    COLOR 255 255 255 
+    COLOR 255 255 255
     OUTLINECOLOR 0 0 0
-  END  
+  END
   CLASS
     NAME "Croix"
-    EXPRESSION /3/	
+    EXPRESSION /3/
     SYMBOL "croix"
-  END  
+  END
   CLASS
     NAME "Pieu, piquet"
-    EXPRESSION /4/	
+    EXPRESSION /4/
     SYMBOL "circle"
     SIZE 5
-    COLOR 255 255 255 
+    COLOR 255 255 255
     OUTLINECOLOR 0 0 0
   END
   CLASS
     NAME "Non mat."
-    EXPRESSION /5/	
+    EXPRESSION /5/
     SYMBOL "circle"
     SIZE 6
-    COLOR 0 0 0 
+    COLOR 0 0 0
     OUTLINECOLOR 255 255 255
   END
   CLASS
     NAME "Borne artif."
-    EXPRESSION /6/	
+    EXPRESSION /6/
     SYMBOL "circle"
     SIZE 7
-    COLOR 255 255 255 
+    COLOR 255 255 255
     OUTLINECOLOR 0 0 0
   END
   CLASS
     NAME "Tuyau"
-    EXPRESSION /7/	
+    EXPRESSION /7/
     SYMBOL "circle"
     SIZE 7
-    COLOR 255 255 255 
+    COLOR 255 255 255
     OUTLINECOLOR 0 0 0
   END
 END
@@ -2928,7 +3091,7 @@ LAYER
     EXPRESSION /DDP/
     NAME "DDP"
     STYLE
-      OUTLINECOLOR 10 10 10 
+      OUTLINECOLOR 10 10 10
       PATTERN 7 7 END
       WIDTH 1
     END
@@ -2937,7 +3100,7 @@ LAYER
     EXPRESSION /DP/
     NAME "DP"
     STYLE
-      OUTLINECOLOR 10 10 10 
+      OUTLINECOLOR 10 10 10
       PATTERN 7 7 END
       WIDTH 1
     END
@@ -3005,7 +3168,7 @@ LAYER
     NAME "Bâtiments ordinaires"
     EXPRESSION /ordinaire/
     STYLE
-      COLOR 200 200 200 
+      COLOR 200 200 200
       OUTLINECOLOR 130 130 130
     END
   END
@@ -3013,7 +3176,7 @@ LAYER
     NAME "Bâtiments souterrains"
     EXPRESSION /souterrain/
     STYLE
-      OPACITY 40    
+      OPACITY 40
       COLOR 230 230 230
      END
      STYLE
@@ -3046,7 +3209,7 @@ LAYER
     NAME "Bâtiments provisoires"
     #EXPRESSION /ordinaire/
     STYLE
-      COLOR 200 200 200 
+      COLOR 200 200 200
       OUTLINECOLOR 130 130 130
     END
   END
@@ -3055,5 +3218,3 @@ LAYER
 END
 
 END
-
-
