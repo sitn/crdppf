@@ -5,6 +5,7 @@ crdppf_core
 *CRDPPF.pdf
 *.egg-info/
 apache/*.conf
+apache/*.wsgi
 vars_michael.yaml
 michael.mk
 vars_francois.yaml
