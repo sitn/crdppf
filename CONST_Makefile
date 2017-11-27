@@ -70,7 +70,7 @@ ENVIRONMENT_VARS += INSTANCE_ID=${INSTANCE_ID} \
 	APACHE_ENTRY_POINT=$(APACHE_ENTRY_POINT) \
 	DEVELOPMENT=${DEVELOPMENT} \
 	PACKAGE=${PACKAGE} \
-	SUBPACKAGE=${SUBPACKAGE}
+	SUB_PACKAGE=${SUB_PACKAGE}
 
 C2C_TEMPLATE_CMD = $(ENVIRONMENT_VARS) $(VENV_BIN)/c2c-template --vars $(VARS_FILE)
 MAKE_FILES = $(shell ls -1 *.mk) CONST_Makefile
@@ -82,8 +82,26 @@ JSBUILD_MAIN_OUTPUT_FILES ?= crdppf.js
 JSBUILD_MAIN_OUTPUT_FILES := $(addprefix $(OUTPUT_DIR)/, $(JSBUILD_MAIN_OUTPUT_FILES))
 
 DEFAULT_BUILD_RULES ?= .build/requirements.timestamp update-git-submodules build-javascript build-server
-# DEFAULT_BUILD_RULES += print
+DEFAULT_BUILD_RULES += print
 BUILD_RULES ?= $(PRE_RULES) $(filter-out $(DISABLE_BUILD_RULES),$(DEFAULT_BUILD_RULES)) $(POST_RULES)
+
+
+# Print variables
+TOMCAT_START_COMMAND ?= net START Tomcat8
+TOMCAT_STOP_COMMAND ?= net STOP Tomcat8
+PRINT_TMP = tmp
+PRINT_BASE_DIR ?= $(SUB_PROJECT)/print
+PRINT_WAR ?= print-$(INSTANCE_ID).war
+PRINT_OUTPUT ?= D:/Applications/ApacheTomcat/webapps
+PRINT_OUTPUT_WAR = $(PRINT_OUTPUT)/$(PRINT_WAR)
+PRINT_BASE_WAR ?= print-servlet.war
+PRINT_INPUT += print-apps WEB-INF
+
+PRINT_REQUIREMENT += \
+	$(PRINT_BASE_DIR)/WEB-INF/lib/Cadastra.jar \
+	$(shell find $(PRINT_BASE_DIR)/print-apps)
+
+PRINT_REQUIREMENT += $(PRINT_BASE_DIR)/$(PRINT_BASE_WAR)
 
 
 # Disabling Make built-in rules to speed up execution time
@@ -206,3 +224,37 @@ update-git-submodules:  .build/git-submodules.timestamp
 	cd $(SUB_PROJECT) && git submodule sync
 	cd $(SUB_PROJECT) && git submodule update --init
 	touch $@
+
+# Print
+
+.PHONY: print
+print: $(PRINT_OUTPUT)/$(PRINT_WAR)
+
+$(PRINT_OUTPUT)/$(PRINT_WAR): $(PRINT_REQUIREMENT)
+# If Linux else windows
+ifeq ($(VENV_BIN), .build/venv/bin)
+	cp $(PRINT_BASE_DIR)/$(PRINT_BASE_WAR) $(PRINT_TMP)/$(PRINT_WAR)
+	cd $(PRINT_BASE_DIR) && jar -uf $(PRINT_TMP)/$(PRINT_WAR) $(PRINT_INPUT)
+	chmod g+r,o+r $(PRINT_TMP)/$(PRINT_WAR)
+else
+	mkdir -p $(PRINT_BASE_DIR)/$(PRINT_TMP)
+	cp $(PRINT_BASE_DIR)/$(PRINT_BASE_WAR) $(PRINT_BASE_DIR)/$(PRINT_TMP)/$(PRINT_WAR)
+	cd $(PRINT_BASE_DIR) && jar -uf $(PRINT_TMP)/$(PRINT_WAR) $(PRINT_INPUT)
+endif
+
+ifneq ($(TOMCAT_STOP_COMMAND),)
+	$(TOMCAT_STOP_COMMAND)
+endif
+	$(TOMCAT_OUTPUT_CMD_PREFIX) rm -f $(PRINT_OUTPUT)/$(PRINT_WAR)
+	$(TOMCAT_OUTPUT_CMD_PREFIX) rm -rf $(PRINT_OUTPUT)/$(PRINT_WAR:.war=)
+# If Linux else windows
+ifeq ($(VENV_BIN), .build/venv/bin)
+	$(TOMCAT_OUTPUT_CMD_PREFIX) cp $(PRINT_TMP)/$(PRINT_WAR) $(PRINT_OUTPUT)
+	rm -f $(PRINT_TMP)/$(PRINT_WAR)
+else
+	mv $(PRINT_BASE_DIR)/$(PRINT_TMP)/$(PRINT_WAR) $(PRINT_OUTPUT)
+	cd $(PRINT_BASE_DIR) && rm -fd $(PRINT_TMP)
+endif
+ifneq ($(TOMCAT_START_COMMAND),)
+	$(TOMCAT_START_COMMAND)
+endif
