@@ -29,21 +29,33 @@ app_config:
 
   #  configuration and list of the wms layers used for the background image in the pdf
   crdppf_wms_layers:
-    - mo6_couverture_sol_nb
-    - mo22_batiments
-    - mo23_batiments_projetes
-    - parcelles
-    - mo9_immeubles
-    - mo9_text_group
-    - mo7_obj_divers_lineaire
-    #~ - mo7_obj_divers_surface_lig
-    #~ - mo7_obj_divers_piscine
-    #~ - mo7_obj_divers_cordbois
-    - mo5_point_de_detail
-    - mo4_pfa_1
-    - mo4_pfp_3
-    - mo4_pfp_1_2
-    - la3_limites_communales
+    - cantons_situation
+    - frontiere_pays_situation
+    - rail1
+    - rail2
+    - nomenclature_reseau_hydro_1
+    - nomenclature_reseau_hydro_2
+    - nomenclature_lacs
+    - surfaces_tot
+    - surfaces_bois
+    - batiments_souterrain
+    - batiments
+    - parcellaire_officiel
+    - immeubles_txt_rappel
+    - immeubles_txt
+    - mo9_immeubles_txt_conc_hydr
+    - pts_limites
+    - obj_divers_couvert
+    - obj_divers_cordbois
+    - obj_divers_piscine
+    - obj_divers_batsout15m
+    - obj_divers_lineaire
+    - obj_divers_surface_lig
+    - obj_divers_ponctuels
+    - pts_fixes
+    - voie_adresse
+    - nomenclature_lieux
+
   # coordinate system to be used by the wms
   wms_srs: EPSG:2056
   # version of the wms
