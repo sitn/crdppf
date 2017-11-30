@@ -1,5 +1,7 @@
-${apache24_location}
 
 WSGIScriptAlias /${vars:instanceid} ${buildout:directory/buildout/parts/modwsgi/wsgi}
 
-WSGIPassAuthorization On
+<Location /${vars:instanceid}>
+    WSGIApplicationGroup %{GLOBAL}
+    ${apache24_location}
+</Location>
