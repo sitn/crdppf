@@ -8,6 +8,8 @@ apache/*.conf
 apache/*.wsgi
 vars_michael.yaml
 michael.mk
+vars_nesitnd1.yaml
+nesitnd1.mk
 vars_francois.yaml
 francois.mk
 config_pdf.yaml

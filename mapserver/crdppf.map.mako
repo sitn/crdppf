@@ -1665,7 +1665,7 @@ LAYER
     TYPE POLYGON
     STATUS ON
     CONNECTIONTYPE POSTGIS
-    CONNECTION "user=${vars:dbuser} password=${vars:dbpassword} dbname=${vars:db} host=${vars:dbhost} port=${vars:dbport}"
+    CONNECTION "user=${dbuser} password=${dbpassword} dbname=${db} host=${dbhost} port=${dbport}"
     PROCESSING "CLOSE_CONNECTION=DEFER"
     DATA "geom from situation.cantons using unique idobj using srid=2056"  
     MINSCALEDENOM 60001
@@ -1835,13 +1835,7 @@ LAYER
         STYLE
             OUTLINECOLOR 200 200 200
         END  
-    END  
-        CLASS
-        EXPRESSION //
-        STYLE
-            OUTLINECOLOR 200 200 200
-        END  
-    END  
+    END
 END
 
 LAYER
@@ -1853,7 +1847,7 @@ LAYER
     TYPE POLYGON
     STATUS ON
     CONNECTIONTYPE POSTGIS
-    CONNECTION "user=${vars:dbuser} password=${vars:dbpassword} dbname=${vars:db} host=${vars:dbhost} port=${vars:dbport}"
+    CONNECTION "user=${dbuser} password=${dbpassword} dbname=${db} host=${dbhost} port=${dbport}"
     PROCESSING "CLOSE_CONNECTION=DEFER"
     DATA "geom from situation.frontiere_pays using unique idobj using srid=2056"  
     MINSCALEDENOM 60001
@@ -1874,7 +1868,7 @@ LAYER
     END
     TYPE polygon
     CONNECTIONTYPE POSTGIS
-    CONNECTION "user=${vars:dbuser} password=${vars:dbpassword} dbname=${vars:db} host=${vars:dbhost} port=${vars:dbport}"
+    CONNECTION "user=${dbuser} password=${dbpassword} dbname=${db} host=${dbhost} port=${dbport}"
     PROCESSING "CLOSE_CONNECTION=DEFER"
     DATA "geom from situation.couvsol_situation using unique idobj using srid=2056"  
     OPACITY 30
@@ -1906,7 +1900,7 @@ LAYER
     TYPE POLYGON
     STATUS ON
     CONNECTIONTYPE POSTGIS
-    CONNECTION "user=${vars:dbuser} password=${vars:dbpassword} dbname=${vars:db} host=${vars:dbhost} port=${vars:dbport}"
+    CONNECTION "user=${dbuser} password=${dbpassword} dbname=${db} host=${dbhost} port=${dbport}"
     PROCESSING "CLOSE_CONNECTION=DEFER"
     DATA "geom from situation.lacs using unique idobj using srid=2056"  
     MINSCALEDENOM 60001
@@ -1928,7 +1922,7 @@ LAYER
     TYPE LINE
     STATUS ON
     CONNECTIONTYPE POSTGIS
-    CONNECTION "user=${vars:dbuser} password=${vars:dbpassword} dbname=${vars:db} host=${vars:dbhost} port=${vars:dbport}"
+    CONNECTION "user=${dbuser} password=${dbpassword} dbname=${db} host=${dbhost} port=${dbport}"
     PROCESSING "CLOSE_CONNECTION=DEFER"
     DATA "geom from situation.hydro_suisse using unique idobj using srid=2056"  
     MINSCALEDENOM 60001
@@ -1949,7 +1943,7 @@ LAYER
     TYPE POLYGON
     STATUS ON
     CONNECTIONTYPE POSTGIS
-    CONNECTION "user=${vars:dbuser} password=${vars:dbpassword} dbname=${vars:db} host=${vars:dbhost} port=${vars:dbport}"
+    CONNECTION "user=${dbuser} password=${dbpassword} dbname=${db} host=${dbhost} port=${dbport}"
     PROCESSING "CLOSE_CONNECTION=DEFER"
     DATA "geom from situation.communes using unique idobj using srid=2056"
     MINSCALEDENOM 60001
@@ -1970,7 +1964,7 @@ LAYER
     TYPE POLYGON
     STATUS ON
     CONNECTIONTYPE POSTGIS
-    CONNECTION "user=${vars:dbuser} password=${vars:dbpassword} dbname=${vars:db} host=${vars:dbhost} port=${vars:dbport}"
+    CONNECTION "user=${dbuser} password=${dbpassword} dbname=${db} host=${dbhost} port=${dbport}"
     PROCESSING "CLOSE_CONNECTION=DEFER"
     DATA "geom from situation.districts using unique idobj using srid=2056"  
     MINSCALEDENOM 60001
@@ -1992,7 +1986,7 @@ LAYER
     TYPE POLYGON
     STATUS ON
     CONNECTIONTYPE POSTGIS
-    CONNECTION "user=${vars:dbuser} password=${vars:dbpassword} dbname=${vars:db} host=${vars:dbhost} port=${vars:dbport}"
+    CONNECTION "user=${dbuser} password=${dbpassword} dbname=${db} host=${dbhost} port=${dbport}"
     PROCESSING "CLOSE_CONNECTION=DEFER"
     DATA "geom from situation.frontiere_suisse using unique idobj using srid=2056"  
     MINSCALEDENOM 60001
@@ -2015,7 +2009,7 @@ LAYER
     STATUS ON 
     OPACITY 40
     CONNECTIONTYPE postgis 
-    CONNECTION "user=${vars:dbuser} password=${vars:dbpassword} dbname=${vars:db} host=${vars:dbhost} port=${vars:dbport}"
+    CONNECTION "user=${dbuser} password=${dbpassword} dbname=${db} host=${dbhost} port=${dbport}"
     PROCESSING "CLOSE_CONNECTION=DEFER" 
     MAXSCALEDENOM 210000 
     MINSCALEDENOM  50010
@@ -2044,7 +2038,7 @@ LAYER
     END
     STATUS ON 
     CONNECTIONTYPE postgis 
-    CONNECTION "user=${vars:dbuser} password=${vars:dbpassword} dbname=${vars:db} host=${vars:dbhost} port=${vars:dbport}"
+    CONNECTION "user=${dbuser} password=${dbpassword} dbname=${db} host=${dbhost} port=${dbport}"
     PROCESSING "CLOSE_CONNECTION=DEFER" 
     MAXSCALEDENOM 50010 
     MINSCALEDENOM 35000
@@ -2076,7 +2070,7 @@ LAYER
     TYPE POLYGON
     STATUS ON
     CONNECTIONTYPE POSTGIS
-    CONNECTION "user=${vars:dbuser} password=${vars:dbpassword} dbname=${vars:db} host=${vars:dbhost} port=${vars:dbport}"
+    CONNECTION "user=${dbuser} password=${dbpassword} dbname=${db} host=${dbhost} port=${dbport}"
     PROCESSING "CLOSE_CONNECTION=DEFER"
     DATA "geom from mensuration.mo6_couverture_du_sol_surf_tot using unique idobj using srid=2056"
     CLASSITEM desnat
@@ -2100,7 +2094,7 @@ LAYER
     TYPE POLYGON
     STATUS ON
     CONNECTIONTYPE POSTGIS
-    CONNECTION "user=${vars:dbuser} password=${vars:dbpassword} dbname=${vars:db} host=${vars:dbhost} port=${vars:dbport}"
+    CONNECTION "user=${dbuser} password=${dbpassword} dbname=${db} host=${dbhost} port=${dbport}"
     PROCESSING "CLOSE_CONNECTION=DEFER"
     DATA "geom from mensuration.mo6_couverture_du_sol_surf_tot using unique idobj using srid=2056"
     CLASSITEM "desnat"
@@ -2147,7 +2141,7 @@ LAYER
     TYPE POLYGON
     STATUS ON
     CONNECTIONTYPE POSTGIS
-    CONNECTION "user=${vars:dbuser} password=${vars:dbpassword} dbname=${vars:db} host=${vars:dbhost} port=${vars:dbport}"
+    CONNECTION "user=${dbuser} password=${dbpassword} dbname=${db} host=${dbhost} port=${dbport}"
     PROCESSING "CLOSE_CONNECTION=DEFER"
     DATA "geom from mensuration.mo6_couverture_du_sol_surf_tot using unique idobj using srid=2056"
     CLASSITEM "desnat"
@@ -2172,7 +2166,7 @@ LAYER
     TYPE POLYGON
     STATUS ON
     CONNECTIONTYPE POSTGIS
-    CONNECTION "user=${vars:dbuser} password=${vars:dbpassword} dbname=${vars:db} host=${vars:dbhost} port=${vars:dbport}"
+    CONNECTION "user=${dbuser} password=${dbpassword} dbname=${db} host=${dbhost} port=${dbport}"
     PROCESSING "CLOSE_CONNECTION=DEFER"
     DATA "geom from mensuration.mo22_batiments using unique idobj using srid=2056"
     LABELMAXSCALEDENOM 1500
@@ -2198,7 +2192,7 @@ LAYER
     TYPE POLYGON
     STATUS ON
     CONNECTIONTYPE POSTGIS
-    CONNECTION "user=${vars:dbuser} password=${vars:dbpassword} dbname=${vars:db} host=${vars:dbhost} port=${vars:dbport}"
+    CONNECTION "user=${dbuser} password=${dbpassword} dbname=${db} host=${dbhost} port=${dbport}"
     PROCESSING "CLOSE_CONNECTION=DEFER"
     DATA "geom from mensuration.mo22_batiments using unique idobj using srid=2056"
     LABELMAXSCALEDENOM 1500
@@ -2224,7 +2218,7 @@ LAYER
     TYPE POLYGON
     STATUS ON
     CONNECTIONTYPE POSTGIS
-    CONNECTION "user=${vars:dbuser} password=${vars:dbpassword} dbname=${vars:db} host=${vars:dbhost} port=${vars:dbport}"
+    CONNECTION "user=${dbuser} password=${dbpassword} dbname=${db} host=${dbhost} port=${dbport}"
     PROCESSING "CLOSE_CONNECTION=DEFER"
     DATA "geom from mensuration.mo9_immeubles using unique idobj using srid=2056"
     OPACITY 70
@@ -2267,7 +2261,7 @@ LAYER
     END
     TYPE LINE
     CONNECTIONTYPE POSTGIS
-    CONNECTION "user=${vars:dbuser} password=${vars:dbpassword} dbname=${vars:db} host=${vars:dbhost} port=${vars:dbport}"
+    CONNECTION "user=${dbuser} password=${dbpassword} dbname=${db} host=${dbhost} port=${dbport}"
     PROCESSING "CLOSE_CONNECTION=DEFER"
     DATA "geom from mensuration.mo9_immeubles_txt_rappel using unique idobj using srid=2056"
     STATUS ON
@@ -2289,7 +2283,7 @@ LAYER
         " wms_srs" "epsg:21781"
     END
     CONNECTIONTYPE POSTGIS
-    CONNECTION "user=${vars:dbuser} password=${vars:dbpassword} dbname=${vars:db} host=${vars:dbhost} port=${vars:dbport}"
+    CONNECTION "user=${dbuser} password=${dbpassword} dbname=${db} host=${dbhost} port=${dbport}"
     PROCESSING "CLOSE_CONNECTION=DEFER"
     DATA "geom from mensuration.mo9_immeubles_txt using unique idobj using srid=2056"
     STATUS ON
@@ -2323,7 +2317,7 @@ LAYER
         " wms_srs" "epsg:21781"
     END
     CONNECTIONTYPE POSTGIS
-    CONNECTION "user=${vars:dbuser} password=${vars:dbpassword} dbname=${vars:db} host=${vars:dbhost} port=${vars:dbport}"
+    CONNECTION "user=${dbuser} password=${dbpassword} dbname=${db} host=${dbhost} port=${dbport}"
     PROCESSING "CLOSE_CONNECTION=DEFER"
     DATA "geom FROM (SELECT
         idobj,
@@ -2520,7 +2514,7 @@ LAYER
     END
     TYPE POINT
     CONNECTIONTYPE POSTGIS
-    CONNECTION "user=${vars:dbuser} password=${vars:dbpassword} dbname=${vars:db} host=${vars:dbhost} port=${vars:dbport}"
+    CONNECTION "user=${dbuser} password=${dbpassword} dbname=${db} host=${dbhost} port=${dbport}"
     PROCESSING "CLOSE_CONNECTION=DEFER"
     DATA "geom from mensuration.mo5_point_de_detail using unique idobj using srid=2056"
     STATUS ON
@@ -2706,7 +2700,7 @@ LAYER
     END
     TYPE POLYGON
     CONNECTIONTYPE POSTGIS
-    CONNECTION "user=${vars:dbuser} password=${vars:dbpassword} dbname=${vars:db} host=${vars:dbhost} port=${vars:dbport}"
+    CONNECTION "user=${dbuser} password=${dbpassword} dbname=${db} host=${dbhost} port=${dbport}"
     PROCESSING "CLOSE_CONNECTION=DEFER"
     DATA "geom from (SELECT
         *
@@ -2733,7 +2727,7 @@ LAYER
     END
     TYPE POLYGON
     CONNECTIONTYPE POSTGIS
-    CONNECTION "user=${vars:dbuser} password=${vars:dbpassword} dbname=${vars:db} host=${vars:dbhost} port=${vars:dbport}"
+    CONNECTION "user=${dbuser} password=${dbpassword} dbname=${db} host=${dbhost} port=${dbport}"
     PROCESSING "CLOSE_CONNECTION=DEFER"
     DATA "geom from (SELECT
         *
@@ -2760,7 +2754,7 @@ LAYER
     END
     TYPE LINE # ET NE PAS POLYGON POUR EVITER REMPLISSAGE NOIR
     CONNECTIONTYPE POSTGIS
-    CONNECTION "user=${vars:dbuser} password=${vars:dbpassword} dbname=${vars:db} host=${vars:dbhost} port=${vars:dbport}"
+    CONNECTION "user=${dbuser} password=${dbpassword} dbname=${db} host=${dbhost} port=${dbport}"
     PROCESSING "CLOSE_CONNECTION=DEFER"
     DATA "geom from (SELECT
         *
@@ -2787,7 +2781,7 @@ LAYER
         "wms_srs" "epsg:21781"
     END
     CONNECTIONTYPE POSTGIS
-    CONNECTION "user=${vars:dbuser} password=${vars:dbpassword} dbname=${vars:db} host=${vars:dbhost} port=${vars:dbport}"
+    CONNECTION "user=${dbuser} password=${dbpassword} dbname=${db} host=${dbhost} port=${dbport}"
     PROCESSING "CLOSE_CONNECTION=DEFER"
     DATA "geom from (SELECT
         *
@@ -2817,7 +2811,7 @@ LAYER
     END
     TYPE LINE
     CONNECTIONTYPE POSTGIS
-    CONNECTION "user=${vars:dbuser} password=${vars:dbpassword} dbname=${vars:db} host=${vars:dbhost} port=${vars:dbport}"
+    CONNECTION "user=${dbuser} password=${dbpassword} dbname=${db} host=${dbhost} port=${dbport}"
     PROCESSING "CLOSE_CONNECTION=DEFER"
     DATA "geom from (SELECT
         *
@@ -2947,7 +2941,7 @@ LAYER
     END
     TYPE POINT
     CONNECTIONTYPE POSTGIS
-    CONNECTION "user=${vars:dbuser} password=${vars:dbpassword} dbname=${vars:db} host=${vars:dbhost} port=${vars:dbport}"
+    CONNECTION "user=${dbuser} password=${dbpassword} dbname=${db} host=${dbhost} port=${dbport}"
     PROCESSING "CLOSE_CONNECTION=DEFER"
     DATA "geom from mensuration.mo7_obj_divers_ponctuels using unique idobj using srid=2056"
     STATUS ON
@@ -3124,7 +3118,7 @@ LAYER
     END
     TYPE POINT
     CONNECTIONTYPE POSTGIS
-    CONNECTION "user=${vars:dbuser} password=${vars:dbpassword} dbname=${vars:db} host=${vars:dbhost} port=${vars:dbport}"
+    CONNECTION "user=${dbuser} password=${dbpassword} dbname=${db} host=${dbhost} port=${dbport}"
     PROCESSING "CLOSE_CONNECTION=DEFER"
     DATA "geom from mensuration.v_pts_fixes using unique nopoin using srid=2056"
     STATUS ON
@@ -3180,7 +3174,7 @@ LAYER
     END
     TYPE POINT
     CONNECTIONTYPE POSTGIS
-    CONNECTION "user=${vars:dbuser} password=${vars:dbpassword} dbname=${vars:db} host=${vars:dbhost} port=${vars:dbport}"
+    CONNECTION "user=${dbuser} password=${dbpassword} dbname=${db} host=${dbhost} port=${dbport}"
     PROCESSING "CLOSE_CONNECTION=DEFER"
     DATA "geom from mensuration.mo25_lieux_dits using unique idobj using srid=2056"
     STATUS ON
@@ -3213,7 +3207,7 @@ LAYER
     END
     TYPE POINT
     CONNECTIONTYPE POSTGIS
-    CONNECTION "user=${vars:dbuser} password=${vars:dbpassword} dbname=${vars:db} host=${vars:dbhost} port=${vars:dbport}"
+    CONNECTION "user=${dbuser} password=${dbpassword} dbname=${db} host=${dbhost} port=${dbport}"
     PROCESSING "CLOSE_CONNECTION=DEFER"
     DATA "geom from situation.noms_locaux_canton_points using unique idobj using srid=2056"
     STATUS ON
@@ -3247,7 +3241,7 @@ LAYER
     END
     TYPE POINT
     CONNECTIONTYPE POSTGIS
-    CONNECTION "user=${vars:dbuser} password=${vars:dbpassword} dbname=${vars:db} host=${vars:dbhost} port=${vars:dbport}"
+    CONNECTION "user=${dbuser} password=${dbpassword} dbname=${db} host=${dbhost} port=${dbport}"
     PROCESSING "CLOSE_CONNECTION=DEFER"
     DATA "geom from mensuration.mo02_adresses_sitn using unique idobj using srid=2056"
     STATUS ON
@@ -3311,7 +3305,7 @@ LAYER
     TYPE POINT
     STATUS ON
     CONNECTIONTYPE POSTGIS
-    CONNECTION "user=${vars:dbuser} password=${vars:dbpassword} dbname=${vars:db} host=${vars:dbhost} port=${vars:dbport}"
+    CONNECTION "user=${dbuser} password=${dbpassword} dbname=${db} host=${dbhost} port=${dbport}"
     PROCESSING "CLOSE_CONNECTION=DEFER"
     DATA "geom from situation.noms_lieux using unique idobj using srid=2056"  
     LABELITEM "libgeo"
