@@ -31,11 +31,6 @@ app_config:
   crdppf_wms_layers:
     - cantons_situation
     - frontiere_pays_situation
-    - rail1
-    - rail2
-    - nomenclature_reseau_hydro_1
-    - nomenclature_reseau_hydro_2
-    - nomenclature_lacs
     - surfaces_tot
     - surfaces_bois
     - batiments_souterrain
