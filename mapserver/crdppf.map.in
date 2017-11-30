@@ -1014,7 +1014,7 @@ LAYER
   TYPE POLYGON
   TEMPLATE "ttt"
   CLASS
-    NAME "Zone de la sécurité des aéroports"
+    NAME "Plan de la zone de sécurité"
     STYLE
       COLOR 192 0 192
       OPACITY 45
