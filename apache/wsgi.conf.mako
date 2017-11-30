@@ -1,5 +1,7 @@
-${apache24_location}
 
 WSGIScriptAlias /${instanceid} ${directory}\apache\application.wsgi
 
-WSGIPassAuthorization On
+<Location /${instanceid}>
+    WSGIApplicationGroup %{GLOBAL}
+    ${apache24_location}
+</Location>

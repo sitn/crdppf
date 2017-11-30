@@ -28,8 +28,8 @@ IMAGETYPE png24
 IMAGECOLOR 255 255 255
 TRANSPARENT OFF
 
-RESOLUTION 150
-DEFRESOLUTION 150
+RESOLUTION 200
+DEFRESOLUTION 200
 
 OUTPUTFORMAT
   NAME png24
@@ -110,7 +110,7 @@ LAYER
     "init=epsg:2056"   ##required
   END
   MINSCALEDENOM 0
-  MAXSCALEDENOM 10001
+  MAXSCALEDENOM 25001
 END
 
 ######################
@@ -917,7 +917,7 @@ LAYER
   TEMPLATE "ttt"
   OPACITY 60
   CLASS
-    NAME "Zones réservées des inst. ferrovières"
+    NAME "Zones réservées des inst. ferroviaires"
     COLOR 220 220 0
     OUTLINECOLOR 180 180 0
    END
@@ -941,7 +941,7 @@ LAYER
   TEMPLATE "ttt"
   OPACITY 60
   CLASS
-    NAME "Aligenements des install. ferrovières"
+    NAME "Alignements des inst. ferroviairess"
     COLOR 220 220 0
    END
 END
@@ -963,7 +963,7 @@ LAYER
   TYPE POLYGON
   TEMPLATE "ttt"
   CLASS
-    NAME "Zones rés. des install. aéroportuaires"
+    NAME "Zones réservées des inst. aéroportuaires"
     STYLE
       COLOR 255 170 0
       OPACITY 70
@@ -1014,7 +1014,7 @@ LAYER
   TYPE POLYGON
   TEMPLATE "ttt"
   CLASS
-    NAME "Zone de sécurité aéroportuaire"
+    NAME "Zone de la sécurité des aéroports"
     STYLE
       COLOR 192 0 192
       OPACITY 45
@@ -1447,7 +1447,7 @@ LAYER
   TEMPLATE "ttt"
   CLASSITEM "codegenre"
   CLASS
-    NAME "Limite légale de forêt"
+    NAME "Limite forestière statique"
     EXPRESSION /1/
     STYLE
       WIDTH 2
@@ -1478,7 +1478,7 @@ LAYER
   TOLERANCEUNITS pixels
   CLASSITEM "codegenre"
   CLASS
-    NAME "Distance légale à la forêt"
+    NAME "Distance par rapport à la forêt"
     EXPRESSION /7105/
     STYLE
         PATTERN 8 4 1 4 END
@@ -1657,610 +1657,1085 @@ END
 #####################
 
 LAYER
- NAME "batiments_ofs"
-  TYPE POINT
-  METADATA
-       "ows_title" "batiments_ofs"
-       " wms_srs" "EPSG:2056"
-  END
-  CONNECTIONTYPE POSTGIS
-  CONNECTION "user=${dbuser} password=${dbpassword} dbname=${db} host=${dbhost} port=${dbport}"
-  PROCESSING "CLOSE_CONNECTION=DEFER"
-  DATA "geom from batiments_ofs using unique egid using srid=2056"
-  STATUS ON
-  TEMPLATE "ttt"
-  LABELITEM "egid"
-  CLASS
-    NAME "Bât. fédéraux (EGID)"
-    SYMBOL "circle"
-    SIZE 3
-    COLOR 128 0 0
-    LABEL
-      TYPE TRUETYPE
-      FONT arialbd
-      SIZE 8
-      ANTIALIAS TRUE
-      COLOR 128 0 0
-      OUTLINECOLOR 255 255 255
-      POSITION uc
+    NAME "cantons_situation"
+    METADATA
+        "wms_title" "Cantons suisse situation"
+        "wms_srs" "EPSG:2056"
     END
-  END
-  MINSCALEDENOM 0
-  MAXSCALEDENOM 5001
-  TOLERANCE 5
-  TOLERANCEUNITS pixels
-END
-
-LAYER
- NAME "mo_distr_plans"
-  TYPE POLYGON
-  METADATA
-       "ows_title" "mo_distr_plans"
-       " wms_srs" "EPSG:2056"
-  END
-  CONNECTIONTYPE POSTGIS
-  CONNECTION "user=${dbuser} password=${dbpassword} dbname=${db} host=${dbhost} port=${dbport}"
-  PROCESSING "CLOSE_CONNECTION=DEFER"
-  DATA "geom from mensuration.mo_distr_plans using unique idobj using srid=2056"
-  STATUS ON
-  TEMPLATE "ttt"
-  LABELITEM "planno"
-  CLASS
-    NAME "Distributions des plans"
-    STYLE
-      OUTLINECOLOR 140 40 40
-      WIDTH 3
-    END
-    LABEL
-        TYPE TRUETYPE
-        FONT verdana
-        MAXSIZE 9
-        SIZE 8
-        MINSIZE 7
-        ANGLE AUTO
-        ANTIALIAS TRUE
-        COLOR 140 40 40
+    TYPE POLYGON
+    STATUS ON
+    CONNECTIONTYPE POSTGIS
+    CONNECTION "user=${vars:dbuser} password=${vars:dbpassword} dbname=${vars:db} host=${vars:dbhost} port=${vars:dbport}"
+    PROCESSING "CLOSE_CONNECTION=DEFER"
+    DATA "geom from situation.cantons using unique idobj using srid=2056"  
+    MINSCALEDENOM 60001
+    MAXSCALEDENOM 1000000000
+    CLASSITEM "libgeo"
+    CLASS
+        EXPRESSION /Lucerne/
         STYLE
-            GEOMTRANSFORM 'labelpoly'
             COLOR 255 255 255
         END
     END
-  END
-  MINSCALEDENOM 0
-  MAXSCALEDENOM 30000
+    CLASS
+        EXPRESSION /Berne/ 
+        STYLE
+            COLOR 160 160 160
+        END
+    END
+    CLASS
+        EXPRESSION /Fribourg/
+        STYLE
+            COLOR 240 240 240
+        END
+    END
+    CLASS
+        EXPRESSION /Vaud/ 
+        STYLE
+            COLOR 192 192 192
+        END
+    END
+    CLASS
+        EXPRESSION ('[libgeo]' eq 'Jura (CH)')
+        STYLE
+            COLOR 190 190 190
+        END
+    END
+    CLASS
+        EXPRESSION /Neuchâtel/ 
+    END
+    CLASS
+        EXPRESSION /Valais/ 
+        STYLE
+            COLOR 120 120 120
+        END
+    END
+    CLASS
+        EXPRESSION /Genève/ 
+        STYLE
+            COLOR 220 220 220
+        END  
+    CLASS
+        EXPRESSION /Zürich/
+        STYLE
+            COLOR 130 130 130
+        END  
+    END  
+    CLASS
+        EXPRESSION /Uri/
+        STYLE
+            COLOR 220 220 220
+        END  
+    END  
+    CLASS
+        EXPRESSION /Schwyz/
+        STYLE
+            COLOR 100 100 100
+        END  
+    END  
+    CLASS
+        EXPRESSION /Obwald/ 
+        STYLE
+            COLOR 200 200 200
+        END  
+    END  
+    CLASS
+        EXPRESSION /Glaris/ 
+        STYLE
+            COLOR 190 190 190
+        END  
+    END  
+    CLASS
+        EXPRESSION /Niedwald/
+        STYLE
+            COLOR 150 150 150
+        END  
+    END  
+    CLASS
+        EXPRESSION /Zoug/
+        STYLE
+            COLOR 200 200 200
+        END  
+    END  
+    CLASS
+        EXPRESSION /Soleure/
+        STYLE
+            COLOR 130 130 130
+        END   
+    END   
+    CLASS
+        EXPRESSION /St-Gall/
+        STYLE
+            COLOR 190 190 190
+        END  
+    END  
+    CLASS
+        EXPRESSION /Argovie/
+        STYLE
+            COLOR 180 180 180
+        END  
+    END  
+    CLASS
+        EXPRESSION /Schaffouse/
+        STYLE
+            COLOR 160 160 160
+        END  
+    END  
+    CLASS
+        EXPRESSION /Bâle Ville/
+        STYLE
+            COLOR 220 220 220
+        END  
+    END  
+    CLASS
+        EXPRESSION /Bâle Campagne/
+        STYLE
+            COLOR 230 230 230
+        END  
+    END  
+    CLASS
+        EXPRESSION /Thurgovie/
+        STYLE
+            COLOR 230 230 230
+        END  
+    END  
+    CLASS
+        EXPRESSION /Tessin/
+        STYLE
+            COLOR 180 180 180
+        END  
+    END  
+    CLASS
+        EXPRESSION /Grisons/
+        STYLE
+            COLOR 120 120 120
+        END  
+    END  
+    CLASS
+        EXPRESSION /Appenzell Ausserrhoden/
+        STYLE
+            COLOR 220 220 220
+        END  
+    END  
+    CLASS
+        EXPRESSION /Appenzell Innerrhoden/
+        STYLE
+            COLOR 140 140 140
+        END  
+    END  
+    CLASS
+        EXPRESSION /Doubs/
+        STYLE
+            COLOR 255 255 255
+            OUTLINECOLOR 200 200 200
+        END  
+    END  
+    CLASS
+        EXPRESSION /./
+        STYLE
+            OUTLINECOLOR 200 200 200
+        END  
+    END  
+        CLASS
+        EXPRESSION //
+        STYLE
+            OUTLINECOLOR 200 200 200
+        END  
+    END  
 END
 
 LAYER
- NAME "mo25_noms_locaux"
-  TYPE POLYGON
-  METADATA
-       "ows_title" "mo25_noms_locaux"
-       " wms_srs" "EPSG:2056"
-  END
-  CONNECTIONTYPE POSTGIS
-  CONNECTION "user=${dbuser} password=${dbpassword} dbname=${db} host=${dbhost} port=${dbport}"
-  PROCESSING "CLOSE_CONNECTION=DEFER"
-  DATA "geom from mensuration.mo25_noms_locaux using unique idobj using srid=2056"
-  STATUS ON
-  TEMPLATE "ttt"
-  MINSCALEDENOM 0
-  MAXSCALEDENOM 150000
-  OPACITY 50
-  CLASSITEM "noclass"
-  LABELITEM "nomloc"
-  LABELMINSCALE 7000
-  LABELMAXSCALE 30000
-  CLASS
-    EXPRESSION ([noclass]=1)
-    COLOR 176 255 176
-    LABEL
-        TYPE TRUETYPE
-        FONT arialbd
-        MAXSIZE 10
-        SIZE 8
-        MINSIZE 7
-        ANTIALIAS TRUE
-        COLOR 0 0 0
-        OUTLINECOLOR 255 255 255
+    NAME "frontiere_pays_situation"
+    METADATA
+        "wms_title" "Frontière des pays limitrophe de la Suisse"
+        "wms_srs" "EPSG:2056"
     END
-  END
-  CLASS
-    EXPRESSION ([noclass]=2)
-    COLOR 255 232 208
-    LABEL
-        TYPE TRUETYPE
-        FONT arialbd
-        MAXSIZE 10
-        SIZE 8
-        MINSIZE 7
-        ANTIALIAS TRUE
-        COLOR 0 0 0
-        OUTLINECOLOR 255 255 255
+    TYPE POLYGON
+    STATUS ON
+    CONNECTIONTYPE POSTGIS
+    CONNECTION "user=${vars:dbuser} password=${vars:dbpassword} dbname=${vars:db} host=${vars:dbhost} port=${vars:dbport}"
+    PROCESSING "CLOSE_CONNECTION=DEFER"
+    DATA "geom from situation.frontiere_pays using unique idobj using srid=2056"  
+    MINSCALEDENOM 60001
+    MAXSCALEDENOM 1000000000
+    CLASS
+        STYLE
+            WIDTH 2
+            OUTLINECOLOR 192 192 192
+        END
     END
-  END
-  CLASS
-    EXPRESSION ([noclass]=3)
-    COLOR 255 208 255
-    LABEL
-        TYPE TRUETYPE
-        FONT arialbd
-        MAXSIZE 10
-        SIZE 8
-        MINSIZE 7
-        ANTIALIAS TRUE
-        COLOR 0 0 0
-        OUTLINECOLOR 255 255 255
-    END
-  END
-  CLASS
-    EXPRESSION ([noclass]=4)
-    COLOR 255 208 64
-    LABEL
-        TYPE TRUETYPE
-        FONT arialbd
-        MAXSIZE 10
-        SIZE 8
-        MINSIZE 7
-        ANTIALIAS TRUE
-        COLOR 0 0 0
-        OUTLINECOLOR 255 255 255
-    END
-  END
-  CLASS
-    EXPRESSION ([noclass]=5)
-    COLOR 255 124 80
-    LABEL
-        TYPE TRUETYPE
-        FONT arialbd
-        MAXSIZE 10
-        SIZE 8
-        MINSIZE 7
-        ANTIALIAS TRUE
-        COLOR 0 0 0
-        OUTLINECOLOR 255 255 255
-    END
-  END
-  CLASS
-    EXPRESSION ([noclass]=6)
-    COLOR 208 156 0
-    LABEL
-        TYPE TRUETYPE
-        FONT arialbd
-        MAXSIZE 10
-        SIZE 8
-        MINSIZE 7
-        ANTIALIAS TRUE
-        COLOR 0 0 0
-        OUTLINECOLOR 255 255 255
-    END
-  END
-  CLASS
-    EXPRESSION ([noclass]=7)
-    COLOR 255 184 60
-    LABEL
-        TYPE TRUETYPE
-        FONT arialbd
-        MAXSIZE 10
-        SIZE 8
-        MINSIZE 7
-        ANTIALIAS TRUE
-        COLOR 0 0 0
-        OUTLINECOLOR 255 255 255
-    END
-  END
-  CLASS
-    EXPRESSION ([noclass]=8)
-    COLOR 160 255 208
-    LABEL
-        TYPE TRUETYPE
-        FONT arialbd
-        MAXSIZE 10
-        SIZE 8
-        MINSIZE 7
-        ANTIALIAS TRUE
-        COLOR 0 0 0
-        OUTLINECOLOR 255 255 255
-    END
-  END
-  CLASS
-    EXPRESSION ([noclass]=9)
-    COLOR 192 128 255
-    LABEL
-        TYPE TRUETYPE
-        FONT arialbd
-        MAXSIZE 10
-        SIZE 8
-        MINSIZE 7
-        ANTIALIAS TRUE
-        COLOR 0 0 0
-        OUTLINECOLOR 255 255 255
-    END
-  END
-  CLASS
-    EXPRESSION ([noclass]=10)
-    COLOR 255 128 0
-    LABEL
-        TYPE TRUETYPE
-        FONT arialbd
-        MAXSIZE 10
-        SIZE 8
-        MINSIZE 7
-        ANTIALIAS TRUE
-        COLOR 0 0 0
-        OUTLINECOLOR 255 255 255
-    END
-  END
-  CLASS
-    EXPRESSION ([noclass]=11)
-    COLOR 80 255 255
-    LABEL
-        TYPE TRUETYPE
-        FONT arialbd
-        MAXSIZE 10
-        SIZE 8
-        MINSIZE 7
-        ANTIALIAS TRUE
-        COLOR 0 0 0
-        OUTLINECOLOR 255 255 255
-    END
-  END
-  CLASS
-    EXPRESSION ([noclass]=12)
-    COLOR 255 160 160
-    LABEL
-        TYPE TRUETYPE
-        FONT arialbd
-        MAXSIZE 10
-        SIZE 8
-        MINSIZE 7
-        ANTIALIAS TRUE
-        COLOR 0 0 0
-        OUTLINECOLOR 255 255 255
-    END
-  END
-  CLASS
-    EXPRESSION ([noclass]=13)
-    COLOR 192 255 96
-    LABEL
-        TYPE TRUETYPE
-        FONT arialbd
-        MAXSIZE 10
-        SIZE 8
-        MINSIZE 7
-        ANTIALIAS TRUE
-        COLOR 0 0 0
-        OUTLINECOLOR 255 255 255
-    END
-  END
-  CLASS
-    EXPRESSION ([noclass]=14)
-    COLOR 0 128 192
-    LABEL
-        TYPE TRUETYPE
-        FONT arialbd
-        MAXSIZE 10
-        SIZE 8
-        MINSIZE 7
-        ANTIALIAS TRUE
-        COLOR 0 0 0
-        OUTLINECOLOR 255 255 255
-    END
-  END
-  CLASS
-    EXPRESSION ([noclass]=15)
-    COLOR 255 0 138
-    LABEL
-        TYPE TRUETYPE
-        FONT arialbd
-        MAXSIZE 10
-        SIZE 8
-        MINSIZE 7
-        ANTIALIAS TRUE
-        COLOR 0 0 0
-        OUTLINECOLOR 255 255 255
-    END
-  END
-  CLASS
-    EXPRESSION ([noclass]=16)
-    COLOR 255 255 0
-    LABEL
-        TYPE TRUETYPE
-        FONT arialbd
-        MAXSIZE 10
-        SIZE 8
-        MINSIZE 7
-        ANTIALIAS TRUE
-        COLOR 0 0 0
-        OUTLINECOLOR 255 255 255
-    END
-  END
-  CLASS
-    EXPRESSION ([noclass]=17)
-    COLOR 176 229 155
-    LABEL
-        TYPE TRUETYPE
-        FONT arialbd
-        MAXSIZE 10
-        SIZE 8
-        MINSIZE 7
-        ANTIALIAS TRUE
-        COLOR 0 0 0
-        OUTLINECOLOR 255 255 255
-    END
-  END
-  CLASS
-    EXPRESSION ([noclass]=18)
-    COLOR 192 0 96
-    LABEL
-        TYPE TRUETYPE
-        FONT arialbd
-        MAXSIZE 10
-        SIZE 8
-        MINSIZE 7
-        ANTIALIAS TRUE
-        COLOR 0 0 0
-        OUTLINECOLOR 255 255 255
-    END
-  END
-  CLASS
-    EXPRESSION ([noclass]=19)
-    COLOR 0 224 0
-    LABEL
-        TYPE TRUETYPE
-        FONT arialbd
-        MAXSIZE 10
-        SIZE 8
-        MINSIZE 7
-        ANTIALIAS TRUE
-        COLOR 0 0 0
-        OUTLINECOLOR 255 255 255
-    END
-  END
-  CLASS
-    EXPRESSION ([noclass]=20)
-    COLOR 144 144 255
-    LABEL
-        TYPE TRUETYPE
-        FONT arialbd
-        MAXSIZE 10
-        SIZE 8
-        MINSIZE 7
-        ANTIALIAS TRUE
-        COLOR 0 0 0
-        OUTLINECOLOR 255 255 255
-    END
-  END
-  CLASS
-    EXPRESSION ([noclass]=21)
-    COLOR 192 0 192
-    LABEL
-        TYPE TRUETYPE
-        FONT arialbd
-        MAXSIZE 10
-        SIZE 8
-        MINSIZE 7
-        ANTIALIAS TRUE
-        COLOR 0 0 0
-        OUTLINECOLOR 255 255 255
-    END
-  END
-  CLASS
-    EXPRESSION ([noclass]=22)
-    COLOR 255 152 48
-    LABEL
-        TYPE TRUETYPE
-        FONT arialbd
-        MAXSIZE 10
-        SIZE 8
-        MINSIZE 7
-        ANTIALIAS TRUE
-        COLOR 0 0 0
-        OUTLINECOLOR 255 255 255
-    END
-  END
-  CLASS
-    EXPRESSION ([noclass]=23)
-    COLOR 0 128 192
-    LABEL
-        TYPE TRUETYPE
-        FONT arialbd
-        MAXSIZE 10
-        SIZE 8
-        MINSIZE 7
-        ANTIALIAS TRUE
-        COLOR 0 0 0
-        OUTLINECOLOR 255 255 255
-    END
-  END
-  CLASS
-    EXPRESSION ([noclass]=24)
-    COLOR 255 64 0
-    LABEL
-        TYPE TRUETYPE
-        FONT arialbd
-        MAXSIZE 10
-        SIZE 8
-        MINSIZE 7
-        ANTIALIAS TRUE
-        COLOR 0 0 0
-        OUTLINECOLOR 255 255 255
-    END
-  END
-  CLASS
-    EXPRESSION ([noclass]=25)
-    COLOR 0 255 0
-    LABEL
-        TYPE TRUETYPE
-        FONT arialbd
-        MAXSIZE 10
-        SIZE 8
-        MINSIZE 7
-        ANTIALIAS TRUE
-        COLOR 0 0 0
-        OUTLINECOLOR 255 255 255
-    END
-  END
-  CLASS
-    EXPRESSION ([noclass]=26)
-    COLOR 255 0 255
-    LABEL
-        TYPE TRUETYPE
-        FONT arialbd
-        MAXSIZE 10
-        SIZE 8
-        MINSIZE 7
-        ANTIALIAS TRUE
-        COLOR 0 0 0
-        OUTLINECOLOR 255 255 255
-    END
-  END
-  CLASS
-    EXPRESSION ([noclass]=27)
-    COLOR 192 192 0
-    LABEL
-        TYPE TRUETYPE
-        FONT arialbd
-        MAXSIZE 10
-        SIZE 8
-        MINSIZE 7
-        ANTIALIAS TRUE
-        COLOR 0 0 0
-        OUTLINECOLOR 255 255 255
-    END
-  END
 END
 
 LAYER
- NAME "mo4_pfp_1_2"
-  TYPE POINT
-  METADATA
-       "ows_title" "mo4_pfp_1_2"
-       " wms_srs" "EPSG:2056"
-  END
-  CONNECTIONTYPE POSTGIS
-  CONNECTION "user=${dbuser} password=${dbpassword} dbname=${db} host=${dbhost} port=${dbport}"
-  PROCESSING "CLOSE_CONNECTION=DEFER"
-  DATA "geom from mensuration.mo4_pfp_1_2 using unique idobj using srid=2056"
-  STATUS ON
-  TEMPLATE "ttt"
-  LABELITEM "nopoin"
-  CLASS
-    NAME "PFP1/2"
-    STYLE
-        SYMBOL "triangle"
-        SIZE 11
-        COLOR 255 255 255
+    NAME "couvsol_situation"
+    METADATA
+        "wms_title" "Couverture du sol vector25"
+        "wms_srs" "EPSG:2056"
     END
-    STYLE
-        SYMBOL "triangle"
-        SIZE 11
-        OUTLINECOLOR 0 0 0
-        WIDTH 1
+    TYPE polygon
+    CONNECTIONTYPE POSTGIS
+    CONNECTION "user=${vars:dbuser} password=${vars:dbpassword} dbname=${vars:db} host=${vars:dbhost} port=${vars:dbport}"
+    PROCESSING "CLOSE_CONNECTION=DEFER"
+    DATA "geom from situation.couvsol_situation using unique idobj using srid=2056"  
+    OPACITY 30
+    CLASSITEM "objectval"
+    CLASS
+        EXPRESSION /(Z_Wald)|(Z_WaldOf)/
+        STYLE
+            COLOR 150 150 150
+        END
+        MINSCALEDENOM 60001
+        MAXSCALEDENOM 2000000
     END
-    STYLE
-        SYMBOL "triangle"
-        SIZE 4.5
-        COLOR 0 0 0
-        OFFSET 0 1.5
+    CLASS
+        EXPRESSION /Z_Siedl/
+        STYLE
+            COLOR 0 0 0
+        END
+        MINSCALEDENOM 60001
+        MAXSCALEDENOM 2000000
     END
-    LABEL
-      TYPE TRUETYPE
-      FONT arialn
-      ANTIALIAS TRUE
-      COLOR 0 0 0
-      OUTLINECOLOR 255 255 255
-      MAXSIZE 8
-      SIZE 7
-      MINSIZE 7
-      POSITION auto
-    END
+END 
 
-  END
-  MINSCALEDENOM 0
-  MAXSCALEDENOM 100001
-  TOLERANCE 5
-  TOLERANCEUNITS pixels
+LAYER
+    NAME "lacs_situation"
+    METADATA
+        "wms_title" "Lacs suisse"
+        "wms_srs" "EPSG:2056"
+    END
+    TYPE POLYGON
+    STATUS ON
+    CONNECTIONTYPE POSTGIS
+    CONNECTION "user=${vars:dbuser} password=${vars:dbpassword} dbname=${vars:db} host=${vars:dbhost} port=${vars:dbport}"
+    PROCESSING "CLOSE_CONNECTION=DEFER"
+    DATA "geom from situation.lacs using unique idobj using srid=2056"  
+    MINSCALEDENOM 60001
+    MAXSCALEDENOM 1000000000
+    CLASS
+        STYLE
+            COLOR 144 144 144
+            OUTLINECOLOR 104 104 104
+        END
+    END
 END
 
 LAYER
- NAME "mo4_pfp_3"
-  TYPE POINT
-  METADATA
-       "ows_title" "mo4_pfp_3"
-       " wms_srs" "EPSG:2056"
-  END
-  CONNECTIONTYPE POSTGIS
-  CONNECTION "user=${dbuser} password=${dbpassword} dbname=${db} host=${dbhost} port=${dbport}"
-  PROCESSING "CLOSE_CONNECTION=DEFER"
-  DATA "geom from mensuration.mo4_pfp_3 using unique idobj using srid=2056"
-  STATUS ON
-  TEMPLATE "ttt"
-  CLASS
-    NAME "PFP3"
-    STYLE
-    SYMBOL "circle"
-    SIZE 10
-    COLOR 255 255 255
+    NAME "hydro_suisse"
+    METADATA
+        "wms_title" "Réso hydro suisse"
+        "wms_srs" "EPSG:2056"
     END
-    STYLE
-    SYMBOL "pfp_3"
-    SIZE 10
-    COLOR 0 0 0
+    TYPE LINE
+    STATUS ON
+    CONNECTIONTYPE POSTGIS
+    CONNECTION "user=${vars:dbuser} password=${vars:dbpassword} dbname=${vars:db} host=${vars:dbhost} port=${vars:dbport}"
+    PROCESSING "CLOSE_CONNECTION=DEFER"
+    DATA "geom from situation.hydro_suisse using unique idobj using srid=2056"  
+    MINSCALEDENOM 60001
+    MAXSCALEDENOM 1100000
+    CLASS
+        STYLE
+            COLOR 144 144 144
+        END
+    END
+END
+
+LAYER
+    NAME "communes_situation"
+    METADATA
+        "wms_title" "Communes neuchâteloises 2013"
+        "wms_srs" "EPSG:2056"
+    END
+    TYPE POLYGON
+    STATUS ON
+    CONNECTIONTYPE POSTGIS
+    CONNECTION "user=${vars:dbuser} password=${vars:dbpassword} dbname=${vars:db} host=${vars:dbhost} port=${vars:dbport}"
+    PROCESSING "CLOSE_CONNECTION=DEFER"
+    DATA "geom from situation.communes using unique idobj using srid=2056"
+    MINSCALEDENOM 60001
+    MAXSCALEDENOM 200000
+    CLASS
+        STYLE
+            OUTLINECOLOR 100 100 100
+        END
+    END
+END
+
+LAYER
+    NAME "districts_situation"
+    METADATA
+        "wms_title" "Districts situation"
+        "wms_srs" "EPSG:2056"
+    END
+    TYPE POLYGON
+    STATUS ON
+    CONNECTIONTYPE POSTGIS
+    CONNECTION "user=${vars:dbuser} password=${vars:dbpassword} dbname=${vars:db} host=${vars:dbhost} port=${vars:dbport}"
+    PROCESSING "CLOSE_CONNECTION=DEFER"
+    DATA "geom from situation.districts using unique idobj using srid=2056"  
+    MINSCALEDENOM 60001
+    MAXSCALEDENOM 200000
+    CLASS
+        STYLE
+            WIDTH 2
+            OUTLINECOLOR 100 100 100
+        END
+    END
+END
+
+LAYER
+    NAME "frontiere_suisse"
+    METADATA
+        "wms_title" "Frontière suisse"
+        "wms_srs" "EPSG:2056"
+    END
+    TYPE POLYGON
+    STATUS ON
+    CONNECTIONTYPE POSTGIS
+    CONNECTION "user=${vars:dbuser} password=${vars:dbpassword} dbname=${vars:db} host=${vars:dbhost} port=${vars:dbport}"
+    PROCESSING "CLOSE_CONNECTION=DEFER"
+    DATA "geom from situation.frontiere_suisse using unique idobj using srid=2056"  
+    MINSCALEDENOM 60001
+    MAXSCALEDENOM 1000000000
+    OPACITY 80
+    CLASS
+        STYLE  
+            WIDTH 2
+            OUTLINECOLOR 40 40 40
+        END
+    END
+END
+
+LAYER
+    NAME "rail1"
+    METADATA
+        "wms_title" "Rails niveau 1"
+        "wms_srs" "EPSG:2056"
+    END
+    STATUS ON 
+    OPACITY 40
+    CONNECTIONTYPE postgis 
+    CONNECTION "user=${vars:dbuser} password=${vars:dbpassword} dbname=${vars:db} host=${vars:dbhost} port=${vars:dbport}"
+    PROCESSING "CLOSE_CONNECTION=DEFER" 
+    MAXSCALEDENOM 210000 
+    MINSCALEDENOM  50010
+    TYPE LINE
+    DATA "geom from (select geom, osm_id ,railway, name from situation.osm_line_ch where railway='rail') as foo using unique osm_id using srid=2056"
+    CLASS
+        STYLE
+            WIDTH 1
+            OUTLINEWIDTH 1
+            OUTLINECOLOR "#555554"
+        END
+        STYLE
+            SYMBOL "railfar"
+            PATTERN 5 5 END
+            WIDTH 1
+            COLOR "#ffffff"
+        END
+    END
+END
+
+LAYER
+    NAME "rail2" 
+    METADATA
+        "wms_title" "Rails 2"
+        "wms_srs" "EPSG:2056"
+    END
+    STATUS ON 
+    CONNECTIONTYPE postgis 
+    CONNECTION "user=${vars:dbuser} password=${vars:dbpassword} dbname=${vars:db} host=${vars:dbhost} port=${vars:dbport}"
+    PROCESSING "CLOSE_CONNECTION=DEFER" 
+    MAXSCALEDENOM 50010 
+    MINSCALEDENOM 35000
+    TYPE LINE
+    DATA "geom from (select geom, osm_id ,railway, name from situation.osm_line_ch where railway='rail') as foo using unique osm_id using srid=2056"
+    CLASS
+        STYLE
+            WIDTH 1
+            OUTLINEWIDTH 1
+            OUTLINECOLOR "#555554"
+            COLOR "#ffffff"
+        END
+        STYLE
+            SYMBOL rail
+            GAP -3
+            SIZE 4
+            COLOR "#555554"
+        END
+    END
+END
+
+
+LAYER
+    NAME "surfaces_tot"
+    METADATA
+        "wms_title" "Couverture du sol"
+        "wms_srs" "EPSG:2056"
+    END
+    TYPE POLYGON
+    STATUS ON
+    CONNECTIONTYPE POSTGIS
+    CONNECTION "user=${vars:dbuser} password=${vars:dbpassword} dbname=${vars:db} host=${vars:dbhost} port=${vars:dbport}"
+    PROCESSING "CLOSE_CONNECTION=DEFER"
+    DATA "geom from mensuration.mo6_couverture_du_sol_surf_tot using unique idobj using srid=2056"
+    CLASSITEM desnat
+    CLASS
+        STYLE
+            COLOR 255 255 255	
+            OUTLINECOLOR 0 0 0
+            WIDTH 0.5
+        END
     END
     MINSCALEDENOM 0
-    MAXSCALEDENOM 7000
-  END
-  TOLERANCE 5
-  TOLERANCEUNITS pixels
+    MAXSCALEDENOM 2499
 END
 
-
 LAYER
- NAME "mo4_pfa_1"
-  TYPE POINT
-  METADATA
-       "ows_title" "mo4_pfa_1"
-       " wms_srs" "EPSG:2056"
-  END
-  CONNECTIONTYPE POSTGIS
-  CONNECTION "user=${dbuser} password=${dbpassword} dbname=${db} host=${dbhost} port=${dbport}"
-  PROCESSING "CLOSE_CONNECTION=DEFER"
-  DATA "geom from mensuration.mo4_pfa_1 using unique idobj using srid=2056"
-  STATUS ON
-  CLASSITEM "valeur"
-  TEMPLATE "ttt"
-  CLASS
-    NAME "PFA1"
-    EXPRESSION /./
-    STYLE
-    SYMBOL "circle"
-    SIZE 10
-    COLOR 255 255 255
-    OUTLINECOLOR 0 0 0
+    NAME "surfaces_bois"
+    METADATA
+        "wms_title" "Surfaces bois"
+        "wms_srs" "EPSG:2056"
     END
-    STYLE
-    SYMBOL "circle"
-    SIZE 5
-    COLOR 0 0 0
+    TYPE POLYGON
+    STATUS ON
+    CONNECTIONTYPE POSTGIS
+    CONNECTION "user=${vars:dbuser} password=${vars:dbpassword} dbname=${vars:db} host=${vars:dbhost} port=${vars:dbport}"
+    PROCESSING "CLOSE_CONNECTION=DEFER"
+    DATA "geom from mensuration.mo6_couverture_du_sol_surf_tot using unique idobj using srid=2056"
+    CLASSITEM "desnat"
+    CLASS
+        NAME "Forêt"
+        EXPRESSION /forêt/
+        STYLE
+            SYMBOL "bois_rf"
+            COLOR 150 150 150	
+            OUTLINECOLOR 0 0 0
+            SIZE 5
+        END
+    END
+    CLASS
+        NAME "toto"
+        EXPRESSION /pâturage boisé/
+        STYLE
+            SYMBOL "bois_pat"
+            COLOR 150 150 150	
+            OUTLINECOLOR 0 0 0
+            SIZE 7
+        END
+    END
+    CLASS
+        NAME "Forêt"
+        EXPRESSION /boisée/
+        STYLE
+            SYMBOL "bois_pat"
+            COLOR 150 150 150	
+            OUTLINECOLOR 0 0 0
+            SIZE 7
+        END
     END
     MINSCALEDENOM 0
-    MAXSCALEDENOM 100001
-  END
-  TOLERANCE 5
-  TOLERANCEUNITS pixels
+    MAXSCALEDENOM 2499
 END
 
 LAYER
- NAME "mo7_obj_divers_cordbois"
-  TYPE POLYGON
-  METADATA
-       "ows_title" "mo7_obj_divers_cordbois"
-       " wms_srs" "EPSG:2056"
-  END
-  CONNECTIONTYPE POSTGIS
-  CONNECTION "user=${dbuser} password=${dbpassword} dbname=${db} host=${dbhost} port=${dbport}"
-  PROCESSING "CLOSE_CONNECTION=DEFER"
-  DATA "geom from (SELECT
+    NAME "surfaces_vignes2"
+    METADATA
+        "wms_title" "Surfaces vignes"
+        "wms_srs" "EPSG:2056"
+    END
+    TYPE POLYGON
+    STATUS ON
+    CONNECTIONTYPE POSTGIS
+    CONNECTION "user=${vars:dbuser} password=${vars:dbpassword} dbname=${vars:db} host=${vars:dbhost} port=${vars:dbport}"
+    PROCESSING "CLOSE_CONNECTION=DEFER"
+    DATA "geom from mensuration.mo6_couverture_du_sol_surf_tot using unique idobj using srid=2056"
+    CLASSITEM "desnat"
+    CLASS
+        EXPRESSION /vigne/
+        STYLE
+            SYMBOL "vigne"
+            COLOR 150 150 150	
+            SIZE 5
+        END
+    END
+    MINSCALEDENOM 0
+    MAXSCALEDENOM 2499
+END
+
+LAYER
+    NAME "batiments_souterrain"
+    METADATA
+        "wms_title" "batiments_souterrain"
+        "wms_srs" "EPSG:2056"
+    END
+    TYPE POLYGON
+    STATUS ON
+    CONNECTIONTYPE POSTGIS
+    CONNECTION "user=${vars:dbuser} password=${vars:dbpassword} dbname=${vars:db} host=${vars:dbhost} port=${vars:dbport}"
+    PROCESSING "CLOSE_CONNECTION=DEFER"
+    DATA "geom from mensuration.mo22_batiments using unique idobj using srid=2056"
+    LABELMAXSCALEDENOM 1500
+    CLASSITEM "typcou"
+    CLASS
+        EXPRESSION /souterrain/
+        NAME "Souterrains"
+        STYLE
+            COLOR 255 255 255
+            OUTLINECOLOR 0 0 0
+        END
+    END
+    MINSCALEDENOM 50
+    MAXSCALEDENOM 24999
+END
+
+LAYER
+    NAME "batiments"
+    METADATA
+        "wms_title" "Batiments"
+        "wms_srs" "EPSG:2056"
+    END
+    TYPE POLYGON
+    STATUS ON
+    CONNECTIONTYPE POSTGIS
+    CONNECTION "user=${vars:dbuser} password=${vars:dbpassword} dbname=${vars:db} host=${vars:dbhost} port=${vars:dbport}"
+    PROCESSING "CLOSE_CONNECTION=DEFER"
+    DATA "geom from mensuration.mo22_batiments using unique idobj using srid=2056"
+    LABELMAXSCALEDENOM 1500
+    CLASSITEM "typcou"
+    CLASS
+        EXPRESSION /ordinaire/
+        NAME "Ordinaires"
+        STYLE
+            COLOR 255 255 255
+            OUTLINECOLOR 0 0 0
+        END
+    END
+    MINSCALEDENOM 50
+    MAXSCALEDENOM 24999
+END
+
+LAYER
+    NAME "parcellaire_officiel"
+    METADATA
+        "wms_title" "Parcellaire officiel"
+        "wms_srs" "EPSG:2056"
+    END
+    TYPE POLYGON
+    STATUS ON
+    CONNECTIONTYPE POSTGIS
+    CONNECTION "user=${vars:dbuser} password=${vars:dbpassword} dbname=${vars:db} host=${vars:dbhost} port=${vars:dbport}"
+    PROCESSING "CLOSE_CONNECTION=DEFER"
+    DATA "geom from mensuration.mo9_immeubles using unique idobj using srid=2056"
+    OPACITY 70
+    CLASSITEM "typimm"
+    CLASS
+        EXPRESSION /DDP/
+        NAME "DDP"
+        STYLE
+            OUTLINECOLOR 10 10 10 
+            PATTERN 7 7 END
+            WIDTH 1
+        END
+    END
+    CLASS
+        EXPRESSION /DP/
+        NAME "DP"
+        STYLE
+            OUTLINECOLOR 10 10 10 
+            PATTERN 7 7 END
+            WIDTH 1
+        END
+    END
+    CLASS
+        EXPRESSION /./
+        NAME "Parcel. officiel"
+        STYLE
+            OUTLINECOLOR 0 0 0
+            WIDTH 1.5
+        END
+    END
+    MINSCALEDENOM 50
+    MAXSCALEDENOM 25001
+END
+
+LAYER
+    NAME "immeubles_txt_rappel"
+    METADATA
+        "wms_title" "Traits de rappel numéros de parcelles"
+        "wms_srs" "EPSG:2056"
+    END
+    TYPE LINE
+    CONNECTIONTYPE POSTGIS
+    CONNECTION "user=${vars:dbuser} password=${vars:dbpassword} dbname=${vars:db} host=${vars:dbhost} port=${vars:dbport}"
+    PROCESSING "CLOSE_CONNECTION=DEFER"
+    DATA "geom from mensuration.mo9_immeubles_txt_rappel using unique idobj using srid=2056"
+    STATUS ON
+    MINSCALEDENOM 0
+    MAXSCALEDENOM 5000
+    CLASS
+        STYLE
+            WIDTH 1
+            COLOR 0 0 0
+        END
+    END
+END
+
+LAYER
+    NAME "immeubles_txt"
+    TYPE POINT
+    METADATA
+        "ows_title" "immeubles_txt"
+        " wms_srs" "epsg:21781"
+    END
+    CONNECTIONTYPE POSTGIS
+    CONNECTION "user=${vars:dbuser} password=${vars:dbpassword} dbname=${vars:db} host=${vars:dbhost} port=${vars:dbport}"
+    PROCESSING "CLOSE_CONNECTION=DEFER"
+    DATA "geom from mensuration.mo9_immeubles_txt using unique idobj using srid=2056"
+    STATUS ON
+    LABELITEM "label"
+    MAXSCALEDENOM 5000
+    SYMBOLSCALE 1000
+    LABELMAXSCALEDENOM 5000
+    TEMPLATE "ttt"
+    CLASS
+        LABEL
+            TYPE TRUETYPE
+            FONT arialbd
+            MAXSIZE 11
+            SIZE 10
+            MINSIZE 7
+            ANGLE AUTO
+            ANTIALIAS TRUE
+            COLOR 0 0 0
+            FORCE TRUE
+            OUTLINECOLOR 255 255 255
+            POSITION cc
+        END
+    END
+END
+
+LAYER
+    NAME "mo9_immeubles_txt_conc_hydr"
+    TYPE POINT
+    METADATA
+        "ows_title" "mo9_immeubles_txt_conc_hydr"
+        " wms_srs" "epsg:21781"
+    END
+    CONNECTIONTYPE POSTGIS
+    CONNECTION "user=${vars:dbuser} password=${vars:dbpassword} dbname=${vars:db} host=${vars:dbhost} port=${vars:dbport}"
+    PROCESSING "CLOSE_CONNECTION=DEFER"
+    DATA "geom FROM (SELECT
+        idobj,
+        geom,
+        label_position_mapserver,
+        ori_mapserver,
+        'CONC HYD ' || nummai::text as label
+        from mensuration.mo9_immeubles_txt_conc_hydr) as FOO using unique idobj using srid=2056"
+    STATUS ON
+    LABELITEM "label"
+    MAXSCALEDENOM 4000
+    SYMBOLSCALE 1000
+    LABELMAXSCALEDENOM 3000
+    TEMPLATE "ttt"
+    CLASSITEM "label_position_mapserver"
+    CLASS
+        EXPRESSION "ul"
+        STYLE
+            # NEEDED, OTHERWISE MAPSERVER THROWS AN ERROR
+            # ANNOTATION COULD BE USED, DEPRECATED IN V6.2
+        END
+        LABEL
+            TYPE TRUETYPE
+            FONT arialbd
+            MAXSIZE 11
+            SIZE 10
+            MINSIZE 7
+            FORCE TRUE
+            POSITION ul
+            ANGLE [ori_mapserver]
+            COLOR 0 0 0
+            OUTLINECOLOR 255 255 255
+        END
+    END
+    CLASS
+        EXPRESSION "uc"
+        STYLE
+            # NEEDED, OTHERWISE MAPSERVER THROWS AN ERROR
+            # ANNOTATION COULD BE USED, DEPRECATED IN V6.2
+        END
+        LABEL
+            TYPE TRUETYPE
+            FONT arialbd
+            MAXSIZE 11
+            SIZE 10
+            MINSIZE 7
+            FORCE TRUE
+            POSITION uc
+            ANGLE [ori_mapserver]
+            COLOR 0 0 0
+            OUTLINECOLOR 255 255 255
+        END
+    END
+    CLASS
+        EXPRESSION "ur"
+        STYLE
+            # NEEDED, OTHERWISE MAPSERVER THROWS AN ERROR
+            # ANNOTATION COULD BE USED, DEPRECATED IN V6.2
+        END
+        LABEL
+            TYPE TRUETYPE
+            FONT arialbd
+            MAXSIZE 11
+            SIZE 10
+            MINSIZE 7
+            FORCE TRUE
+            POSITION ur
+            ANGLE [ori_mapserver]
+            COLOR 0 0 0
+            OUTLINECOLOR 255 255 255
+        END
+    END
+    CLASS
+        EXPRESSION "cl"
+        STYLE
+            # NEEDED, OTHERWISE MAPSERVER THROWS AN ERROR
+            # ANNOTATION COULD BE USED, DEPRECATED IN V6.2
+        END
+        LABEL
+            TYPE TRUETYPE
+            FONT arialbd
+            MAXSIZE 11
+            SIZE 10
+            MINSIZE 7
+            FORCE TRUE
+            POSITION cl
+            ANGLE [ori_mapserver]
+            COLOR 0 0 0
+            OUTLINECOLOR 255 255 255
+        END
+    END
+    CLASS
+        EXPRESSION "cc"
+        STYLE
+            # NEEDED, OTHERWISE MAPSERVER THROWS AN ERROR
+            # ANNOTATION COULD BE USED, DEPRECATED IN V6.2
+        END
+        LABEL
+            TYPE TRUETYPE
+            FONT arialbd
+            MAXSIZE 11
+            SIZE 10
+            MINSIZE 7
+            FORCE TRUE
+            POSITION cc
+            ANGLE [ori_mapserver]
+            COLOR 0 0 0
+            OUTLINECOLOR 255 255 255
+        END
+    END
+    CLASS
+        EXPRESSION "cr"
+        STYLE
+            # NEEDED, OTHERWISE MAPSERVER THROWS AN ERROR
+            # ANNOTATION COULD BE USED, DEPRECATED IN V6.2
+        END
+        LABEL
+            TYPE TRUETYPE
+            FONT arialbd
+            MAXSIZE 11
+            SIZE 10
+            MINSIZE 7
+            FORCE TRUE
+            POSITION cr
+            ANGLE [ori_mapserver]
+            COLOR 0 0 0
+            OUTLINECOLOR 255 255 255
+        END
+    END
+    CLASS
+        EXPRESSION /ll/
+        STYLE
+            # NEEDED, OTHERWISE MAPSERVER THROWS AN ERROR
+            # ANNOTATION COULD BE USED, DEPRECATED IN V6.2
+        END
+        LABEL
+            TYPE TRUETYPE
+            FONT arialbd
+            MAXSIZE 11
+            SIZE 10
+            MINSIZE 7
+            FORCE TRUE
+            POSITION ll
+            ANGLE [ori_mapserver]
+            COLOR 0 0 0
+            OUTLINECOLOR 255 255 255
+        END
+    END
+    CLASS
+        EXPRESSION "lc"
+        STYLE
+            # NEEDED, OTHERWISE MAPSERVER THROWS AN ERROR
+            # ANNOTATION COULD BE USED, DEPRECATED IN V6.2
+        END
+        LABEL
+            TYPE TRUETYPE
+            FONT arialbd
+            MAXSIZE 11
+            SIZE 10
+            MINSIZE 7
+            FORCE TRUE
+            POSITION lc
+            ANGLE [ori_mapserver]
+            COLOR 0 0 0
+            OUTLINECOLOR 255 255 255
+        END
+    END
+    CLASS
+        EXPRESSION "lr"
+        STYLE
+            # NEEDED, OTHERWISE MAPSERVER THROWS AN ERROR
+            # ANNOTATION COULD BE USED, DEPRECATED IN V6.2
+        END
+        LABEL
+            TYPE TRUETYPE
+            FONT arialbd
+            MAXSIZE 11
+            SIZE 10
+            MINSIZE 7
+            FORCE TRUE
+            POSITION lr
+            ANGLE [ori_mapserver]
+            COLOR 0 0 0
+            OUTLINECOLOR 255 255 255
+        END
+    END
+END
+
+LAYER
+    NAME "pts_limites"
+    METADATA
+        "wms_title" "Points limites"
+        "wms_srs" "EPSG:2056"
+    END
+    TYPE POINT
+    CONNECTIONTYPE POSTGIS
+    CONNECTION "user=${vars:dbuser} password=${vars:dbpassword} dbname=${vars:db} host=${vars:dbhost} port=${vars:dbport}"
+    PROCESSING "CLOSE_CONNECTION=DEFER"
+    DATA "geom from mensuration.mo5_point_de_detail using unique idobj using srid=2056"
+    STATUS ON
+    MINSCALEDENOM 0
+    MAXSCALEDENOM 1900
+    CLASSITEM "nature"
+    CLASS
+        NAME "Borne"
+        EXPRESSION ([nature] = 1 AND [gros_borne] = 1)
+        STYLE
+            SYMBOL "circle"
+            SIZE 7
+            COLOR 255 255 255
+            OUTLINECOLOR 0 0 0
+        END
+    END
+    CLASS
+        NAME "Cheville"
+        EXPRESSION ([nature] = 2 AND [gros_borne] = 1)
+        STYLE
+            SYMBOL "circle"
+            SIZE 5
+            COLOR 255 255 255
+            OUTLINECOLOR 0 0 0
+        END
+    END  
+    CLASS
+        NAME "Croix"
+        EXPRESSION ([nature] = 3 AND [gros_borne] = 1)
+        STYLE
+            SYMBOL "croix"
+        END
+    END  
+    CLASS
+        NAME "Pieu, piquet"
+        EXPRESSION ([nature] = 4 AND [gros_borne] = 1)
+        STYLE
+            SYMBOL "circle"
+            SIZE 3
+            COLOR 255 255 255
+            OUTLINECOLOR 0 0 0
+        END
+    END
+    CLASS
+        NAME "Non mat."
+        EXPRESSION ([nature] = 5 AND [gros_borne] = 1)
+        STYLE
+            SYMBOL "circle"
+            SIZE 4
+            COLOR 0 0 0
+            OUTLINECOLOR 255 255 255
+        END
+    END
+    CLASS
+        NAME "Borne artif."
+        EXPRESSION ([nature] = 6 AND [gros_borne] = 1)
+        STYLE
+            SYMBOL "circle"
+            SIZE 7
+            COLOR 255 255 255
+            OUTLINECOLOR 0 0 0
+        END
+    END
+    CLASS
+        NAME "Tuyau"
+        EXPRESSION ([nature] = 7 AND [gros_borne] = 1)
+        STYLE
+            SYMBOL "circle"
+            SIZE 3
+            COLOR 255 255 255
+            OUTLINECOLOR 0 0 0
+        END
+    END
+    CLASS
+        NAME "Borne territoriale"
+        EXPRESSION ([nature] = 1 AND [gros_borne] = 0)
+        STYLE
+            SYMBOL "circle"
+            SIZE 7
+            COLOR 255 255 255
+            OUTLINECOLOR 0 0 0
+        END
+        STYLE
+            SYMBOL "circle"
+            SIZE 14
+            OUTLINECOLOR 0 0 0
+        END
+    END
+    CLASS
+        NAME "Cheville / borne territoriale"
+        EXPRESSION ([nature] = 2 AND [gros_borne] = 0)
+        STYLE
+            SYMBOL "circle"
+            SIZE 5
+            COLOR 255 255 255
+            OUTLINECOLOR 0 0 0
+        END
+        STYLE
+            SYMBOL "circle"
+            SIZE 14
+            OUTLINECOLOR 0 0 0
+        END
+    END
+    CLASS
+        NAME "Croix / borne territoriale"
+        EXPRESSION ([nature] = 3 AND [gros_borne] = 0)
+        STYLE
+            SYMBOL "croix"
+        END
+        STYLE
+            SYMBOL "circle"
+            SIZE 14
+            OUTLINECOLOR 0 0 0
+        END
+    END
+    CLASS
+        NAME "Pieu, piquet / borne territoriale"
+        EXPRESSION ([nature] = 4 AND [gros_borne] = 0)
+        STYLE
+            SYMBOL "circle"
+            SIZE 3
+            COLOR 255 255 255
+            OUTLINECOLOR 0 0 0
+        END
+        STYLE
+            SYMBOL "circle"
+            SIZE 14
+            OUTLINECOLOR 0 0 0
+        END
+    END
+    CLASS
+        NAME "Non mat. / borne territoriale"
+        EXPRESSION ([nature] = 5 AND [gros_borne] = 0)
+        STYLE
+            SYMBOL "circle"
+            SIZE 4
+            COLOR 0 0 0
+            OUTLINECOLOR 255 255 255
+        END
+        STYLE
+            SYMBOL "circle"
+            SIZE 14
+            OUTLINECOLOR 0 0 0
+        END
+    END
+    CLASS
+        NAME "Borne artif. territoriale"
+        EXPRESSION ([nature] = 6 AND [gros_borne] = 0)
+        STYLE
+            SYMBOL "circle"
+            SIZE 7
+            COLOR 255 255 255
+            OUTLINECOLOR 0 0 0
+        END
+        STYLE
+            SYMBOL "circle"
+            SIZE 14
+            OUTLINECOLOR 0 0 0
+        END
+    END
+    CLASS
+        NAME "Tuyau / borne territoriale"
+        EXPRESSION ([nature] = 7 AND [gros_borne] = 0)
+        STYLE
+            SYMBOL "circle"
+            SIZE 3
+            COLOR 255 255 255
+            OUTLINECOLOR 0 0 0
+        END
+        STYLE
+            SYMBOL "circle"
+            SIZE 14
+            OUTLINECOLOR 0 0 0
+        END
+    END
+END
+
+LAYER
+    NAME "obj_divers_couvert"
+    METADATA
+        "wms_title" "Objets divers couverts"
+        "wms_srs" "EPSG:2056"
+    END
+    TYPE POLYGON
+    CONNECTIONTYPE POSTGIS
+    CONNECTION "user=${vars:dbuser} password=${vars:dbpassword} dbname=${vars:db} host=${vars:dbhost} port=${vars:dbport}"
+    PROCESSING "CLOSE_CONNECTION=DEFER"
+    DATA "geom from (SELECT
+        *
+        FROM mensuration.mo7_obj_divers_surface
+        WHERE genre = 14
+        ) as foo using unique idobj using srid=2056"
+    STATUS ON
+    MINSCALEDENOM 0
+    MAXSCALEDENOM 2499
+    CLASS
+        STYLE
+            PATTERN 3 3 END
+            OUTLINECOLOR 0 0 0
+            WIDTH 0.5
+        END
+    END
+END
+
+LAYER
+    NAME "obj_divers_cordbois"
+    METADATA
+        "wms_title" "Objets divers cordons boisés"
+        "wms_srs" "EPSG:2056"
+    END
+    TYPE POLYGON
+    CONNECTIONTYPE POSTGIS
+    CONNECTION "user=${vars:dbuser} password=${vars:dbpassword} dbname=${vars:db} host=${vars:dbhost} port=${vars:dbport}"
+    PROCESSING "CLOSE_CONNECTION=DEFER"
+    DATA "geom from (SELECT
         *
         FROM mensuration.mo7_obj_divers_surface
         WHERE genre = 27
@@ -2278,16 +2753,16 @@ LAYER
 END
 
 LAYER
- NAME "mo7_obj_divers_piscine"
-  TYPE POLYGON
-  METADATA
-       "ows_title" "mo7_obj_divers_piscine"
-       " wms_srs" "EPSG:2056"
-  END
-  CONNECTIONTYPE POSTGIS
-  CONNECTION "user=${dbuser} password=${dbpassword} dbname=${db} host=${dbhost} port=${dbport}"
-  PROCESSING "CLOSE_CONNECTION=DEFER"
-  DATA "geom from (SELECT
+    NAME "obj_divers_piscine"
+    METADATA
+        "wms_title" "Objets divers piscines"
+        "wms_srs" "EPSG:2056"
+    END
+    TYPE LINE # ET NE PAS POLYGON POUR EVITER REMPLISSAGE NOIR
+    CONNECTIONTYPE POSTGIS
+    CONNECTION "user=${vars:dbuser} password=${vars:dbpassword} dbname=${vars:db} host=${vars:dbhost} port=${vars:dbport}"
+    PROCESSING "CLOSE_CONNECTION=DEFER"
+    DATA "geom from (SELECT
         *
         FROM mensuration.mo7_obj_divers_surface
         WHERE genre = 44
@@ -2297,7 +2772,7 @@ LAYER
     MAXSCALEDENOM 2499
     CLASS
         STYLE
-            OUTLINECOLOR 0 0 0
+            COLOR 0 0 0
             PATTERN 5 5 END
             WIDTH 0.5
         END
@@ -2305,42 +2780,48 @@ LAYER
 END
 
 LAYER
- NAME "mo7_obj_divers_couvert"
-  TYPE POLYGON
-  METADATA
-       "ows_title" "mo7_obj_divers_couvert"
-       " wms_srs" "EPSG:2056"
-  END
-  CONNECTIONTYPE POSTGIS
-  CONNECTION "user=${dbuser} password=${dbpassword} dbname=${db} host=${dbhost} port=${dbport}"
-  PROCESSING "CLOSE_CONNECTION=DEFER"
-  DATA "geom from mensuration.mo7_obj_divers_couvert using unique idobj using srid=2056"
-  STATUS ON
-  MINSCALEDENOM 0
-  MAXSCALEDENOM 3001
-  CLASS
-    NAME "Couverts"
-    STYLE
-        OUTLINECOLOR 130 130 130
-        WIDTH 1.0
-        PATTERN 3 3 END
+    NAME "obj_divers_batsout15m"
+    TYPE LINE
+    METADATA
+        "ows_title" "obj_divers_batsout15m"
+        "wms_srs" "epsg:21781"
     END
-  END
+    CONNECTIONTYPE POSTGIS
+    CONNECTION "user=${vars:dbuser} password=${vars:dbpassword} dbname=${vars:db} host=${vars:dbhost} port=${vars:dbport}"
+    PROCESSING "CLOSE_CONNECTION=DEFER"
+    DATA "geom from (SELECT
+        *
+        FROM mensuration.mo7_obj_divers_lineaire
+        WHERE genre = 1
+        ) as foo using unique idobj using srid=2056"
+    STATUS ON
+    MINSCALEDENOM 0
+    MAXSCALEDENOM 2499
+    CLASS
+        NAME "Bâtiments souterrain, surf. < 15m2"
+        STYLE
+            COLOR 130 130 130
+            PATTERN
+                2 3
+            END
+            WIDTH 1
+        END
+    END
 END
 
 LAYER
- NAME "mo7_obj_divers_lineaire"
-  TYPE LINE
-  METADATA
-       "ows_title" "mo7_obj_divers_lineaire"
-       " wms_srs" "EPSG:2056"
-  END
-  CONNECTIONTYPE POSTGIS
-  CONNECTION "user=${dbuser} password=${dbpassword} dbname=${db} host=${dbhost} port=${dbport}"
-  PROCESSING "CLOSE_CONNECTION=DEFER"
+    NAME "obj_divers_lineaire"
+    METADATA
+        "wms_title" "Objets divers lineaires"
+        "wms_srs" "EPSG:2056"
+    END
+    TYPE LINE
+    CONNECTIONTYPE POSTGIS
+    CONNECTION "user=${vars:dbuser} password=${vars:dbpassword} dbname=${vars:db} host=${vars:dbhost} port=${vars:dbport}"
+    PROCESSING "CLOSE_CONNECTION=DEFER"
     DATA "geom from (SELECT
         *
-        FROM mensuration.mo7_obj_divers_lineaire_n
+        FROM mensuration.mo7_obj_divers_lineaire
         WHERE genre not in (1, 14, 27, 44)
         ) as foo using unique idobj using srid=2056"
     STATUS ON
@@ -2394,7 +2875,7 @@ LAYER
 END
 
 LAYER
-    NAME "mo7_obj_divers_surface_lig"
+    NAME "obj_divers_surface_lig"
     METADATA
         "wms_title" "Objets divers surfaciques (lignes)"
         "wms_srs" "EPSG:2056"
@@ -2458,763 +2939,648 @@ CLASS
     END
 END
 
-#######################################################################
-
 LAYER
-  NAME "mo14_servitudes_c_lig"
-  TYPE LINE
-  METADATA
-       "ows_title" "mo14_servitudes_c_lig"
-       " wms_srs" "EPSG:2056"
-  END
-  CONNECTIONTYPE POSTGIS
-  CONNECTION "user=${dbuser} password=${dbpassword} dbname=${db} host=${dbhost} port=${dbport}"
-  PROCESSING "CLOSE_CONNECTION=DEFER"
-  DATA "geom from mensuration.mo14_servitudes_c_lig using unique idobj using srid=2056"
-  STATUS ON
-  TEMPLATE "ttt"
-  MINSCALEDENOM 0
-  MAXSCALEDENOM 5001
-  CLASS
-    NAME "Autres"
-    STYLE
-        PATTERN 7 7 END
-        OUTLINECOLOR 0 0 0
-        WIDTH 2
+    NAME "obj_divers_ponctuels"
+    METADATA
+        "wms_title" "Objets divers ponctuels"
+        "wms_srs" "EPSG:2056"
     END
-  END
-END
-
-LAYER
-  NAME "mo14_servitudes_c_surf_autre"
-  TYPE POLYGON
-  METADATA
-       "ows_title" "mo14_servitudes_c_surf_autre"
-       " wms_srs" "EPSG:2056"
-  END
-  CONNECTIONTYPE POSTGIS
-  CONNECTION "user=${dbuser} password=${dbpassword} dbname=${db} host=${dbhost} port=${dbport}"
-  PROCESSING "CLOSE_CONNECTION=DEFER"
-  DATA "geom from mensuration.mo14_servitudes_c_surf_autre using unique idobj using srid=2056"
-  STATUS ON
-  TEMPLATE "ttt"
-  LABELITEM "text10"
-  MINSCALEDENOM 0
-  MAXSCALEDENOM 5001
-  LABELMAXSCALE 2000
-  CLASS
-    NAME "Surf. autre"
-    STYLE
-      SYMBOL "hachure2"
-      COLOR 50 50 50
-      SIZE 6
-    END
-    STYLE
-      SYMBOL 0
-      OUTLINECOLOR 50 50 50
-      SIZE 1
-    END
-    LABEL
-        TYPE TRUETYPE
-        FONT verdana
-        MAXSIZE 10
-        SIZE 8
-        MINSIZE 7
-        ANGLE AUTO
-        ANTIALIAS TRUE
-        COLOR 0 0 0
-        STYLE
-            GEOMTRANSFORM 'labelpoly'
-            COLOR 255 255 255
-        END
-    END
-  END
-END
-
-LAYER
-  NAME "mo14_servitudes_c_surf"
-  TYPE POLYGON
-  METADATA
-       "ows_title" "mo14_servitudes_c_surf"
-       " wms_srs" "EPSG:2056"
-  END
-  CONNECTIONTYPE POSTGIS
-  CONNECTION "user=${dbuser} password=${dbpassword} dbname=${db} host=${dbhost} port=${dbport}"
-  PROCESSING "CLOSE_CONNECTION=DEFER"
-  DATA "geom from mensuration.mo14_servitudes_c_surf using unique idobj using srid=2056"
-  STATUS ON
-  TEMPLATE "ttt"
-  OPACITY 50
-  LABELITEM "text10"
-  LABELMAXSCALE 2000
-  MINSCALEDENOM 0
-  MAXSCALEDENOM 5001
-  CLASS
-    NAME "Passages"
-    STYLE
-      SYMBOL 0
-      COLOR 220 220 220
-    END
-    STYLE
-      OUTLINECOLOR 0 0 0
-      PATTERN 5 5 END
-      WIDTH 2
-    END
-    LABEL
-        TYPE TRUETYPE
-        FONT verdana
-        MAXSIZE 10
-        SIZE 8
-        MINSIZE 7
-        ANGLE AUTO
-        ANTIALIAS TRUE
-        COLOR 0 0 0
-        STYLE
-            GEOMTRANSFORM 'labelpoly'
-            COLOR 255 255 255
-        END
-    END
-  END
-END
-
-
-LAYER
- NAME "mo14_servitudes_a_lig"
-  TYPE LINE
-  METADATA
-       "ows_title" "mo14_servitudes_a_lig"
-       " wms_srs" "EPSG:2056"
-  END
-  CONNECTIONTYPE POSTGIS
-  CONNECTION "user=${dbuser} password=${dbpassword} dbname=${db} host=${dbhost} port=${dbport}"
-  PROCESSING "CLOSE_CONNECTION=DEFER"
-  DATA "geom from mensuration.mo14_servitudes_a_lig using unique idobj using srid=2056"
-  STATUS ON
-  TEMPLATE "ttt"
-  MINSCALEDENOM 0
-  MAXSCALEDENOM 5001
-  LABELMAXSCALE 2000
-  LABELITEM "text10"
-  CLASS
-    NAME "Constructions"
-    STYLE
-        OUTLINECOLOR 0 0 0
-        PATTERN 5 5 END
-        WIDTH 2
-    END
-    LABEL
-        TYPE TRUETYPE
-        FONT verdana
-        MAXSIZE 10
-        SIZE 8
-        MINSIZE 7
-        ANGLE AUTO
-        ANTIALIAS TRUE
-        COLOR 0 0 0
-        STYLE
-            GEOMTRANSFORM 'labelpoly'
-            COLOR 255 255 255
-        END
-    END
-  END
-END
-
-LAYER
-  NAME "mo14_servitudes_a_surf"
-  TYPE POLYGON
-  METADATA
-       "ows_title" "mo14_servitudes_a_surf"
-       " wms_srs" "EPSG:2056"
-  END
-  CONNECTIONTYPE POSTGIS
-  CONNECTION "user=${dbuser} password=${dbpassword} dbname=${db} host=${dbhost} port=${dbport}"
-  PROCESSING "CLOSE_CONNECTION=DEFER"
-  DATA "geom from mensuration.mo14_servitudes_a_surf using unique idobj using srid=2056"
-  STATUS ON
-  TEMPLATE "ttt"
-  LABELMAXSCALE 2000
-  LABELITEM "text10"
-  MINSCALEDENOM 0
-  MAXSCALEDENOM 5001
-  CLASS
-    NAME "Constructions surf."
-    STYLE
-      SYMBOL "hachure3"
-      COLOR 50 50 50
-      SIZE 7
-    END
-    STYLE
-      SYMBOL "hachure4"
-      COLOR 50 50 50
-      SIZE 7
-    END
-    STYLE
-      SYMBOL 0
-      OUTLINECOLOR 50 50 50
-      SIZE 1
-    END
-    LABEL
-        TYPE TRUETYPE
-        FONT verdana
-        MAXSIZE 10
-        SIZE 8
-        MINSIZE 7
-        ANGLE AUTO
-        ANTIALIAS TRUE
-        COLOR 0 0 0
-        STYLE
-            GEOMTRANSFORM 'labelpoly'
-            COLOR 255 255 255
-        END
-    END
-  END
-END
-
-LAYER
- NAME "mo14_servitudes_g_lig"
-  TYPE LINE
-  METADATA
-       "ows_title" "mo14_servitudes_g_lig"
-       " wms_srs" "EPSG:2056"
-  END
-  CONNECTIONTYPE POSTGIS
-  CONNECTION "user=${dbuser} password=${dbpassword} dbname=${db} host=${dbhost} port=${dbport}"
-  PROCESSING "CLOSE_CONNECTION=DEFER"
-  DATA "geom from mensuration.mo14_servitudes_g_lig using unique idobj using srid=2056"
-  STATUS ON
-  TEMPLATE "ttt"
-  LABELMAXSCALE 2000
-  LABELITEM "text10"
-  MINSCALEDENOM 0
-  MAXSCALEDENOM 5001
-  CLASS
-    NAME "Constructions"
-    STYLE
-        OUTLINECOLOR 0 0 0
-        PATTERN 5 5 2 5 END
-        WIDTH 2
-    END
-    LABEL
-        TYPE TRUETYPE
-        FONT verdana
-        MAXSIZE 10
-        SIZE 8
-        MINSIZE 7
-        ANGLE AUTO
-        ANTIALIAS TRUE
-        COLOR 0 0 0
-        STYLE
-            GEOMTRANSFORM 'labelpoly'
-            COLOR 255 255 255
-        END
-    END
-  END
-END
-
-LAYER
- NAME "mo14_servitudes_g_pts"
-  TYPE POINT
-  METADATA
-       "ows_title" "mo14_servitudes_g_pts"
-       " wms_srs" "EPSG:2056"
-  END
-  CONNECTIONTYPE POSTGIS
-  CONNECTION "user=${dbuser} password=${dbpassword} dbname=${db} host=${dbhost} port=${dbport}"
-  PROCESSING "CLOSE_CONNECTION=DEFER"
-  DATA "geom from mensuration.mo14_servitudes_g_pts using unique idobj using srid=2056"
-  STATUS ON
-  TEMPLATE "ttt"
-  LABELMAXSCALE 2000
-  LABELITEM "text10"
-  MINSCALEDENOM 0
-  MAXSCALEDENOM 5001
-  CLASS
-    NAME "Regards"
-    STYLE
-      SYMBOL "circle"
-      OUTLINECOLOR 0 0 0
-      SIZE 10
-    END
-    STYLE
-      SYMBOL "circle"
-      OUTLINECOLOR 0 0 0
-      SIZE 8
-    END
-    LABEL
-        TYPE TRUETYPE
-        FONT verdana
-        MAXSIZE 10
-        SIZE 8
-        MINSIZE 7
-        ANGLE AUTO
-        POSITION uc
-        ANTIALIAS TRUE
-        COLOR 0 0 0
-        STYLE
-            GEOMTRANSFORM 'labelpoly'
-            COLOR 255 255 255
-        END
-    END
-  END
-END
-
-LAYER
- NAME "mo14_servitudes_g_surf"
-  TYPE POLYGON
-  METADATA
-       "ows_title" "mo14_servitudes_g_surf"
-       " wms_srs" "EPSG:2056"
-  END
-  CONNECTIONTYPE POSTGIS
-  CONNECTION "user=${dbuser} password=${dbpassword} dbname=${db} host=${dbhost} port=${dbport}"
-  PROCESSING "CLOSE_CONNECTION=DEFER"
-  DATA "geom from mensuration.mo14_servitudes_g_surf using unique idobj using srid=2056"
-  STATUS ON
-  TEMPLATE "ttt"
-  LABELMAXSCALE 2000
-  LABELITEM "text10"
-  MINSCALEDENOM 0
-  MAXSCALEDENOM 5001
-  CLASS
-    NAME "Surf. eaux"
-    STYLE
-      SYMBOL "hachure1"
-      COLOR 50 50 50
-      SIZE 6
-    END
-    STYLE
-      SYMBOL "hachure2"
-      COLOR 50 50 50
-      SIZE 6
-    END
-    STYLE
-      SYMBOL 0
-      OUTLINECOLOR 50 50 50
-      SIZE 1
-    END
-    LABEL
-        TYPE TRUETYPE
-        FONT verdana
-        MAXSIZE 10
-        SIZE 8
-        MINSIZE 7
-        ANGLE AUTO
-        ANTIALIAS TRUE
-        COLOR 0 0 0
-        STYLE
-            GEOMTRANSFORM 'labelpoly'
-            COLOR 255 255 255
-        END
-    END
-  END
-END
-
-LAYER
-NAME "mo5_point_de_detail"
-  TYPE POINT
-  METADATA
-       "ows_title" "mo5_point_de_detail"
-       " wms_srs" "EPSG:2056"
-  END
-  CONNECTIONTYPE POSTGIS
-  CONNECTION "user=${dbuser} password=${dbpassword} dbname=${db} host=${dbhost} port=${dbport}"
-  PROCESSING "CLOSE_CONNECTION=DEFER"
-  DATA "geom from mensuration.mo5_point_de_detail using unique idobj using srid=2056"
-  STATUS ON
-  MINSCALEDENOM 0
-  MAXSCALEDENOM 2001
-  CLASSITEM "nature"
-  TEMPLATE "ttt"
-  CLASS
-    NAME "Borne"
-    EXPRESSION /1/
-    SYMBOL "circle"
-    SIZE 7
-    COLOR 255 255 255
-    OUTLINECOLOR 0 0 0
-  END
-  CLASS
-    NAME "Cheville"
-    EXPRESSION /2/
-    SYMBOL "circle"
-    SIZE 6
-    COLOR 255 255 255
-    OUTLINECOLOR 0 0 0
-  END
-  CLASS
-    NAME "Croix"
-    EXPRESSION /3/
-    SYMBOL "croix"
-  END
-  CLASS
-    NAME "Pieu, piquet"
-    EXPRESSION /4/
-    SYMBOL "circle"
-    SIZE 5
-    COLOR 255 255 255
-    OUTLINECOLOR 0 0 0
-  END
-  CLASS
-    NAME "Non mat."
-    EXPRESSION /5/
-    SYMBOL "circle"
-    SIZE 6
-    COLOR 0 0 0
-    OUTLINECOLOR 255 255 255
-  END
-  CLASS
-    NAME "Borne artif."
-    EXPRESSION /6/
-    SYMBOL "circle"
-    SIZE 7
-    COLOR 255 255 255
-    OUTLINECOLOR 0 0 0
-  END
-  CLASS
-    NAME "Tuyau"
-    EXPRESSION /7/
-    SYMBOL "circle"
-    SIZE 7
-    COLOR 255 255 255
-    OUTLINECOLOR 0 0 0
-  END
-END
-
-
-LAYER
-    NAME "v_immeubles_txt"
-    GROUP "mo9_text_group"
     TYPE POINT
-    METADATA
-        "ows_title" "v_immeubles_txt"
-        "wms_srs" "EPSG:2056"
-    END
     CONNECTIONTYPE POSTGIS
-    CONNECTION "user=${dbuser} password=${dbpassword} dbname=${db} host=${dbhost} port=${dbport}"
+    CONNECTION "user=${vars:dbuser} password=${vars:dbpassword} dbname=${vars:db} host=${vars:dbhost} port=${vars:dbport}"
     PROCESSING "CLOSE_CONNECTION=DEFER"
-    DATA "geom from mensuration.mo9_immeubles_txt using unique idobj using srid=2056"
+    DATA "geom from mensuration.mo7_obj_divers_ponctuels using unique idobj using srid=2056"
     STATUS ON
-    LABELITEM "numero"
-    MAXSCALEDENOM 6000
-    SYMBOLSCALE 1000
-    LABELMAXSCALEDENOM 6000
-    CLASSITEM "provenance"
+    CLASSITEM "genre_txt"
     CLASS
-        NAME "N° parcelle"
-        EXPRESSION /officiel/
-        LABEL
-            TYPE TRUETYPE
-            FONT arialbd
-            MAXSIZE 11
-            SIZE 10
-            MINSIZE 7
-            ANGLE AUTO
-            ANTIALIAS TRUE
-            COLOR 0 0 0
-            FORCE TRUE
-            OUTLINECOLOR 255 255 255
-            POSITION cc
-        END
-    END
-    CLASS
-        NAME "N° parcelle provisoire"
-        EXPRESSION /provisoire/
-        LABEL
-            TYPE TRUETYPE
-            FONT arialbd
-            MAXSIZE 11
-            SIZE 10
-            FORCE TRUE
-            MINSIZE 7
-            ANGLE AUTO
-            ANTIALIAS TRUE
-            COLOR 49 48 198
-            FORCE TRUE
-            OUTLINECOLOR 255 255 255
-            POSITION cc
-        END
-    END
-    CLASS
-        NAME "* en mutation"
-        EXPRESSION /./
-        LABEL
-            TYPE TRUETYPE
-            FONT arialbd
-            MAXSIZE 11
-            SIZE 10
-            MINSIZE 7
-            ANGLE AUTO
-            ANTIALIAS TRUE
-            COLOR 0 0 0
-            FORCE TRUE
-            OUTLINECOLOR 255 255 255
-            POSITION cc
-        END
-  END
-END
-
-LAYER
-    NAME "mo9_immeubles_txt_rappel"
-    GROUP "mo9_text_group"
-    TYPE LINE
-    METADATA
-        "ows_title" "mo9_immeubles_txt_rappel"
-        "wms_srs" "EPSG:2056"
-    END
-    CONNECTIONTYPE POSTGIS
-    CONNECTION "user=${dbuser} password=${dbpassword} dbname=${db} host=${dbhost} port=${dbport}"
-    PROCESSING "CLOSE_CONNECTION=DEFER"
-    DATA "geom from mensuration.mo9_immeubles_txt_rappel using unique idobj using srid=2056"
-    STATUS ON
-    MINSCALEDENOM 0
-    MAXSCALEDENOM 4000
-    CLASS
+        NAME "Arbre isolé important"
+        EXPRESSION "arbre_isole_important"
         STYLE
-            WIDTH 1
+            MINSCALEDENOM 0
+            MAXSCALEDENOM 1001
+            COLOR 0 0 0
+            SYMBOL "arbre_isole_important"
+            SIZE 18
+        END
+        STYLE
+            MINSCALEDENOM 1001
+            MAXSCALEDENOM 2499
+            COLOR 0 0 0
+            SYMBOL "arbre_isole_important"
+            SIZE 10
+        END
+    END
+    CLASS
+        NAME "Bloc erratique"
+        EXPRESSION "bloc_erratique"
+        STYLE
+            MINSCALEDENOM 0
+            MAXSCALEDENOM 1001
+            SYMBOL "bloc_erratique"
+            SIZE 18
+            COLOR 0 0 0
+        END
+        STYLE
+            MINSCALEDENOM 1001
+            MAXSCALEDENOM 2499
+            SYMBOL "bloc_erratique"
+            SIZE 10
             COLOR 0 0 0
         END
     END
-END
-
-LAYER
-    NAME "mo6_couverture_sol_nb_1"
-    METADATA
-        "wms_title" "Couverture du sol noir-blanc"
-        "wms_srs" "EPSG:2056"
-    END
-    GROUP "mo6_couverture_sol_nb"
-    TYPE POLYGON
-    STATUS ON
-    CONNECTIONTYPE POSTGIS
-    CONNECTION "user=${dbuser} password=${dbpassword} dbname=${db} host=${dbhost} port=${dbport}"
-    PROCESSING "CLOSE_CONNECTION=DEFER"
-    DATA "geom from mensuration.mo6_couverture_du_sol_surf_tot using unique idobj using srid=2056"
-    TEMPLATE "ttt"
-    CLASSITEM "typcou"
     CLASS
-        NAME "Bois"
-        EXPRESSION /bois/
+        NAME "Grotte - entrée de caverne"
+        EXPRESSION "grotte_entree_de_caverne"
         STYLE
-            COLOR 255 255 255
-        END
-        STYLE
-            SYMBOL "bois"
-            COLOR 150 150 150
-            OUTLINECOLOR 0 0 0
+            MINSCALEDENOM 0
+            MAXSCALEDENOM 1001
+            COLOR 0 0 0
+            SYMBOL "grotte_entree_de_caverne"
             SIZE 15
         END
+        STYLE
+            MINSCALEDENOM 1001
+            MAXSCALEDENOM 2499
+            COLOR 0 0 0
+            SYMBOL "grotte_entree_de_caverne"
+            SIZE 9
+        END
     END
     CLASS
-        EXPRESSION /./
-        COLOR 255 255 255
-        OUTLINECOLOR 0 0 0
+        NAME "Mât / antenne"
+        EXPRESSION "mat_antenne"
+        STYLE
+            MINSCALEDENOM 0
+            MAXSCALEDENOM 1001
+            COLOR 0 0 0
+            SYMBOL "mat_antenne"
+            SIZE 18
+        END
+        STYLE
+            MINSCALEDENOM 1001
+            MAXSCALEDENOM 2499
+            COLOR 0 0 0
+            SYMBOL "mat_antenne"
+            SIZE 10
+        END
     END
-    MINSCALEDENOM 0
-    MAXSCALEDENOM 15000
+    CLASS
+        NAME "Monument"
+        EXPRESSION "monument"
+        STYLE
+            MINSCALEDENOM 0
+            MAXSCALEDENOM 1001
+            COLOR 0 0 0
+            SYMBOL "monument_2"
+            SIZE 18
+        END
+        STYLE
+            MINSCALEDENOM 1001
+            MAXSCALEDENOM 2499
+            COLOR 0 0 0
+            SYMBOL "monument_2"
+            SIZE 10
+        END
+    END
+    CLASS
+        NAME "Piscine"
+        EXPRESSION "piscine"
+        STYLE
+            MINSCALEDENOM 0
+            MAXSCALEDENOM 1001
+            COLOR 0 0 0
+            SYMBOL "piscine"
+            SIZE 18
+        END
+        STYLE
+            MINSCALEDENOM 1001
+            MAXSCALEDENOM 2499
+            COLOR 0 0 0
+            SYMBOL "piscine"
+            SIZE 10
+        END
+    END
+    CLASS
+        NAME "Point de référence"
+        EXPRESSION "point_de_reference"
+        STYLE
+            MINSCALEDENOM 0
+            MAXSCALEDENOM 1001
+            COLOR 0 0 0
+            SYMBOL "point_de_reference"
+            SIZE 18
+        END
+        STYLE
+            MINSCALEDENOM 1001
+            MAXSCALEDENOM 2499
+            COLOR 0 0 0
+            SYMBOL "point_de_reference"
+            SIZE 10
+        END
+    END
+    CLASS
+        NAME "Source"
+        EXPRESSION "source"
+        STYLE
+            MINSCALEDENOM 0
+            MAXSCALEDENOM 1001
+            COLOR 0 0 0
+            SYMBOL "source_new"
+            SIZE 18
+        END
+        STYLE
+            MINSCALEDENOM 1001
+            MAXSCALEDENOM 2499
+            COLOR 0 0 0
+            SYMBOL "source_new"
+            SIZE 10
+        END
+    END
+    CLASS
+        NAME "Statue / crucifix"
+        EXPRESSION "statue_crucifix"
+        STYLE
+            MINSCALEDENOM 0
+            MAXSCALEDENOM 1001
+            COLOR 0 0 0
+            SYMBOL "statue_crucifix"
+            SIZE 18
+        END
+        STYLE
+            MINSCALEDENOM 1001
+            MAXSCALEDENOM 2499
+            COLOR 0 0 0
+            SYMBOL "statue_crucifix"
+            SIZE 10
+        END
+    END
 END
 
 LAYER
-    NAME "mo6_couverture_sol_nb_2"
+    NAME "pts_fixes"
     METADATA
-        "wms_title" "Couverture du sol noir-blanc 2"
+        "wms_title" "Points fixes"
         "wms_srs" "EPSG:2056"
     END
-    GROUP "mo6_couverture_sol_nb"
-    TYPE POLYGON
+    TYPE POINT
+    CONNECTIONTYPE POSTGIS
+    CONNECTION "user=${vars:dbuser} password=${vars:dbpassword} dbname=${vars:db} host=${vars:dbhost} port=${vars:dbport}"
+    PROCESSING "CLOSE_CONNECTION=DEFER"
+    DATA "geom from mensuration.v_pts_fixes using unique nopoin using srid=2056"
+    STATUS ON
+    CLASSITEM "valeur"
+    CLASS
+        NAME "PFP3"
+        EXPRESSION /22/	
+        STYLE
+            SYMBOL "circle"
+            SIZE 7
+            COLOR 255 255 255
+        END
+        STYLE
+            SYMBOL "pfp_3"
+            SIZE 7
+            COLOR 0 0 0
+        END
+        MINSCALEDENOM 0
+        MAXSCALEDENOM 5100
+    END  
+    CLASS
+        NAME "PFP1/2"
+        EXPRESSION /11/
+        STYLE    
+            SYMBOL "triangle"
+            SIZE 8
+            COLOR 255 255 255 
+        END
+        STYLE    
+            SYMBOL "triangle"
+            SIZE 8
+            OUTLINECOLOR 0 0 0
+            WIDTH 1
+        END
+        STYLE    
+            SYMBOL "triangle"
+            SIZE 2.5
+            COLOR 0 0 0
+            OFFSET 0 1.2
+        END
+        MINSCALEDENOM 0
+        MAXSCALEDENOM 50000
+    END
+    TOLERANCE 5
+    TOLERANCEUNITS pixels
+END
+
+LAYER
+    NAME "mo25_lieux_dits"
+    METADATA
+        "wms_title" "mo25_lieux_dits"
+        "wms_srs" "EPSG:2056"
+    END
+    TYPE POINT
+    CONNECTIONTYPE POSTGIS
+    CONNECTION "user=${vars:dbuser} password=${vars:dbpassword} dbname=${vars:db} host=${vars:dbhost} port=${vars:dbport}"
+    PROCESSING "CLOSE_CONNECTION=DEFER"
+    DATA "geom from mensuration.mo25_lieux_dits using unique idobj using srid=2056"
+    STATUS ON
+    MAXSCALEDENOM 7499
+    LABELITEM "nomloc"
+    LABELMAXSCALEDENOM 2500
+    SYMBOLSCALEDENOM 2500
+    CLASSITEM "nomloc"
+    CLASS
+        EXPRESSION /./
+        LABEL
+            TYPE TRUETYPE
+            FONT arialbi
+            MAXSIZE 12
+            SIZE 11
+            MINSIZE 9
+            ANGLE AUTO
+            ANTIALIAS TRUE
+            COLOR 130 130 130
+            OUTLINECOLOR 255 255 255    
+        END
+    END
+END
+
+LAYER
+    NAME "noms_locaux_canton"
+    METADATA
+        "wms_title" "Noms locaux"
+        "wms_srs" "EPSG:2056"
+    END
+    TYPE POINT
+    CONNECTIONTYPE POSTGIS
+    CONNECTION "user=${vars:dbuser} password=${vars:dbpassword} dbname=${vars:db} host=${vars:dbhost} port=${vars:dbport}"
+    PROCESSING "CLOSE_CONNECTION=DEFER"
+    DATA "geom from situation.noms_locaux_canton_points using unique idobj using srid=2056"
+    STATUS ON
+    MAXSCALEDENOM 7499
+    LABELITEM "nomloc"
+    LABELMAXSCALEDENOM 2500
+    SYMBOLSCALEDENOM 2500
+    CLASSITEM "nomloc"
+    OPACITY 100    
+    CLASS
+        EXPRESSION /./
+        LABEL
+            TYPE TRUETYPE
+            FONT arialbi
+            MAXSIZE 11
+            SIZE 10
+            MINSIZE 8
+            ANGLE AUTO
+            ANTIALIAS TRUE
+            COLOR 130 130 130
+            OUTLINECOLOR 255 255 255    
+        END
+    END
+END
+
+LAYER
+    NAME "point_adresse"
+    METADATA
+        "wms_title" "Points adresses"
+        "wms_srs" "EPSG:2056"
+    END
+    TYPE POINT
+    CONNECTIONTYPE POSTGIS
+    CONNECTION "user=${vars:dbuser} password=${vars:dbpassword} dbname=${vars:db} host=${vars:dbhost} port=${vars:dbport}"
+    PROCESSING "CLOSE_CONNECTION=DEFER"
+    DATA "geom from mensuration.mo02_adresses_sitn using unique idobj using srid=2056"
+    STATUS ON
+    LABELITEM "numuni"
+    MAXSCALEDENOM 5001
+    LABELMAXSCALEDENOM 2500
+    CLASSITEM "numuni"
+    CLASS
+        EXPRESSION /1|2|3|4|5|6|7|8|9/ #([numuni]="1")
+        LABEL
+            TYPE TRUETYPE
+            FONT verdanab
+            MAXSIZE 8
+            SIZE 6
+            MINSIZE 6
+            ANGLE AUTO
+            COLOR 0 0 0 
+            OUTLINECOLOR 240 240 240   
+        END
+    END
+END
+
+LAYER
+    NAME "voie_adresse"
+    METADATA
+        "wms_title" "Voie adresses"
+        "wms_srs" "EPSG:2056"
+    END
+    TYPE LINE
+    CONNECTIONTYPE POSTGIS
+    CONNECTION "user=${dbuser} password=${dbpassword} dbname=${db} host=${dbhost} port=${dbport}"
+    PROCESSING "CLOSE_CONNECTION=DEFER"
+    DATA "geom from situation.troncon_rue using unique idobj using srid=2056"
+    STATUS ON
+    MAXSCALEDENOM 5001
+    LABELITEM "feat_name"
+    LABELMAXSCALEDENOM 5001
+    SYMBOLSCALE 2000
+    OPACITY 100
+    CLASS
+        LABEL
+            TYPE TRUETYPE
+            FONT arialn
+            MAXSIZE 10
+            SIZE 10
+            MINSIZE 8
+            ANGLE follow
+            ANTIALIAS TRUE
+            COLOR 0 0 0
+            OUTLINECOLOR 255 255 255
+        END
+    END
+END
+
+LAYER
+    NAME "nomenclature_lieux"
+    METADATA  
+        "wms_title" "Nomenclature des lieux dits - localités"
+        "wms_srs" "EPSG:2056"
+    END
+    TYPE POINT
+    STATUS ON
+    CONNECTIONTYPE POSTGIS
+    CONNECTION "user=${vars:dbuser} password=${vars:dbpassword} dbname=${vars:db} host=${vars:dbhost} port=${vars:dbport}"
+    PROCESSING "CLOSE_CONNECTION=DEFER"
+    DATA "geom from situation.noms_lieux using unique idobj using srid=2056"  
+    LABELITEM "libgeo"
+    CLASS
+        LABEL
+            TYPE TRUETYPE
+            FONT verdanabi
+            MAXSIZE 10
+            SIZE 9
+            MINSIZE 9
+            PRIORITY 8
+            POSITION uc
+            ANTIALIAS TRUE
+            COLOR 40 40 40 
+            OUTLINECOLOR 240 240 240   
+        END
+        MINSCALEDENOM 0
+        MAXSCALEDENOM 20000
+    END
+    CLASS
+        LABEL
+            TYPE TRUETYPE
+            FONT verdanai
+            MAXSIZE 9
+            SIZE 9
+            MINSIZE 7
+            PRIORITY 8
+            POSITION uc
+            ANTIALIAS TRUE
+            COLOR 120 120 120 
+            OUTLINECOLOR 240 240 240   
+       END
+       MINSCALEDENOM 20000
+       MAXSCALEDENOM 80000
+    END
+END
+
+LAYER
+    NAME "nomenclature_communes"
+    METADATA
+        "wms_title" "Situation nomenclature communes"
+        "wms_srs" "EPSG:2056"
+    END
+    TYPE POINT
+    CONNECTIONTYPE POSTGIS
+    CONNECTION "user=${dbuser} password=${dbpassword} dbname=${db} host=${dbhost} port=${dbport}"
+    PROCESSING "CLOSE_CONNECTION=DEFER"
+    DATA "geom from situation.situ_nomenclature1 using unique idobj using srid=2056"  
+    STATUS ON
+    LABELITEM "libgeo"
+    MINSCALEDENOM 2001
+    MAXSCALEDENOM 250000
+    CLASS
+        LABEL
+            TYPE TRUETYPE
+            FONT verdanab
+            MAXSIZE 9
+            SIZE 9
+            MINSIZE 8
+            ANGLE AUTO
+            ANTIALIAS TRUE
+            PRIORITY 9
+            POSITION uc
+            COLOR 90 90 90 
+            OUTLINECOLOR 240 240 240   
+        END
+    END
+END
+
+LAYER
+    NAME "nomenclature_villes"
+    METADATA
+        "wms_title" "Situation nomenclature villes"
+        "wms_srs" "EPSG:2056"
+    END
+    TYPE POINT
+    CONNECTIONTYPE POSTGIS
+    CONNECTION "user=${dbuser} password=${dbpassword} dbname=${db} host=${dbhost} port=${dbport}"
+    PROCESSING "CLOSE_CONNECTION=DEFER"
+    DATA "geom from situation.situ_nomenclature3 using unique idobj using srid=2056"  
+    STATUS ON
+    LABELITEM "libgeo"
+    MINSCALEDENOM 2001
+    MAXSCALEDENOM 250000
+    CLASS
+        LABEL
+            TYPE TRUETYPE
+            FONT verdanabi
+            MAXSIZE 12
+            SIZE 10
+            MINSIZE 10
+            ANGLE AUTO
+            PRIORITY 10
+            ANTIALIAS TRUE
+            COLOR 70 70 70 
+            OUTLINECOLOR 240 240 240
+        END
+    END
+END
+
+LAYER
+    NAME "mo6_couverture_du_sol_nomenclature"
+    METADATA
+        "wms_title" "mo6_couverture_du_sol_nomenclature"
+        "wms_srs" "EPSG:2056"
+    END
+    TYPE POINT
     STATUS ON
     CONNECTIONTYPE POSTGIS
     CONNECTION "user=${dbuser} password=${dbpassword} dbname=${db} host=${dbhost} port=${dbport}"
     PROCESSING "CLOSE_CONNECTION=DEFER"
-    DATA "geom from mensuration.mo6_couverture_du_sol_surf_tot using unique idobj using srid=2056"
-    TEMPLATE "ttt"
-    CLASSITEM "desnat"
+    DATA "geom from mensuration.mo6_couverture_du_sol_nomenclature using unique idobj using srid=2056"
+    MINSCALEDENOM 0
+    MAXSCALEDENOM 1500
+    LABELITEM "nom"
+    CLASSITEM "label_position_mapserver"
     CLASS
-        NAME "Vigne"
-        EXPRESSION /vigne/
-        SYMBOL "vigne"
-        COLOR 150 150 150
-        OUTLINECOLOR 0 0 0
-        SIZE 10
-    END
-    CLASS
-        NAME "Sans végétation"
-        EXPRESSION /rocher|éboulis|gravière|décharge|enrochement|inculte/
+        EXPRESSION "ul"
         STYLE
-            SYMBOL "IcePack"
+            # NEEDED, OTHERWISE MAPSERVER THROWS AN ERROR
+            # ANNOTATION COULD BE USED, DEPRECATED IN V6.2
+        END
+        LABEL
+            TYPE TRUETYPE
+            FONT verdana
+            SIZE 6
+            FORCE TRUE
+            POSITION ul
+            ANGLE [ori_mapserver]
+            COLOR 0 0 0
+            OUTLINECOLOR 255 255 255
         END
     END
-    MINSCALEDENOM 0
-    MAXSCALEDENOM 15000
-END
-
-LAYER
-  NAME "domaine_lac_remblaye"
-  TYPE POLYGON
-  METADATA
-       "ows_title" "domaine_lac_remblaye"
-       " wms_srs" "EPSG:2056"
-  END
-  CONNECTIONTYPE POSTGIS
-  CONNECTION "user=${dbuser} password=${dbpassword} dbname=${db} host=${dbhost} port=${dbport}"
-  PROCESSING "CLOSE_CONNECTION=DEFER"
-  DATA "geom from mensuration.domaine_lac_remblaye using unique idobj using srid=2056"
-  STATUS ON
-  CLASS
-    STYLE
-      SYMBOL 'hachure'
-      COLOR 180 0 0
-      OUTLINECOLOR 180 0 0
-      ANGLE 45
-      SIZE 4
-      WIDTH 1
-      END
-  END
-  MINSCALEDENOM 50
-  MAXSCALEDENOM 15000
-END
-
-LAYER
-  NAME "mo9_immeubles"
-  TYPE POLYGON
-  METADATA
-       "ows_title" "mo9_immeubles"
-       " wms_srs" "EPSG:2056"
-  END
-  CONNECTIONTYPE POSTGIS
-  CONNECTION "user=${dbuser} password=${dbpassword} dbname=${db} host=${dbhost} port=${dbport}"
-  PROCESSING "CLOSE_CONNECTION=DEFER"
-  DATA "geom from mensuration.mo9_immeubles using unique idobj using srid=2056"
-  STATUS ON
-  TEMPLATE "ttt"
-  CLASSITEM "typimm"
-  CLASS
-    EXPRESSION /DDP/
-    NAME "DDP"
-    STYLE
-      OUTLINECOLOR 10 10 10
-      PATTERN 7 7 END
-      WIDTH 1
+    CLASS
+        EXPRESSION "uc"
+        STYLE
+            # NEEDED, OTHERWISE MAPSERVER THROWS AN ERROR
+            # ANNOTATION COULD BE USED, DEPRECATED IN V6.2
+        END
+        LABEL
+            TYPE TRUETYPE
+            FONT verdana
+            SIZE 6
+            FORCE TRUE
+            POSITION uc
+            ANGLE [ori_mapserver]
+            COLOR 0 0 0
+            OUTLINECOLOR 255 255 255
+        END
     END
-  END
-  CLASS
-    EXPRESSION /DP/
-    NAME "DP"
-    STYLE
-      OUTLINECOLOR 10 10 10
-      PATTERN 7 7 END
-      WIDTH 1
+    CLASS
+        EXPRESSION "ur"
+        STYLE
+            # NEEDED, OTHERWISE MAPSERVER THROWS AN ERROR
+            # ANNOTATION COULD BE USED, DEPRECATED IN V6.2
+        END
+        LABEL
+            TYPE TRUETYPE
+            FONT verdana
+            SIZE 6
+            FORCE TRUE
+            POSITION ur
+            ANGLE [ori_mapserver]
+            COLOR 0 0 0
+            OUTLINECOLOR 255 255 255
+        END
     END
-  END
-  CLASS
-    EXPRESSION /./
-    NAME "Parcel. officiel"
-    STYLE
-      OUTLINECOLOR 0 0 0
-      WIDTH 1
+    CLASS
+        EXPRESSION "cl"
+        STYLE
+            # NEEDED, OTHERWISE MAPSERVER THROWS AN ERROR
+            # ANNOTATION COULD BE USED, DEPRECATED IN V6.2
+        END
+        LABEL
+            TYPE TRUETYPE
+            FONT verdana
+            SIZE 6
+            FORCE TRUE
+            POSITION cl
+            ANGLE [ori_mapserver]
+            COLOR 0 0 0
+            OUTLINECOLOR 255 255 255
+        END
     END
-  END
-  MINSCALEDENOM 50
-  MAXSCALEDENOM 15000
-END
-
-LAYER
-  NAME "mo23_batiments_projetes"
-  TYPE POLYGON
-  METADATA
-       "ows_title" "mo23_batiments_projetes"
-       " wms_srs" "EPSG:2056"
-  END
-  CONNECTIONTYPE POSTGIS
-  CONNECTION "user=${dbuser} password=${dbpassword} dbname=${db} host=${dbhost} port=${dbport}"
-  PROCESSING "CLOSE_CONNECTION=DEFER"
-  DATA "geom from mensuration.mo23_batiments_projetes using unique idobj using srid=2056"
-  STATUS ON
-  LABELMAXSCALE 1500
-  TEMPLATE "ttt"
-  CLASS
-    NAME "Bâtiments projetés"
-    EXPRESSION ([affichage]>=2)
-    STYLE
-      COLOR 0 0 255
-      SYMBOL "hachure2"
-      SIZE 3
+    CLASS
+        EXPRESSION "cc"
+        STYLE
+            # NEEDED, OTHERWISE MAPSERVER THROWS AN ERROR
+            # ANNOTATION COULD BE USED, DEPRECATED IN V6.2
+        END
+        LABEL
+            TYPE TRUETYPE
+            FONT verdana
+            SIZE 6
+            FORCE TRUE
+            POSITION cc
+            ANGLE [ori_mapserver]
+            COLOR 0 0 0
+            OUTLINECOLOR 255 255 255
+        END
     END
-    STYLE
-      OUTLINECOLOR 0 0 255
-      WIDTH 1
+    CLASS
+        EXPRESSION "cr"
+        STYLE
+            # NEEDED, OTHERWISE MAPSERVER THROWS AN ERROR
+            # ANNOTATION COULD BE USED, DEPRECATED IN V6.2
+        END
+        LABEL
+            TYPE TRUETYPE
+            FONT verdana
+            SIZE 6
+            FORCE TRUE
+            POSITION cr
+            ANGLE [ori_mapserver]
+            COLOR 0 0 0
+            OUTLINECOLOR 255 255 255
+        END
     END
-  END
-  MINSCALEDENOM 750
-  MAXSCALEDENOM 7500
-END
-
-
-LAYER
-  NAME "mo22_batiments"
-  TYPE POLYGON
-  METADATA
-       "ows_title" "mo22_batiments"
-       " wms_srs" "EPSG:2056"
-  END
-  CONNECTIONTYPE POSTGIS
-  CONNECTION "user=${dbuser} password=${dbpassword} dbname=${db} host=${dbhost} port=${dbport}"
-  PROCESSING "CLOSE_CONNECTION=DEFER"
-  DATA "geom from mensuration.mo22_batiments using unique idobj using srid=2056"
-  STATUS ON
-  LABELMAXSCALE 1500
-  CLASSITEM "typcou"
-  TEMPLATE "ttt"
-  CLASS
-    NAME "Bâtiments ordinaires"
-    EXPRESSION /ordinaire/
-    STYLE
-      COLOR 200 200 200
-      OUTLINECOLOR 130 130 130
+    CLASS
+        EXPRESSION /ll/
+        STYLE
+            # NEEDED, OTHERWISE MAPSERVER THROWS AN ERROR
+            # ANNOTATION COULD BE USED, DEPRECATED IN V6.2
+        END
+        LABEL
+            TYPE TRUETYPE
+            FONT verdana
+            SIZE 6
+            FORCE TRUE
+            POSITION ll
+            ANGLE [ori_mapserver]
+            COLOR 0 0 0
+            OUTLINECOLOR 255 255 255
+        END
     END
-  END
-  CLASS
-    NAME "Bâtiments souterrains"
-    EXPRESSION /souterrain/
-    STYLE
-      OPACITY 40
-      COLOR 230 230 230
-     END
-     STYLE
-    OPACITY 40
-        OUTLINECOLOR 130 130 130
-        PATTERN 7 7 END
-        WIDTH 1
+    CLASS
+        EXPRESSION "lc"
+        STYLE
+            # NEEDED, OTHERWISE MAPSERVER THROWS AN ERROR
+            # ANNOTATION COULD BE USED, DEPRECATED IN V6.2
+        END
+        LABEL
+            TYPE TRUETYPE
+            FONT verdana
+            SIZE 6
+            FORCE TRUE
+            POSITION lc
+            ANGLE [ori_mapserver]
+            COLOR 0 0 0
+            OUTLINECOLOR 255 255 255
+        END
     END
-  END
-  MINSCALEDENOM 50
-  MAXSCALEDENOM 7500
-END
-
-LAYER
-  NAME "mo21_batiments_provisoires"
-  TYPE POLYGON
-  METADATA
-       "ows_title" "mo21_batiments_provisoires"
-       " wms_srs" "EPSG:2056"
-  END
-  CONNECTIONTYPE POSTGIS
-  CONNECTION "user=${dbuser} password=${dbpassword} dbname=${db} host=${dbhost} port=${dbport}"
-  PROCESSING "CLOSE_CONNECTION=DEFER"
-  DATA "geom from mensuration.mo21_batiments_provisoires using unique idobj using srid=2056"
-  STATUS ON
-  LABELMAXSCALE 1500
-  CLASSITEM "typcou"
-  TEMPLATE "ttt"
-  CLASS
-    NAME "Bâtiments provisoires"
-    #EXPRESSION /ordinaire/
-    STYLE
-      COLOR 200 200 200
-      OUTLINECOLOR 130 130 130
+    CLASS
+        EXPRESSION "lr"
+        STYLE
+            # NEEDED, OTHERWISE MAPSERVER THROWS AN ERROR
+            # ANNOTATION COULD BE USED, DEPRECATED IN V6.2
+        END
+        LABEL
+            TYPE TRUETYPE
+            FONT verdana
+            SIZE 6
+            FORCE TRUE
+            POSITION lr
+            ANGLE [ori_mapserver]
+            COLOR 0 0 0
+            OUTLINECOLOR 255 255 255
+        END
     END
-  END
-  MINSCALEDENOM 50
-  MAXSCALEDENOM 7500
 END
 
 END
