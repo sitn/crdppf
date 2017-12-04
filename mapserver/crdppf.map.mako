@@ -941,7 +941,7 @@ LAYER
   TEMPLATE "ttt"
   OPACITY 60
   CLASS
-    NAME "Alignements des inst. ferroviairess"
+    NAME "Alignements des inst. ferroviaires"
     COLOR 220 220 0
    END
 END
@@ -992,7 +992,7 @@ LAYER
   TEMPLATE "ttt"
   OPACITY 60
   CLASS
-    NAME "Aligenements des install. aéroportuaires"
+    NAME "Alignements des install. aéroportuaires"
     COLOR 0 0 180
    END
 END
