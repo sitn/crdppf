@@ -2184,6 +2184,32 @@ LAYER
 END
 
 LAYER
+    NAME "batiments_souterrain_gris"
+    METADATA
+        "wms_title" "batiments_souterrain_gris"
+        "wms_srs" "EPSG:2056"
+    END
+    TYPE POLYGON
+    STATUS ON
+    CONNECTIONTYPE POSTGIS
+    CONNECTION "user=${vars:dbuser} password=${vars:dbpassword} dbname=${vars:db} host=${vars:dbhost} port=${vars:dbport}"
+    PROCESSING "CLOSE_CONNECTION=DEFER"
+    DATA "geom from mensuration.mo22_batiments using unique idobj using srid=2056"
+    LABELMAXSCALEDENOM 1500
+    CLASSITEM "typcou"
+    CLASS
+        EXPRESSION /souterrain/
+        NAME "Souterrains"
+        STYLE
+            COLOR 230 230 230
+            OUTLINECOLOR 0 0 0
+        END
+    END
+    MINSCALEDENOM 50
+    MAXSCALEDENOM 24999
+END
+
+LAYER
     NAME "batiments"
     METADATA
         "wms_title" "Batiments"
@@ -2202,6 +2228,32 @@ LAYER
         NAME "Ordinaires"
         STYLE
             COLOR 255 255 255
+            OUTLINECOLOR 0 0 0
+        END
+    END
+    MINSCALEDENOM 50
+    MAXSCALEDENOM 24999
+END
+
+LAYER
+    NAME "batiments_gris"
+    METADATA
+        "wms_title" "Batiments gris"
+        "wms_srs" "EPSG:2056"
+    END
+    TYPE POLYGON
+    STATUS ON
+    CONNECTIONTYPE POSTGIS
+    CONNECTION "user=${vars:dbuser} password=${vars:dbpassword} dbname=${vars:db} host=${vars:dbhost} port=${vars:dbport}"
+    PROCESSING "CLOSE_CONNECTION=DEFER"
+    DATA "geom from mensuration.mo22_batiments using unique idobj using srid=2056"
+    LABELMAXSCALEDENOM 1500
+    CLASSITEM "typcou"
+    CLASS
+        EXPRESSION /ordinaire/
+        NAME "Ordinaires"
+        STYLE
+            COLOR 200 200 200
             OUTLINECOLOR 0 0 0
         END
     END

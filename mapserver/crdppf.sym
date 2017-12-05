@@ -399,6 +399,24 @@ Symbol
   END
 END
 
+Symbol
+    Type VECTOR
+    NAME "bois_rf"
+    POINTS
+        3.5 5
+        5 3.5
+    END
+END
+
+Symbol
+    Type VECTOR
+    NAME "bois_pat"
+    POINTS
+        8.5 10
+        10 8.5
+    END
+END
+
 # symbol 124
 SYMBOL
   NAME "hachure7"
