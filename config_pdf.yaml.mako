@@ -8,8 +8,7 @@ wmts_openlayers:
         'http://tile5-sitn.ne.ch/mapproxy95/wmts'
     ]
 
-app_config:  
-  # lang: ${vars:default_language}
+app_config:
   # defaultfontfamily: Arial
   # topics provided by the confederation
   ch_topics: ['R087','R096','R097','R103','R104','R108','R118','R119']
@@ -63,7 +62,7 @@ app_config:
 # Parameters for the PDF extract layout - only modify if you know what you do (may affect the layout)!! 
 pdf_config:
   # default language of the pdf extract
-  defaultlanguage: ${vars:default_language}
+  defaultlanguage: ${default_language}
   # Page format of the PDF extract
   pdfformat: A4
   # Page orientation of the PDF extract
@@ -130,13 +129,13 @@ pdf_config:
   disclaimer: true
 
 # URL to localhost Tomcat server webapp
-print_url: http://localhost:8080/print-${vars:instanceid}/print
+print_url: http://localhost:8080/print-${instanceid}/print
 
 # URL to internal instance
-localhost_url: http://localhost/${vars:instanceid}
+localhost_url: http://localhost/${instanceid}
 
 # URL to internal MapServer instance
-mapserver_url: http://localhost/${vars:instanceid}/wmscrdppf
+mapserver_url: http://localhost/${instanceid}/wmscrdppf
 
 # URL to WMTS getCapabilities
 wmts_getcapabilities_url: http://sitn.ne.ch/mapproxy95/service/?SERVICE=WMTS&REQUEST=GetCapabilities&VERSION=1.0.0

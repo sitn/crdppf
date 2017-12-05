@@ -1,7 +1,0 @@
-
-WSGIScriptAlias /${vars:instanceid} ${buildout:directory/buildout/parts/modwsgi/wsgi}
-
-<Location /${vars:instanceid}>
-    WSGIApplicationGroup %{GLOBAL}
-    ${apache24_location}
-</Location>
