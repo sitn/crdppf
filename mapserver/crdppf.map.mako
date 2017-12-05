@@ -2192,7 +2192,7 @@ LAYER
     TYPE POLYGON
     STATUS ON
     CONNECTIONTYPE POSTGIS
-    CONNECTION "user=${vars:dbuser} password=${vars:dbpassword} dbname=${vars:db} host=${vars:dbhost} port=${vars:dbport}"
+    CONNECTION "user=${dbuser} password=${dbpassword} dbname=${db} host=${dbhost} port=${dbport}"
     PROCESSING "CLOSE_CONNECTION=DEFER"
     DATA "geom from mensuration.mo22_batiments using unique idobj using srid=2056"
     LABELMAXSCALEDENOM 1500
@@ -2244,7 +2244,7 @@ LAYER
     TYPE POLYGON
     STATUS ON
     CONNECTIONTYPE POSTGIS
-    CONNECTION "user=${vars:dbuser} password=${vars:dbpassword} dbname=${vars:db} host=${vars:dbhost} port=${vars:dbport}"
+    CONNECTION "user=${dbuser} password=${dbpassword} dbname=${db} host=${dbhost} port=${dbport}"
     PROCESSING "CLOSE_CONNECTION=DEFER"
     DATA "geom from mensuration.mo22_batiments using unique idobj using srid=2056"
     LABELMAXSCALEDENOM 1500
