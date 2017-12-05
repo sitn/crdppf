@@ -6,15 +6,19 @@ except ImportError:
     from ez_setup import use_setuptools
     use_setuptools()
     from setuptools import setup, find_packages
-    
+
+requires = [
+    'pyramid_oereb'
+]
+
 setup(
     name='crdppfportal',
-    version='2.1',
+    version='2.5',
     description='sitn, a crdppf project',
     author='sitn',
     author_email='sitn@ne.ch',
     url='http://www.ne.ch/sitn',
-    install_requires=[],
+    install_requires=requires,
     packages=find_packages(),
     include_package_data=True,
     zip_safe=False,
