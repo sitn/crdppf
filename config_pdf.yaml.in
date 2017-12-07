@@ -132,6 +132,9 @@ pdf_config:
 # URL to localhost Tomcat server webapp
 print_url: http://localhost:8080/print-${vars:instanceid}/print
 
+# Path to PDF extract archive folder
+pdf_archive_path: Y:/crdppf_archive/
+
 # URL to internal instance
 localhost_url: http://localhost/${vars:instanceid}
 
