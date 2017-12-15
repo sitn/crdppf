@@ -1,11 +1,11 @@
 # WMTS server urls
 wmts_openlayers:
   mapproxyurl: [
-        'http://tile1-sitn.ne.ch/mapproxy95/wmts',
-        'http://tile2-sitn.ne.ch/mapproxy95/wmts',
-        'http://tile3-sitn.ne.ch/mapproxy95/wmts',
-        'http://tile4-sitn.ne.ch/mapproxy95/wmts',
-        'http://tile5-sitn.ne.ch/mapproxy95/wmts'
+        'https://tile1-sitn.ne.ch/mapproxy95/wmts',
+        'https://tile2-sitn.ne.ch/mapproxy95/wmts',
+        'https://tile3-sitn.ne.ch/mapproxy95/wmts',
+        'https://tile4-sitn.ne.ch/mapproxy95/wmts',
+        'https://tile5-sitn.ne.ch/mapproxy95/wmts'
     ]
 
 app_config:
@@ -138,4 +138,4 @@ localhost_url: http://localhost/${instanceid}
 mapserver_url: http://localhost/${instanceid}/wmscrdppf
 
 # URL to WMTS getCapabilities
-wmts_getcapabilities_url: http://sitn.ne.ch/mapproxy95/service/?SERVICE=WMTS&REQUEST=GetCapabilities&VERSION=1.0.0
+wmts_getcapabilities_url: https://sitn.ne.ch/mapproxy95/service/?SERVICE=WMTS&REQUEST=GetCapabilities&VERSION=1.0.0
