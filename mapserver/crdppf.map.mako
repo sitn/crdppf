@@ -448,7 +448,7 @@ LAYER
     EXPRESSION /6913/
     STYLE
       OUTLINECOLOR 0 155 0
-      #COLOR 0 155 0
+      COLOR 0 155 0
       WIDTH 2
     END
   END
