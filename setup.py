@@ -8,12 +8,12 @@ except ImportError:
     from setuptools import setup, find_packages
 
 requires = [
-    'pyramid_oereb'
+    'pyramid_oereb[recommend]==1.1.0'
 ]
 
 setup(
     name='crdppfportal',
-    version='2.5',
+    version='2.6',
     description='sitn, a crdppf project',
     author='sitn',
     author_email='sitn@ne.ch',
