@@ -292,7 +292,7 @@ END
 
 LAYER
   NAME "r73_perimetres_superposes"
-  TYPE LINE
+  TYPE POLYGON
    METADATA
        "ows_title"                  "r73_perimetres_superposes"
        "wms_srs"                   "EPSG:2056"
@@ -464,22 +464,42 @@ LAYER
   CLASS
     NAME "Secteur indicatif de dangers -Glissements"
     EXPRESSION ([codegenre] = 6915 AND '[teneur]' eq 'Glissements')
-    OUTLINECOLOR 255 190 189
+    STYLE
+      OPACITY 30
+      OUTLINECOLOR 255 190 189
+      COLOR 255 190 189
+      WIDTH 2
+    END
   END
   CLASS
     NAME "Secteur indicatif de dangers -Phénomènes rocheux"
     EXPRESSION ([codegenre] = 6915 AND '[teneur]' eq 'Phénomènes rocheux')
-    OUTLINECOLOR 255 255 189
+    STYLE
+      OPACITY 30
+      OUTLINECOLOR 255 190 189
+      COLOR 255 190 189
+      WIDTH 2
+    END
   END
   CLASS
     NAME "Secteur indicatif de dangers -Lave torrentielle"
     EXPRESSION ([codegenre] = 6915 AND '[teneur]' eq 'Lave torrentielle')
-    OUTLINECOLOR 189 255 190
+    STYLE
+      OPACITY 30
+      OUTLINECOLOR 255 190 189
+      COLOR 255 190 189
+      WIDTH 2
+    END
   END
   CLASS
     NAME "Secteur indicatif de dangers -Inondation"
     EXPRESSION ([codegenre] = 6915 AND '[teneur]' eq 'Inondation')
-    OUTLINECOLOR 189 190 255
+    STYLE
+      OPACITY 30
+      OUTLINECOLOR 255 190 189
+      COLOR 255 190 189
+      WIDTH 2
+    END
   END
 END
 
@@ -557,25 +577,36 @@ LAYER
   CLASS
     NAME "Danger élevé"
     EXPRESSION /5304/
-    COLOR 255 0 0
+    STYLE
+      OPACITY 40
+      COLOR 255 0 0
+    END
   END
   CLASS
     NAME "Danger moyen"
     EXPRESSION /5303/
-    COLOR 0 0 255
+    STYLE
+      OPACITY 40
+      COLOR 0 0 255
+    END
   END
   CLASS
     NAME "Danger faible"
     EXPRESSION /5302/
-    COLOR 255 255 0
+    STYLE
+      OPACITY 40
+      COLOR 255 255 0
+    END
   END
   CLASS
     NAME "Danger résiduel"
     EXPRESSION /5301/
     STYLE
+      OPACITY 40
       COLOR 255 255 0
     END
     STYLE
+      OPACITY 10
       SYMBOL "hachure7"
     END
   END

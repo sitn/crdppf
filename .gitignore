@@ -16,6 +16,7 @@ vars_nesitnd1.yaml
 nesitnd1.mk
 vars_francois.yaml
 francois.mk
+pyramid_oereb_standard.yml
 config_pdf.yaml
 development.ini
 MANIFEST

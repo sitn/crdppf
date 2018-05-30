@@ -49,6 +49,7 @@ app_config:
     - pts_fixes
     - voie_adresse
     - nomenclature_lieux
+  map_buffer: 1.3
 
   # coordinate system to be used by the wms
   wms_srs: EPSG:2056
@@ -123,7 +124,7 @@ pdf_config:
   signature: false
   
   # Allows to activate (true) or deactivate pilote phase text
-  pilotphase: true
+  pilotphase: false
   
   # Activates (true) or not the disclaimer text on the title page of the PDF
   disclaimer: true
@@ -137,5 +138,11 @@ localhost_url: http://localhost/${instanceid}
 # URL to internal MapServer instance
 mapserver_url: http://localhost/${instanceid}/wmscrdppf
 
+# Path to PDF extract archive folder - optional: if variable is ommited there will be no backup
+# pdf_archive_path: C:\Temp
+
 # URL to WMTS getCapabilities
 wmts_getcapabilities_url: https://sitn.ne.ch/mapproxy95/service/?SERVICE=WMTS&REQUEST=GetCapabilities&VERSION=1.0.0
+
+# Path to PDF extract archive folder - optional: if variable is ommited there will be no backup
+# pdf_archive_path: C:\Temp
