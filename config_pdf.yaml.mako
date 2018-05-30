@@ -49,7 +49,6 @@ app_config:
     - pts_fixes
     - voie_adresse
     - nomenclature_lieux
-  map_buffer: 1.3
 
   # coordinate system to be used by the wms
   wms_srs: EPSG:2056
@@ -106,6 +105,7 @@ pdf_config:
     path: ecussons/06ne_ch_RVB.jpg
     width: 43.4
     height: 13.8
+map_buffer: 1.3
   
   # Default image file for missing armories picture of a municipality
   placeholder: Placeholder.jpg
@@ -137,9 +137,6 @@ localhost_url: http://localhost/${instanceid}
 
 # URL to internal MapServer instance
 mapserver_url: http://localhost/${instanceid}/wmscrdppf
-
-# Path to PDF extract archive folder - optional: if variable is ommited there will be no backup
-# pdf_archive_path: C:\Temp
 
 # URL to WMTS getCapabilities
 wmts_getcapabilities_url: https://sitn.ne.ch/mapproxy95/service/?SERVICE=WMTS&REQUEST=GetCapabilities&VERSION=1.0.0
