@@ -10,8 +10,8 @@ def main(global_config, **settings):
 
     # Get tht Python stuff inside the crdppf_core folder (it's the crdppf folder which contains __init__.py)
     # this includes all routes and views needed by the crdppf application
+    config.include('pyramid_oereb')
     config.include('crdppf')
-
     config.scan()
 
     return config.make_wsgi_app()

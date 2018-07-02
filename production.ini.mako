@@ -10,7 +10,10 @@ pyramid.includes =
     pyramid_tm
 
 app.cfg = %(here)s/.build/config.yaml
-
+pyramid_oereb.cfg.file = %(here)s/pyramid_oereb_standard.yml
+pyramid_oereb.cfg.section = pyramid_oereb
+ 
+ 
 [server:main]
 use = egg:waitress#main
 host = 0.0.0.0

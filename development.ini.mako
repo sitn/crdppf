@@ -2,6 +2,10 @@
 use = egg:crdppfportal
 project = crdppf
 
+sqlalchemy.url = postgresql://postgres:password@ ${dbhost}:5432/pyramid_oereb
+pyramid_oereb.cfg.file = pyramid_oereb_standard.yml
+pyramid_oereb.cfg.section = pyramid_oereb
+
 pyramid.reload_templates = true
 pyramid.debug_authorization = false
 pyramid.debug_notfound = false
