@@ -1,11 +1,11 @@
 # WMTS server urls
 wmts_openlayers:
   mapproxyurl: [
-        'http://tile1-sitn.ne.ch/mapproxy95/wmts',
-        'http://tile2-sitn.ne.ch/mapproxy95/wmts',
-        'http://tile3-sitn.ne.ch/mapproxy95/wmts',
-        'http://tile4-sitn.ne.ch/mapproxy95/wmts',
-        'http://tile5-sitn.ne.ch/mapproxy95/wmts'
+        'https://tile1-sitn.ne.ch/mapproxy95/wmts',
+        'https://tile2-sitn.ne.ch/mapproxy95/wmts',
+        'https://tile3-sitn.ne.ch/mapproxy95/wmts',
+        'https://tile4-sitn.ne.ch/mapproxy95/wmts',
+        'https://tile5-sitn.ne.ch/mapproxy95/wmts'
     ]
 
 app_config:
@@ -49,6 +49,7 @@ app_config:
     - pts_fixes
     - voie_adresse
     - nomenclature_lieux
+  map_buffer: 1.3
 
   # coordinate system to be used by the wms
   wms_srs: EPSG:2056
@@ -138,7 +139,8 @@ localhost_url: http://localhost/${instanceid}
 mapserver_url: http://localhost/${instanceid}/wmscrdppf
 
 # Path to PDF extract archive folder - optional: if variable is ommited there will be no backup
+
 # pdf_archive_path: Y:/crdppf_archive/
 
 # URL to WMTS getCapabilities
-wmts_getcapabilities_url: http://sitn.ne.ch/mapproxy95/service/?SERVICE=WMTS&REQUEST=GetCapabilities&VERSION=1.0.0
+wmts_getcapabilities_url: https://sitn.ne.ch/mapproxy95/service/?SERVICE=WMTS&REQUEST=GetCapabilities&VERSION=1.0.0
