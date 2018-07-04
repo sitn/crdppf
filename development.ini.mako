@@ -1,12 +1,7 @@
 [app:main]
 use = egg:crdppfportal
-project = crdppf
- 
-pyramid_oereb.cfg.file = ${directory}/pyramid_oereb_standard.yml
-pyramid_oereb.cfg.section = pyramid_oereb
 
-sqlalchemy.url = postgresql://postgres:password@ ${dbhost}:5432/pyramid_oereb
-pyramid_oereb.cfg.file = pyramid_oereb_standard.yml
+pyramid_oereb.cfg.file = %(here)s/pyramid_oereb_standard.yml
 pyramid_oereb.cfg.section = pyramid_oereb
 
 pyramid.reload_templates = true
