@@ -139,7 +139,6 @@ localhost_url: http://localhost/${instanceid}
 mapserver_url: http://localhost/${instanceid}/wmscrdppf
 
 # Path to PDF extract archive folder - optional: if variable is ommited there will be no backup
-
 # pdf_archive_path: Y:/crdppf_archive/
 
 # URL to WMTS getCapabilities
