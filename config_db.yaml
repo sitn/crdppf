@@ -25,6 +25,7 @@ db_config:
       schema: mensuration
       att_id: idobj
       att_id_property: id
+      att_egrid: egrid
       att_property_number: nummai
       att_property_type: typimm
       #att_property_source: source
