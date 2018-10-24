@@ -96,7 +96,7 @@ pyramid_oereb:
     name: pyramid_oereb_main
     models: pyramid_oereb.standard.models.main
     db_connection: &main_db_connection
-      postgresql://${oereb_dbuser}:${oereb_dbpassword}@${oereb_dbhost}:${oereb_dbport}/${oereb_db}
+      postgresql://mapfish:sitn_mapfish@nesitn7:5432/sitn_crdppf
 
   # Define the SRID which your server is representing. Note: Only one projection system is possible in the
   # application. It does not provide any reprojection nor data in different projection systems. Take care in
@@ -176,12 +176,12 @@ pyramid_oereb:
   logo:
     # The logo representing the swiss confederation. You can use it as is because it is provided in this
     # repository, but if you need to change it for any reason: Feel free...
-    confederation: ${directory}/logo_confederation.png
+    confederation: C:\Mapfish\crdppf/logo_confederation.png
     # The logo representing the oereb extract CI. You can use it as is because it is provided in this
     # repository, but if you need to change it for any reason: Feel free...
-    oereb: ${directory}/logo_oereb.png
+    oereb: C:\Mapfish\crdppf/logo_oereb.png
     # The logo representing your canton. Replace with your own logo!
-    canton: ${directory}/logo_canton.png
+    canton: C:\Mapfish\crdppf/logo_canton.png
 
   # The method used to return the logo images configured above.
   get_logo_method: pyramid_oereb.standard.hook_methods.get_logo

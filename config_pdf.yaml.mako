@@ -143,3 +143,5 @@ wmts_getcapabilities_url: https://sitn.ne.ch/mapproxy95/service/?SERVICE=WMTS&RE
 
 # Path to PDF extract archive folder - optional: if variable is ommited there will be no backup
 pdf_archive_path: Y:\crdppf_archive
+# pdf_archive_path: C:\Temp
+
