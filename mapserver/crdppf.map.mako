@@ -1318,31 +1318,31 @@ LAYER
   CLASSITEM "teneur"
   CLASS
     NAME "Zone S1"
-    EXPRESSION /S1/
+    EXPRESSION /Zone S1/
     COLOR 0 59 179
     OUTLINECOLOR 0 0 128
   END
   CLASS
     NAME "S2 à efficacité limitée"
-    EXPRESSION /S2EL/
+    EXPRESSION /S2 à efficacité limitée/
     COLOR 64 124 184
     OUTLINECOLOR 0 0 0
   END
   CLASS
     NAME "Zone S2"
-    EXPRESSION /S2/
+    EXPRESSION /Zone S2/
     COLOR 51 136 255
     OUTLINECOLOR 0 0 128
   END
   CLASS
     NAME "Zone S3"
-    EXPRESSION /S3/
+    EXPRESSION /Zone S3/
     COLOR 179 210 255
     OUTLINECOLOR 0 0 128
   END
   CLASS
     NAME "S3Zu"
-    EXPRESSION /S3ZU/
+    EXPRESSION /S3Zu/
     STYLE
       COLOR 179 210 255
       OUTLINECOLOR 0 0 128
@@ -1374,16 +1374,21 @@ LAYER
   TEMPLATE "ttt"
   CLASSITEM "teneur"
   CLASS
-    NAME "secteur Ao et Au"
-    EXPRESSION /secteur Ao et Au/
+    NAME "Périmètre de protection"
+    EXPRESSION /areal/
     STYLE
-      COLOR 255 0 0
-      OUTLINECOLOR 255 0 0
-      OPACITY 40
+      COLOR 108 86 116
+      OUTLINECOLOR 46 21 53
+    END
+    STYLE
+      SYMBOL "hachure1"
+      ANGLE 90
+      COLOR 46 21 53
+      SIZE 5
     END
   END
   CLASS
-    NAME "secteur Au"
+    NAME "Future zone S1"
     EXPRESSION /secteur Au/
     STYLE
       COLOR 255 0 0
@@ -1392,26 +1397,12 @@ LAYER
     END
   END
   CLASS
-    NAME "secteur Ao"
+    NAME "Future zone s2"
     EXPRESSION /secteur Ao/
     STYLE
       COLOR 255 218 191
       OUTLINECOLOR 255 218 191
       OPACITY 60
-    END
-  END
-  CLASS
-    NAME "Aire Zu"
-    EXPRESSION /A. ZU/
-    STYLE
-      COLOR 0 0 0
-      OUTLINECOLOR 170 102 204
-    END
-    STYLE
-      SYMBOL "hachure1"
-      ANGLE 90
-      COLOR 170 102 204
-      SIZE 5
     END
   END
 END
@@ -1698,7 +1689,7 @@ LAYER
     CONNECTIONTYPE POSTGIS
     CONNECTION "user=${dbuser} password=${dbpassword} dbname=${db} host=${dbhost} port=${dbport}"
     PROCESSING "CLOSE_CONNECTION=DEFER"
-    DATA "geom from situation.cantons using unique idobj using srid=2056"  
+    DATA "geom from situation.cantons using unique idobj using srid=2056"
     MINSCALEDENOM 60001
     MAXSCALEDENOM 1000000000
     CLASSITEM "libgeo"
@@ -1709,7 +1700,7 @@ LAYER
         END
     END
     CLASS
-        EXPRESSION /Berne/ 
+        EXPRESSION /Berne/
         STYLE
             COLOR 160 160 160
         END
@@ -1721,7 +1712,7 @@ LAYER
         END
     END
     CLASS
-        EXPRESSION /Vaud/ 
+        EXPRESSION /Vaud/
         STYLE
             COLOR 192 192 192
         END
@@ -1733,139 +1724,139 @@ LAYER
         END
     END
     CLASS
-        EXPRESSION /Neuchâtel/ 
+        EXPRESSION /Neuchâtel/
     END
     CLASS
-        EXPRESSION /Valais/ 
+        EXPRESSION /Valais/
         STYLE
             COLOR 120 120 120
         END
     END
     CLASS
-        EXPRESSION /Genève/ 
+        EXPRESSION /Genève/
         STYLE
             COLOR 220 220 220
-        END  
+        END
     CLASS
         EXPRESSION /Zürich/
         STYLE
             COLOR 130 130 130
-        END  
-    END  
+        END
+    END
     CLASS
         EXPRESSION /Uri/
         STYLE
             COLOR 220 220 220
-        END  
-    END  
+        END
+    END
     CLASS
         EXPRESSION /Schwyz/
         STYLE
             COLOR 100 100 100
-        END  
-    END  
+        END
+    END
     CLASS
-        EXPRESSION /Obwald/ 
+        EXPRESSION /Obwald/
         STYLE
             COLOR 200 200 200
-        END  
-    END  
+        END
+    END
     CLASS
-        EXPRESSION /Glaris/ 
+        EXPRESSION /Glaris/
         STYLE
             COLOR 190 190 190
-        END  
-    END  
+        END
+    END
     CLASS
         EXPRESSION /Niedwald/
         STYLE
             COLOR 150 150 150
-        END  
-    END  
+        END
+    END
     CLASS
         EXPRESSION /Zoug/
         STYLE
             COLOR 200 200 200
-        END  
-    END  
+        END
+    END
     CLASS
         EXPRESSION /Soleure/
         STYLE
             COLOR 130 130 130
-        END   
-    END   
+        END
+    END
     CLASS
         EXPRESSION /St-Gall/
         STYLE
             COLOR 190 190 190
-        END  
-    END  
+        END
+    END
     CLASS
         EXPRESSION /Argovie/
         STYLE
             COLOR 180 180 180
-        END  
-    END  
+        END
+    END
     CLASS
         EXPRESSION /Schaffouse/
         STYLE
             COLOR 160 160 160
-        END  
-    END  
+        END
+    END
     CLASS
         EXPRESSION /Bâle Ville/
         STYLE
             COLOR 220 220 220
-        END  
-    END  
+        END
+    END
     CLASS
         EXPRESSION /Bâle Campagne/
         STYLE
             COLOR 230 230 230
-        END  
-    END  
+        END
+    END
     CLASS
         EXPRESSION /Thurgovie/
         STYLE
             COLOR 230 230 230
-        END  
-    END  
+        END
+    END
     CLASS
         EXPRESSION /Tessin/
         STYLE
             COLOR 180 180 180
-        END  
-    END  
+        END
+    END
     CLASS
         EXPRESSION /Grisons/
         STYLE
             COLOR 120 120 120
-        END  
-    END  
+        END
+    END
     CLASS
         EXPRESSION /Appenzell Ausserrhoden/
         STYLE
             COLOR 220 220 220
-        END  
-    END  
+        END
+    END
     CLASS
         EXPRESSION /Appenzell Innerrhoden/
         STYLE
             COLOR 140 140 140
-        END  
-    END  
+        END
+    END
     CLASS
         EXPRESSION /Doubs/
         STYLE
             COLOR 255 255 255
             OUTLINECOLOR 200 200 200
-        END  
-    END  
+        END
+    END
     CLASS
         EXPRESSION /./
         STYLE
             OUTLINECOLOR 200 200 200
-        END  
+        END
     END
 END
 
@@ -1880,7 +1871,7 @@ LAYER
     CONNECTIONTYPE POSTGIS
     CONNECTION "user=${dbuser} password=${dbpassword} dbname=${db} host=${dbhost} port=${dbport}"
     PROCESSING "CLOSE_CONNECTION=DEFER"
-    DATA "geom from situation.frontiere_pays using unique idobj using srid=2056"  
+    DATA "geom from situation.frontiere_pays using unique idobj using srid=2056"
     MINSCALEDENOM 60001
     MAXSCALEDENOM 1000000000
     CLASS
@@ -1901,7 +1892,7 @@ LAYER
     CONNECTIONTYPE POSTGIS
     CONNECTION "user=${dbuser} password=${dbpassword} dbname=${db} host=${dbhost} port=${dbport}"
     PROCESSING "CLOSE_CONNECTION=DEFER"
-    DATA "geom from situation.couvsol_situation using unique idobj using srid=2056"  
+    DATA "geom from situation.couvsol_situation using unique idobj using srid=2056"
     OPACITY 30
     CLASSITEM "objectval"
     CLASS
@@ -1920,7 +1911,7 @@ LAYER
         MINSCALEDENOM 60001
         MAXSCALEDENOM 2000000
     END
-END 
+END
 
 LAYER
     NAME "lacs_situation"
@@ -1933,7 +1924,7 @@ LAYER
     CONNECTIONTYPE POSTGIS
     CONNECTION "user=${dbuser} password=${dbpassword} dbname=${db} host=${dbhost} port=${dbport}"
     PROCESSING "CLOSE_CONNECTION=DEFER"
-    DATA "geom from situation.lacs using unique idobj using srid=2056"  
+    DATA "geom from situation.lacs using unique idobj using srid=2056"
     MINSCALEDENOM 60001
     MAXSCALEDENOM 1000000000
     CLASS
@@ -1955,7 +1946,7 @@ LAYER
     CONNECTIONTYPE POSTGIS
     CONNECTION "user=${dbuser} password=${dbpassword} dbname=${db} host=${dbhost} port=${dbport}"
     PROCESSING "CLOSE_CONNECTION=DEFER"
-    DATA "geom from situation.hydro_suisse using unique idobj using srid=2056"  
+    DATA "geom from situation.hydro_suisse using unique idobj using srid=2056"
     MINSCALEDENOM 60001
     MAXSCALEDENOM 1100000
     CLASS
@@ -1997,7 +1988,7 @@ LAYER
     CONNECTIONTYPE POSTGIS
     CONNECTION "user=${dbuser} password=${dbpassword} dbname=${db} host=${dbhost} port=${dbport}"
     PROCESSING "CLOSE_CONNECTION=DEFER"
-    DATA "geom from situation.districts using unique idobj using srid=2056"  
+    DATA "geom from situation.districts using unique idobj using srid=2056"
     MINSCALEDENOM 60001
     MAXSCALEDENOM 200000
     CLASS
@@ -2019,12 +2010,12 @@ LAYER
     CONNECTIONTYPE POSTGIS
     CONNECTION "user=${dbuser} password=${dbpassword} dbname=${db} host=${dbhost} port=${dbport}"
     PROCESSING "CLOSE_CONNECTION=DEFER"
-    DATA "geom from situation.frontiere_suisse using unique idobj using srid=2056"  
+    DATA "geom from situation.frontiere_suisse using unique idobj using srid=2056"
     MINSCALEDENOM 60001
     MAXSCALEDENOM 1000000000
     OPACITY 80
     CLASS
-        STYLE  
+        STYLE
             WIDTH 2
             OUTLINECOLOR 40 40 40
         END
@@ -2037,12 +2028,12 @@ LAYER
         "wms_title" "Rails niveau 1"
         "wms_srs" "EPSG:2056"
     END
-    STATUS ON 
+    STATUS ON
     OPACITY 40
-    CONNECTIONTYPE postgis 
+    CONNECTIONTYPE postgis
     CONNECTION "user=${dbuser} password=${dbpassword} dbname=${db} host=${dbhost} port=${dbport}"
-    PROCESSING "CLOSE_CONNECTION=DEFER" 
-    MAXSCALEDENOM 210000 
+    PROCESSING "CLOSE_CONNECTION=DEFER"
+    MAXSCALEDENOM 210000
     MINSCALEDENOM  50010
     TYPE LINE
     DATA "geom from (select geom, osm_id ,railway, name from situation.osm_line_ch where railway='rail') as foo using unique osm_id using srid=2056"
@@ -2062,16 +2053,16 @@ LAYER
 END
 
 LAYER
-    NAME "rail2" 
+    NAME "rail2"
     METADATA
         "wms_title" "Rails 2"
         "wms_srs" "EPSG:2056"
     END
-    STATUS ON 
-    CONNECTIONTYPE postgis 
+    STATUS ON
+    CONNECTIONTYPE postgis
     CONNECTION "user=${dbuser} password=${dbpassword} dbname=${db} host=${dbhost} port=${dbport}"
-    PROCESSING "CLOSE_CONNECTION=DEFER" 
-    MAXSCALEDENOM 50010 
+    PROCESSING "CLOSE_CONNECTION=DEFER"
+    MAXSCALEDENOM 50010
     MINSCALEDENOM 35000
     TYPE LINE
     DATA "geom from (select geom, osm_id ,railway, name from situation.osm_line_ch where railway='rail') as foo using unique osm_id using srid=2056"
@@ -2107,7 +2098,7 @@ LAYER
     CLASSITEM desnat
     CLASS
         STYLE
-            COLOR 255 255 255	
+            COLOR 255 255 255
             OUTLINECOLOR 0 0 0
             WIDTH 0.5
         END
@@ -2134,7 +2125,7 @@ LAYER
         EXPRESSION /forêt/
         STYLE
             SYMBOL "bois_rf"
-            COLOR 150 150 150	
+            COLOR 150 150 150
             OUTLINECOLOR 0 0 0
             SIZE 5
         END
@@ -2144,7 +2135,7 @@ LAYER
         EXPRESSION /pâturage boisé/
         STYLE
             SYMBOL "bois_pat"
-            COLOR 150 150 150	
+            COLOR 150 150 150
             OUTLINECOLOR 0 0 0
             SIZE 7
         END
@@ -2154,7 +2145,7 @@ LAYER
         EXPRESSION /boisée/
         STYLE
             SYMBOL "bois_pat"
-            COLOR 150 150 150	
+            COLOR 150 150 150
             OUTLINECOLOR 0 0 0
             SIZE 7
         END
@@ -2180,7 +2171,7 @@ LAYER
         EXPRESSION /vigne/
         STYLE
             SYMBOL "vigne"
-            COLOR 150 150 150	
+            COLOR 150 150 150
             SIZE 5
         END
     END
@@ -2310,7 +2301,7 @@ LAYER
         EXPRESSION /DDP/
         NAME "DDP"
         STYLE
-            OUTLINECOLOR 10 10 10 
+            OUTLINECOLOR 10 10 10
             PATTERN 7 7 END
             WIDTH 1
         END
@@ -2319,7 +2310,7 @@ LAYER
         EXPRESSION /DP/
         NAME "DP"
         STYLE
-            OUTLINECOLOR 10 10 10 
+            OUTLINECOLOR 10 10 10
             PATTERN 7 7 END
             WIDTH 1
         END
@@ -2623,14 +2614,14 @@ LAYER
             COLOR 255 255 255
             OUTLINECOLOR 0 0 0
         END
-    END  
+    END
     CLASS
         NAME "Croix"
         EXPRESSION ([nature] = 3 AND [gros_borne] = 1)
         STYLE
             SYMBOL "croix"
         END
-    END  
+    END
     CLASS
         NAME "Pieu, piquet"
         EXPRESSION ([nature] = 4 AND [gros_borne] = 1)
@@ -3208,7 +3199,7 @@ LAYER
     CLASSITEM "valeur"
     CLASS
         NAME "PFP3"
-        EXPRESSION /22/	
+        EXPRESSION /22/
         STYLE
             SYMBOL "circle"
             SIZE 7
@@ -3221,22 +3212,22 @@ LAYER
         END
         MINSCALEDENOM 0
         MAXSCALEDENOM 5100
-    END  
+    END
     CLASS
         NAME "PFP1/2"
         EXPRESSION /11/
-        STYLE    
+        STYLE
             SYMBOL "triangle"
             SIZE 8
-            COLOR 255 255 255 
+            COLOR 255 255 255
         END
-        STYLE    
+        STYLE
             SYMBOL "triangle"
             SIZE 8
             OUTLINECOLOR 0 0 0
             WIDTH 1
         END
-        STYLE    
+        STYLE
             SYMBOL "triangle"
             SIZE 2.5
             COLOR 0 0 0
@@ -3277,7 +3268,7 @@ LAYER
             ANGLE AUTO
             ANTIALIAS TRUE
             COLOR 130 130 130
-            OUTLINECOLOR 255 255 255    
+            OUTLINECOLOR 255 255 255
         END
     END
 END
@@ -3299,7 +3290,7 @@ LAYER
     LABELMAXSCALEDENOM 2500
     SYMBOLSCALEDENOM 2500
     CLASSITEM "nomloc"
-    OPACITY 100    
+    OPACITY 100
     CLASS
         EXPRESSION /./
         LABEL
@@ -3311,7 +3302,7 @@ LAYER
             ANGLE AUTO
             ANTIALIAS TRUE
             COLOR 130 130 130
-            OUTLINECOLOR 255 255 255    
+            OUTLINECOLOR 255 255 255
         END
     END
 END
@@ -3341,8 +3332,8 @@ LAYER
             SIZE 6
             MINSIZE 6
             ANGLE AUTO
-            COLOR 0 0 0 
-            OUTLINECOLOR 240 240 240   
+            COLOR 0 0 0
+            OUTLINECOLOR 240 240 240
         END
     END
 END
@@ -3381,7 +3372,7 @@ END
 
 LAYER
     NAME "nomenclature_lieux"
-    METADATA  
+    METADATA
         "wms_title" "Nomenclature des lieux dits - localités"
         "wms_srs" "EPSG:2056"
     END
@@ -3390,7 +3381,7 @@ LAYER
     CONNECTIONTYPE POSTGIS
     CONNECTION "user=${dbuser} password=${dbpassword} dbname=${db} host=${dbhost} port=${dbport}"
     PROCESSING "CLOSE_CONNECTION=DEFER"
-    DATA "geom from situation.noms_lieux using unique idobj using srid=2056"  
+    DATA "geom from situation.noms_lieux using unique idobj using srid=2056"
     LABELITEM "libgeo"
     CLASS
         LABEL
@@ -3402,8 +3393,8 @@ LAYER
             PRIORITY 8
             POSITION uc
             ANTIALIAS TRUE
-            COLOR 40 40 40 
-            OUTLINECOLOR 240 240 240   
+            COLOR 40 40 40
+            OUTLINECOLOR 240 240 240
         END
         MINSCALEDENOM 0
         MAXSCALEDENOM 20000
@@ -3418,8 +3409,8 @@ LAYER
             PRIORITY 8
             POSITION uc
             ANTIALIAS TRUE
-            COLOR 120 120 120 
-            OUTLINECOLOR 240 240 240   
+            COLOR 120 120 120
+            OUTLINECOLOR 240 240 240
        END
        MINSCALEDENOM 20000
        MAXSCALEDENOM 80000
@@ -3436,7 +3427,7 @@ LAYER
     CONNECTIONTYPE POSTGIS
     CONNECTION "user=${dbuser} password=${dbpassword} dbname=${db} host=${dbhost} port=${dbport}"
     PROCESSING "CLOSE_CONNECTION=DEFER"
-    DATA "geom from situation.situ_nomenclature1 using unique idobj using srid=2056"  
+    DATA "geom from situation.situ_nomenclature1 using unique idobj using srid=2056"
     STATUS ON
     LABELITEM "libgeo"
     MINSCALEDENOM 2001
@@ -3452,8 +3443,8 @@ LAYER
             ANTIALIAS TRUE
             PRIORITY 9
             POSITION uc
-            COLOR 90 90 90 
-            OUTLINECOLOR 240 240 240   
+            COLOR 90 90 90
+            OUTLINECOLOR 240 240 240
         END
     END
 END
@@ -3468,7 +3459,7 @@ LAYER
     CONNECTIONTYPE POSTGIS
     CONNECTION "user=${dbuser} password=${dbpassword} dbname=${db} host=${dbhost} port=${dbport}"
     PROCESSING "CLOSE_CONNECTION=DEFER"
-    DATA "geom from situation.situ_nomenclature3 using unique idobj using srid=2056"  
+    DATA "geom from situation.situ_nomenclature3 using unique idobj using srid=2056"
     STATUS ON
     LABELITEM "libgeo"
     MINSCALEDENOM 2001
@@ -3483,7 +3474,7 @@ LAYER
             ANGLE AUTO
             PRIORITY 10
             ANTIALIAS TRUE
-            COLOR 70 70 70 
+            COLOR 70 70 70
             OUTLINECOLOR 240 240 240
         END
     END
