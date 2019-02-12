@@ -8,7 +8,7 @@ except ImportError:
     from setuptools import setup, find_packages
 
 requires = [
-    'pyramid_oereb[recommend]==1.1.0'
+    'pyramid_oereb[recommend]==1.2.3'
 ]
 
 setup(
