@@ -96,7 +96,7 @@ pyramid_oereb:
     name: pyramid_oereb_main
     models: pyramid_oereb.standard.models.main
     db_connection: &main_db_connection
-      postgresql://${oereb_dbuser}:${oereb_dbpassword}@${oereb_dbhost}:${oereb_dbport}/${oereb_db}
+      postgresql://${pyramid_oereb_dbuser}:${pyramid_oereb_dbpassword}@${pyramid_oereb_dbhost}:${pyramid_oereb_dbport}/${pyramid_oereb_db}
 
   # Define the SRID which your server is representing. Note: Only one projection system is possible in the
   # application. It does not provide any reprojection nor data in different projection systems. Take care in
@@ -357,8 +357,11 @@ pyramid_oereb:
         area:
           limit: 1.0
       text:
-        de: Nutzungsplanung
-        fr: Plan d'affectation
+        de: Nutzungsplanung (kantonal/kommunal)
+        fr: Plans d'affectation (cantonaux/communaux)
+        it: Piani di utilizzazione (cantonali/comunali)
+        rm: Planisaziun d'utilisaziun (chantunal/communal)
+        en: Land-use planning (cantonal / municipal)
       language: fr
       federal: false
       standard: true
@@ -388,6 +391,9 @@ pyramid_oereb:
       text:
         de: Projektierungszonen Nationalstrassen
         fr: Zones réservées des routes nationales
+        it: Zone riservate per le strade nazionali
+        rm: Zonas projectaziun per las vias naziunalas
+        en: Reserved zones for motorways
       language: de
       federal: true
       standard: true
@@ -417,6 +423,9 @@ pyramid_oereb:
       text:
         de: Baulinien Nationalstrassen
         fr: Alignements des routes nationales
+        it: Allineamenti per le strade nazionali
+        rm: Lingias da construcziun per las vias naziunalas
+        en: Building lines for motorways
       language: de
       federal: true
       standard: true
@@ -446,6 +455,9 @@ pyramid_oereb:
       text:
         de: Baulinien Eisenbahnanlagen
         fr: Alignements des installations ferroviaires
+        it: Allineamenti per gli impianti ferroviari
+        rm: Lingias da construcziun per implants da viafier
+        en: Building lines of the railways installations
       language: de
       federal: true
       standard: true
@@ -475,6 +487,9 @@ pyramid_oereb:
       text:
         de: Projektierungszonen Eisenbahnanlagen
         fr: Zones réservées des installations ferroviaires
+        it: Zone riservate per gli impianti ferroviari
+        rm: Zonas projectaziun per implants da viafier
+        en: Reserved zones of the railways installations
       language: de
       federal: true
       standard: true
@@ -504,6 +519,9 @@ pyramid_oereb:
       text:
         de: Projektierungszonen Flughafenanlagen
         fr: Zones réservées des installations aéroportuaires
+        it: Zone riservate per gli impianti aeroportuali
+        rm: Zonas projectaziun per implants d'eroports
+        en: Reserved zones of the airport installations
       language: de
       federal: true
       standard: true
@@ -533,6 +551,9 @@ pyramid_oereb:
       text:
         de: Baulinien Flughafenanlagen
         fr: Alignements des installations aéroportuaires
+        it: Allineamenti per gli impianti aeroportuali
+        rm: Lingias da construcziun per implants d'eroports
+        en: Building lines of the airport installations
       language: de
       federal: true
       standard: true
@@ -560,8 +581,11 @@ pyramid_oereb:
         area:
           limit: 1.0
       text:
-        de: Sicherheitszonenplan Flughafen
-        fr: Zones de sécurité des aéroports
+        de: Sicherheitszonenplan
+        fr: Plan de la zone de sécurité
+        it: Piano delle zone di sicurezza
+        rm: Plan da zonas da segirezza
+        en: Safety zone plan
       language: de
       federal: true
       standard: true
@@ -589,8 +613,11 @@ pyramid_oereb:
         area:
           limit: 1.0
       text:
-        de: Belastete Standorte
-        fr: Sites pollués
+        de: Kataster der belasteten Standorte
+        fr: Cadastre des sites pollués
+        it: Catasto dei siti inquinati
+        rm: Cataster dals lieus contaminads
+        en: Register of polluted sites
       language: fr
       federal: false
       standard: true
@@ -618,8 +645,11 @@ pyramid_oereb:
         area:
           limit: 1.0
       text:
-        de: Belastete Standorte Militär
-        fr: Sites pollués - domaine militaire
+        de: Kataster der belasteten Standorte im Bereich des Militärs
+        fr: Cadastre des sites pollués - domaine militaire
+        it: Catasto dei siti inquinati nel settore militare
+        rm: Cataster dals lieus contaminads en il sectur da l'armada
+        en: Register of polluted sites in the area of army
       language: de
       federal: true
       standard: true
@@ -647,8 +677,11 @@ pyramid_oereb:
         area:
           limit: 1.0
       text:
-        de: Belastete Standorte Zivile Flugplätze
-        fr: Sites pollués - aérodromes civils
+        de: Kataster der belasteten Standorte im Bereich der zivilen Flugplätze
+        fr: Cadastre des sites pollués - domaine des aérodromes civils
+        it: Catasto dei siti inquinati nel settore degli aeroporti civili
+        rm: Cataster dals lieus contaminads en il sectur da las plazzas aviaticas civilas
+        en: Cadastre of polluted sites on civil aerodromes
       language: de
       federal: true
       standard: true
@@ -676,8 +709,11 @@ pyramid_oereb:
         area:
           limit: 1.0
       text:
-        de: Belastete Standorte Öffentlicher Verkehr
-        fr: Sites pollués - domain des transports publics
+        de: Kataster der belasteten Standorte im Bereich des öffentlichen Verkehrs
+        fr: Cadastre des sites pollués - domaine des transports publics
+        it: Catasto dei siti inquinati nel settore dei trasporti pubblici
+        rm: Cataster dals lieus contaminads en il sectur dal traffic public
+        en: Register of polluted sites in the area of public transport
       language: de
       federal: true
       standard: true
@@ -706,7 +742,10 @@ pyramid_oereb:
           limit: 1.0
       text:
         de: Grundwasserschutzzonen
-        fr: Zones de protection des eaux
+        fr: Zones de protection des eaux souterraines
+        it: Zone di protezione delle acque sotterranee
+        rm: Zona da protecziun da l'aua sutterrana
+        en: Groundwater protection zone
       language: fr
       federal: false
       standard: true
@@ -735,7 +774,10 @@ pyramid_oereb:
           limit: 1.0
       text:
         de: Grundwasserschutzareale
-        fr: Périmètres de protection des eaux
+        fr: Périmètres de protection des eaux souterraines
+        it: Aree di protezione delle acque sotterranee
+        rm: Areal da protecziun da l'aua sutterrana
+        en: Groundwater protection areas
       language: fr
       federal: false
       standard: true
@@ -763,8 +805,11 @@ pyramid_oereb:
         area:
           limit: 1.0
       text:
-        de: Lärmemfindlichkeitsstufen
-        fr: Degrés de sensibilité au bruit
+        de: Lärmempfindlichkeitsstufen (in Nutzungszonen)
+        fr: Degré de sensibilité au bruit (dans les zones d'affectation)
+        it: Gradi di sensibilità al rumore (in zone d'utilizzazione)
+        rm: Grad da sensibilitad da canera (en zona d'utilisaziun)
+        en: Noise sensitivity level (in land-use zones)
       language: fr
       federal: false
       standard: true
@@ -792,8 +837,11 @@ pyramid_oereb:
         area:
           limit: 1.0
       text:
-        de: Waldgrenzen
+        de: Statische Waldgrenzen
         fr: Limites forestières statiques
+        it: Margini statici della foresta
+        rm: Cunfin static dal guaud
+        en: Static forest perimeter
       language: fr
       federal: false
       standard: true
@@ -822,7 +870,10 @@ pyramid_oereb:
           limit: 1.0
       text:
         de: Waldabstandslinien
-        fr: Distances légales à la forêt
+        fr: Distances par rapport à la forêt
+        it: Linee di distanza dalle foreste
+        rm: Lingias da distanza dal guaud
+        en: Forest distance lines
       language: fr
       federal: false
       standard: true
