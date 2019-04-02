@@ -379,6 +379,7 @@ pyramid_oereb:
 
     - name: plr87
       code: MotorwaysProjectPlaningZones
+      download: https://data.geo.admin.ch/ch.astra.projektierungszonen-nationalstrassen.oereb/data.zip
       geometry_type: MULTIPOLYGON
       thresholds:
         length:
@@ -408,6 +409,7 @@ pyramid_oereb:
 
     - name: plr88
       code: MotorwaysBuildingLines
+      download: https://data.geo.admin.ch/ch.astra.baulinien-nationalstrassen.oereb/data.zip
       geometry_type: LINESTRING
       thresholds:
         length:
@@ -437,6 +439,7 @@ pyramid_oereb:
 
     - name: plr97
       code: RailwaysBuildingLines
+      download: https://data.geo.admin.ch/ch.bav.baulinien-eisenbahnanlagen.oereb/data.zip
       geometry_type: LINESTRING
       thresholds:
         length:
@@ -466,6 +469,7 @@ pyramid_oereb:
 
     - name: plr96
       code: RailwaysProjectPlanningZones
+      download: https://data.geo.admin.ch/ch.bav.projektierungszonen-eisenbahnanlagen.oereb/data.zip
       geometry_type: POLYGON
       thresholds:
         length:
@@ -495,6 +499,7 @@ pyramid_oereb:
 
     - name: plr103
       code: AirportsProjectPlanningZones
+      download: https://data.geo.admin.ch/ch.bazl.projektierungszonen-flughafenanlagen.oereb/data.zip
       geometry_type: POLYGON
       thresholds:
         length:
@@ -524,6 +529,7 @@ pyramid_oereb:
 
     - name: plr104
       code: AirportsBuildingLines
+      download: https://data.geo.admin.ch/ch.bazl.baulinien-flughafenanlagen.oereb/data.zip
       geometry_type: LINESTRING
       thresholds:
         length:
@@ -553,6 +559,7 @@ pyramid_oereb:
 
     - name: plr108
       code: AirportsSecurityZonePlans
+      download: https://data.geo.admin.ch/ch.bazl.sicherheitszonenplan.oereb/data.zip
       geometry_type: MULTIPOLYGON
       thresholds:
         length:
@@ -640,6 +647,7 @@ pyramid_oereb:
 
     - name: plr118
       code: ContaminatedCivilAviationSites
+      download: https://data.geo.admin.ch/ch.bazl.kataster-belasteter-standorte-zivilflugplaetze.oereb/data.zip
       geometry_type: GEOMETRYCOLLECTION
       thresholds:
         length:
@@ -669,6 +677,7 @@ pyramid_oereb:
 
     - name: plr119
       code: ContaminatedPublicTransportSites
+      download: https://data.geo.admin.ch/ch.bav.kataster-belasteter-standorte-oev.oereb/data.zip
       geometry_type: GEOMETRYCOLLECTION
       thresholds:
         length:
