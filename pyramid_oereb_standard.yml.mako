@@ -96,7 +96,7 @@ pyramid_oereb:
     name: pyramid_oereb_main
     models: pyramid_oereb.standard.models.main
     db_connection: &main_db_connection
-      postgresql://${oereb_dbuser}:${oereb_dbpassword}@${oereb_dbhost}:${oereb_dbport}/${oereb_db}
+      postgresql://${pyramid_oereb_dbuser}:${pyramid_oereb_dbpassword}@${pyramid_oereb_dbhost}:${pyramid_oereb_dbport}/${pyramid_oereb_db}
 
   # Define the SRID which your server is representing. Note: Only one projection system is possible in the
   # application. It does not provide any reprojection nor data in different projection systems. Take care in
