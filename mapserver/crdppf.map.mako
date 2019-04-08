@@ -1470,7 +1470,7 @@ LAYER
   CLASSITEM "codegenre"
   CLASS
     NAME "Limite forestière statique"
-    EXPRESSION /1/
+    EXPRESSION /llf/
     STYLE
       WIDTH 2
       COLOR 230 0 0

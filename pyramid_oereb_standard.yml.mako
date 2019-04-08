@@ -203,7 +203,7 @@ pyramid_oereb:
       layer_opacity: 1.0
     plan_for_land_register_main_page:
       # WMS URL to query the plan for land register specially for static extracts overview page
-      reference_wms: https://sitnssl.ne.ch/mapproxy95/service?SERVICE=WMS&REQUEST=GetMap&VERSION=1.1.1&STYLES=default&SRS=EPSG:2056&BBOX=2475000,1065000,2850000,1300000&WIDTH=493&HEIGHT=280&FORMAT=image/png&LAYERS=plan_cadastral_c2c
+      reference_wms: https://sitn.ne.ch/mapproxy95/service?SERVICE=WMS&REQUEST=GetMap&VERSION=1.1.1&STYLES=default&SRS=EPSG:2056&BBOX=2475000,1065000,2850000,1300000&WIDTH=493&HEIGHT=280&FORMAT=image/png&LAYERS=plan_cadastral_c2c
       # reference_wms: https://wms.geo.admin.ch/?SERVICE=WMS&REQUEST=GetMap&VERSION=1.1.1&STYLES=default&SRS=EPSG:2056&BBOX=2475000,1065000,2850000,1300000&WIDTH=493&HEIGHT=280&FORMAT=image/png&LAYERS=ch.swisstopo-vd.amtliche-vermessung
       layer_index: 0
       layer_opacity: 1.0
@@ -382,6 +382,7 @@ pyramid_oereb:
 
     - name: plr87
       code: MotorwaysProjectPlaningZones
+      download: https://data.geo.admin.ch/ch.astra.projektierungszonen-nationalstrassen.oereb/data.zip
       geometry_type: MULTIPOLYGON
       thresholds:
         length:
@@ -414,6 +415,7 @@ pyramid_oereb:
 
     - name: plr88
       code: MotorwaysBuildingLines
+      download: https://data.geo.admin.ch/ch.astra.baulinien-nationalstrassen.oereb/data.zip
       geometry_type: LINESTRING
       thresholds:
         length:
@@ -446,6 +448,7 @@ pyramid_oereb:
 
     - name: plr97
       code: RailwaysBuildingLines
+      download: https://data.geo.admin.ch/ch.bav.baulinien-eisenbahnanlagen.oereb/data.zip
       geometry_type: LINESTRING
       thresholds:
         length:
@@ -478,6 +481,7 @@ pyramid_oereb:
 
     - name: plr96
       code: RailwaysProjectPlanningZones
+      download: https://data.geo.admin.ch/ch.bav.projektierungszonen-eisenbahnanlagen.oereb/data.zip
       geometry_type: POLYGON
       thresholds:
         length:
@@ -510,6 +514,7 @@ pyramid_oereb:
 
     - name: plr103
       code: AirportsProjectPlanningZones
+      download: https://data.geo.admin.ch/ch.bazl.projektierungszonen-flughafenanlagen.oereb/data.zip
       geometry_type: POLYGON
       thresholds:
         length:
@@ -542,6 +547,7 @@ pyramid_oereb:
 
     - name: plr104
       code: AirportsBuildingLines
+      download: https://data.geo.admin.ch/ch.bazl.baulinien-flughafenanlagen.oereb/data.zip
       geometry_type: LINESTRING
       thresholds:
         length:
@@ -574,6 +580,7 @@ pyramid_oereb:
 
     - name: plr108
       code: AirportsSecurityZonePlans
+      download: https://data.geo.admin.ch/ch.bazl.sicherheitszonenplan.oereb/data.zip
       geometry_type: MULTIPOLYGON
       thresholds:
         length:
@@ -670,6 +677,7 @@ pyramid_oereb:
 
     - name: plr118
       code: ContaminatedCivilAviationSites
+      download: https://data.geo.admin.ch/ch.bazl.kataster-belasteter-standorte-zivilflugplaetze.oereb/data.zip
       geometry_type: GEOMETRYCOLLECTION
       thresholds:
         length:
@@ -702,6 +710,7 @@ pyramid_oereb:
 
     - name: plr119
       code: ContaminatedPublicTransportSites
+      download: https://data.geo.admin.ch/ch.bav.kataster-belasteter-standorte-oev.oereb/data.zip
       geometry_type: GEOMETRYCOLLECTION
       thresholds:
         length:

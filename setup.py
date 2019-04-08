@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-try:    
+try:
     from setuptools import setup, find_packages
 except ImportError:
     from ez_setup import use_setuptools
@@ -8,12 +8,12 @@ except ImportError:
     from setuptools import setup, find_packages
 
 requires = [
-    'pyramid_oereb[recommend]==1.3.1'
+    'pyramid_oereb[recommend]==1.4.3'
 ]
 
 setup(
     name='crdppfportal',
-    version='2.7',
+    version='2.8',
     description='sitn, a crdppf project',
     author='sitn',
     author_email='sitn@ne.ch',
