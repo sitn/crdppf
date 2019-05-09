@@ -529,16 +529,13 @@ LAYER
     OUTLINECOLOR 255 0 0
   END
   CLASS
-    NAME "Zone de crêtes et forêts"
-    EXPRESSION /5201/
-    COLOR 255 255 0
-    OUTLINECOLOR 0 0 0
-  END
-  CLASS
     NAME "Zone de vignes et grèves"
     EXPRESSION /5202/
-    COLOR 0 255 0
-    OUTLINECOLOR 0 0 0
+    STYLE
+      COLOR 0 255 0
+      OUTLINECOLOR 0 0 0
+      OPACITY 60
+    END
   END
   CLASS
     NAME "Réserve naturelle"
@@ -627,6 +624,15 @@ LAYER
       SYMBOL "hachure6"
       COLOR 0 0 0
       SIZE 5
+    END
+  END
+  CLASS
+    NAME "Zone de crêtes et forêts"
+    EXPRESSION /5201/
+    STYLE
+      COLOR 255 255 0
+      OUTLINECOLOR 0 0 0
+      OPACITY 60
     END
   END
 END
