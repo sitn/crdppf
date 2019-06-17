@@ -96,7 +96,7 @@ pyramid_oereb:
     name: pyramid_oereb_main
     models: pyramid_oereb.standard.models.main
     db_connection: &main_db_connection
-      postgresql://${pyramid_oereb_dbuser}:${pyramid_oereb_dbpassword}@${pyramid_oereb_dbhost}:${pyramid_oereb_dbport}/${pyramid_oereb_db}
+      postgresql://${oereb_dbuser}:${oereb_dbpassword}@${oereb_dbhost}:${oereb_dbport}/${oereb_db}
 
   # Define the SRID which your server is representing. Note: Only one projection system is possible in the
   # application. It does not provide any reprojection nor data in different projection systems. Take care in
@@ -165,9 +165,9 @@ pyramid_oereb:
     # The street name of the address of your office. For instance: Mühlemattstrasse
     street: Rue de Tivoli
     # The street number of the address of your office. For instance: 36
-    number: 22
+    number: 22 / CP
     # The ZIP code of the address of your office. For instance: 4410
-    postal_code: 2000
+    postal_code: 2002
     # The city name of the address of your office. For instance: Liestal
     city: Neuchâtel
 
