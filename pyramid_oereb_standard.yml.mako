@@ -705,8 +705,8 @@ pyramid_oereb:
         get_symbol: pyramid_oereb.standard.hook_methods.get_symbol
         get_symbol_ref: pyramid_oereb.standard.hook_methods.get_symbol_ref
       law_status:
-        in_force: inForce
-        running_modifications: runningModifications
+        in_force: inKraft
+        running_modifications: laufendeAenderungen
 
     - name: plr119
       code: ContaminatedPublicTransportSites
