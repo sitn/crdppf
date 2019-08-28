@@ -2101,7 +2101,7 @@ LAYER
     CONNECTION "user=${dbuser} password=${dbpassword} dbname=${db} host=${dbhost} port=${dbport}"
     PROCESSING "CLOSE_CONNECTION=DEFER"
     DATA "geom from mensuration.mo6_couverture_du_sol_surf_tot using unique idobj using srid=2056"
-    CLASSITEM desnat
+    CLASSITEM "desnat"
     CLASS
         STYLE
             COLOR 255 255 255
