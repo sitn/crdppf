@@ -589,7 +589,7 @@ pyramid_oereb:
           limit: 1.0
       text:
         de: Sicherheitszonenplan
-        fr: Plan de la zone de sécurité
+        fr: Plan de zone de sécurité
         it: Piano delle zone di sicurezza
         rm: Plan da zonas da segirezza
         en: Safety zone plan
