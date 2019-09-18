@@ -327,7 +327,7 @@ pyramid_oereb:
       # Certification and certification_at_web must be set with your own certification information.
     certification:
         de: Referenz zur kantonsspezifischen Gesetzesgrundlage bezüglich Beglaubigungen.
-        fr: Référence vers les dispositions légales cantonales concernant la certification
+        fr: .
         it: Certificazione secondo OCRDPP art. 14
         rm: ...
     certification_at_web:
