@@ -1051,7 +1051,7 @@ LAYER
   TYPE POLYGON
   TEMPLATE "ttt"
   CLASS
-    NAME "Plan de la zone de sécurité"
+    NAME "Périmètre de la zone de sécurité"
     STYLE
       COLOR 192 0 192
       OPACITY 45
@@ -1321,46 +1321,47 @@ LAYER
   TYPE POLYGON
   TEMPLATE "ttt"
   OPACITY 60
-  CLASSITEM "teneur"
+  CLASSITEM "codegenre"
   CLASS
-    NAME "Zone S1"
-    EXPRESSION /Zone S1/
-    COLOR 0 59 179
-    OUTLINECOLOR 0 0 128
+   NAME "Zone de protection des eaux souterraines S1"
+   EXPRESSION /S1/
+   COLOR 0 59 179
+   OUTLINECOLOR 0 0 128
+ END
+ CLASS
+   NAME "Types de zones de protection non prévus par le droit fédéral, S2 à efficacité limitée"
+   EXPRESSION /S2EL/
+   COLOR 64 124 184
+   OUTLINECOLOR 0 0 0
+ END
+ CLASS
+   NAME "Zone de protection des eaux souterraines S2"
+   EXPRESSION /S2/
+   COLOR 51 136 255
+   OUTLINECOLOR 0 0 128
+ END
+ CLASS
+   NAME "Aire d'alimentation Zu au lieu de S3 ou Sm"
+   EXPRESSION /S3Zu/
+   STYLE
+     COLOR 179 210 255
+     OUTLINECOLOR 0 0 128
+   END
+   STYLE
+     SYMBOL "hachure1"
+     ANGLE 90
+     COLOR 0 0 128
+     SIZE 5
+	END
   END
   CLASS
-    NAME "S2 à efficacité limitée"
-    EXPRESSION /S2 à efficacité limitée/
-    COLOR 64 124 184
-    OUTLINECOLOR 0 0 0
-  END
-  CLASS
-    NAME "Zone S2"
-    EXPRESSION /Zone S2/
-    COLOR 51 136 255
-    OUTLINECOLOR 0 0 128
-  END
-  CLASS
-    NAME "Zone S3"
-    EXPRESSION /Zone S3/
+    NAME "Zone de protection des eaux souterraines S3"
+    EXPRESSION /S3/
     COLOR 179 210 255
     OUTLINECOLOR 0 0 128
   END
-  CLASS
-    NAME "S3Zu"
-    EXPRESSION /S3Zu/
-    STYLE
-      COLOR 179 210 255
-      OUTLINECOLOR 0 0 128
-    END
-    STYLE
-      SYMBOL "hachure1"
-      ANGLE 90
-      COLOR 0 0 128
-      SIZE 5
-    END
-  END
 END
+
 
 LAYER
   NAME "r132_perimetre_prot_eau"
@@ -1428,30 +1429,30 @@ LAYER
   PROCESSING "CLOSE_CONNECTION=DEFER"
   DATA "geom from crdppf.r145_sens_bruit using unique idobj using srid=2056"
   STATUS ON
-  CLASSITEM "teneur"
+  CLASSITEM "codegenre"
   OPACITY 50
   TEMPLATE "ttt"
   CLASS
-    NAME "IV"
-    EXPRESSION /DS IV/
+    NAME "Degré de sensibilité IV"
+    EXPRESSION /DS_IV/
     COLOR 230 0 0
     # OUTLINECOLOR 0 0 0
   END
   CLASS
-    NAME "III"
-    EXPRESSION /DS III/
+    NAME "Degré de sensibilité III"
+    EXPRESSION /DS_III/
     COLOR 255 77 0
     # OUTLINECOLOR 0 0 0
   END
   CLASS
-    NAME "II"
-    EXPRESSION /DS II/
+    NAME "Degré de sensibilité II"
+    EXPRESSION /DS_II/
     COLOR 255 166 0
     # OUTLINECOLOR 0 0 0
   END
   CLASS
-    NAME "I"
-    EXPRESSION /DS I/
+    NAME "Degré de sensibilité I"
+    EXPRESSION /DS_I/
     COLOR 255 242 0
     # OUTLINECOLOR 0 0 0
   END
@@ -2110,7 +2111,7 @@ LAYER
         END
     END
     MINSCALEDENOM 0
-    MAXSCALEDENOM 2499
+    MAXSCALEDENOM 49999
 END
 
 LAYER

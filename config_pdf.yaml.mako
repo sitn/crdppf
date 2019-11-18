@@ -49,7 +49,7 @@ app_config:
     - pts_fixes
     - voie_adresse
     - nomenclature_lieux
-  map_buffer: 1.3
+  map_buffer: 1.1
 
   # coordinate system to be used by the wms
   wms_srs: EPSG:2056
