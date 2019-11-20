@@ -14,7 +14,7 @@ requires = [
 setup(
     name='crdppfportal',
     version='3.0',
-    description='sitn, a crdppf project',
+    description='SITN, public law restriction portal',
     author='sitn',
     author_email='sitn@ne.ch',
     url='http://www.ne.ch/sitn',

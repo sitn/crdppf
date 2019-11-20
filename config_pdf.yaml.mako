@@ -11,9 +11,9 @@ wmts_openlayers:
 app_config:
   # defaultfontfamily: Arial
   # topics provided by the confederation
-  ch_topics: ['R087','R096','R097','R103','R104','R108','R118','R119']
+  ch_topics: ['R087','R088','R096','R097','R103','R104','R108','R118','R119']
   # federal topics with certificate but empty no content/layers
-  emptytopics: ['R088','R117']
+  emptytopics: ['R117']
 
   # wms and feature service name of the layers used by the confederation
   ch_legend_layers:
@@ -59,8 +59,8 @@ app_config:
   wms_transparency: 'TRUE'
   # default image format of the wms
   wms_imageformat: image/png
- 
-# Parameters for the PDF extract layout - only modify if you know what you do (may affect the layout)!! 
+
+# Parameters for the PDF extract layout - only modify if you know what you do (may affect the layout)!!
 pdf_config:
   # default language of the pdf extract
   defaultlanguage: ${default_language}
@@ -106,26 +106,26 @@ pdf_config:
     path: ecussons/06ne_ch_RVB.jpg
     width: 43.4
     height: 13.8
-  
+
   # Default image file for missing armories picture of a municipality
   placeholder: Placeholder.jpg
-  
+
   # Default base name for the PDF extract
   pdfbasename: _ExtraitCRDPPF
-  
+
   # Default prefix/suffix for all the basemap files to ditinguish them from topic files
   siteplanbasename: _siteplan
-  
+
   # Activates (true) or not cantonal and other optional topics (to be specified in crdppfportal/models.py)
   optionaltopics: false
-  
-  # Activates the signature block on the title pageof the PDF 
+
+  # Activates the signature block on the title pageof the PDF
   # - IF and ONLY IF the report type is set to certified/reducedcertified
   signature: false
-  
+
   # Allows to activate (true) or deactivate pilote phase text
   pilotphase: false
-  
+
   # Activates (true) or not the disclaimer text on the title page of the PDF
   disclaimer: true
 
