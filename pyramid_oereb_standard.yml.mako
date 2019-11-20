@@ -159,7 +159,7 @@ pyramid_oereb:
     name:
         en: Geomatics and Land Register Office Neuchatel
         de: Geomatik- und Grundbuchamt Neuenburg
-        fr: Service de la Géomatique et du registre foncier
+        fr: Service de la géomatique et du registre foncier
     # An online link to web presentation of your office. For instance: https://www.geo.bl.ch/
     office_at_web: https://www.ne.ch/sgrf
     # The street name of the address of your office. For instance: Mühlemattstrasse
@@ -318,7 +318,7 @@ pyramid_oereb:
     base_data:
         text:
           de: Daten der amtlichen Vermessung, Stand {0}.
-          fr: Données de la mensuration officielle, état actuel {0}
+          fr: Plan cadastral du SITN à partir des données de la mensuration officielle. Etat de la mensuration du {0}
           it: Dati della misurazione ufficiale, stato attuale {0}
           rm: Datas da la mesiraziun uffiziala, versiun dal {0}
         methods:
