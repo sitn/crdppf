@@ -2866,7 +2866,7 @@ LAYER
     PROCESSING "CLOSE_CONNECTION=DEFER"
     DATA "geom from (SELECT
         *
-        FROM mensuration.mo7_obj_divers_lineaire
+        FROM mensuration.mo7_obj_divers_lineaire_n
         WHERE genre = 1
         ) as foo using unique idobj using srid=2056"
     STATUS ON
@@ -2896,7 +2896,7 @@ LAYER
     PROCESSING "CLOSE_CONNECTION=DEFER"
     DATA "geom from (SELECT
         *
-        FROM mensuration.mo7_obj_divers_lineaire
+        FROM mensuration.mo7_obj_divers_lineaire_n
         WHERE genre not in (1, 14, 27, 44)
         ) as foo using unique idobj using srid=2056"
     STATUS ON
