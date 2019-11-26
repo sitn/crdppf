@@ -462,7 +462,7 @@ LAYER
     END
   END
   CLASS
-    NAME "Secteur indicatif de dangers -Glissements"
+    NAME "Secteur indicatif de dangers - Glissements"
     EXPRESSION ([codegenre] = 6915 AND '[teneur]' eq 'Glissements')
     STYLE
       OPACITY 30
@@ -472,7 +472,7 @@ LAYER
     END
   END
   CLASS
-    NAME "Secteur indicatif de dangers -Phénomènes rocheux"
+    NAME "Secteur indicatif de dangers - Phénomènes rocheux"
     EXPRESSION ([codegenre] = 6915 AND '[teneur]' eq 'Phénomènes rocheux')
     STYLE
       OPACITY 30
@@ -482,7 +482,7 @@ LAYER
     END
   END
   CLASS
-    NAME "Secteur indicatif de dangers -Lave torrentielle"
+    NAME "Secteur indicatif de dangers - Lave torrentielle"
     EXPRESSION ([codegenre] = 6915 AND '[teneur]' eq 'Lave torrentielle')
     STYLE
       OPACITY 30
@@ -492,7 +492,7 @@ LAYER
     END
   END
   CLASS
-    NAME "Secteur indicatif de dangers -Inondation"
+    NAME "Secteur indicatif de dangers - Inondation"
     EXPRESSION ([codegenre] = 6915 AND '[teneur]' eq 'Inondation')
     STYLE
       OPACITY 30
