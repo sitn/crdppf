@@ -18,12 +18,14 @@ app_config:
   # wms and feature service name of the layers used by the confederation
   ch_legend_layers:
     'R087': ch.astra.projektierungszonen-nationalstrassen.oereb
+    'R088': ch.astra.baulinien-nationalstrassen.oereb
     'R096': ch.bav.projektierungszonen-eisenbahnanlagen.oereb
     'R097': ch.bav.baulinien-eisenbahnanlagen.oereb
     'R103': ch.bazl.projektierungszonen-flughafenanlagen.oereb
     'R104': ch.bazl.baulinien-flughafenanlagen.oereb
     'R108': ch.bazl.sicherheitszonenplan.oereb
     'R118': ch.bazl.kataster-belasteter-standorte-zivilflugplaetze.oereb
+    # 'R117': ch.vbs.kataster-belasteter-standorte-militaer.oereb
     'R119': ch.bav.kataster-belasteter-standorte-oev.oereb
 
   #  configuration and list of the wms layers used for the background image in the pdf
@@ -48,7 +50,7 @@ app_config:
     - obj_divers_ponctuels
     - pts_fixes
     - voie_adresse
-    - nomenclature_lieux
+    #- nomenclature_lieux
   map_buffer: 1.1
 
   # coordinate system to be used by the wms
