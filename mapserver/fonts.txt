@@ -17,6 +17,10 @@ arialn                          fonts/arialn.ttf
 arialni                         fonts/arialni.ttf
 arialnb                         fonts/arialnb.ttf
 arialnbi                        fonts/arialnbi.ttf
+cadastra          fonts/Ca.ttf
+cadastrabd          fonts/CadastraBd.ttf
+cadastrabdi          fonts/CaBI.ttf
+cadastrai          fonts/CadastraIt.ttf
 esri1				fonts/esri_149.ttf
 esri2				fonts/esri_161.ttf
 esri3				fonts/esri_8.ttf

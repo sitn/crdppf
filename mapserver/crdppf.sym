@@ -436,3 +436,75 @@ SYMBOL
     TYPE PIXMAP
     IMAGE "images\IcePack_gray.png"
 END
+
+SYMBOL
+    NAME "arbre_isole_important"
+    TYPE truetype
+    FONT "cadastra_symbol"
+    CHARACTER "w"
+    FILLED true
+END
+
+SYMBOL
+    NAME "bloc_erratique"
+    TYPE truetype
+    FONT "cadastra_symbol"
+    CHARACTER "g"
+    FILLED true
+END
+
+SYMBOL
+    NAME "grotte_entree_de_caverne"
+    TYPE truetype
+    FONT "cadastra_symbol"
+    CHARACTER "f"
+    FILLED true
+END
+
+SYMBOL
+    NAME "mat_antenne"
+    TYPE truetype
+    FONT "cadastra_symbol"
+    CHARACTER "h"
+    FILLED true
+END
+
+SYMBOL
+    NAME "monument"
+    TYPE truetype
+    FONT "cadastra_symbol"
+    CHARACTER "k"
+    FILLED true
+END
+
+SYMBOL
+    NAME "piscine"
+    TYPE truetype
+    FONT "cadastra_symbol"
+    CHARACTER "e"
+    FILLED true
+END
+
+SYMBOL
+    NAME "point_de_reference"
+    TYPE truetype
+    FONT "cadastra_symbol"
+    CHARACTER "q"
+    FILLED true
+END
+
+SYMBOL
+    NAME "source"
+    TYPE truetype
+    FONT "cadastra_symbol"
+    CHARACTER "i"
+    FILLED true
+END
+
+SYMBOL
+    NAME "statue_crucifix"
+    TYPE truetype
+    FONT "cadastra_symbol"
+    CHARACTER "j"
+    FILLED true
+END
