@@ -125,7 +125,6 @@ LAYER
        "wms_srs"                     "EPSG:2056"
        "wms_title"                   "${instanceid} WMS Server"
        "wms_onlineresource"     "http://${host}/${instanceid}/wmscrdppf"
-       "wms_srs"                    "EPSG:2056"
   END
   CONNECTIONTYPE POSTGIS
   CONNECTION "user=${dbuser} password=${dbpassword} dbname=${db} host=${dbhost} port=${dbport}"
@@ -201,7 +200,6 @@ LAYER
        "wms_srs"                    "EPSG:2056"
        "wms_title"                  "${instanceid} WMS Server"
        "wms_onlineresource"    "http://${host}/${instanceid}/wmscrdppf"
-       "wms_srs"                   "EPSG:2056"
   END
   CONNECTIONTYPE POSTGIS
   CONNECTION "user=${dbuser} password=${dbpassword} dbname=${db} host=${dbhost} port=${dbport}"
@@ -298,7 +296,6 @@ LAYER
        "wms_srs"                   "EPSG:2056"
        "wms_title"                  "${instanceid} WMS Server"
        "wms_onlineresource"    "http://${host}/${instanceid}/wmscrdppf"
-       "wms_srs"                   "EPSG:2056"
   END
   CONNECTIONTYPE POSTGIS
   CONNECTION "user=${dbuser} password=${dbpassword} dbname=${db} host=${dbhost} port=${dbport}"
@@ -511,7 +508,6 @@ LAYER
        "wms_srs" "EPSG:2056"
        "wms_title"           "${instanceid} WMS Server"
        "wms_onlineresource" "http://${host}/${instanceid}/wmscrdppf"
-       "wms_srs"            "EPSG:2056"
   END
   CONNECTIONTYPE POSTGIS
   CONNECTION "user=${dbuser} password=${dbpassword} dbname=${db} host=${dbhost} port=${dbport}"
@@ -645,7 +641,6 @@ LAYER
        "wms_srs" "EPSG:2056"
        "wms_title"           "${instanceid} WMS Server"
        "wms_onlineresource" "http://${host}/${instanceid}/wmscrdppf"
-       "wms_srs"            "EPSG:2056"
   END
   CONNECTIONTYPE POSTGIS
   CONNECTION "user=${dbuser} password=${dbpassword} dbname=${db} host=${dbhost} port=${dbport}"
@@ -920,7 +915,6 @@ LAYER
        "wms_srs"                    "EPSG:2056"
        "wms_title"                      "${instanceid} WMS Server"
        "wms_onlineresource"     "http://${host}/${instanceid}/wmscrdppf"
-       "wms_srs"                    "EPSG:2056"
   END
   CONNECTIONTYPE POSTGIS
   CONNECTION "user=${dbuser} password=${dbpassword} dbname=${db} host=${dbhost} port=${dbport}"
@@ -937,6 +931,28 @@ LAYER
 END
 
 LAYER
+  NAME "r88_astra_baulinien_nationalstrassen"
+  STATUS ON
+  METADATA
+       "ows_title"                      "r88_astra_baulinien_nationalstrassen"
+       "wms_srs"                    "EPSG:2056"
+       "wms_title"                      "${instanceid} WMS Server"
+       "wms_onlineresource"     "http://${host}/${instanceid}/wmscrdppf"
+  END
+  CONNECTIONTYPE POSTGIS
+  CONNECTION "user=${dbuser} password=${dbpassword} dbname=${db} host=${dbhost} port=${dbport}"
+  PROCESSING "CLOSE_CONNECTION=DEFER"
+  DATA "geom from crdppf.r88_astra_baulinien_nationalstrassen using unique idobj using srid=2056"
+  TYPE LINE
+  TEMPLATE "ttt"
+  OPACITY 60
+  CLASS
+    NAME "Alignements des routes nationales"
+    COLOR 0 230 0
+   END
+END
+
+LAYER
   NAME "r96_bav_projektierungszonen_eisenbahnanlagen"
   STATUS ON
   METADATA
@@ -944,7 +960,6 @@ LAYER
        "wms_srs"                    "EPSG:2056"
        "wms_title"                      "${instanceid} WMS Server"
        "wms_onlineresource"     "http://${host}/${instanceid}/wmscrdppf"
-       "wms_srs"                    "EPSG:2056"
   END
   CONNECTIONTYPE POSTGIS
   CONNECTION "user=${dbuser} password=${dbpassword} dbname=${db} host=${dbhost} port=${dbport}"
@@ -968,7 +983,6 @@ LAYER
        "wms_srs"                    "EPSG:2056"
        "wms_title"                      "${instanceid} WMS Server"
        "wms_onlineresource"     "http://${host}/${instanceid}/wmscrdppf"
-       "wms_srs"                    "EPSG:2056"
   END
   CONNECTIONTYPE POSTGIS
   CONNECTION "user=${dbuser} password=${dbpassword} dbname=${db} host=${dbhost} port=${dbport}"
@@ -991,7 +1005,6 @@ LAYER
        "wms_srs"                    "EPSG:2056"
        "wms_title"                      "${instanceid} WMS Server"
        "wms_onlineresource"     "http://${host}/${instanceid}/wmscrdppf"
-       "wms_srs"                    "EPSG:2056"
   END
   CONNECTIONTYPE POSTGIS
   CONNECTION "user=${dbuser} password=${dbpassword} dbname=${db} host=${dbhost} port=${dbport}"
@@ -1019,7 +1032,6 @@ LAYER
        "wms_srs"                    "EPSG:2056"
        "wms_title"                      "${instanceid} WMS Server"
        "wms_onlineresource"     "http://${host}/${instanceid}/wmscrdppf"
-       "wms_srs"                    "EPSG:2056"
   END
   CONNECTIONTYPE POSTGIS
   CONNECTION "user=${dbuser} password=${dbpassword} dbname=${db} host=${dbhost} port=${dbport}"
@@ -1042,7 +1054,6 @@ LAYER
        "wms_srs"                    "EPSG:2056"
        "wms_title"                      "${instanceid} WMS Server"
        "wms_onlineresource"     "http://${host}/${instanceid}/wmscrdppf"
-       "wms_srs"                    "EPSG:2056"
   END
   CONNECTIONTYPE POSTGIS
   CONNECTION "user=${dbuser} password=${dbpassword} dbname=${db} host=${dbhost} port=${dbport}"
@@ -1070,7 +1081,6 @@ LAYER
        "wms_srs"                    "EPSG:2056"
        "wms_title"                      "${instanceid} WMS Server"
        "wms_onlineresource"     "http://${host}/${instanceid}/wmscrdppf"
-       "wms_srs"                    "EPSG:2056"
   END
   CONNECTIONTYPE POSTGIS
   CONNECTION "user=${dbuser} password=${dbpassword} dbname=${db} host=${dbhost} port=${dbport}"
@@ -1127,7 +1137,6 @@ LAYER
        "wms_srs"                    "EPSG:2056"
        "wms_title"                  "${instanceid} WMS Server"
        "wms_onlineresource"    "http://${host}/${instanceid}/wmscrdppf"
-       "wms_srs"                   "EPSG:2056"
   END
   CONNECTIONTYPE POSTGIS
   CONNECTION "user=${dbuser} password=${dbpassword} dbname=${db} host=${dbhost} port=${dbport}"
@@ -1200,7 +1209,6 @@ LAYER
        "wms_srs"                    "EPSG:2056"
        "wms_title"                  "${instanceid} WMS Server"
        "wms_onlineresource"    "http://${host}/${instanceid}/wmscrdppf"
-       "wms_srs"                   "EPSG:2056"
   END
   CONNECTIONTYPE POSTGIS
   CONNECTION "user=${dbuser} password=${dbpassword} dbname=${db} host=${dbhost} port=${dbport}"
@@ -1256,7 +1264,6 @@ LAYER
        "wms_srs"                    "EPSG:2056"
        "wms_title"                  "${instanceid} WMS Server"
        "wms_onlineresource"    "http://${host}/${instanceid}/wmscrdppf"
-       "wms_srs"                   "EPSG:2056"
   END
   CONNECTIONTYPE POSTGIS
   CONNECTION "user=${dbuser} password=${dbpassword} dbname=${db} host=${dbhost} port=${dbport}"
@@ -1312,7 +1319,6 @@ LAYER
        "wms_srs"                    "EPSG:2056"
        "wms_title"                  "${instanceid} WMS Server"
        "wms_onlineresource"    "http://${host}/${instanceid}/wmscrdppf"
-       "wms_srs"                   "EPSG:2056"
   END
   CONNECTIONTYPE POSTGIS
   CONNECTION "user=${dbuser} password=${dbpassword} dbname=${db} host=${dbhost} port=${dbport}"
@@ -1371,7 +1377,6 @@ LAYER
        "wms_srs"                    "EPSG:2056"
        "wms_title"                  "${instanceid} WMS Server"
        "wms_onlineresource"    "http://${host}/${instanceid}/wmscrdppf"
-       "wms_srs"                   "EPSG:2056"
   END
   CONNECTIONTYPE POSTGIS
   CONNECTION "user=${dbuser} password=${dbpassword} dbname=${db} host=${dbhost} port=${dbport}"
@@ -1422,7 +1427,6 @@ LAYER
        "wms_srs" "EPSG:2056"
        "wms_title"           "${instanceid} WMS Server"
        "wms_onlineresource" "http://${host}/${instanceid}/wmscrdppf"
-       "wms_srs"            "EPSG:2056"
   END
   CONNECTIONTYPE POSTGIS
   CONNECTION "user=${dbuser} password=${dbpassword} dbname=${db} host=${dbhost} port=${dbport}"
@@ -1466,7 +1470,6 @@ LAYER
        "wms_srs"                    "EPSG:2056"
        "wms_title"                      "${instanceid} WMS Server"
        "wms_onlineresource"     "http://${host}/${instanceid}/wmscrdppf"
-       "wms_srs"                    "EPSG:2056"
   END
   CONNECTIONTYPE POSTGIS
   CONNECTION "user=${dbuser} password=${dbpassword} dbname=${db} host=${dbhost} port=${dbport}"
@@ -1495,7 +1498,6 @@ LAYER
        "wms_srs"                    "EPSG:2056"
        "wms_title"                      "${instanceid} WMS Server"
        "wms_onlineresource"     "http://${host}/${instanceid}/wmscrdppf"
-       "wms_srs"                    "EPSG:2056"
   END
   CONNECTIONTYPE POSTGIS
   CONNECTION "user=${dbuser} password=${dbpassword} dbname=${db} host=${dbhost} port=${dbport}"
