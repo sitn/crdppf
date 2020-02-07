@@ -135,19 +135,14 @@ LAYER
   OPACITY 60
   TEMPLATE "ttt"
   CLASS
-    NAME "Bloc erratique"
-    EXPRESSION /8101/
-    SYMBOL "square"
-    COLOR 155 0 0
-    SIZE 5
-  END
-  CLASS
-    NAME "Arbre isolé"
-    EXPRESSION /8102/
-    SYMBOL "circle"
-    COLOR 0 180 0
-    SIZE 8
-  END
+    NAME "Objet ponctuel"
+    EXPRESSION /8111/
+    STYLE
+        SYMBOL "circle"
+        COLOR 99 145 67
+        SIZE 10
+    END #STYLE
+    END #CLASS
   CLASS
     NAME "Bâtiment intéressant"
     EXPRESSION /8201/
@@ -209,83 +204,101 @@ LAYER
   CLASSITEM "codegenre"
   OPACITY 60
   TEMPLATE "ttt"
-  # Limites à la construction
   CLASS
-    NAME "Limite surfaces eaux"
-    EXPRESSION /7101/
+    NAME "Périmètres d'évolution"
+    EXPRESSION /7111/
     STYLE
-      OUTLINECOLOR 0 0 255
-      WIDTH 2
-    END
-  END
-  CLASS
-    NAME "Terr. en nature de vigne"
-    EXPRESSION /7102/
-    STYLE
-        PATTERN 4 4 END
+        PATTERN
+            15 5 4 5
+        END
+        COLOR 255 0 0
         WIDTH 2
-        COLOR 100 100 100
-    END
-  END
-  CLASS
-    NAME "Limite zone viticole"
-    EXPRESSION /7103/
+        MAXSCALEDENOM 10000
+        MINSCALEDENOM 0
+    END #STYLE
     STYLE
-        PATTERN 4 4 END
-        WIDTH 2
-        COLOR 255 0 255
-    END
-  END
-  CLASS
-    NAME "Limite à la forêt"
-    EXPRESSION /7104/
-    STYLE
-        PATTERN 4 4 END
-        WIDTH 2
-        COLOR 0 140 0
-    END
-  END
-  # Objets protégés
-  CLASS
-    NAME "Objet protégé - Haie"
-    EXPRESSION /7901/
-    STYLE
-      OUTLINECOLOR 0 155 0
-      WIDTH 2
-    END
-  END
-  CLASS
-    NAME "Objet protégé - Mur de pierres sèches"
-    EXPRESSION /7902/
-    STYLE
-      OUTLINECOLOR 180 100 100
-      WIDTH 2
-    END
-  END
-  CLASS
-    NAME "Objet protégé - Allée d'arbres"
-    EXPRESSION /7903/
-    STYLE
-      OUTLINECOLOR 0 90 0
-      WIDTH 2
-    END
-  END
-  CLASS
-    NAME "Objet protégé 2 - Haie"
-    EXPRESSION /7904/
-    STYLE
-      OUTLINECOLOR 0 190 0
-      WIDTH 2
-    END
-  END
-  CLASS
-    NAME "Objet protégé 2 - Mur de pierres sèches"
-    EXPRESSION /7905/
-    STYLE
-      OUTLINECOLOR 140 80 80
-      WIDTH 2
-    END
-  END
+        PATTERN
+            15 5 4 5
+        END
+        COLOR 255 0 0
+        WIDTH 1.2
+        MINSCALEDENOM 10001
+    END #STYLE
+END #CLASS
+CLASS
+        NAME "Alignement obligatoire"
+        EXPRESSION /7113/
+        STYLE
+            COLOR 255 0 0
+            WIDTH 2
+            MAXSCALEDENOM 10000
+            MINSCALEDENOM 0
+        END #STYLE
+        STYLE
+            COLOR 255 0 0
+            WIDTH 1.2
+            MINSCALEDENOM 10001
+        END #STYLE
+    END #CLASS
+    CLASS
+        NAME "Alignement"
+        EXPRESSION /7115/
+        STYLE
+            PATTERN
+                13 3 2 3 2 3
+            END
+            COLOR 255 0 0
+            WIDTH 2
+            MAXSCALEDENOM 10000
+            MINSCALEDENOM 0
+        END #STYLE
+        STYLE
+            PATTERN
+                13 3 2 3 2 3
+            END
+            COLOR 255 0 0
+            WIDTH 1.2
+            MINSCALEDENOM 10001
+        END #STYLE
+    END #CLASS
+    CLASS
+        NAME "Distance des constructions par rapport au cours et étendue d'eau"
+        EXPRESSION /7114/
+        STYLE
+            COLOR 90 207 241
+            WIDTH 1.5
+         END #STYLE
+    END #CLASS
+    CLASS
+        NAME "Distance des constructions par rapport à la zone viticole"
+        EXPRESSION /7116/
+        STYLE
+            COLOR 170 168 0
+            WIDTH 1.5
+        END #STYLE
+    END #CLASS
+       CLASS
+        NAME "Distance des constructions par rapport à la vigne"
+        EXPRESSION /7117/
+        STYLE
+            PATTERN
+                10 5
+            END
+            COLOR 170 168 0
+            WIDTH 1.5
+        END #STYLE
+    END #CLASS
+    CLASS
+        NAME "Objet linéaire"
+        EXPRESSION /7000/
+        STYLE
+            PATTERN 3 8
+            END
+            COLOR 99 145 67
+            WIDTH 12
+            LINECAP butt
+        END #STYLE
+    END #CLASS
 END
 
 LAYER
@@ -306,161 +319,317 @@ LAYER
   OPACITY 90
   TEMPLATE "ttt"
   CLASS
-    NAME "Perim. plan spéc. en vigueur"
-    EXPRESSION /6101/
-    STYLE
-      OUTLINECOLOR 255 0 255
-      COLOR 0 255 0
-      WIDTH 5
+        NAME "Périmètre de protection des sites bâtis"
+        EXPRESSION /5111/
+        STYLE
+            PATTERN
+                4 4
+            END
+            OUTLINECOLOR 255 0 0
+            WIDTH 4
+            LINECAP butt
+        END #STYLE
     END
-  END
-  CLASS
-    NAME "Perim. plan spéc. obl. pas en vigueur"
-    EXPRESSION /6201/
+CLASS
+    NAME "Périmètres de sites stratégiques"
+    EXPRESSION /6111/
     STYLE
-      OUTLINECOLOR 255 0 255
-      COLOR 255 0 0
-      WIDTH 5
-    END
-  END
-  CLASS
-    NAME "Perim. étape équipement différée"
-    EXPRESSION /6301/
-    STYLE
-      OUTLINECOLOR 255 0 255
-      COLOR 0 0 255
-      WIDTH 5
-    END
-  END
-  CLASS
-    NAME "Objet protégé - Bosquet"
-    EXPRESSION /6901/
-    STYLE
-      OUTLINECOLOR 0 155 0
-      COLOR 0 155 0
-      WIDTH 2
-    END
-  END
-  CLASS
-    NAME "Objet protégé - Doline"
-    EXPRESSION /6902/
-    STYLE
-      OUTLINECOLOR 150 0 0
-      COLOR 150 0 0
-      WIDTH 2
-    END
-  END
+        OUTLINECOLOR 0 75 224
+        WIDTH 3
+    END #STYLE
+END #CLASS
     CLASS
-    NAME "Objet protégé - Surface eau"
-    EXPRESSION /6903/
-    STYLE
-      OUTLINECOLOR 0 0 255
-      COLOR 0 0 255
-      WIDTH 2
-    END
-  END
+        NAME "Périmètre de plan de quartier en vigueur"
+        EXPRESSION /6112/
+        STYLE
+            WIDTH 4
+            OUTLINECOLOR  0 0 0
+            MAXSCALEDENOM 10000
+            MINSCALEDENOM 0
+        END #STYLE
+        STYLE
+            WIDTH 1.5
+            OUTLINECOLOR  0 0 0
+            MINSCALEDENOM 10001
+        END #STYLE
+    END #CLASS
   CLASS
-    NAME "Secteur de sites éoliens"
-    EXPRESSION /6904/
-    STYLE
-        PATTERN 6 12 END
-        OUTLINECOLOR 0 0 220
-        WIDTH 4
-    END
-  END
+        NAME "Périmètre soumis à plan de quartier"
+        EXPRESSION /6211/
+        STYLE
+            PATTERN
+                10 6
+            END
+            WIDTH 4
+            OUTLINECOLOR  0 0 0
+            MAXSCALEDENOM 10000
+            MINSCALEDENOM 0
+        END #STYLE
+        STYLE
+            PATTERN
+                10 5
+            END
+            WIDTH 1.5
+            OUTLINECOLOR  0 0 0
+            MINSCALEDENOM 10001
+        END #STYLE
+    END #CLASS
+    CLASS
+        NAME "Périmètre soumis à plan spécial"
+        EXPRESSION /6212/
+        STYLE
+            PATTERN
+                15 5
+            END
+            WIDTH 2
+            OUTLINECOLOR  0 0 0
+            OFFSET -2 -99
+            MAXSCALEDENOM 10000
+            MINSCALEDENOM 0
+        END #STYLE
+        STYLE
+            PATTERN
+                15 5
+            END
+            WIDTH 2
+            OUTLINECOLOR  0 0 0
+            OFFSET 2 -99
+            MAXSCALEDENOM 10000
+            MINSCALEDENOM 0
+        END #STYLE
+        STYLE
+            PATTERN
+                15 5
+            END
+            WIDTH 1
+            OUTLINECOLOR  0 0 0
+            OFFSET -1.5 -99
+            MINSCALEDENOM 10001
+        END #STYLE
+        STYLE
+            PATTERN
+                15 5
+            END
+            WIDTH 1
+            OUTLINECOLOR  0 0 0
+            OFFSET 1.5 -99
+            MINSCALEDENOM 10001
+        END #STYLE
+    END #CLASS
+    CLASS
+        NAME "Périmètre de plan spécial en vigueur"
+        EXPRESSION /6113/
+        STYLE
+            WIDTH 2
+            OUTLINECOLOR  0 0 0
+            OFFSET -2 -99
+            MAXSCALEDENOM 10000
+            MINSCALEDENOM 0
+        END #STYLE
+        STYLE
+            WIDTH 2
+            OUTLINECOLOR  0 0 0
+            OFFSET 2 -99
+            MAXSCALEDENOM 10000
+            MINSCALEDENOM 0
+        END #STYLE
+        STYLE
+            WIDTH 1
+            OUTLINECOLOR  0 0 0
+            OFFSET -1.5 -99
+            MINSCALEDENOM 10001
+        END #STYLE
+        STYLE
+            WIDTH 1
+            OUTLINECOLOR  0 0 0
+            OFFSET 1.5 -99
+            MINSCALEDENOM 10001
+        END #STYLE
+    END #CLASS
+    CLASS
+        NAME "Périmètre à prescriptions particulières"
+        EXPRESSION /6114/
+        STYLE
+            OUTLINECOLOR 255 0 0
+            WIDTH 2.5
+            MAXSCALEDENOM 10000
+            MINSCALEDENOM 0
+        END #STYLE
+        STYLE
+            OUTLINECOLOR 255 0 0
+            WIDTH 1.5
+            MINSCALEDENOM 10001
+        END #STYLE
+    END #CLASS
+    CLASS
+        NAME "Périmètre à ordre contigu obligatoire"
+        EXPRESSION /6115/
+        STYLE
+            PATTERN
+                15 6
+            END
+            OUTLINECOLOR 255 0 0
+            WIDTH 3.5
+            MAXSCALEDENOM 10000
+            MINSCALEDENOM 0
+        END #STYLE
+        STYLE
+            PATTERN
+                15 5
+            END
+            OUTLINECOLOR 255 0 0
+            WIDTH 2.5
+            MINSCALEDENOM 10001
+        END #STYLE
+    END #CLASS
+    CLASS
+        NAME "Périmètre à fiche de mesures"
+        EXPRESSION /6116/
+        STYLE
+            PATTERN
+                5 6
+            END
+            OUTLINECOLOR 255 0 0
+            WIDTH 2.5
+            MAXSCALEDENOM 10000
+            MINSCALEDENOM 0
+        END #STYLE
+        STYLE
+            PATTERN
+                5 5
+            END
+            OUTLINECOLOR 255 0 0
+            WIDTH 1.5
+            MINSCALEDENOM 10001
+        END #STYLE
+    END #CLASS
+    CLASS
+        NAME "Bande d'implantation"
+        EXPRESSION /6117/
+        STYLE
+            OUTLINECOLOR 255 0 0
+            WIDTH 2
+            MAXSCALEDENOM 10000
+            MINSCALEDENOM 0
+        END #STYLE
+        STYLE
+            OUTLINECOLOR 255 0 0
+            WIDTH 1.2
+            MINSCALEDENOM 10001
+        END #STYLE
+    END #CLASS
+    CLASS
+        NAME "Périmètre de plan d'extraction de matériaux en vigueur"
+        EXPRESSION /6118/
+        STYLE
+            OUTLINECOLOR 94 85 64
+            WIDTH 3
+            MAXSCALEDENOM 10000
+            MINSCALEDENOM 0
+        END #STYLE
+        STYLE
+            OUTLINECOLOR 94 85 64
+            WIDTH 1.5
+            MINSCALEDENOM 10001
+        END #STYLE
+    END #CLASS
+    CLASS
+        NAME "Périmètre à habitat traditionnellement dispersé"
+        EXPRESSION /6119/
+        STYLE
+            OUTLINECOLOR 228 159 30
+            WIDTH 2.5
+        END #STYLE
+        STYLE
+            SYMBOL "vertline2"
+            OUTLINECOLOR 228 159 30
+            WIDTH 2.5
+            SIZE 10.0
+            ANGLE 0
+            GAP -50
+        END #STYLE
+    END #CLASS
   CLASS
-    NAME "Périmètre soumis à PD"
-    EXPRESSION /6905/
-    STYLE
-        PATTERN 6 10 END
-        OUTLINECOLOR 0 0 0
-        WIDTH 3
-    END
-  END
-  CLASS
-    NAME "Périmètre PD en vigueur"
-    EXPRESSION /6906/
-    STYLE
-        PATTERN 6 4 END
-        OUTLINECOLOR 0 0 0
-        WIDTH 3
-    END
-  END
-  CLASS
-    NAME "Périmètre soumis à PDQ"
-    EXPRESSION /6907/
-    STYLE
-        PATTERN 15 15 END
-        OUTLINECOLOR 0 0 0
-        WIDTH 4
-    END
-  END
-  CLASS
-    NAME "Périmètre  PDQ en vigueur"
-    EXPRESSION /6908/
-    STYLE
-        PATTERN 15 7 END
-        OUTLINECOLOR 0 0 0
-        WIDTH 4
-    END
-  END
-  CLASS
-    NAME "Périmètre soumis à PQ"
-    EXPRESSION /6909/
-    STYLE
-        PATTERN 15 15 END
-        OUTLINECOLOR 0 0 0
-        WIDTH 2
-    END
-  END
-  CLASS
-    NAME "Périmètre PQ en vigueur"
-    EXPRESSION /6910/
-    STYLE
-        PATTERN 15 7 END
-        OUTLINECOLOR 0 0 0
-        WIDTH 2
-    END
-  END
-  CLASS
-    NAME "Périmètre de plan spécial"
-    EXPRESSION /6911/
-    STYLE
-        PATTERN 15 3 3 3 END
-        OUTLINECOLOR 0 0 0
-        WIDTH 2
-    END
-  END
-  CLASS
-    NAME "Objet protégé 2 - Verger"
-    EXPRESSION /6912/
-    STYLE
-      OUTLINECOLOR 0 180 0
-      COLOR 0 220 0
-      WIDTH 2
-    END
-  END
-  CLASS
-    NAME "Objet protégé 2 - Bosquet"
-    EXPRESSION /6913/
-    STYLE
-      OUTLINECOLOR 0 155 0
-      COLOR 0 155 0
-      WIDTH 2
-    END
-  END
-  CLASS
-    NAME "Objet protégé 2 - Doline"
-    EXPRESSION /6914/
-    STYLE
-      OUTLINECOLOR 150 0 0
-      COLOR 150 0 0
-      WIDTH 2
-    END
-  END
+        NAME "Périmètre soumis à plan directeur sectoriel"
+        EXPRESSION /6911/
+        STYLE
+            PATTERN
+                15 7 4 7 4 7
+            END
+            WIDTH 5
+            OUTLINECOLOR  0 0 0
+            MAXSCALEDENOM 10000
+            MINSCALEDENOM 0
+        END #STYLE
+        STYLE
+            PATTERN
+                15 5 4 5 4 5
+            END
+            WIDTH 2.5
+            OUTLINECOLOR  0 0 0
+            MINSCALEDENOM 10001
+        END #STYLE
+    END #CLASS
+    CLASS
+        NAME "Périmètre de plan directeur sectoriel en vigueur"
+        EXPRESSION /6912/
+        STYLE
+            PATTERN
+                15 7 4 7
+            END
+            WIDTH 5
+            OUTLINECOLOR  0 0 0
+            MAXSCALEDENOM 10000
+            MINSCALEDENOM 0
+        END #STYLE
+        STYLE
+            PATTERN
+                15 5 4 5
+            END
+            WIDTH 2.5
+            OUTLINECOLOR  0 0 0
+            MINSCALEDENOM 10001
+        END #STYLE
+    END #CLASS
+    CLASS
+        NAME "Périmètre soumis à plan directeur de quartier"
+        EXPRESSION /6913/
+        STYLE
+            PATTERN
+                15 5
+            END
+            WIDTH 5
+            OUTLINECOLOR  0 0 0
+            MAXSCALEDENOM 10000
+            MINSCALEDENOM 0
+        END #STYLE
+        STYLE
+            PATTERN
+                15 5
+            END
+            WIDTH 2.5
+            OUTLINECOLOR  0 0 0
+            MINSCALEDENOM 10001
+        END #STYLE
+    END #CLASS
+    CLASS
+        NAME "Périmètre de plan directeur de quartier en vigueur"
+        EXPRESSION /6914/
+        STYLE
+            WIDTH 5
+            OUTLINECOLOR  0 0 0
+            MAXSCALEDENOM 10000
+            MINSCALEDENOM 0
+        END #STYLE
+        STYLE
+            WIDTH 2.5
+            OUTLINECOLOR  0 0 0
+            MINSCALEDENOM 10001
+        END #STYLE
+    END #CLASS
   CLASS
     NAME "Secteur indicatif de dangers - Glissements"
-    EXPRESSION ([codegenre] = 6915 AND '[teneur]' eq 'Glissements')
+    EXPRESSION ([codegenre] = 16615 AND '[teneur]' eq 'Glissements')
     STYLE
       OPACITY 30
       OUTLINECOLOR 255 190 189
@@ -470,7 +639,7 @@ LAYER
   END
   CLASS
     NAME "Secteur indicatif de dangers - Phénomènes rocheux"
-    EXPRESSION ([codegenre] = 6915 AND '[teneur]' eq 'Phénomènes rocheux')
+    EXPRESSION ([codegenre] = 16615 AND '[teneur]' eq 'Phénomènes rocheux')
     STYLE
       OPACITY 30
       OUTLINECOLOR 255 190 189
@@ -480,7 +649,7 @@ LAYER
   END
   CLASS
     NAME "Secteur indicatif de dangers - Lave torrentielle"
-    EXPRESSION ([codegenre] = 6915 AND '[teneur]' eq 'Lave torrentielle')
+    EXPRESSION ([codegenre] = 16615 AND '[teneur]' eq 'Lave torrentielle')
     STYLE
       OPACITY 30
       OUTLINECOLOR 255 190 189
@@ -490,7 +659,7 @@ LAYER
   END
   CLASS
     NAME "Secteur indicatif de dangers - Inondation"
-    EXPRESSION ([codegenre] = 6915 AND '[teneur]' eq 'Inondation')
+    EXPRESSION ([codegenre] = 16615 AND '[teneur]' eq 'Inondation')
     STYLE
       OPACITY 30
       OUTLINECOLOR 255 190 189
@@ -515,122 +684,218 @@ LAYER
   DATA "geom from crdppf.r73_zones_superposees using unique idobj using srid=2056"
   STATUS ON
   CLASSITEM "codegenre"
-  OPACITY 90
+  OPACITY 50
   TEMPLATE "ttt"
   CLASS
-    NAME "Périmètre protection site bâti"
-    EXPRESSION /5101/
-    SYMBOL "pointilles2"
-    SIZE 4
-    OUTLINECOLOR 255 0 0
+        NAME "Zone à protéger communale"
+        EXPRESSION /5211/
+        STYLE
+            COLOR 99 144 67
+        END #STYLE
+  END #CLASS
+  CLASS
+        NAME "Zone à protéger cantonale"
+        EXPRESSION /5212/
+        STYLE
+            SYMBOL "hatchsymbol"
+            SIZE 4
+            COLOR 59 86 41
+            WIDTH 2
+            ANGLE 45
+        END #STYLE
+    END #CLASS
+    CLASS
+        NAME "Périmètre de site marécageux"
+        EXPRESSION /5213/
+        STYLE
+            OUTLINECOLOR 60 86 40
+            WIDTH 2
+        END #STYLE
+        STYLE
+            SYMBOL "vertline2"
+            OUTLINECOLOR 60 86 40
+            WIDTH 1.66
+            SIZE 6.66
+            ANGLE 0
+            GAP -16.6
+            MAXSCALEDENOM 10000
+            MINSCALEDENOM 0
+        END #STYLE
+        STYLE
+            SYMBOL "vertline2"
+            OUTLINECOLOR 60 86 40
+            WIDTH 2.5
+            SIZE 10
+            ANGLE 0
+            GAP -25
+            MINSCALEDENOM 10001
+        END #STYLE
+    END #CLASS
+    CLASS
+        NAME "Zone de crêtes et forêts"
+        EXPRESSION /5214/
+        STYLE
+            OUTLINECOLOR 255 220 121
+            WIDTH 1
+        END #STYLE
+        STYLE
+            SYMBOL "hatchsymbol"
+            COLOR 255 220 121
+            SIZE 20
+            WIDTH 7
+            ANGLE 45
+        END #STYLE
+    END #CLASS
+    CLASS
+        NAME "Zone de vignes et grèves"
+        EXPRESSION /5215/
+        STYLE
+            OUTLINECOLOR 150 192 122
+            WIDTH 1
+        END #STYLE
+        STYLE
+            SYMBOL "hatchsymbol"
+            COLOR 150 192 122
+            SIZE 20
+            WIDTH 7
+            ANGLE 45
+        END #STYLE
+    END #CLASS
+    CLASS
+        NAME "Biotope"
+        EXPRESSION /5216/
+        STYLE
+            COLOR 59 86 41
+        END #STYLE
+    END #CLASS
+    CLASS
+        NAME "Réserve naturelle de la faune et de la flore"
+        EXPRESSION /5217/
+        STYLE
+            OUTLINECOLOR 150 192 122
+            WIDTH 1
+        END #STYLE
+        STYLE
+            SYMBOL "hatchsymbol"
+            COLOR 150 192 122
+            SIZE 10
+            WIDTH 7
+            ANGLE 45
+        END #STYLE
+    END #CLASS
+    CLASS
+        NAME "Zone de protection des rives"
+        EXPRESSION /5218/
+        STYLE
+            SYMBOL "hatchsymbol"
+            COLOR 150 192 122
+            SIZE 5
+            WIDTH 1
+            ANGLE 45
+        END #STYLE
+    END #CLASS
+    CLASS
+        NAME "Zone de tourisme, sports, détente et loisirs 3 - A constructibilité restreinte"
+        EXPRESSION /5219/
+        STYLE
+            SYMBOL "hatchsymbol"
+            COLOR 100 125 190
+            SIZE 6
+            WIDTH 3
+            ANGLE 0
+        END #STYLE
+    END #CLASS
+    CLASS
+        NAME "Zone réservée"
+        EXPRESSION /5912/
+        STYLE
+            SYMBOL "square"
+            COLOR 64 64 64
+            SIZE 3
+            GAP 20
+        END
+        STYLE
+            OUTLINECOLOR  64 64 64
+            WIDTH 1
+        END #STYLE
+    END #CLASS
+  CLASS
+    NAME "Inondation : danger élevé"
+    EXPRESSION ([codegenre] = 16604 AND '[teneur]' eq 'Inondation : danger élevé')
+    COLOR 255 0 0
   END
   CLASS
-    NAME "Zone de vignes et grèves"
-    EXPRESSION /5202/
+    NAME "Glissements : danger élevé"
+    EXPRESSION ([codegenre] = 16604 AND '[teneur]' eq 'Glissements : danger élevé')
+    COLOR 255 0 0
+  END
+  CLASS
+    NAME "Chutes de pierres : danger élevé"
+    EXPRESSION ([codegenre] = 16604 AND '[teneur]' eq 'Chutes de pierres : danger élevé')
+    COLOR 255 0 0
+  END
+  CLASS
+    NAME "Inondation : danger moyen"
+    EXPRESSION ([codegenre] = 16604 AND '[teneur]' eq 'Inondation : danger moyen')
+    COLOR 0 0 255
+  END
+  CLASS
+    NAME "Glissements : danger moyen"
+    EXPRESSION ([codegenre] = 16603 AND '[teneur]' eq 'Glissements : danger moyen')
+    COLOR 0 0 255
+  END
+  CLASS
+    NAME "Chutes de pierres : danger moyen"
+    EXPRESSION ([codegenre] = 16603 AND '[teneur]' eq 'Chutes de pierres : danger moyen')
+    COLOR 0 0 255
+  END
+
+  CLASS
+    NAME "Inondation : danger faible"
+    EXPRESSION ([codegenre] = 16602 AND '[teneur]' eq 'Inondation : danger faible')
+    COLOR 255 255 0
+  END
+  CLASS
+    NAME "Glissements : danger faible"
+    EXPRESSION ([codegenre] = 16602 AND '[teneur]' eq 'Glissements : danger faible')
+    COLOR 255 255 0
+  END
+  CLASS
+    NAME "Chutes de pierres : danger faible"
+    EXPRESSION ([codegenre] = 16602 AND '[teneur]' eq 'Chutes de pierres : danger faible')
+    COLOR 255 255 0
+  END
+  CLASS
+    NAME "Inondation : danger résiduel"
+    EXPRESSION ([codegenre] = 16601 AND '[teneur]' eq 'Inondation : danger résiduel')
     STYLE
-      COLOR 0 255 0
-      OUTLINECOLOR 0 0 0
-      OPACITY 60
-    END
-  END
-  CLASS
-    NAME "Réserve naturelle"
-    EXPRESSION /5203/
-     STYLE
-        OUTLINECOLOR 80 90 10
-     END
-     STYLE
-        SYMBOL "hachure3"
-        SIZE 3
-        COLOR 135 145 45
-     END
-  END
-  CLASS
-    NAME "Biotope cantonal"
-    EXPRESSION /5204/
-    COLOR 135 145 45
-    OUTLINECOLOR 80 90 10
-  END
-  CLASS
-    NAME "Périmètres site marécageux"
-    EXPRESSION /5205/
-    STYLE
-      OUTLINECOLOR 132 132 0
-      WIDTH 3
-    END
-  END
-  CLASS
-    NAME "Périmètres paysages protégés"
-    EXPRESSION /5206/
-    STYLE
-      WIDTH 3
-      OUTLINECOLOR 40 100 40
-    END
-  END
-  CLASS
-    NAME "Danger élevé"
-    EXPRESSION /5304/
-    STYLE
-      OPACITY 40
-      COLOR 255 0 0
-    END
-  END
-  CLASS
-    NAME "Danger moyen"
-    EXPRESSION /5303/
-    STYLE
-      OPACITY 40
-      COLOR 0 0 255
-    END
-  END
-  CLASS
-    NAME "Danger faible"
-    EXPRESSION /5302/
-    STYLE
-      OPACITY 40
       COLOR 255 255 0
     END
-  END
-  CLASS
-    NAME "Danger résiduel"
-    EXPRESSION /5301/
     STYLE
-      OPACITY 40
-      COLOR 255 255 0
-    END
-    STYLE
-      OPACITY 10
       SYMBOL "hachure7"
     END
   END
   CLASS
-    NAME "Protection rives"
-    EXPRESSION /5901/
-    COLOR 135 145 45
-    OUTLINECOLOR 80 90 10
-  END
-  CLASS
-    NAME "Zones réservées"
-    EXPRESSION /5903/
-    STYLE
-      OUTLINECOLOR 0 0 0
-      WIDTH 1
-    END
-    STYLE
-      SYMBOL "hachure6"
-      COLOR 0 0 0
-      SIZE 5
-    END
-  END
-  CLASS
-    NAME "Zone de crêtes et forêts"
-    EXPRESSION /5201/
+    NAME "Glissements : danger résiduel"
+    EXPRESSION ([codegenre] = 16601 AND '[teneur]' eq 'Glissements : danger résiduel')
     STYLE
       COLOR 255 255 0
-      OUTLINECOLOR 0 0 0
-      OPACITY 60
+    END
+    STYLE
+      SYMBOL "hachure7"
     END
   END
+  CLASS
+    NAME "Chutes de pierres : danger résiduel"
+    EXPRESSION ([codegenre] = 16601 AND '[teneur]' eq 'Chutes de pierres : danger résiduel')
+    STYLE
+      COLOR 255 255 0
+    END
+    STYLE
+      SYMBOL "hachure7"
+    END
+  END
+  MAXSCALEDENOM 1000000
 END
 
 LAYER
@@ -650,261 +915,356 @@ LAYER
   CLASSITEM "codegenre"
   OPACITY 50
   TEMPLATE "ttt"
+    CLASS
+        NAME "Zone d'habitation à faible densité"
+        EXPRESSION /1101/
+        STYLE
+            COLOR  252 225 23
+        END #STYLE
+    END #CLASS
+    CLASS
+        NAME "Zone résidentielle densifiée"
+        EXPRESSION /1102/
+        STYLE
+            COLOR  252 176 23
+        END #STYLE
+    END #CLASS
+    CLASS
+        NAME "Zone d'habitation à moyenne densité"
+        EXPRESSION /1103/
+        STYLE
+            COLOR  255 125 23
+        END #STYLE
+    END #CLASS
+    CLASS
+        NAME "Zone d'habitation à haute densité"
+        EXPRESSION /1104/
+        STYLE
+            COLOR  255 75 23
+        END #STYLE
+    END #CLASS
+    CLASS
+        NAME "Zone mixte"
+        EXPRESSION /1105|1301/
+        STYLE
+            COLOR 184 25 110
+        END
+        STYLE
+            SYMBOL "hatchsymbol"
+            SIZE 6
+            COLOR 241 175 152
+            WIDTH 3
+        END #STYLE
+    END #CLASS
+    CLASS
+        NAME "Zone spéciale a"
+        EXPRESSION /1106|1205/
+        STYLE
+            COLOR  88 88 90
+        END #STYLE
+    END #CLASS
+    CLASS
+        NAME "Zone de constructions basses"
+        EXPRESSION /1113/
+        STYLE
+            SYMBOL "hatchsymbol"
+            SIZE 4
+            COLOR 192 0 0
+            WIDTH 2
+            ANGLE 45
+        END #STYLE
+    END #CLASS
+    CLASS
+        NAME "Zone de plan spécial a"
+        EXPRESSION /1114|1212|1312|1412|1512|1614|1712|1903/
+        STYLE
+            SYMBOL "hatchsymbol"
+            COLOR 88 88 90
+            SIZE 6
+            WIDTH 1
+            ANGLE 90
+        END #STYLE
+        STYLE
+            SYMBOL "hatchsymbol"
+            SIZE 6
+            COLOR 88 88 90
+            WIDTH 1
+        END #STYLE
+    END #CLASS
+    CLASS
+        NAME "Zone d'activités économiques"
+        expression /1201|1211/
+        STYLE
+            COLOR 179 113 175
+        END #STYLE
+    END #CLASS
+    CLASS
+        NAME "Zone industrielle"
+        EXPRESSION /1202/
+        STYLE
+            COLOR  128 73 140
+        END #STYLE
+    END #CLASS
+    CLASS
+        NAME "Zone commerciale"
+        EXPRESSION /1203/
+        STYLE
+            COLOR 199 160 203
+        END
+        STYLE
+            SYMBOL "hatchsymbol"
+            SIZE 6
+            COLOR 128 73 140
+            WIDTH 3
+        END #STYLE
+    END #CLASS
+    CLASS
+        NAME "Zone artisanale"
+        EXPRESSION /1204/
+        STYLE
+            COLOR  199 160 203
+        END #STYLE
+    END #CLASS
+    CLASS
+        NAME "Zone d'ancienne localité"
+        EXPRESSION /1401/
+        STYLE
+            COLOR  148 106 86
+        END #STYLE
+    END #CLASS
+    CLASS
+        NAME "Zone de centre ville"
+        EXPRESSION /1402/
+        STYLE
+            COLOR  148 106 86
+        END #STYLE
+    END #CLASS
+    CLASS
+        NAME "Zone de ville en damier"
+        EXPRESSION /1403/
+        STYLE
+            COLOR 148 106 86
+        END
+        STYLE
+            SYMBOL "hatchsymbol"
+            SIZE 6
+            COLOR 216 178 151
+            WIDTH 3
+        END #STYLE
+    END #CLASS
+    CLASS
+        NAME "Zone d'utilité publique"
+        EXPRESSION /1501/
+        STYLE
+            COLOR  157 159 162
+        END #STYLE
+    END #CLASS
+    CLASS
+        NAME "Zone de sports - détente - loisirs a"
+        EXPRESSION /1502/
+        STYLE
+            COLOR  100 125 190
+        END #STYLE
+    END #CLASS
   CLASS
-    NAME "Faible densité"
-    EXPRESSION /1101/
-    COLOR 255 236 176
-  END
-  CLASS
-    NAME "Résidentielle densifiée"
-    EXPRESSION /1102/
-    COLOR 255 216 96
-  END
-  CLASS
-    NAME "Moyenne densité"
-    EXPRESSION /1103/
-    COLOR 240 180 0
-  END
-  CLASS
-    NAME "Forte densité"
-    EXPRESSION /1104/
-    COLOR 255 0 0
-  END
-  CLASS
-    NAME "Chalets"
-    EXPRESSION /1105/
-    COLOR 255 255 144
-  END
-  CLASS
-    NAME "Constructions basses"
-    EXPRESSION /1106/
-    COLOR 255 0 0
-    OUTLINECOLOR 0 0 0
-  END
-  CLASS
-    NAME "Plan spécial a"
-    EXPRESSION /1107/
-    STYLE
-      SYMBOL 'circle'
-      COLOR 255 0 0
-      SIZE 3
-    END
-  END
-  CLASS
-    NAME "Zone spéciale a"
-    EXPRESSION /1108/
-    COLOR 128 128 128
-  END
-  CLASS
-    NAME "Activités économiques"
-    EXPRESSION /1201/
-    COLOR 128 0 128
-  END
-  CLASS
-    NAME "Artisanale"
-    EXPRESSION /1202/
-    COLOR 255 128 255
-  END
-  CLASS
-    NAME "Commerciale"
-    EXPRESSION /1203/
-    COLOR 255 0 255
-  END
-  CLASS
-    NAME "Activités économiques"
-    EXPRESSION /1204/
-    COLOR 128 0 128
-  END
-  CLASS
-    NAME "Industrielle"
-    EXPRESSION /1205/
-    COLOR 0 0 128
-  END
-  CLASS
-    NAME "Mixte"
-    EXPRESSION /1301/
-    STYLE
-      COLOR 255 0 255
-      SYMBOL 'circle'
-      SIZE 3
-    END
-  END
-  CLASS
-    NAME "Ancienne localité"
-    EXPRESSION /1401/
-    COLOR 112 0 0
-  END
-  CLASS
-    NAME "Ville en damier"
-    EXPRESSION /1402/
-    COLOR 112 0 0
-  END
-  CLASS
-    NAME "Centre ville"
-    EXPRESSION /1403/
-    COLOR 224 56 0
-  END
-  CLASS
-    NAME "Utilité publique"
-    EXPRESSION /1501/
-    COLOR 176 176 176
-  END
-  CLASS
-    NAME "Sports,détente et loisir"
-    EXPRESSION /1502/
-    COLOR 0 255 255
-  END
-  CLASS
-    NAME "Prot. ancienne localité"
+    NAME "Zone de protection de l'ancienne localité"
     EXPRESSION /1601/
-    COLOR 255 152 48
-  END
+    STYLE
+        COLOR 122 82 67
+    END
+    STYLE
+        SYMBOL "hatchsymbol"
+        SIZE 6
+        COLOR 138 200 101
+        WIDTH 3
+    END #STYLE
+  END #CLASS
   CLASS
-    NAME "Protection patrimoine"
+    NAME "Zone de protection du patrimoine"
     EXPRESSION /1602/
-    COLOR 192 144 0
-  END
-  CLASS
-    NAME "Fermes"
-    EXPRESSION /1603/
-    COLOR 176 176 0
-  END
-  CLASS
-    NAME "Verdure"
-    EXPRESSION /1604/
-    COLOR 0 255 0
-  END
-  CLASS
-    NAME "Tourisme"
-    EXPRESSION /1701/
-    COLOR 128 171 255
-  END
-  CLASS
-    NAME "Aérodrome"
-    EXPRESSION /1801/
-    COLOR 192 192 255
-  END
-  CLASS
-    NAME "Agricole"
-    EXPRESSION /2101/
-  END
-  CLASS
-    NAME "Zones viticoles"
-    EXPRESSION /2301/
     STYLE
-      COLOR 135 0 135
-      OUTLINECOLOR 128 0 128
-      SYMBOL 9
-      SIZE 3
-    END
-  END
+        COLOR  122 82 67
+    END #STYLE
+  END #CLASS
   CLASS
-    NAME "Zone de protection 1"
-    EXPRESSION /3101/
-    COLOR 0 128 0
-  END
-  CLASS
-    NAME "Haut-marais"
-    EXPRESSION /3102/
-    COLOR 135 145 45
-    OUTLINECOLOR 135 145 45
-  END
-  CLASS
-    NAME "Bas-marais"
-    EXPRESSION /3103/
-    COLOR 135 145 45
-    OUTLINECOLOR 135 145 45
-  END
-  CLASS
-    NAME "Bas-marais / Zone alluviale"
-    EXPRESSION /3104/
-    COLOR 135 145 45
-    OUTLINECOLOR 135 145 45
-  END
-  CLASS
-    NAME "Terrain agricole inclu dans biotope marécageux"
-    EXPRESSION /3105/
-    COLOR 132 132 0
-    OUTLINECOLOR 132 132 0
-    SYMBOL 'triangle'
-    SIZE 4
-  END
-  CLASS
-    NAME "Zone-tampon"
-    EXPRESSION /3106/
-    COLOR  160 153 78
-    OUTLINECOLOR 160 153 78
+    NAME "Zone de verdure"
+    EXPRESSION /1603|1613/
     STYLE
-        SYMBOL hachure
-        COLOR 135 145 45
-        ANGLE 0
+        COLOR 138 200 101
+    END #STYLE
+    STYLE
+        SYMBOL "hatchsymbol"
+        SIZE 6
+        COLOR 157 159 162
+        WIDTH 3
+    END #STYLE
+  END #CLASS
+     CLASS
+        NAME "Zone de tourisme"
+        EXPRESSION /1701/
+        STYLE
+            COLOR  134 170 255
+        END #STYLE
+    END #CLASS
+    CLASS
+        NAME "Zone de transport"
+        EXPRESSION /1811/
+        STYLE
+            COLOR  209 210 212
+        END #STYLE
+    END #CLASS
+    CLASS
+        NAME "Zone de fermes"
+        EXPRESSION /1901/
+        STYLE
+            COLOR  226 226 167
+        END #STYLE
+    END #CLASS
+    CLASS
+        NAME "Zone de chalets"
+        EXPRESSION /1902/
+        STYLE
+            COLOR  255 248 163
+        END #STYLE
+    END #CLASS
+    CLASS
+        NAME "Autre zone à bâtir"
+        EXPRESSION /1911/
+        STYLE
+            COLOR 88 88 90
+        END #STYLE
+    END #CLASS
+  CLASS
+    NAME "Zone agricole / Aire forestière / Cours d'eau et étendue d'eau / Espace de transport"
+    EXPRESSION /2111/
+  END
+ CLASS
+    NAME "Zone viticole"
+    EXPRESSION /2311/
+    STYLE
+        SYMBOL "hatchsymbol"
         SIZE 5
-    END
+        COLOR  220 214 0
+        WIDTH 3
+        ANGLE 45
+    END #STYLE
+END #CLASS
+CLASS
+    NAME "Zone de maintien de l'habitat rural"
+    EXPRESSION /4411/
     STYLE
-        SYMBOL hachure
-        COLOR 135 145 45
-        ANGLE 90
-        SIZE 5
-    END
-  END
-  CLASS
-    NAME "Zone de protection"
-    EXPRESSION /3107/
-    COLOR 0 128 0
-  END
-  CLASS
-    NAME "Hameau"
-    EXPRESSION /4101/
-    COLOR 112 112 0
-  END
-  CLASS
-    NAME "Utilisation différée"
-    EXPRESSION /4301/
-    STYLE
-      SYMBOL 'circle'
-      COLOR 0 0 0
-      SIZE 3
-    END
-  END
-  CLASS
-    NAME "Sports,détente et loisir"
-    EXPRESSION /4901/
-    COLOR 0 255 255
-  END
-  CLASS
-    NAME "Militaire"
-    EXPRESSION /4902/
-    COLOR 0 128 128
-  END
-  CLASS
-    NAME "Traitement déchets"
-    EXPRESSION /4903/
-    COLOR 208 156 0
-  END
-  CLASS
-    NAME "Décharge"
-    EXPRESSION /4904/
-    COLOR 144 108 0
-  END
-  CLASS
-    NAME "Extraction"
-    EXPRESSION /4905/
-    COLOR 96 72 0
-  END
-  CLASS
-    NAME "Plan spécial b"
-    EXPRESSION /4906/
-    STYLE
-      SYMBOL 'circle'
-      COLOR 255 0 0
-      SIZE 3
-    END
-  END
-  CLASS
-    NAME "Zone spéciale b"
-    EXPRESSION /4907/
-    COLOR 128 128 128
-  END
+        COLOR  242 203 133
+    END #STYLE
+END #CLASS
+    CLASS
+        NAME "Zone d'utilisation différée"
+        EXPRESSION /4311/
+        STYLE
+            SYMBOL "hatchsymbol"
+            COLOR 88 88 90
+            SIZE 5
+            WIDTH 2
+            ANGLE 0
+        END #STYLE
+    END #CLASS
+    CLASS
+        NAME "Zone de sports - détente - loisirs b"
+        EXPRESSION /4901/
+        STYLE
+            COLOR 138 200 101
+        END #STYLE
+        STYLE
+            SYMBOL "hatchsymbol"
+            COLOR 100 125 190
+            SIZE 6
+            WIDTH 3
+            ANGLE 0
+        END #STYLE
+    END #CLASS
+    CLASS
+        NAME "Zone de traitement des déchets"
+        EXPRESSION /4902/
+        STYLE
+            COLOR  255 255 255
+        END #STYLE
+        STYLE
+            COLOR 157 144 111
+            SYMBOL "point"
+            SIZE 3
+        END #STYLE
+    END #CLASS
+    CLASS
+        NAME "Zone de décharge"
+        EXPRESSION /4903/
+        STYLE
+            COLOR  255 255 255
+        END #STYLE
+        STYLE
+            COLOR 157 144 111
+            SYMBOL "point"
+            SIZE 3
+        END #STYLE
+    END #CLASS
+    CLASS
+        NAME "Zone d'aérodrome"
+        EXPRESSION /4904/
+        STYLE
+            COLOR  209 210 212
+            OUTLINECOLOR 88 88 90
+            SIZE 2
+        END #STYLE
+    END #CLASS
+    CLASS
+        NAME "Zone spéciale b"
+        EXPRESSION /4905/
+        STYLE
+            COLOR  88 88 90
+        END #STYLE
+    END #CLASS
+    CLASS
+        NAME "Zone d'extraction de matériaux"
+        EXPRESSION /4912/
+        STYLE
+            COLOR  157 144 111
+        END #STYLE
+    END #CLASS
+    CLASS
+        NAME "Zone des terrains militaires"
+        EXPRESSION /4914/
+        STYLE
+            COLOR  102 102 51
+        END #STYLE
+    END #CLASS
+    CLASS
+        NAME "Zone de parcs éoliens"
+        EXPRESSION /4915/
+        STYLE
+            SYMBOL "hatchsymbol"
+            SIZE 5
+            COLOR  192 192 255
+            WIDTH 3
+            ANGLE 45
+        END #STYLE
+    END #CLASS
+    CLASS
+        NAME "Zone de plan spécial b"
+        EXPRESSION /4917/
+        STYLE
+            SYMBOL "hatchsymbol"
+            COLOR 88 88 90
+            SIZE 6
+            WIDTH 1
+            ANGLE 90
+        END #STYLE
+        STYLE
+            SYMBOL "hatchsymbol"
+            COLOR 88 88 90
+            SIZE 6
+            WIDTH 1
+            ANGLE 0
+        END #STYLE
+    END #CLASS
+  MAXSCALEDENOM 1000000
 END
 
 LAYER

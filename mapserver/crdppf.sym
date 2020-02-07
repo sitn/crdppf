@@ -2,7 +2,7 @@ SYMBOLSET
 
 SYMBOL
     Name 'triangle'
-    Type VECTOR 
+    Type VECTOR
     Filled true
     Points
         0 1
@@ -63,6 +63,15 @@ SYMBOL
 END
 
 SYMBOL
+    NAME 'point'
+    TYPE ELLIPSE
+    POINTS
+        1 1
+    END
+    FILLED TRUE
+END
+
+SYMBOL
     Name 'agri1'
     Type Truetype
     FONT "esri15"
@@ -74,6 +83,12 @@ SYMBOL
     Type Truetype
     FONT "esri10"
     CHARACTER "H"
+END
+
+SYMBOL
+    NAME "hatchsymbol"
+    TYPE hatch
+    TRANSPARENT 0
 END
 
 SYMBOL
@@ -97,7 +112,7 @@ SYMBOL
 END
 
 SYMBOL
-    Name "pointille1" # 
+    Name "pointille1" #
     TRANSPARENT 0
     Type VECTOR
     Points
@@ -239,7 +254,7 @@ SYMBOL
     TYPE truetype
     ANTIALIAS true
     FILLED true
-    FONT "esri4" 
+    FONT "esri4"
     CHARACTER "8"
 END
 
@@ -273,7 +288,7 @@ SYMBOL
 END
 
 SYMBOL
-    Name "hachure6" 
+    Name "hachure6"
     TRANSPARENT 0
     Type VECTOR
     Points
@@ -284,7 +299,7 @@ SYMBOL
         1.5 1.5
     END
 END
- 
+
 SYMBOL
     NAME "attention"
     TYPE PIXMAP
@@ -343,14 +358,14 @@ END
 SYMBOL
     Name "triangles2"
     Type TRUETYPE
-    FONT "esri17" 
-    CHARACTER "¨" 
+    FONT "esri17"
+    CHARACTER "¨"
 END
 
 SYMBOL
     Name "ronds"
     Type TRUETYPE
-    FONT "esri1" 
+    FONT "esri1"
     CHARACTER "c"
 END
 
@@ -367,7 +382,7 @@ SYMBOL
     END
 END
 
-# symbol 16          
+# symbol 16
 SYMBOL
   NAME "vigne"
   TYPE VECTOR
@@ -508,3 +523,30 @@ SYMBOL
     CHARACTER "j"
     FILLED true
 END
+
+SYMBOL
+    NAME "vertline"
+    TYPE vector
+    FILLED true
+    POINTS
+        0 0
+        0 10
+        1 10
+        1 0
+        0 0
+    END
+END
+
+SYMBOL
+    NAME "vertline2" #line avec trait perpendiculaire
+    TYPE vector
+    FILLED true
+    POINTS
+        0 0
+        0 15
+        2 15
+        2 0
+        0 0
+    END # POINTS
+    ANCHORPOINT 0.5 0
+END # SYMBOL
