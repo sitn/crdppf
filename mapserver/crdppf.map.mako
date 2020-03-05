@@ -629,7 +629,7 @@ END #CLASS
     END #CLASS
   CLASS
     NAME "Secteur indicatif de dangers - Glissements"
-    EXPRESSION ([codegenre] = 16615 AND '[teneur]' eq 'Glissements')
+    EXPRESSION ([codegenre] = 16615 AND '[teneur]' eq 'Secteur indicatif de dangers - Glissements')
     STYLE
       OPACITY 30
       OUTLINECOLOR 255 190 189
@@ -639,7 +639,7 @@ END #CLASS
   END
   CLASS
     NAME "Secteur indicatif de dangers - Phénomènes rocheux"
-    EXPRESSION ([codegenre] = 16615 AND '[teneur]' eq 'Phénomènes rocheux')
+    EXPRESSION ([codegenre] = 16615 AND '[teneur]' eq 'Secteur indicatif de dangers - Phénomènes rocheux')
     STYLE
       OPACITY 30
       OUTLINECOLOR 255 190 189
@@ -649,7 +649,7 @@ END #CLASS
   END
   CLASS
     NAME "Secteur indicatif de dangers - Lave torrentielle"
-    EXPRESSION ([codegenre] = 16615 AND '[teneur]' eq 'Lave torrentielle')
+    EXPRESSION ([codegenre] = 16615 AND '[teneur]' eq 'Secteur indicatif de dangers - Lave torrentielle')
     STYLE
       OPACITY 30
       OUTLINECOLOR 255 190 189
@@ -659,7 +659,7 @@ END #CLASS
   END
   CLASS
     NAME "Secteur indicatif de dangers - Inondation"
-    EXPRESSION ([codegenre] = 16615 AND '[teneur]' eq 'Inondation')
+    EXPRESSION ([codegenre] = 16615 AND '[teneur]' eq 'Secteur indicatif de dangers - Inondation')
     STYLE
       OPACITY 30
       OUTLINECOLOR 255 190 189
