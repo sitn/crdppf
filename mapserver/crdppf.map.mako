@@ -319,17 +319,44 @@ LAYER
   OPACITY 90
   TEMPLATE "ttt"
   CLASS
-        NAME "Périmètre de protection des sites bâtis"
-        EXPRESSION /5111/
-        STYLE
-            PATTERN
-                4 4
-            END
-            OUTLINECOLOR 255 0 0
-            WIDTH 4
-            LINECAP butt
-        END #STYLE
-    END
+    NAME "Périmètre de protection des sites bâtis"
+    EXPRESSION /5111/
+    STYLE
+      PATTERN
+        4 4
+      END
+      OUTLINECOLOR 255 0 0
+      WIDTH 4
+      LINECAP butt
+    END #STYLE
+  END
+  CLASS
+    NAME "Périmètre de site marécageux"
+    EXPRESSION /5213/
+    STYLE
+        OUTLINECOLOR 60 86 40
+        WIDTH 2
+    END #STYLE
+    STYLE
+        SYMBOL "vertline2"
+        OUTLINECOLOR 60 86 40
+        WIDTH 1.66
+        SIZE 6.66
+        ANGLE 0
+        GAP -16.6
+        MAXSCALEDENOM 10000
+        MINSCALEDENOM 0
+    END #STYLE
+    STYLE
+        SYMBOL "vertline2"
+        OUTLINECOLOR 60 86 40
+        WIDTH 2.5
+        SIZE 10
+        ANGLE 0
+        GAP -25
+        MINSCALEDENOM 10001
+    END #STYLE
+END #CLASS
 CLASS
     NAME "Périmètres de sites stratégiques"
     EXPRESSION /6111/
@@ -684,14 +711,22 @@ LAYER
   DATA "geom from crdppf.r73_zones_superposees using unique idobj using srid=2056"
   STATUS ON
   CLASSITEM "codegenre"
-  OPACITY 50
   TEMPLATE "ttt"
   CLASS
-        NAME "Zone à protéger communale"
-        EXPRESSION /5211/
-        STYLE
-            COLOR 99 144 67
-        END #STYLE
+    NAME "Zone à protéger communale"
+    EXPRESSION /5211/
+    STYLE
+      COLOR 99 144 67
+      OPACITY 50
+    END #STYLE
+  END #CLASS
+  CLASS
+    NAME "Biotope"
+    EXPRESSION /5216/
+    STYLE
+      COLOR 59 86 41
+      OPACITY 60
+    END #STYLE
   END #CLASS
   CLASS
         NAME "Zone à protéger cantonale"
@@ -702,33 +737,7 @@ LAYER
             COLOR 59 86 41
             WIDTH 2
             ANGLE 45
-        END #STYLE
-    END #CLASS
-    CLASS
-        NAME "Périmètre de site marécageux"
-        EXPRESSION /5213/
-        STYLE
-            OUTLINECOLOR 60 86 40
-            WIDTH 2
-        END #STYLE
-        STYLE
-            SYMBOL "vertline2"
-            OUTLINECOLOR 60 86 40
-            WIDTH 1.66
-            SIZE 6.66
-            ANGLE 0
-            GAP -16.6
-            MAXSCALEDENOM 10000
-            MINSCALEDENOM 0
-        END #STYLE
-        STYLE
-            SYMBOL "vertline2"
-            OUTLINECOLOR 60 86 40
-            WIDTH 2.5
-            SIZE 10
-            ANGLE 0
-            GAP -25
-            MINSCALEDENOM 10001
+            OPACITY 50
         END #STYLE
     END #CLASS
     CLASS
@@ -744,6 +753,7 @@ LAYER
             SIZE 20
             WIDTH 7
             ANGLE 45
+            OPACITY 50
         END #STYLE
     END #CLASS
     CLASS
@@ -759,13 +769,7 @@ LAYER
             SIZE 20
             WIDTH 7
             ANGLE 45
-        END #STYLE
-    END #CLASS
-    CLASS
-        NAME "Biotope"
-        EXPRESSION /5216/
-        STYLE
-            COLOR 59 86 41
+            OPACITY 50
         END #STYLE
     END #CLASS
     CLASS
@@ -781,6 +785,7 @@ LAYER
             SIZE 10
             WIDTH 7
             ANGLE 45
+            OPACITY 50
         END #STYLE
     END #CLASS
     CLASS
@@ -792,6 +797,7 @@ LAYER
             SIZE 5
             WIDTH 1
             ANGLE 45
+            OPACITY 50
         END #STYLE
     END #CLASS
     CLASS
@@ -803,6 +809,7 @@ LAYER
             SIZE 6
             WIDTH 3
             ANGLE 0
+            OPACITY 50
         END #STYLE
     END #CLASS
     CLASS
@@ -815,85 +822,117 @@ LAYER
             GAP 20
         END
         STYLE
-            OUTLINECOLOR  64 64 64
+            OUTLINECOLOR  0 0 0
             WIDTH 1
         END #STYLE
     END #CLASS
   CLASS
     NAME "Inondation : danger élevé"
     EXPRESSION ([codegenre] = 16604 AND '[teneur]' eq 'Inondation : danger élevé')
-    COLOR 255 0 0
-  END
+    STYLE
+      COLOR 255 0 0
+      OPACITY 40
+    END #STYLE
+  END # CLASS
   CLASS
     NAME "Glissements : danger élevé"
     EXPRESSION ([codegenre] = 16604 AND '[teneur]' eq 'Glissements : danger élevé')
-    COLOR 255 0 0
-  END
+    STYLE
+      COLOR 255 0 0
+      OPACITY 40
+    END #STYLE
+  END # CLASS
   CLASS
     NAME "Chutes de pierres : danger élevé"
     EXPRESSION ([codegenre] = 16604 AND '[teneur]' eq 'Chutes de pierres : danger élevé')
-    COLOR 255 0 0
-  END
+    STYLE
+      COLOR 255 0 0
+      OPACITY 40
+    END #STYLE
+  END # CLASS
   CLASS
     NAME "Inondation : danger moyen"
     EXPRESSION ([codegenre] = 16604 AND '[teneur]' eq 'Inondation : danger moyen')
-    COLOR 0 0 255
-  END
+    STYLE
+      COLOR 0 0 255
+      OPACITY 40
+    END #STYLE
+  END # CLASS
   CLASS
     NAME "Glissements : danger moyen"
     EXPRESSION ([codegenre] = 16603 AND '[teneur]' eq 'Glissements : danger moyen')
-    COLOR 0 0 255
-  END
+    STYLE
+      COLOR 0 0 255
+      OPACITY 40
+    END #STYLE
+  END # CLASS
   CLASS
     NAME "Chutes de pierres : danger moyen"
     EXPRESSION ([codegenre] = 16603 AND '[teneur]' eq 'Chutes de pierres : danger moyen')
-    COLOR 0 0 255
-  END
-
+    STYLE
+      COLOR 0 0 255
+      OPACITY 40
+    END #STYLE
+  END # CLASS
   CLASS
     NAME "Inondation : danger faible"
     EXPRESSION ([codegenre] = 16602 AND '[teneur]' eq 'Inondation : danger faible')
-    COLOR 255 255 0
-  END
+    STYLE
+      COLOR 255 255 0
+      OPACITY 40
+    END #STYLE
+  END # CLASS
   CLASS
     NAME "Glissements : danger faible"
     EXPRESSION ([codegenre] = 16602 AND '[teneur]' eq 'Glissement : danger faible')
-    COLOR 255 255 0
-  END
+    STYLE
+      COLOR 255 255 0
+      OPACITY 40
+    END #STYLE
+  END # CLASS
   CLASS
     NAME "Chutes de pierres : danger faible"
     EXPRESSION ([codegenre] = 16602 AND '[teneur]' eq 'Chutes de pierres : danger faible')
-    COLOR 255 255 0
-  END
+    STYLE
+      COLOR 255 255 0
+      OPACITY 40
+    END #STYLE
+  END # CLASS
   CLASS
     NAME "Inondation : danger résiduel"
     EXPRESSION ([codegenre] = 16601 AND '[teneur]' eq 'Inondation : danger résiduel')
     STYLE
-      COLOR 255 255 0
-    END
-    STYLE
-      SYMBOL "hachure7"
-    END
-  END
+        SYMBOL "hatchsymbol"
+        COLOR 255 255 0
+        SIZE 20
+        WIDTH 10
+        ANGLE 45
+        OPACITY 40
+    END #STYLE
+  END #CLASS
   CLASS
     NAME "Glissements : danger résiduel"
     EXPRESSION ([codegenre] = 16601 AND '[teneur]' eq 'Glissements : danger résiduel')
     STYLE
-      COLOR 255 255 0
-    END
-    STYLE
-      SYMBOL "hachure7"
-    END
+        SYMBOL "hatchsymbol"
+        COLOR 255 255 0
+        SIZE 20
+        WIDTH 10
+        ANGLE 45
+        OPACITY 40
+    END #STYLE
   END
   CLASS
     NAME "Chutes de pierres : danger résiduel"
     EXPRESSION ([codegenre] = 16601 AND '[teneur]' eq 'Chutes de pierres : danger résiduel')
     STYLE
-      COLOR 255 255 0
-    END
-    STYLE
-      SYMBOL "hachure7"
-    END
+        SYMBOL "hatchsymbol"
+        COLOR 255 255 0
+        SIZE 20
+        WIDTH 10
+        ANGLE 45
+        OPACITY 40
+    END #STYLE
   END
   MAXSCALEDENOM 1000000
 END
@@ -1376,7 +1415,7 @@ LAYER
     NAME "Zones réservées des inst. aéroportuaires"
     STYLE
       COLOR 255 170 0
-      OPACITY 70
+      OPACITY 40
     END
     STYLE
       OUTLINECOLOR 255 170 0
@@ -2664,7 +2703,7 @@ LAYER
     CONNECTION "user=${dbuser} password=${dbpassword} dbname=${db} host=${dbhost} port=${dbport}"
     PROCESSING "CLOSE_CONNECTION=DEFER"
     DATA "geom from mensuration.mo9_immeubles using unique idobj using srid=2056"
-    OPACITY 70
+    OPACITY 40
     CLASSITEM "typimm"
     CLASS
         EXPRESSION /DDP/
