@@ -857,7 +857,7 @@ LAYER
   END
   CLASS
     NAME "Glissements : danger faible"
-    EXPRESSION ([codegenre] = 16602 AND '[teneur]' eq 'Glissements : danger faible')
+    EXPRESSION ([codegenre] = 16602 AND '[teneur]' eq 'Glissement : danger faible')
     COLOR 255 255 0
   END
   CLASS
@@ -1148,14 +1148,14 @@ LAYER
         WIDTH 3
         ANGLE 45
     END #STYLE
-END #CLASS
-CLASS
-    NAME "Zone de maintien de l'habitat rural"
-    EXPRESSION /4411/
-    STYLE
-        COLOR  242 203 133
-    END #STYLE
-END #CLASS
+    END #CLASS
+    CLASS
+        NAME "Zone de maintien de l'habitat rural"
+        EXPRESSION /4111/
+        STYLE
+            COLOR 112 112 0
+        END #STYLE
+    END #CLASS
     CLASS
         NAME "Zone d'utilisation différée"
         EXPRESSION /4311/
