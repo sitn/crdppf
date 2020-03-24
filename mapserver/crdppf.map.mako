@@ -958,7 +958,7 @@ LAYER
     END #CLASS
     CLASS
         NAME "Zone spéciale a"
-        EXPRESSION /1106|1205/
+        EXPRESSION /1106|1205|1903/
         STYLE
             COLOR  88 88 90
         END #STYLE
@@ -976,7 +976,7 @@ LAYER
     END #CLASS
     CLASS
         NAME "Zone de plan spécial a"
-        EXPRESSION /1114|1212|1312|1412|1512|1614|1712|1903/
+        EXPRESSION /1114|1212|1312|1412|1512|1614|1712/
         STYLE
             SYMBOL "hatchsymbol"
             COLOR 88 88 90
@@ -1153,7 +1153,7 @@ LAYER
         NAME "Zone de maintien de l'habitat rural"
         EXPRESSION /4111/
         STYLE
-            COLOR 112 112 0
+            COLOR  242 203 133
         END #STYLE
     END #CLASS
     CLASS
