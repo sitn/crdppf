@@ -827,80 +827,32 @@ LAYER
         END #STYLE
     END #CLASS
   CLASS
-    NAME "Inondation : danger élevé"
-    EXPRESSION ([codegenre] = 16604 AND '[teneur]' eq 'Inondation : danger élevé')
+    NAME "Synthèse dangers naturels: danger élevé"
+    EXPRESSION /16604/
     STYLE
       COLOR 255 0 0
       OPACITY 40
     END #STYLE
   END # CLASS
   CLASS
-    NAME "Glissements : danger élevé"
-    EXPRESSION ([codegenre] = 16604 AND '[teneur]' eq 'Glissements : danger élevé')
-    STYLE
-      COLOR 255 0 0
-      OPACITY 40
-    END #STYLE
-  END # CLASS
-  CLASS
-    NAME "Chutes de pierres : danger élevé"
-    EXPRESSION ([codegenre] = 16604 AND '[teneur]' eq 'Chutes de pierres : danger élevé')
-    STYLE
-      COLOR 255 0 0
-      OPACITY 40
-    END #STYLE
-  END # CLASS
-  CLASS
-    NAME "Inondation : danger moyen"
-    EXPRESSION ([codegenre] = 16604 AND '[teneur]' eq 'Inondation : danger moyen')
+    NAME "Synthèse dangers naturels: danger moyen"
+    EXPRESSION /16603/
     STYLE
       COLOR 0 0 255
       OPACITY 40
     END #STYLE
   END # CLASS
   CLASS
-    NAME "Glissements : danger moyen"
-    EXPRESSION ([codegenre] = 16603 AND '[teneur]' eq 'Glissements : danger moyen')
-    STYLE
-      COLOR 0 0 255
-      OPACITY 40
-    END #STYLE
-  END # CLASS
-  CLASS
-    NAME "Chutes de pierres : danger moyen"
-    EXPRESSION ([codegenre] = 16603 AND '[teneur]' eq 'Chutes de pierres : danger moyen')
-    STYLE
-      COLOR 0 0 255
-      OPACITY 40
-    END #STYLE
-  END # CLASS
-  CLASS
-    NAME "Inondation : danger faible"
-    EXPRESSION ([codegenre] = 16602 AND '[teneur]' eq 'Inondation : danger faible')
+    NAME "Synthèse dangers naturels: danger faible"
+    EXPRESSION /16602/
     STYLE
       COLOR 255 255 0
       OPACITY 40
     END #STYLE
   END # CLASS
   CLASS
-    NAME "Glissements : danger faible"
-    EXPRESSION ([codegenre] = 16602 AND '[teneur]' eq 'Glissement : danger faible')
-    STYLE
-      COLOR 255 255 0
-      OPACITY 40
-    END #STYLE
-  END # CLASS
-  CLASS
-    NAME "Chutes de pierres : danger faible"
-    EXPRESSION ([codegenre] = 16602 AND '[teneur]' eq 'Chutes de pierres : danger faible')
-    STYLE
-      COLOR 255 255 0
-      OPACITY 40
-    END #STYLE
-  END # CLASS
-  CLASS
-    NAME "Inondation : danger résiduel"
-    EXPRESSION ([codegenre] = 16601 AND '[teneur]' eq 'Inondation : danger résiduel')
+    NAME "Synthèse dangers naturels: danger résiduel"
+    EXPRESSION /16601/
     STYLE
         SYMBOL "hatchsymbol"
         COLOR 255 255 0
@@ -910,30 +862,6 @@ LAYER
         OPACITY 40
     END #STYLE
   END #CLASS
-  CLASS
-    NAME "Glissements : danger résiduel"
-    EXPRESSION ([codegenre] = 16601 AND '[teneur]' eq 'Glissements : danger résiduel')
-    STYLE
-        SYMBOL "hatchsymbol"
-        COLOR 255 255 0
-        SIZE 20
-        WIDTH 10
-        ANGLE 45
-        OPACITY 40
-    END #STYLE
-  END
-  CLASS
-    NAME "Chutes de pierres : danger résiduel"
-    EXPRESSION ([codegenre] = 16601 AND '[teneur]' eq 'Chutes de pierres : danger résiduel')
-    STYLE
-        SYMBOL "hatchsymbol"
-        COLOR 255 255 0
-        SIZE 20
-        WIDTH 10
-        ANGLE 45
-        OPACITY 40
-    END #STYLE
-  END
   MAXSCALEDENOM 1000000
 END
 
