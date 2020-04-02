@@ -135,7 +135,7 @@ LAYER
   OPACITY 60
   TEMPLATE "ttt"
   CLASS
-    NAME "Objet ponctuel"
+    NAME "Objet particulier à protéger ponctuel"
     EXPRESSION /8111/
     STYLE
         SYMBOL "circle"
@@ -146,43 +146,39 @@ LAYER
   CLASS
     NAME "Bâtiment intéressant"
     EXPRESSION /8201/
-    SYMBOL "patrimoine_architectural"
-    MINSIZE 10
-    SIZE 10
-    MAXSIZE 10
-    COLOR 255 115 66
-    OUTLINECOLOR 132 0 0
+    STYLE
+        SYMBOL "triangle"
+        SIZE 10
+        COLOR 255 0 0
+    END
   END
   CLASS
-    NAME "Bâtiment typique ou pittoresque"
+    NAME "Bâtiment typique et pittoresque"
     EXPRESSION /8202/
-    SYMBOL "patrimoine_architectural"
-    MINSIZE 10
-    SIZE 10
-    MAXSIZE 10
-    COLOR 0 200 0
-    OUTLINECOLOR 132 0 0
-  END
-  CLASS
-    NAME "Bâtiment intéressant"
-    EXPRESSION /8201/
-    SYMBOL "patrimoine_architectural"
-    MINSIZE 10
-    SIZE 10
-    MAXSIZE 10
-    COLOR 255 115 66
-    OUTLINECOLOR 132 0 0
+    STYLE
+        SYMBOL "triangle"
+        SIZE 10
+        COLOR 0 204 255
+    END
   END
   CLASS
     NAME "Bâtiment perturbant"
     EXPRESSION /8203/
-    SYMBOL "patrimoine_architectural"
-    MINSIZE 10
-    SIZE 10
-    MAXSIZE 10
-    COLOR 180 0 0
-    OUTLINECOLOR 132 0 0
+    STYLE
+        SYMBOL "triangle"
+        SIZE 10
+        COLOR 211 141 95
+    END
   END
+   CLASS
+    NAME "Bâtiment typique"
+    EXPRESSION /8204/
+    STYLE
+        SYMBOL "triangle"
+        SIZE 10
+        COLOR 150 150 150
+    END
+   END
   TOLERANCE 8
   TOLERANCEUNITS pixels
 END
@@ -213,8 +209,8 @@ LAYER
         END
         COLOR 255 0 0
         WIDTH 2
-        MAXSCALEDENOM 10000
         MINSCALEDENOM 0
+        MAXSCALEDENOM 10000
     END #STYLE
     STYLE
         PATTERN
@@ -262,7 +258,7 @@ CLASS
         END #STYLE
     END #CLASS
     CLASS
-        NAME "Distance des constructions par rapport au cours et étendue d'eau"
+        NAME "Dist. des constructions par rapp. au cours et étendue d'eau"
         EXPRESSION /7114/
         STYLE
             COLOR 90 207 241
@@ -270,7 +266,7 @@ CLASS
          END #STYLE
     END #CLASS
     CLASS
-        NAME "Distance des constructions par rapport à la zone viticole"
+        NAME "Dist. des constructions par rapp. à la zone viticole"
         EXPRESSION /7116/
         STYLE
             COLOR 170 168 0
@@ -278,7 +274,7 @@ CLASS
         END #STYLE
     END #CLASS
        CLASS
-        NAME "Distance des constructions par rapport à la vigne"
+        NAME "Dist. des constructions par rapp. à la vigne"
         EXPRESSION /7117/
         STYLE
             PATTERN
@@ -289,7 +285,7 @@ CLASS
         END #STYLE
     END #CLASS
     CLASS
-        NAME "Objet linéaire"
+        NAME "Objet particulier à protéger linéaire"
         EXPRESSION /7000/
         STYLE
             PATTERN 3 8
@@ -316,9 +312,8 @@ LAYER
   DATA "geom from crdppf.r73_perimetres_superposes using unique idobj using srid=2056"
   STATUS ON
   CLASSITEM "codegenre"
-  OPACITY 90
   TEMPLATE "ttt"
-  CLASS
+    CLASS
     NAME "Périmètre de protection des sites bâtis"
     EXPRESSION /5111/
     STYLE
@@ -365,42 +360,6 @@ CLASS
         WIDTH 3
     END #STYLE
 END #CLASS
-    CLASS
-        NAME "Périmètre de plan de quartier en vigueur"
-        EXPRESSION /6112/
-        STYLE
-            WIDTH 4
-            OUTLINECOLOR  0 0 0
-            MAXSCALEDENOM 10000
-            MINSCALEDENOM 0
-        END #STYLE
-        STYLE
-            WIDTH 1.5
-            OUTLINECOLOR  0 0 0
-            MINSCALEDENOM 10001
-        END #STYLE
-    END #CLASS
-  CLASS
-        NAME "Périmètre soumis à plan de quartier"
-        EXPRESSION /6211/
-        STYLE
-            PATTERN
-                10 6
-            END
-            WIDTH 4
-            OUTLINECOLOR  0 0 0
-            MAXSCALEDENOM 10000
-            MINSCALEDENOM 0
-        END #STYLE
-        STYLE
-            PATTERN
-                10 5
-            END
-            WIDTH 1.5
-            OUTLINECOLOR  0 0 0
-            MINSCALEDENOM 10001
-        END #STYLE
-    END #CLASS
     CLASS
         NAME "Périmètre soumis à plan spécial"
         EXPRESSION /6212/
@@ -485,6 +444,42 @@ END #CLASS
         STYLE
             OUTLINECOLOR 255 0 0
             WIDTH 1.5
+            MINSCALEDENOM 10001
+        END #STYLE
+    END #CLASS
+    CLASS
+        NAME "Périmètre de plan de quartier en vigueur"
+        EXPRESSION /6112/
+        STYLE
+            WIDTH 4
+            OUTLINECOLOR  0 0 0
+            MAXSCALEDENOM 10000
+            MINSCALEDENOM 0
+        END #STYLE
+        STYLE
+            WIDTH 1.5
+            OUTLINECOLOR  0 0 0
+            MINSCALEDENOM 10001
+        END #STYLE
+    END #CLASS
+  CLASS
+        NAME "Périmètre soumis à plan de quartier"
+        EXPRESSION /6211/
+        STYLE
+            PATTERN
+                10 6
+            END
+            WIDTH 4
+            OUTLINECOLOR  0 0 0
+            MAXSCALEDENOM 10000
+            MINSCALEDENOM 0
+        END #STYLE
+        STYLE
+            PATTERN
+                10 5
+            END
+            WIDTH 1.5
+            OUTLINECOLOR  0 0 0
             MINSCALEDENOM 10001
         END #STYLE
     END #CLASS
@@ -654,46 +649,46 @@ END #CLASS
             MINSCALEDENOM 10001
         END #STYLE
     END #CLASS
-  CLASS
-    NAME "Secteur indicatif de dangers - Glissements"
-    EXPRESSION ([codegenre] = 16615 AND '[teneur]' eq 'Secteur indicatif de dangers - Glissements')
-    STYLE
-      OPACITY 30
-      OUTLINECOLOR 255 190 189
-      COLOR 255 190 189
-      WIDTH 2
+    CLASS
+      NAME "Secteur indicatif de dangers - Glissements"
+      EXPRESSION ([codegenre] = 16615 AND '[teneur]' eq 'Secteur indicatif de dangers - Glissements')
+      STYLE
+        OPACITY 30
+        OUTLINECOLOR 255 190 189
+        COLOR 255 190 189
+        WIDTH 2
+      END
     END
-  END
-  CLASS
-    NAME "Secteur indicatif de dangers - Phénomènes rocheux"
-    EXPRESSION ([codegenre] = 16615 AND '[teneur]' eq 'Secteur indicatif de dangers - Phénomènes rocheux')
-    STYLE
-      OPACITY 30
-      OUTLINECOLOR 255 190 189
-      COLOR 255 190 189
-      WIDTH 2
+    CLASS
+      NAME "Secteur indicatif de dangers - Phénomènes rocheux"
+      EXPRESSION ([codegenre] = 16615 AND '[teneur]' eq 'Secteur indicatif de dangers - Phénomènes rocheux')
+      STYLE
+        OPACITY 30
+        OUTLINECOLOR 255 190 189
+        COLOR 255 190 189
+        WIDTH 2
+      END
     END
-  END
-  CLASS
-    NAME "Secteur indicatif de dangers - Lave torrentielle"
-    EXPRESSION ([codegenre] = 16615 AND '[teneur]' eq 'Secteur indicatif de dangers - Lave torrentielle')
-    STYLE
-      OPACITY 30
-      OUTLINECOLOR 255 190 189
-      COLOR 255 190 189
-      WIDTH 2
+    CLASS
+      NAME "Secteur indicatif de dangers - Lave torrentielle"
+      EXPRESSION ([codegenre] = 16615 AND '[teneur]' eq 'Secteur indicatif de dangers - Lave torrentielle')
+      STYLE
+        OPACITY 30
+        OUTLINECOLOR 255 190 189
+        COLOR 255 190 189
+        WIDTH 2
+      END
     END
-  END
-  CLASS
-    NAME "Secteur indicatif de dangers - Inondation"
-    EXPRESSION ([codegenre] = 16615 AND '[teneur]' eq 'Secteur indicatif de dangers - Inondation')
-    STYLE
-      OPACITY 30
-      OUTLINECOLOR 255 190 189
-      COLOR 255 190 189
-      WIDTH 2
+    CLASS
+      NAME "Secteur indicatif de dangers - Inondation"
+      EXPRESSION ([codegenre] = 16615 AND '[teneur]' eq 'Secteur indicatif de dangers - Inondation')
+      STYLE
+        OPACITY 30
+        OUTLINECOLOR 255 190 189
+        COLOR 255 190 189
+        WIDTH 2
+      END
     END
-  END
 END
 
 LAYER
