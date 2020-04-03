@@ -201,7 +201,7 @@ LAYER
   OPACITY 60
   TEMPLATE "ttt"
   CLASS
-    NAME "Périmètres d'évolution"
+    NAME "Périmètre d'évolution"
     EXPRESSION /7111/
     STYLE
         PATTERN
