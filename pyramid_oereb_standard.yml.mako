@@ -218,6 +218,19 @@ pyramid_oereb:
         stroke_opacity: 0.6
         stroke_color: '#e60000'
         stroke_width: 5
+      type_mapping:
+        - mapping: RealEstate
+          type: Bien-Fonds
+        - mapping: Distinct_and_permanent_rights.BuildingRight
+          type: DDP
+        - mapping: Distinct_and_permanent_rights.right_to_spring_water
+          type: Concession hydraulique
+        - mapping: Distinct_and_permanent_rights.concession
+          type: Concession
+        - mapping: Distinct_and_permanent_rights.other
+          type: autre
+        - mapping: Mineral_rights
+          type: Mine
     # The real estate must have a property source.
     source:
       # The source must have a class which represents the accessor to the source. In this example, it is a an
