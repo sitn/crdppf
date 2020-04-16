@@ -115,7 +115,7 @@ pdf_config:
   # Default base name for the PDF extract
   pdfbasename: _ExtraitCRDPPF
 
-  # Default prefix/suffix for all the basemap files to ditinguish them from topic files
+  # Default prefix/suffix for all the basemap files to distinguish them from topic files
   siteplanbasename: _siteplan
 
   # Activates (true) or not cantonal and other optional topics (to be specified in crdppfportal/models.py)
@@ -145,3 +145,6 @@ wmts_getcapabilities_url: https://sitn.ne.ch/mapproxy95/service/?SERVICE=WMTS&RE
 
 # Path to PDF extract archive folder - optional: if variable is ommited there will be no backup
 pdf_archive_path: ${archive_path}
+
+# Switch for the PDF render engine pyramid_oereb_mfp or crdppf_mfp
+pdf_render_engine: ${pdf_renderer}
