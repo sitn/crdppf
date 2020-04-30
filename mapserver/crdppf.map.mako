@@ -284,7 +284,7 @@ CLASS
             WIDTH 1.5
         END #STYLE
     END #CLASS
-       CLASS
+    CLASS
         NAME "Dist. des constructions par rapp. à la vigne"
         EXPRESSION /7117/
         STYLE
@@ -721,7 +721,7 @@ LAYER
     END #CLASS
     CLASS
         NAME "Zone réservée communale"
-        EXPRESSION ([codegenre]=5912 AND [teneur]='Zone réservée communale')
+        EXPRESSION ([codegenre] = 5912 AND '[teneur]' eq 'Zone réservée communale')
         STYLE
             SYMBOL "square"
             COLOR 64 64 64
@@ -735,7 +735,7 @@ LAYER
     END #CLASS
     CLASS
         NAME "Zone réservée cantonale"
-        EXPRESSION ([codegenre]=5912 AND [teneur]='Zone réservée cantonale')
+        EXPRESSION ([codegenre] = 5912 AND '[teneur]' eq 'Zone réservée cantonale')
         STYLE
             SYMBOL "square"
             COLOR 64 64 64
