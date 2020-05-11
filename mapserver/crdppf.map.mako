@@ -132,42 +132,41 @@ LAYER
   DATA "geom from crdppf.r73_contenus_ponctuels using unique idobj using srid=2056"
   STATUS ON
   CLASSITEM "codegenre"
-  OPACITY 60
   TEMPLATE "ttt"
   CLASS
-    NAME "Bâtiment intéressant"
+    NAME "RACN: 1e cat. - Bâtiment intéressant"
     EXPRESSION /8201/
     STYLE
-        SYMBOL "triangle"
-        SIZE 10
+        SYMBOL "circle"
+        SIZE 8
         COLOR 255 0 0
     END
   END
   CLASS
-    NAME "Bâtiment typique et pittoresque"
+    NAME "RACN: 2e cat. - Bâtiment typique et pittoresque"
     EXPRESSION /8202/
     STYLE
-        SYMBOL "triangle"
-        SIZE 10
+        SYMBOL "circle"
+        SIZE 8
         COLOR 0 204 255
     END
   END
   CLASS
-    NAME "Bâtiment perturbant"
+    NAME "RACN: 3e cat. - Bâtiment perturbant"
     EXPRESSION /8203/
     STYLE
-        SYMBOL "triangle"
-        SIZE 10
+        SYMBOL "circle"
+        SIZE 8
         COLOR 211 141 95
     END
   END
    CLASS
-    NAME "Bâtiment typique"
+    NAME "RACN: 2e cat. - Bâtiment typique"
     EXPRESSION /8204/
     STYLE
         SYMBOL "triangle"
         SIZE 10
-        COLOR 150 150 150
+        COLOR 0 204 255
     END
    END
   CLASS
@@ -524,7 +523,7 @@ LAYER
     END #CLASS
     CLASS
         NAME "Périmètre à ordre contigu ou presque contigu obligatoire"
-        EXPRESSION /6115/
+        EXPRESSION ([codegenre] = 6115 AND '[teneur]' IN 'Périmètre à ordre contigu obligatoire,Périmètre à ordre presque contigu obligatoire')
         STYLE
             PATTERN
                 15 6
