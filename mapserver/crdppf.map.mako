@@ -522,8 +522,29 @@ LAYER
         END #STYLE
     END #CLASS
     CLASS
-        NAME "Périmètre à ordre contigu ou presque contigu obligatoire"
-        EXPRESSION ([codegenre] = 6115 AND '[teneur]' IN 'Périmètre à ordre contigu obligatoire,Périmètre à ordre presque contigu obligatoire')
+        NAME "Périmètre à ordre contigu obligatoire"
+        EXPRESSION ([codegenre] = 6115 AND '[teneur]' eq 'Périmètre à ordre contigu obligatoire')
+        STYLE
+            PATTERN
+                15 6
+            END
+            OUTLINECOLOR 255 0 0
+            WIDTH 3.5
+            MAXSCALEDENOM 10000
+            MINSCALEDENOM 0
+        END #STYLE
+        STYLE
+            PATTERN
+                15 5
+            END
+            OUTLINECOLOR 255 0 0
+            WIDTH 2.5
+            MINSCALEDENOM 10001
+        END #STYLE
+    END #CLASS
+    CLASS
+        NAME "Périmètre à ordre presque contigu obligatoire"
+        EXPRESSION ([codegenre] = 6115 AND '[teneur]' eq 'Périmètre à ordre presque contigu obligatoire')
         STYLE
             PATTERN
                 15 6
