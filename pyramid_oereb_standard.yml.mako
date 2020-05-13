@@ -34,7 +34,7 @@ pyramid_oereb:
     running_modifications:
       de: laufende Änderungen
       fr: modification en cours
-      it: modificazione in corso
+      it: modifica in corso
       rm: midada current
       en: ongoing modification
 
@@ -63,8 +63,15 @@ pyramid_oereb:
     # The pyramid renderer which is used as proxy pass through to the desired service for printable static
     # extract. Here you can define the path to the logic which prepares the output as payload for print
     # service and returns the result to the user.
+    # Configuration for MapFish-Print print service
     renderer: pyramid_oereb.contrib.print_proxy.mapfish_print.Renderer
-    # The minimum buffer in pixel at 72 DPI between the real estate and the map's border.
+    # Define whether all geometry data must be included when sending the data to the print service
+    with_geometry: False
+    # Set an archive path to keep a copy of each generated pdf.
+    # pdf_archive_path: /tmp
+    # The minimum buffer in pixel at 72 DPI between the real estate and the map's border. If your print
+    # system draws a margin around the feature (the real estate), you have to set your buffer
+    # here accordingly.
     buffer: 30
     # The map size in pixel at 72 DPI (width, height), This is the defined size of a map image
     # (requested in wms urls) inside the static extract. On a pdf report, tha map size will
@@ -76,14 +83,38 @@ pyramid_oereb:
     pdf_map_size_millimeters: [174, 99]
     # Base URL with application of the print server
     base_url: http://localhost:8080/print-oereb/print/oereb
-    # Name of the print template to use
+    # Name of the print tempate to use
     template_name: A4 portrait
-    # The headers sent to the print
+    # The headers send to the print
     headers:
       Content-Type: application/json; charset=UTF-8
     # Whether to display the RealEstate_SubunitOfLandRegister (Grundbuchkreis) in the pdf extract or not.
     # Default to true.
     display_real_estate_subunit_of_land_register: true
+    # Whether to display the Certification section in the pdf extract or not.
+    # Default to true
+    display_certification: false
+    # Split themes up, so that each sub theme gets its own page
+    # Disabled by default.
+    split_sub_themes: false
+    # Group elements of "LegalProvision" and "Hints" with the same "Title.Text" together yes/no
+    # Disabled by default.
+    group_legal_provisions: false
+    # Will make an estimation of the total length of the Table of Content (TOC) and control that the page
+    # numbering in the output pdf is consistent with TOC numbering. If it is known that the TOC is very long and
+    # could run over more than one page, it is preferred to set this to true. The drawback is that it might need
+    # more time to generate the PDF. If set to false, it will assume that only one TOC page exists, and this can
+    # lead to wrong numbering in the TOC.
+    compute_toc_pages: false
+    # Specify any additional URL parameters that the print shall use for WMS calls
+    wms_url_params:
+      TRANSPARENT: 'true'
+    # If you want the print to keep some custom URL parameters directly from the reference_wms you have defined,
+    # then use the configuration option wms_url_keep_params.
+    # In wms_url_keep_params, you can list which URL parameter values should be read from the reference_wms
+    # and used by the print.
+    # wms_url_keep_params:
+    #   - ogcserver
 
   # The "app_schema" property contains only one sub property "name". This is directly related to the database
   # creation process, because this name is used as schema name in the target database. The app_schema holds
@@ -126,16 +157,13 @@ pyramid_oereb:
   oereblex:
     # OEREBlex host
     host: https://oereblex.bl.ch
-    # geoLink schema version
-    # version: 1.1.0
-    # Pass schema version in URL
-    # pass_version: true
-    # Language of returned values
+    # Default language of returned values
     language: de
     # Value for canton attribute
     canton: BL
     # Mapping for other optional attributes
     mapping:
+      municipality: subtype
       official_number: number
       abbreviation: abbreviation
     # Handle related decree also as main document
@@ -143,6 +171,8 @@ pyramid_oereb:
     # document. Set this flag to true, if you want the related decree to be added as additional legal
     # provision directly to the public law restriction. This might have an impact on client side rendering.
     related_decree_as_main: false
+    # Same as related_decree_as_main but for related notice document.
+    related_notice_as_main: false
     # Proxy to be used for web requests
     # proxy:
     #   http:
@@ -151,6 +181,8 @@ pyramid_oereb:
     # auth:
     #   username:
     #   password:
+    # Enable/disable XML validation
+    validation: true
 
   # Defines the information of the oereb cadastre providing authority. Please change this to your data. This
   # will be directly used for producing the extract output.
@@ -176,10 +208,13 @@ pyramid_oereb:
   logo:
     # The logo representing the swiss confederation. You can use it as is because it is provided in this
     # repository, but if you need to change it for any reason: Feel free...
-    confederation: ${directory}/logo_confederation.png
+    confederation: logo_confederation.png
     # The logo representing the oereb extract CI. You can use it as is because it is provided in this
     # repository, but if you need to change it for any reason: Feel free...
-    oereb: ${directory}/logo_oereb.png
+    oereb:
+        de: logo_oereb_de.png
+        fr: logo_oereb_fr.png
+        it: logo_oereb_it.png
     # The logo representing your canton. Replace with your own logo!
     canton: ${directory}/logo_canton.png
 
@@ -353,7 +388,9 @@ pyramid_oereb:
         fr: Le contenu du cadastre RDPPF est supposé connu. Le canton de Neuchâtel n'engage pas sa responsabilité sur l'exactitude ou la fiabilité des documents législatifs dans leur version électronique. L'extrait a un caractère informatif et ne crée aucun droit ou obligation. Les documents juridiquement contraignants sont ceux qui ont été légalement adoptés ou publiés. La certification d'un extrait confirme la concordance de cet extrait avec le cadastre RDPPF à la date d'établissement dudit extrait.
         it: Il contenuto del Catasto RDPP si considera noto. Il Canton Neuchâtel non può essere ritenuto responsabile per la precisione e l'affidabilità dei documenti legislativi in formato elettronico. L'estratto ha carattere puramente informativo e non è in particolare costituti-vo di diritti e obblighi. Sono considerati giuridicamente vincolanti i documenti approvati o pubblicati passati in giudicato. Con l'autenticazione dell'estratto viene confermata la conformità dell'estratto rispetto al Catasto RDPP al momento della sua redazione.
         rm: ...
-
+    sort_within_themes_method: pyramid_oereb.standard.hook_methods.plr_sort_within_themes
+    # Example of a specific sorting method:
+    # sort_within_themes_method: pyramid_oereb.contrib.plr_sort_within_themes_by_type_code
 
   # All PLRs which are provided by this application. This is related to all application behaviour, especially
   # the extract creation process which loops over this list.
@@ -367,8 +404,14 @@ pyramid_oereb:
       thresholds:
         length:
           limit: 1.0
+          unit: 'm'
+          precision: 2
         area:
           limit: 1.0
+          unit: 'm²'
+          precision: 2
+        percentage:
+          precision: 1
       text:
         de: Nutzungsplanung (kantonal/kommunal)
         fr: Plans d'affectation (cantonaux/communaux)
@@ -400,8 +443,14 @@ pyramid_oereb:
       thresholds:
         length:
           limit: 1.0
+          unit: 'm'
+          precision: 2
         area:
           limit: 1.0
+          unit: 'm²'
+          precision: 2
+        percentage:
+          precision: 1
       text:
         de: Projektierungszonen Nationalstrassen
         fr: Zones réservées des routes nationales
@@ -433,8 +482,14 @@ pyramid_oereb:
       thresholds:
         length:
           limit: 1.0
+          unit: 'm'
+          precision: 2
         area:
           limit: 1.0
+          unit: 'm²'
+          precision: 2
+        percentage:
+          precision: 1
       text:
         de: Baulinien Nationalstrassen
         fr: Alignements des routes nationales
@@ -466,8 +521,14 @@ pyramid_oereb:
       thresholds:
         length:
           limit: 1.0
+          unit: 'm'
+          precision: 2
         area:
           limit: 1.0
+          unit: 'm²'
+          precision: 2
+        percentage:
+          precision: 1
       text:
         de: Baulinien Eisenbahnanlagen
         fr: Alignements des installations ferroviaires
@@ -499,8 +560,14 @@ pyramid_oereb:
       thresholds:
         length:
           limit: 1.0
+          unit: 'm'
+          precision: 2
         area:
           limit: 1.0
+          unit: 'm²'
+          precision: 2
+        percentage:
+          precision: 1
       text:
         de: Projektierungszonen Eisenbahnanlagen
         fr: Zones réservées des installations ferroviaires
@@ -532,8 +599,14 @@ pyramid_oereb:
       thresholds:
         length:
           limit: 1.0
+          unit: 'm'
+          precision: 2
         area:
           limit: 1.0
+          unit: 'm²'
+          precision: 2
+        percentage:
+          precision: 1
       text:
         de: Projektierungszonen Flughafenanlagen
         fr: Zones réservées des installations aéroportuaires
@@ -565,8 +638,14 @@ pyramid_oereb:
       thresholds:
         length:
           limit: 1.0
+          unit: 'm'
+          precision: 2
         area:
           limit: 1.0
+          unit: 'm²'
+          precision: 2
+        percentage:
+          precision: 1
       text:
         de: Baulinien Flughafenanlagen
         fr: Alignements des installations aéroportuaires
@@ -598,8 +677,14 @@ pyramid_oereb:
       thresholds:
         length:
           limit: 1.0
+          unit: 'm'
+          precision: 2
         area:
           limit: 1.0
+          unit: 'm²'
+          precision: 2
+        percentage:
+          precision: 1
       text:
         de: Sicherheitszonenplan
         fr: Plan de zone de sécurité
@@ -630,8 +715,14 @@ pyramid_oereb:
       thresholds:
         length:
           limit: 1.0
+          unit: 'm'
+          precision: 2
         area:
           limit: 1.0
+          unit: 'm²'
+          precision: 2
+        percentage:
+          precision: 1
       text:
         de: Kataster der belasteten Standorte
         fr: Cadastre des sites pollués
@@ -662,8 +753,14 @@ pyramid_oereb:
       thresholds:
         length:
           limit: 1.0
+          unit: 'm'
+          precision: 2
         area:
           limit: 1.0
+          unit: 'm²'
+          precision: 2
+        percentage:
+          precision: 1
       text:
         de: Kataster der belasteten Standorte im Bereich des Militärs
         fr: Cadastre des sites pollués - domaine militaire
@@ -695,8 +792,14 @@ pyramid_oereb:
       thresholds:
         length:
           limit: 1.0
+          unit: 'm'
+          precision: 2
         area:
           limit: 1.0
+          unit: 'm²'
+          precision: 2
+        percentage:
+          precision: 1
       text:
         de: Kataster der belasteten Standorte im Bereich der zivilen Flugplätze
         fr: Cadastre des sites pollués - domaine des aérodromes civils
@@ -728,8 +831,14 @@ pyramid_oereb:
       thresholds:
         length:
           limit: 1.0
+          unit: 'm'
+          precision: 2
         area:
           limit: 1.0
+          unit: 'm²'
+          precision: 2
+        percentage:
+          precision: 1
       text:
         de: Kataster der belasteten Standorte im Bereich des öffentlichen Verkehrs
         fr: Cadastre des sites pollués - domaine des transports publics
@@ -753,6 +862,16 @@ pyramid_oereb:
       law_status:
         in_force: inForce
         running_modifications: runningModifications
+      # Example of how sub_themes sorting can be activated (uncomment to enable):
+      #sub_themes:
+      #  sorter:
+      #    module: pyramid_oereb.contrib.print_proxy.sub_themes.sorting
+      #    class_name: ListSort
+      #    params:
+      #      list:
+      #        - SubTheme3
+      #        - SubTheme2
+      #        - SubTheme1
 
     - name: plr131
       code: GroundwaterProtectionZones
@@ -760,8 +879,14 @@ pyramid_oereb:
       thresholds:
         length:
           limit: 1.0
+          unit: 'm'
+          precision: 2
         area:
           limit: 1.0
+          unit: 'm²'
+          precision: 2
+        percentage:
+          precision: 1
       text:
         de: Grundwasserschutzzonen
         fr: Zones de protection des eaux souterraines
@@ -792,8 +917,14 @@ pyramid_oereb:
       thresholds:
         length:
           limit: 1.0
+          unit: 'm'
+          precision: 2
         area:
           limit: 1.0
+          unit: 'm²'
+          precision: 2
+        percentage:
+          precision: 1
       text:
         de: Grundwasserschutzareale
         fr: Périmètres de protection des eaux souterraines
@@ -824,8 +955,14 @@ pyramid_oereb:
       thresholds:
         length:
           limit: 1.0
+          unit: 'm'
+          precision: 2
         area:
           limit: 1.0
+          unit: 'm²'
+          precision: 2
+        percentage:
+          precision: 1
       text:
         de: Lärmempfindlichkeitsstufen (in Nutzungszonen)
         fr: Degré de sensibilité au bruit (dans les zones d'affectation)
@@ -856,8 +993,14 @@ pyramid_oereb:
       thresholds:
         length:
           limit: 1.0
+          unit: 'm'
+          precision: 2
         area:
           limit: 1.0
+          unit: 'm²'
+          precision: 2
+        percentage:
+          precision: 1
       text:
         de: Statische Waldgrenzen
         fr: Limites forestières statiques
@@ -888,8 +1031,14 @@ pyramid_oereb:
       thresholds:
         length:
           limit: 1.0
+          unit: 'm'
+          precision: 2
         area:
           limit: 1.0
+          unit: 'm²'
+          precision: 2
+        percentage:
+          precision: 1
       text:
         de: Waldabstandslinien
         fr: Distances par rapport à la forêt
