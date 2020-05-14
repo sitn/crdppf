@@ -8,12 +8,12 @@ except ImportError:
     from setuptools import setup, find_packages
 
 requires = [
-    'pyramid_oereb[recommend]==1.7.3'
+    'pyramid_oereb[recommend]==1.7.4'
 ]
 
 setup(
     name='crdppfportal',
-    version='3.0.0',
+    version='3.1',
     description='SITN, public law restriction portal',
     author='sitn',
     author_email='sitn@ne.ch',
