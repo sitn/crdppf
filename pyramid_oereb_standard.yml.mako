@@ -72,7 +72,7 @@ pyramid_oereb:
     # The minimum buffer in pixel at 72 DPI between the real estate and the map's border. If your print
     # system draws a margin around the feature (the real estate), you have to set your buffer
     # here accordingly.
-    buffer: 30
+    buffer: 10
     # The map size in pixel at 72 DPI (width, height), This is the defined size of a map image
     # (requested in wms urls) inside the static extract. On a pdf report, tha map size will
     # be calculated with the pdf_dpi and the pdf_map_size_millimeters below.
@@ -83,9 +83,9 @@ pyramid_oereb:
     pdf_map_size_millimeters: [174, 99]
     # Base URL with application of the print server
     base_url: http://localhost:8080/print-oereb/print/oereb
-    # Name of the print tempate to use
+    # Name of the print template to use
     template_name: A4 portrait
-    # The headers send to the print
+    # The headers sent to the print
     headers:
       Content-Type: application/json; charset=UTF-8
     # Whether to display the RealEstate_SubunitOfLandRegister (Grundbuchkreis) in the pdf extract or not.
@@ -216,7 +216,7 @@ pyramid_oereb:
         fr: logo_oereb_fr.png
         it: logo_oereb_it.png
     # The logo representing your canton. Replace with your own logo!
-    canton: ${directory}/logo_canton.png
+    canton: logo_canton.png
 
   # The method used to return the logo images configured above.
   get_logo_method: pyramid_oereb.standard.hook_methods.get_logo
