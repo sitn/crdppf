@@ -176,6 +176,7 @@ LAYER
         SYMBOL "circle"
         COLOR 99 145 67
         SIZE 10
+        OPACITY 70
     END #STYLE
   END #CLASS
   TOLERANCE 8
