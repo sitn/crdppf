@@ -19,7 +19,7 @@ app.cfg = %(here)s/.build/config.yaml
 use = egg:waitress#main
 host = 0.0.0.0
 port = ${waitress_port}
-    
+threads=6    
 # Begin logging configuration
 
 [loggers]

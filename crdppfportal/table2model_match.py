@@ -1,16 +1,16 @@
 # -*- coding: UTF-8 -*-
-from crdppf.models import PrimaryLandUseZones, SecondaryLandUseZones
-from crdppf.models import ComplementaryLandUsePerimeters, LandUseLinearConstraints
-from crdppf.models import LandUsePointConstraints, PollutedSites
-from crdppf.models import CHHighwaysProjectZones, CHHighwaysConstructionLimits
-from crdppf.models import CHRailwaysProjectZones, CHRailwaysConstructionLimits
-from crdppf.models import CHAirportSecurityZones, CHAirportSecurityZonesPDF
-from crdppf.models import CHAirportProjectZones, CHAirportProjectZonesPDF
-from crdppf.models import CHAirportConstructionLimits, CHAirportConstructionLimitsPDF
-from crdppf.models import CHPollutedSitesCivilAirports, CHPollutedSitesCivilAirportsPDF
-from crdppf.models import CHPollutedSitesPublicTransports, CHPollutedSitesPublicTransportsPDF
-from crdppf.models import WaterProtectionZones, WaterProtectionPerimeters
-from crdppf.models import RoadNoise, ForestLimits, ForestDistances
+from crdppf.models.models import PrimaryLandUseZones, SecondaryLandUseZones
+from crdppf.models.models import ComplementaryLandUsePerimeters, LandUseLinearConstraints
+from crdppf.models.models import LandUsePointConstraints, PollutedSites
+from crdppf.models.models import CHHighwaysProjectZones, CHHighwaysConstructionLimits
+from crdppf.models.models import CHRailwaysProjectZones, CHRailwaysConstructionLimits
+from crdppf.models.models import CHAirportSecurityZones, CHAirportSecurityZonesPDF
+from crdppf.models.models import CHAirportProjectZones, CHAirportProjectZonesPDF
+from crdppf.models.models import CHAirportConstructionLimits, CHAirportConstructionLimitsPDF
+from crdppf.models.models import CHPollutedSitesCivilAirports, CHPollutedSitesCivilAirportsPDF
+from crdppf.models.models import CHPollutedSitesPublicTransports, CHPollutedSitesPublicTransportsPDF
+from crdppf.models.models import WaterProtectionZones, WaterProtectionPerimeters
+from crdppf.models.models import RoadNoise, ForestLimits, ForestDistances
 
 # Matching dictionnary model-table name
 table2model_match = {
