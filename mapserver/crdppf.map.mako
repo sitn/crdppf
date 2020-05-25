@@ -152,7 +152,7 @@ LAYER
     END
   END
   CLASS
-    NAME "RACN: 3e cat. - Bâtiment perturbant"
+    NAME "RACN: 3e cat. - Bâtiment neutre, voire perturbant"
     EXPRESSION /8203/
     STYLE
         SYMBOL "circle"
