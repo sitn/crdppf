@@ -1788,7 +1788,7 @@ LAYER
   CONNECTIONTYPE POSTGIS
   CONNECTION "user=${dbuser} password=${dbpassword} dbname=${db} host=${dbhost} port=${dbport}"
   PROCESSING "CLOSE_CONNECTION=DEFER"
-  DATA "geom from noise_sensitivity_levels.v_r145_sens_bruit using unique idobj using srid=2056"
+  DATA "geom from crdppf.r145_sens_bruit using unique idobj using srid=2056"
   STATUS ON
   CLASSITEM "codegenre"
   OPACITY 50
