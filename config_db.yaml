@@ -42,6 +42,7 @@ db_config:
       railways_construction_limits
       highways_project_zones
       highways_construction_limits
+      road_building_lines
       airport_security_zones
       airport_project_zones
       airport_construction_limits

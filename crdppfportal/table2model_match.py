@@ -11,6 +11,7 @@ from crdppf.models.models import CHPollutedSitesCivilAirports, CHPollutedSitesCi
 from crdppf.models.models import CHPollutedSitesPublicTransports, CHPollutedSitesPublicTransportsPDF
 from crdppf.models.models import WaterProtectionZones, WaterProtectionPerimeters
 from crdppf.models.models import RoadNoise, ForestLimits, ForestDistances
+from crdppfportal.models import RoadBuildingLines
 
 # Matching dictionnary model-table name
 table2model_match = {
@@ -38,5 +39,6 @@ table2model_match = {
     'r132_perimetre_prot_eau': WaterProtectionPerimeters,
     'r145_sens_bruit': RoadNoise,
     'r157_lim_foret': ForestLimits,
-    'r159_dist_foret': ForestDistances
+    'r159_dist_foret': ForestDistances,
+    'r078ne_alignements': RoadBuildingLines
 }
