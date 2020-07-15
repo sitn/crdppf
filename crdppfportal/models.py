@@ -22,8 +22,12 @@ class Users(Base):
     __tablename__ = 'users'
     __table_args__ = {'schema': db_config['schema'], 'autoload': True}
 
-class RoadConstructionLimits(GeoInterface, Base):
-    __tablename__ = 'r078ne_alignements'
-    __table_args__ = {'schema': db_config['schema'], 'autoload': True}
-    idobj = Column(Integer, primary_key=True)
-    geom = Column(Geometry("MULTILINE", srid=srid_))
+if 'road_building_lines' in db_config['restrictions']:
+    class RoadBuildingLines(GeoInterface, Base):
+        __tablename__ = 'r078ne_alignements'
+        __table_args__ = {'schema': db_config['schema'], 'autoload': True}
+        idobj = Column(Integer, primary_key=True)
+        geom = Column(Geometry("MULTILINE", srid=srid_))
+else:
+    class RoadBuildingLines():
+        pass
