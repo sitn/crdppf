@@ -11,9 +11,9 @@ wmts_openlayers:
 app_config:
   # defaultfontfamily: Arial
   # topics provided by the confederation
-  ch_topics: ['R087','R088','R096','R097','R103','R104','R108','R118','R119']
+  ch_topics: ['R087','R088','R096','R097','R103','R104','R108','R117','R118','R119']
   # federal topics with certificate but empty no content/layers
-  emptytopics: ['R117']
+  emptytopics: []
 
   # wms and feature service name of the layers used by the confederation
   ch_legend_layers:
@@ -24,8 +24,8 @@ app_config:
     'R103': ch.bazl.projektierungszonen-flughafenanlagen.oereb
     'R104': ch.bazl.baulinien-flughafenanlagen.oereb
     'R108': ch.bazl.sicherheitszonenplan.oereb
+    'R117': ch.vbs.kataster-belasteter-standorte-militaer.oereb
     'R118': ch.bazl.kataster-belasteter-standorte-zivilflugplaetze.oereb
-    # 'R117': ch.vbs.kataster-belasteter-standorte-militaer.oereb
     'R119': ch.bav.kataster-belasteter-standorte-oev.oereb
 
   #  configuration and list of the wms layers used for the background image in the pdf
