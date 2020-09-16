@@ -749,6 +749,7 @@ pyramid_oereb:
 
     - name: plr117
       code: ContaminatedMilitarySites
+      download: https://data.geo.admin.ch/ch.vbs.kataster-belasteter-standorte-militaer.oereb/data.zip
       geometry_type: GEOMETRYCOLLECTION
       thresholds:
         length:

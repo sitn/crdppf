@@ -1487,6 +1487,135 @@ END
 
 LAYER
   STATUS ON
+  NAME "r117_vbs_belastete_standorte_militaer_pts"
+  GROUP "r117_vbs_belastete_standorte_militaer"
+  METADATA
+       "ows_title"                   "r117_vbs_belastete_standorte_militaer_pts"
+       "wms_srs"                    "EPSG:2056"
+       "wms_title"                  "${instanceid} WMS Server"
+       "wms_onlineresource"    "http://${host}/${instanceid}/wmscrdppf"
+  END
+  CONNECTIONTYPE POSTGIS
+  CONNECTION "user=${dbuser} password=${dbpassword} dbname=${db} host=${dbhost} port=${dbport}"
+  PROCESSING "CLOSE_CONNECTION=DEFER"
+  DATA "geom from (
+    select *
+    from crdppf.r117_vbs_belastete_standorte_militaer
+    WHERE  st_geometrytype(geom) like 'ST_Point'
+    ) as foo using unique idobj using srid=2056"
+  TYPE POINT
+  TEMPLATE "ttt"
+  OPACITY 60
+  CLASSITEM "codegenre"
+  CLASS
+    NAME "Pollué, investigation nécessaire"
+    SYMBOL "circle"
+    EXPRESSION /9903/
+    COLOR 0 0 255
+    OUTLINECOLOR 0 0 0
+    SIZE 7
+  END
+  CLASS
+    NAME "Pollué, pas d'atteinte nuisible ou incommodante à attendre"
+    SYMBOL "circle"
+    EXPRESSION /9904/
+    COLOR 255 255 0
+    OUTLINECOLOR 0 0 0
+    SIZE 7
+   END
+   CLASS
+    NAME "Pollué, ne nécessite ni surveillance ni assainissement"
+    SYMBOL "circle"
+    EXPRESSION /9905/
+    COLOR 255 204 0
+    OUTLINECOLOR 0 0 0
+    SIZE 7
+   END
+   CLASS
+    NAME "Pollué, nécessite une surveillance"
+    SYMBOL "circle"
+    EXPRESSION /9906/
+    COLOR 255 102 5
+    OUTLINECOLOR 0 0 0
+    SIZE 7
+   END
+   CLASS
+    NAME "Pollué, nécessite un assainissement"
+    SYMBOL "circle"
+    EXPRESSION /9907/
+    COLOR 255 0 0
+    OUTLINECOLOR 0 0 0
+    SIZE 7
+   END
+   CLASS
+    NAME "Pollué, nécessitée d'une investigation non encore évaluée"
+    SYMBOL "circle"
+    EXPRESSION /9908/
+    COLOR 95 95 95
+    OUTLINECOLOR 0 0 0
+    SIZE 7
+   END
+END
+
+
+LAYER
+  STATUS ON
+  NAME "r117_vbs_belastete_standorte_militaer_poly"
+  GROUP "r117_vbs_belastete_standorte_militaer"
+  METADATA
+       "ows_title"                   "r117_vbs_belastete_standorte_militaer_poly"
+       "wms_srs"                    "EPSG:2056"
+       "wms_title"                  "${instanceid} WMS Server"
+       "wms_onlineresource"    "http://${host}/${instanceid}/wmscrdppf"
+  END
+  CONNECTIONTYPE POSTGIS
+  CONNECTION "user=${dbuser} password=${dbpassword} dbname=${db} host=${dbhost} port=${dbport}"
+  PROCESSING "CLOSE_CONNECTION=DEFER"
+  DATA "geom from crdppf.r117_vbs_belastete_standorte_militaer using unique idobj using srid=2056"
+  TYPE POLYGON
+  TEMPLATE "ttt"
+  OPACITY 60
+  CLASSITEM "codegenre"
+  CLASS
+    NAME "Pollué, investigation nécessaire"
+    EXPRESSION /9903/
+    COLOR 0 0 255
+    OUTLINECOLOR 0 0 0
+  END
+  CLASS
+    NAME "Pollué, pas d'atteinte nuisible ou incommodante à attendre"
+    EXPRESSION /9904/
+    COLOR 255 255 0
+    OUTLINECOLOR 0 0 0
+   END
+   CLASS
+    NAME "Pollué, ne nécessite ni surveillance ni assainissement"
+    EXPRESSION /9905/
+    COLOR 255 204 0
+    OUTLINECOLOR 0 0 0
+   END
+   CLASS
+    NAME "Pollué, nécessite une surveillance"
+    EXPRESSION /9906/
+    COLOR 255 102 5
+    OUTLINECOLOR 0 0 0
+   END
+   CLASS
+    NAME "Pollué, nécessite un assainissement"
+    EXPRESSION /9907/
+    COLOR 255 0 0
+    OUTLINECOLOR 0 0 0
+   END
+   CLASS
+    NAME "Pollué, nécessitée d'une investigation non encore évaluée"
+    EXPRESSION /9908/
+    COLOR 95 95 95
+    OUTLINECOLOR 0 0 0
+   END
+END
+
+LAYER
+  STATUS ON
   NAME "r118_bazl_belastete_standorte_zivilflugplaetze_pts"
   GROUP "r118_bazl_belastete_standorte_zivilflugplaetze"
   METADATA
