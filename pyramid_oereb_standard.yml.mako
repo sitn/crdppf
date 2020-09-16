@@ -232,7 +232,7 @@ pyramid_oereb:
   real_estate:
     plan_for_land_register:
       # WMS URL to query the plan for land register used for all themes pages
-      reference_wms: https://sitn.ne.ch/ogc-pyramid-oereb/wms?SERVICE=WMS&REQUEST=GetMap&VERSION=1.1.1&STYLES=default&SRS=EPSG:2056&BBOX=2475000,1065000,2850000,1300000&WIDTH=493&HEIGHT=280&TRANSPARENT=true&FORMAT=image/png&LAYERS=mo6_couverture_sol_nb,mo22_batiments,mo9_immeubles
+      reference_wms: https://sitn.ne.ch/ogc-pyramid-oereb-dev/wms?SERVICE=WMS&REQUEST=GetMap&VERSION=1.1.1&STYLES=default&SRS=EPSG:2056&BBOX=2475000,1065000,2850000,1300000&WIDTH=493&HEIGHT=280&TRANSPARENT=true&FORMAT=image/png&LAYERS=mo6_couverture_sol_nb,mo22_batiments,mo9_immeubles
       # reference_wms: https://wms.geo.admin.ch/?SERVICE=WMS&REQUEST=GetMap&VERSION=1.1.1&STYLES=default&SRS=EPSG:2056&BBOX=2475000,1065000,2850000,1300000&WIDTH=493&HEIGHT=280&FORMAT=image/png&LAYERS=ch.swisstopo-vd.amtliche-vermessung
       layer_index: 0
       layer_opacity: 1.0
