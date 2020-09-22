@@ -137,7 +137,7 @@ LAYER
     NAME "RACN: 1e cat. - Bâtiment intéressant"
     EXPRESSION /8201/
     STYLE
-        SYMBOL "circle"
+        SYMBOL "triangle"
         SIZE 8
         COLOR 255 0 0
     END
@@ -146,7 +146,7 @@ LAYER
     NAME "RACN: 2e cat. - Bâtiment typique et pittoresque"
     EXPRESSION /8202/
     STYLE
-        SYMBOL "circle"
+        SYMBOL "triangle"
         SIZE 8
         COLOR 0 204 255
     END
@@ -155,7 +155,7 @@ LAYER
     NAME "RACN: 3e cat. - Bâtiment neutre, voire perturbant"
     EXPRESSION /8203/
     STYLE
-        SYMBOL "circle"
+        SYMBOL "triangle"
         SIZE 8
         COLOR 211 141 95
     END
