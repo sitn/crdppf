@@ -1488,7 +1488,7 @@ END
 LAYER
   STATUS ON
   NAME "r117_vbs_belastete_standorte_militaer_pts"
-  GROUP "r117_vbs_belastete_standorte_militaer"
+  GROUP "v_r117_vbs_belastete_standorte_militaer"
   METADATA
        "ows_title"                   "r117_vbs_belastete_standorte_militaer_pts"
        "wms_srs"                    "EPSG:2056"
@@ -1500,8 +1500,8 @@ LAYER
   PROCESSING "CLOSE_CONNECTION=DEFER"
   DATA "geom from (
     select *
-    from crdppf.r117_vbs_belastete_standorte_militaer
-    WHERE  st_geometrytype(geom) like 'ST_Point'
+    from contaminated_military_sites.v_r117_vbs_belastete_standorte_militaer
+    WHERE  st_geometrytype(geom) in ('ST_Point','ST_MultiPoint')
     ) as foo using unique idobj using srid=2056"
   TYPE POINT
   TEMPLATE "ttt"
@@ -1561,7 +1561,7 @@ END
 LAYER
   STATUS ON
   NAME "r117_vbs_belastete_standorte_militaer_poly"
-  GROUP "r117_vbs_belastete_standorte_militaer"
+  GROUP "v_r117_vbs_belastete_standorte_militaer"
   METADATA
        "ows_title"                   "r117_vbs_belastete_standorte_militaer_poly"
        "wms_srs"                    "EPSG:2056"
@@ -1571,7 +1571,7 @@ LAYER
   CONNECTIONTYPE POSTGIS
   CONNECTION "user=${dbuser} password=${dbpassword} dbname=${db} host=${dbhost} port=${dbport}"
   PROCESSING "CLOSE_CONNECTION=DEFER"
-  DATA "geom from crdppf.r117_vbs_belastete_standorte_militaer using unique idobj using srid=2056"
+  DATA "geom from contaminated_military_sites.v_r117_vbs_belastete_standorte_militaer using unique idobj using srid=2056"
   TYPE POLYGON
   TEMPLATE "ttt"
   OPACITY 60
