@@ -160,15 +160,6 @@ LAYER
         COLOR 211 141 95
     END
   END
-   CLASS
-    NAME "RACN: 2e cat. - Bâtiment typique"
-    EXPRESSION /8204/
-    STYLE
-        SYMBOL "triangle"
-        SIZE 10
-        COLOR 0 204 255
-    END
-   END
   CLASS
     NAME "Objet particulier à protéger ponctuel"
     EXPRESSION /8111/
