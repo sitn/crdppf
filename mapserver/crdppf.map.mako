@@ -137,7 +137,7 @@ LAYER
     NAME "RACN: 1e cat. - Bâtiment intéressant"
     EXPRESSION /8201/
     STYLE
-        SYMBOL "circle"
+        SYMBOL "triangle"
         SIZE 8
         COLOR 255 0 0
     END
@@ -164,7 +164,7 @@ LAYER
     NAME "Objet particulier à protéger ponctuel"
     EXPRESSION /8111/
     STYLE
-        SYMBOL "triangle"
+        SYMBOL "circle"
         COLOR 99 145 67
         SIZE 10
         OPACITY 70
