@@ -9,7 +9,14 @@ wmts_openlayers:
     ]
 
 app_config:
-  # defaultfontfamily: Arial
+  # default language
+  lang: fr
+
+  # Address figuring on the first page of the PDF extract
+  competentauthority: Service de la geomatique et du registre foncier;Rue de Tivoli 22 / CP;2002 Neuchatel
+
+  doctypes: legalbase,legalprovision,reference
+
   # topics provided by the confederation
   ch_topics: ['R087','R088','R096','R097','R103','R104','R108','R117','R118','R119']
   # federal topics with certificate but empty no content/layers
@@ -81,22 +88,6 @@ pdf_config:
   footermargin: 20
   # Default text font
   fontfamily: Arial
-  # text formats : b = bold, n= normal, i=italic ; size in pt
-  textstyles:
-    title1: [B, 22]
-    title2: [B, 18]
-    title3: [B, 16]
-    normal: [N, 10]
-    bold: [B,10]
-    url: [N,10]
-    small: [N, 7]
-    tocbold: [B, 11]
-    tocurl: [N, 9]
-    tocnormal: [N, 11]
-  # color for links - default is standard blue
-  urlcolor: [0, 0, 255]
-  # default color for text - black
-  defaultcolor: [0, 0, 0]
   # Max ratio property bbox/map bbox - to insure that the property occupies at most 90% of the map and leaves 10% space around it
   fitratio: 0.9
   # path to the logo of the confederation
@@ -114,9 +105,6 @@ pdf_config:
 
   # Default base name for the PDF extract
   pdfbasename: _ExtraitCRDPPF
-
-  # Default prefix/suffix for all the basemap files to distinguish them from topic files
-  siteplanbasename: _siteplan
 
   # Activates (true) or not cantonal and other optional topics (to be specified in crdppfportal/models.py)
   optionaltopics: false
