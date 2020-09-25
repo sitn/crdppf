@@ -1290,7 +1290,7 @@ LAYER
   CONNECTIONTYPE POSTGIS
   CONNECTION "user=${dbuser} password=${dbpassword} dbname=${db} host=${dbhost} port=${dbport}"
   PROCESSING "CLOSE_CONNECTION=DEFER"
-  DATA "geom from crdppf.r88_astra_baulinien_nationalstrassen using unique idobj using srid=2056"
+  DATA "geom from motorways_building_lines.v_r88_astra_baulinien_nationalstrassen using unique idobj using srid=2056"
   TYPE LINE
   TEMPLATE "ttt"
   OPACITY 60
@@ -1479,7 +1479,7 @@ END
 LAYER
   STATUS ON
   NAME "r117_vbs_belastete_standorte_militaer_pts"
-  GROUP "r117_vbs_belastete_standorte_militaer"
+  GROUP "v_r117_vbs_belastete_standorte_militaer"
   METADATA
        "ows_title"                   "r117_vbs_belastete_standorte_militaer_pts"
        "wms_srs"                    "EPSG:2056"
@@ -1491,8 +1491,8 @@ LAYER
   PROCESSING "CLOSE_CONNECTION=DEFER"
   DATA "geom from (
     select *
-    from crdppf.r117_vbs_belastete_standorte_militaer
-    WHERE  st_geometrytype(geom) like 'ST_Point'
+    from contaminated_military_sites.v_r117_vbs_belastete_standorte_militaer
+    WHERE  st_geometrytype(geom) in ('ST_Point','ST_MultiPoint')
     ) as foo using unique idobj using srid=2056"
   TYPE POINT
   TEMPLATE "ttt"
@@ -1552,7 +1552,7 @@ END
 LAYER
   STATUS ON
   NAME "r117_vbs_belastete_standorte_militaer_poly"
-  GROUP "r117_vbs_belastete_standorte_militaer"
+  GROUP "v_r117_vbs_belastete_standorte_militaer"
   METADATA
        "ows_title"                   "r117_vbs_belastete_standorte_militaer_poly"
        "wms_srs"                    "EPSG:2056"
@@ -1562,7 +1562,7 @@ LAYER
   CONNECTIONTYPE POSTGIS
   CONNECTION "user=${dbuser} password=${dbpassword} dbname=${db} host=${dbhost} port=${dbport}"
   PROCESSING "CLOSE_CONNECTION=DEFER"
-  DATA "geom from crdppf.r117_vbs_belastete_standorte_militaer using unique idobj using srid=2056"
+  DATA "geom from contaminated_military_sites.v_r117_vbs_belastete_standorte_militaer using unique idobj using srid=2056"
   TYPE POLYGON
   TEMPLATE "ttt"
   OPACITY 60
@@ -1908,7 +1908,7 @@ LAYER
   CONNECTIONTYPE POSTGIS
   CONNECTION "user=${dbuser} password=${dbpassword} dbname=${db} host=${dbhost} port=${dbport}"
   PROCESSING "CLOSE_CONNECTION=DEFER"
-  DATA "geom from crdppf.r145_sens_bruit using unique idobj using srid=2056"
+  DATA "geom from noise_sensitivity_levels.v_r145_sens_bruit using unique idobj using srid=2056"
   STATUS ON
   CLASSITEM "codegenre"
   OPACITY 50
@@ -1995,6 +1995,78 @@ LAYER
     END
   END
 END
+
+LAYER
+    NAME "r078ne_alignements"
+    TYPE LINE
+    METADATA
+       "ows_title" "r078ne_alignements"
+       "wms_srs""EPSG:2056"
+       "wms_title"                      "${instanceid} WMS Server"
+       "wms_onlineresource"     "http://${host}/${instanceid}/wmscrdppf"
+    END
+    CONNECTIONTYPE POSTGIS
+    CONNECTION "user=${dbuser} password=${dbpassword} dbname=${db} host=${dbhost} port=${dbport}"
+    PROCESSING "CLOSE_CONNECTION=DEFER"
+    DATA "geom from crdppf.r078ne_alignements using unique idobj using srid=2056"
+    STATUS ON
+    TEMPLATE "ttt"
+    TOLERANCE 5
+    TOLERANCEUNITS pixels
+    CLASSITEM "codegenre"
+    CLASS
+        NAME "alignement primaire"
+        EXPRESSION /ali_prim/
+        STYLE
+            WIDTH 3
+            COLOR 25 60 116
+        END
+    END
+    CLASS
+        NAME "alignement secondaire"
+        EXPRESSION /ali_sec/
+        STYLE
+            WIDTH 2
+            COLOR 25 60 116
+        END
+    END
+    CLASS
+        NAME "front d'implantation obligatoire"
+        EXPRESSION /fio/
+        STYLE
+            PATTERN 6 6 END
+            WIDTH 3
+            COLOR 31 120 180
+        END
+    END
+    CLASS
+        NAME "bande d'implantation obligatoire"
+        EXPRESSION /bio/
+        STYLE
+            WIDTH 4
+            COLOR 31 120 180
+        END
+    END
+    CLASS
+        NAME "alignement de rez-de-chaussée"
+        EXPRESSION /ali_rez/
+        STYLE
+            WIDTH 2
+            COLOR 14 88 162
+        END
+    END
+    CLASS
+        NAME "alignement en cas de reconstruction"
+        EXPRESSION /ali_rec/
+        STYLE
+            PATTERN 6 6 END
+            WIDTH 2
+            COLOR 31 120 180
+        END
+    END
+    MINSCALEDENOM 50
+END
+
 
 #####################
 # RESTRICTIONS CRDPPF - fin

@@ -37,6 +37,10 @@ db_config:
       att_id: idcnlo
       att_local_name: nomloc
 
+    contaminated_military_sites:
+      tablename: v_r117_vbs_belastete_standorte_militaer
+      schema: contaminated_military_sites
+
   restrictions:
       railways_project_zones
       railways_construction_limits
@@ -45,7 +49,7 @@ db_config:
       airport_security_zones
       airport_project_zones
       airport_construction_limits
-      military_polluted_sites
+      contaminated_military_sites
       airport_polluted_sites
       transportation_polluted_sites
       road_noise

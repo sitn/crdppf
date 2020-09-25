@@ -4,11 +4,11 @@ from crdppf.models.models import ComplementaryLandUsePerimeters, LandUseLinearCo
 from crdppf.models.models import LandUsePointConstraints, PollutedSites
 from crdppf.models.models import CHHighwaysProjectZones, CHHighwaysConstructionLimits
 from crdppf.models.models import CHRailwaysProjectZones, CHRailwaysConstructionLimits
-from crdppf.models.models import CHAirportSecurityZones, CHAirportSecurityZonesPDF
-from crdppf.models.models import CHAirportProjectZones, CHAirportProjectZonesPDF, ContaminatedMilitarySites
-from crdppf.models.models import CHAirportConstructionLimits, CHAirportConstructionLimitsPDF
-from crdppf.models.models import CHPollutedSitesCivilAirports, CHPollutedSitesCivilAirportsPDF
-from crdppf.models.models import CHPollutedSitesPublicTransports, CHPollutedSitesPublicTransportsPDF
+from crdppf.models.models import CHAirportSecurityZones
+from crdppf.models.models import CHAirportProjectZones, ContaminatedMilitarySites
+from crdppf.models.models import CHAirportConstructionLimits
+from crdppf.models.models import CHPollutedSitesCivilAirports
+from crdppf.models.models import CHPollutedSitesPublicTransports
 from crdppf.models.models import WaterProtectionZones, WaterProtectionPerimeters
 from crdppf.models.models import RoadNoise, ForestLimits, ForestDistances
 
@@ -24,17 +24,12 @@ table2model_match = {
     'r97_bav_baulinien_eisenbahnanlagen': CHRailwaysConstructionLimits,
     'r96_bav_projektierungszonen_eisenbahnanlagen': CHRailwaysProjectZones,
     'r103_bazl_projektierungszonen_flughafenanlagen': CHAirportProjectZones,
-    'r103_bazl_projektierungszonen_flughafenanlagen_pdf': CHAirportProjectZonesPDF,
     'r104_bazl_baulinien_flughafenanlagen': CHAirportConstructionLimits,
-    'r104_bazl_baulinien_flughafenanlagen_pdf': CHAirportConstructionLimitsPDF,
     'r108_bazl_sicherheitszonenplan': CHAirportSecurityZones,
-    'r108_bazl_sicherheitszonenplan_pdf': CHAirportSecurityZonesPDF,
     'r116_sites_pollues': PollutedSites,
-    'r117_vbs_belastete_standorte_militaer': ContaminatedMilitarySites,
+    'v_r117_vbs_belastete_standorte_militaer': ContaminatedMilitarySites,
     'r118_bazl_belastete_standorte_zivilflugplaetze': CHPollutedSitesCivilAirports,
-    'r118_bazl_belastete_standorte_zivilflugplaetze_pdf': CHPollutedSitesCivilAirportsPDF,
     'r119_bav_belastete_standorte_oev': CHPollutedSitesPublicTransports,
-    'r119_bav_belastete_standorte_oev_pdf': CHPollutedSitesPublicTransportsPDF,
     'r131_zone_prot_eau': WaterProtectionZones,
     'r132_perimetre_prot_eau': WaterProtectionPerimeters,
     'r145_sens_bruit': RoadNoise,
