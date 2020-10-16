@@ -37,21 +37,89 @@ db_config:
       att_id: idcnlo
       att_local_name: nomloc
 
+    land_use_plans_primary_use:
+      tablename: v_r73_affectations_primaires
+      schema: land_use_plans
+    land_use_plans_overlay_zones:
+      tablename: v_r73_zones_superposees
+      schema: land_use_plans
+    land_use_plans_overlay_perimeters:
+      tablename: v_r73_perimetres_superposes
+      schema: land_use_plans
+    land_use_plans_linear_constraints:
+      tablename: v_r73_contenus_lineaires
+      schema: land_use_plans
+    land_use_plans_point_constraints:
+      tablename: v_r73_contenus_ponctuels
+      schema: land_use_plans
+    motorways_project_planing_zones:
+      tablename: v_r87_astra_projektierungszonen_nationalstrassen
+      schema: motorways_project_planing_zones
+    motorways_building_lines:
+      tablename: v_r88_astra_baulinien_nationalstrassen
+      schema: motorways_building_lines
+    railways_project_planning_zones:
+      tablename: v_r96_bav_projektierungszonen_eisenbahnanlagen
+      schema: railways_project_planning_zones
+    railways_building_lines:
+      tablename: v_r97_bav_baulinien_eisenbahnanlagen
+      schema: railways_building_lines
+    airports_project_planning_zones:
+      tablename: v_r103_bazl_projektierungszonen_flughafenanlagen
+      schema: airports_project_planning_zones
+    airports_building_lines:
+      tablename: v_r104_bazl_baulinien_flughafenanlagen
+      schema: airports_building_lines
+    airports_security_zone_plans:
+      tablename: v_r108_bazl_sicherheitszonenplan
+      schema: airports_security_zone_plans
+    contaminated_sites:
+      tablename: v_r116_sites_pollues
+      schema: contaminated_sites
     contaminated_military_sites:
       tablename: v_r117_vbs_belastete_standorte_militaer
       schema: contaminated_military_sites
+    contaminated_civil_aviation_sites:
+      tablename: v_r118_bazl_belastete_standorte_zivilflugplaetze
+      schema: contaminated_civil_aviation_sites
+    contaminated_public_transport_sites:
+      tablename: v_r119_bav_belastete_standorte_oev
+      schema: contaminated_public_transport_sites
+    groundwater_protection_zones:
+      tablename: v_r131_zone_prot_eau
+      schema: groundwater_protection_zones
+    groundwater_protection_sites:
+      tablename: v_r132_perimetre_prot_eau
+      schema: groundwater_protection_sites
+    noise_sensitivity_levels:
+      tablename: v_r145_sens_bruit
+      schema: noise_sensitivity_levels
+    forest_perimeters:
+      tablename: v_r157_lim_foret
+      schema: forest_perimeters
+    forest_distance_lines:
+      tablename: v_r159_dist_foret
+      schema: forest_distance_lines
 
   restrictions:
-      railways_project_zones
-      railways_construction_limits
-      highways_project_zones
-      highways_construction_limits
-      airport_security_zones
-      airport_project_zones
-      airport_construction_limits
-      contaminated_military_sites
-      airport_polluted_sites
-      transportation_polluted_sites
-      road_noise
-      forest_limits
-      forest_distances
+    land_use_plans_primary_use
+    land_use_plans_overlay_zones
+    land_use_plans_overlay_perimeters
+    land_use_plans_linear_constraints
+    land_use_plans_point_constraints
+    airports_building_lines
+    airports_project_planning_zones
+    airports_security_zone_plans
+    railways_project_planning_zones
+    railways_building_lines
+    motorways_project_planing_zones
+    motorways_building_lines
+    contaminated_military_sites
+    contaminated_civil_aviation_sites
+    contaminated_public_transport_sites
+    contaminated_sites
+    groundwater_protection_sites
+    groundwater_protection_zones
+    road_noise
+    forest_perimeters
+    forest_distance_lines
