@@ -30,7 +30,7 @@ table2model_match = {
     'r108_bazl_sicherheitszonenplan': CHAirportSecurityZones,
     'r108_bazl_sicherheitszonenplan_pdf': CHAirportSecurityZonesPDF,
     'r116_sites_pollues': PollutedSites,
-    'r117_vbs_belastete_standorte_militaer': ContaminatedMilitarySites,
+    'v_r117_vbs_belastete_standorte_militaer': ContaminatedMilitarySites,
     'r118_bazl_belastete_standorte_zivilflugplaetze': CHPollutedSitesCivilAirports,
     'r118_bazl_belastete_standorte_zivilflugplaetze_pdf': CHPollutedSitesCivilAirportsPDF,
     'r119_bav_belastete_standorte_oev': CHPollutedSitesPublicTransports,
