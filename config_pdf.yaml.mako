@@ -62,6 +62,21 @@ app_config:
   # default image format of the wms
   wms_imageformat: image/png
 
+# Parameters of the map in the extract
+map:
+  # default map height in mm
+  height_mm: 99
+  # default map width in mm
+  width_px: 174
+  # default map height in pixel
+  height_px: 280
+  # default map width in pixel
+  width_px: 493
+    # default margin in pixel
+  margin: 10
+  # default resolution in dpi
+  resolution: 300
+  
 # Parameters for the PDF extract layout - only modify if you know what you do (may affect the layout)!!
 pdf_config:
   # default language of the pdf extract
