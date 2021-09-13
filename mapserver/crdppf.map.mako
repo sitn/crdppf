@@ -138,8 +138,16 @@ LAYER
     EXPRESSION /8201/
     STYLE
         SYMBOL "triangle"
-        SIZE 12
+        SIZE 20
         COLOR 255 0 0
+        MINSCALEDENOM 0
+        MAXSCALEDENOM 2000
+    END
+    STYLE
+        SYMBOL "triangle"
+        SIZE 10
+        COLOR 255 0 0
+        MINSCALEDENOM 2001
     END
   END
   CLASS
@@ -147,8 +155,16 @@ LAYER
     EXPRESSION /8202/
     STYLE
         SYMBOL "triangle"
-        SIZE 12
+        SIZE 20
         COLOR 0 204 255
+        MINSCALEDENOM 0
+        MAXSCALEDENOM 2000
+    END
+    STYLE
+        SYMBOL "triangle"
+        SIZE 10
+        COLOR 0 204 255
+        MINSCALEDENOM 2001
     END
   END
   CLASS
@@ -156,8 +172,16 @@ LAYER
     EXPRESSION /8203/
     STYLE
         SYMBOL "triangle"
-        SIZE 12
+        SIZE 20
         COLOR 211 141 95
+        MINSCALEDENOM 0
+        MAXSCALEDENOM 2000
+    END
+    STYLE
+        SYMBOL "triangle"
+        SIZE 10
+        COLOR 211 141 95
+        MINSCALEDENOM 2001
     END
   END
   CLASS
