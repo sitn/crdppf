@@ -138,7 +138,7 @@ LAYER
     EXPRESSION /8201/
     STYLE
         SYMBOL "triangle"
-        SIZE 8
+        SIZE 12
         COLOR 255 0 0
     END
   END
@@ -147,7 +147,7 @@ LAYER
     EXPRESSION /8202/
     STYLE
         SYMBOL "triangle"
-        SIZE 8
+        SIZE 12
         COLOR 0 204 255
     END
   END
@@ -156,7 +156,7 @@ LAYER
     EXPRESSION /8203/
     STYLE
         SYMBOL "triangle"
-        SIZE 8
+        SIZE 12
         COLOR 211 141 95
     END
   END
