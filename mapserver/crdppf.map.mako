@@ -44,7 +44,7 @@ OUTPUTFORMAT
   DRIVER "AGG/JPEG"
   MIMETYPE "image/jpeg"
   EXTENSION "jpeg"
-  FORMATOPTION QUALITY=88
+  FORMATOPTION "QUALITY=88"
 END
 
 PROJECTION
@@ -80,13 +80,23 @@ END
     COLOR 0 0 0
     UNITS METERS
     INTERVALS 5
-    TRANSPARENT FALSE
+    TRANSPARENT OFF
     STATUS OFF
   END # Scalebar object ends
 
 LAYER
   NAME "parcelles"
   TYPE POLYGON
+  METADATA
+    "ows_title" "parcelles"
+    "wms_srs" "EPSG:2056"
+    "wfs_enable_request" "*"
+    "gml_types" "auto"
+    "gml_include_items" "id,idemai,egrid,cadastre,nummai,typimm,srfmai,nufeco,valide"
+  END
+  PROJECTION
+    "init=epsg:2056"   ##required
+  END
   CONNECTIONTYPE POSTGIS
   CONNECTION "user=${dbuser} password=${dbpassword} dbname=${db} host=${dbhost} port=${dbport}"
   PROCESSING "CLOSE_CONNECTION=DEFER"
@@ -98,16 +108,6 @@ LAYER
     STYLE
       OUTLINECOLOR 120 120 0
     END
-  END
-  METADATA
-    "ows_title" "parcelles"
-    "wms_srs" "EPSG:2056"
-    "wfs_enable_request" "*"
-    "gml_types" "auto"
-    "gml_include_items" "id,idemai,egrid,cadastre,nummai,typimm,srfmai,nufeco,valide"
-  END
-  PROJECTION
-    "init=epsg:2056"   ##required
   END
   MINSCALEDENOM 0
   MAXSCALEDENOM 25001
@@ -177,7 +177,7 @@ END
 LAYER
   NAME "r73_contenus_lineaires"
   TYPE LINE
-   METADATA
+  METADATA
        "ows_title"                   "r73_contenus_lineaires"
        "wms_srs"                    "EPSG:2056"
        "wms_title"                  "${instanceid} WMS Server"
@@ -265,7 +265,7 @@ LAYER
     STYLE
         COLOR 90 207 241
         WIDTH 1.5
-        END #STYLE
+    END #STYLE
   END #CLASS
   CLASS
     NAME "Dist. des constructions par rapp. à la zone viticole"
@@ -2188,7 +2188,7 @@ LAYER
     NAME "Couloirs lim. obstacles"
     STYLE
         OUTLINECOLOR 255 0 0
-        SYMBOL points3
+        SYMBOL "points3"
         SIZE 5
     END
   END
@@ -2321,6 +2321,7 @@ LAYER
         STYLE
             COLOR 220 220 220
         END
+    END
     CLASS
         EXPRESSION /Zürich/
         STYLE
@@ -2658,14 +2659,13 @@ LAYER
             COLOR "#ffffff"
         END
         STYLE
-            SYMBOL rail
+            SYMBOL "rail"
             GAP -3
             SIZE 4
             COLOR "#555554"
         END
     END
 END
-
 
 LAYER
     NAME "surfaces_tot"
@@ -2947,7 +2947,7 @@ LAYER
     STATUS ON
     LABELITEM "label"
     MAXSCALEDENOM 5000
-    SYMBOLSCALE 1000
+    SYMBOLSCALEDENOM 1000
     LABELMAXSCALEDENOM 5000
     TEMPLATE "ttt"
     CLASS
@@ -2987,7 +2987,7 @@ LAYER
     STATUS ON
     LABELITEM "label"
     MAXSCALEDENOM 4000
-    SYMBOLSCALE 1000
+    SYMBOLSCALEDENOM 1000
     LABELMAXSCALEDENOM 3000
     TEMPLATE "ttt"
     CLASSITEM "label_position_mapserver"
@@ -3937,7 +3937,7 @@ LAYER
     MAXSCALEDENOM 5001
     LABELITEM "feat_name"
     LABELMAXSCALEDENOM 5001
-    SYMBOLSCALE 2000
+    SYMBOLSCALEDENOM 2000
     OPACITY 100
     CLASS
         LABEL
