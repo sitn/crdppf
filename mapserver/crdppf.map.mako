@@ -1457,6 +1457,14 @@ LAYER
     END
   END
   CLASS
+    NAME "Pollué, pas d'atteinte nuisible ou incommodante à attendre"
+    EXPRESSION /9904/
+    STYLE
+        COLOR 255 255 0
+        OUTLINECOLOR 0 0 0
+    END
+  END
+  CLASS
     NAME "Pollué, ne nécessite ni surveillance ni assainissement"
     EXPRESSION /9905/
     STYLE
@@ -1485,14 +1493,6 @@ LAYER
     EXPRESSION /9908/
     STYLE
         COLOR 95 95 95
-        OUTLINECOLOR 0 0 0
-    END
-  END
-  CLASS
-    NAME "Pollué, pas d'atteinte nuisible ou incommodante à attendre"
-    EXPRESSION /9904/
-    STYLE
-        COLOR 255 255 0
         OUTLINECOLOR 0 0 0
     END
   END
