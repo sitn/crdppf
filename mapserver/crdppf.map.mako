@@ -1399,7 +1399,7 @@ LAYER
   CLASS
     NAME "Alignements des install. aéroportuaires"
     STYLE
-    COLOR 0 0 180
+      COLOR 0 0 180
     END
   END
 END
