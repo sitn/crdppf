@@ -2168,7 +2168,7 @@ LAYER
         END
     END
     CLASS
-        NAME "alignement de rez-de-chaussÃ©e"
+        NAME "alignement de rez-de-chaussée"
         EXPRESSION /ali_rez/
         STYLE
             WIDTH 2
