@@ -1057,6 +1057,26 @@ LAYER
     END #STYLE
   END #CLASS
   CLASS
+    NAME "Zone d'utilité publique 1 – Constructible"
+    EXPRESSION /1511/
+    STYLE
+        COLOR  157 159 162
+    END #STYLE
+  END #CLASS
+  CLASS
+    NAME "Zone d'utilité publique 2 - À constructibilité restreinte"
+    EXPRESSION /1611/
+    STYLE
+        COLOR 138 200 101
+    END #STYLE
+    STYLE
+        SYMBOL "hatchsymbol"
+        SIZE 6
+        COLOR 157 159 162
+        WIDTH 3
+    END #STYLE
+  END #CLASS
+  CLASS
     NAME "Zone de verdure"
     EXPRESSION /1603|1613/
     STYLE
