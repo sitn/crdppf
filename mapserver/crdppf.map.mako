@@ -1057,7 +1057,7 @@ LAYER
     END #STYLE
   END #CLASS
   CLASS
-    NAME "Zone d'utilité publique 1 – Constructible"
+    NAME "Zone d'utilité publique 1 - Constructible"
     EXPRESSION /1511/
     STYLE
         COLOR  157 159 162
