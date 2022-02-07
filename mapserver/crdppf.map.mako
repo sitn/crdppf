@@ -135,7 +135,7 @@ LAYER
   TEMPLATE "ttt"
   CLASS
     NAME "RACN: 1e cat. - Bâtiment intéressant"
-    EXPRESSION /8201/
+    EXPRESSION "8201"
     STYLE
         SYMBOL "triangle"
         SIZE 20
@@ -152,7 +152,7 @@ LAYER
   END
   CLASS
     NAME "RACN: 2e cat. - Bâtiment typique et pittoresque"
-    EXPRESSION /8202/
+    EXPRESSION "8202"
     STYLE
         SYMBOL "triangle"
         SIZE 20
@@ -169,7 +169,7 @@ LAYER
   END
   CLASS
     NAME "RACN: 3e cat. - Bâtiment neutre, voire perturbant"
-    EXPRESSION /8203/
+    EXPRESSION "8203"
     STYLE
         SYMBOL "triangle"
         SIZE 20
@@ -186,7 +186,7 @@ LAYER
   END
   CLASS
     NAME "Objet particulier à protéger ponctuel"
-    EXPRESSION /8111/
+    EXPRESSION "8111"
     STYLE
         SYMBOL "circle"
         COLOR 99 145 67
@@ -217,7 +217,7 @@ LAYER
   TEMPLATE "ttt"
   CLASS
     NAME "Périmètre d'évolution"
-    EXPRESSION /7111/
+    EXPRESSION "7111"
     STYLE
         PATTERN
             15 5 4 5
@@ -238,7 +238,7 @@ LAYER
   END #CLASS
   CLASS
     NAME "Alignement obligatoire"
-    EXPRESSION /7113/
+    EXPRESSION "7113"
     STYLE
         COLOR 255 0 0
         WIDTH 2
@@ -253,7 +253,7 @@ LAYER
   END #CLASS
   CLASS
     NAME "Alignement"
-    EXPRESSION /7115/
+    EXPRESSION "7115"
     STYLE
         PATTERN
             13 3 2 3 2 3
@@ -274,7 +274,7 @@ LAYER
   END #CLASS
   CLASS
     NAME "Objet particulier à protéger linéaire"
-    EXPRESSION /7000/
+    EXPRESSION "7000"
     STYLE
         PATTERN 3 8
         END
@@ -285,7 +285,7 @@ LAYER
   END #CLASS
   CLASS
     NAME "Dist. des constructions par rapp. au cours et étendue d'eau"
-    EXPRESSION /7114/
+    EXPRESSION "7114"
     STYLE
         COLOR 90 207 241
         WIDTH 1.5
@@ -293,7 +293,7 @@ LAYER
   END #CLASS
   CLASS
     NAME "Dist. des constructions par rapp. à la zone viticole"
-    EXPRESSION /7116/
+    EXPRESSION "7116"
     STYLE
         COLOR 170 168 0
         WIDTH 1.5
@@ -301,7 +301,7 @@ LAYER
   END #CLASS
   CLASS
     NAME "Dist. des constructions par rapp. à la vigne"
-    EXPRESSION /7117/
+    EXPRESSION "7117"
     STYLE
         PATTERN
             10 5
@@ -330,7 +330,7 @@ LAYER
   TEMPLATE "ttt"
   CLASS
     NAME "Périmètres de sites stratégiques"
-    EXPRESSION /6111/
+    EXPRESSION "6111"
     STYLE
         OUTLINECOLOR 0 75 224
         WIDTH 3
@@ -338,7 +338,7 @@ LAYER
   END #CLASS
   CLASS
     NAME "Périmètre soumis à plan directeur sectoriel"
-    EXPRESSION /6911/
+    EXPRESSION "6911"
     STYLE
         PATTERN
             15 7 4 7 4 7
@@ -359,7 +359,7 @@ LAYER
   END #CLASS
   CLASS
     NAME "Périmètre de plan directeur sectoriel en vigueur"
-    EXPRESSION /6912/
+    EXPRESSION "6912"
     STYLE
         PATTERN
             15 7 4 7
@@ -380,7 +380,7 @@ LAYER
   END #CLASS
   CLASS
     NAME "Périmètre soumis à plan directeur de quartier"
-    EXPRESSION /6913/
+    EXPRESSION "6913"
     STYLE
         PATTERN
             15 5
@@ -401,7 +401,7 @@ LAYER
   END #CLASS
   CLASS
     NAME "Périmètre de plan directeur de quartier en vigueur"
-    EXPRESSION /6914/
+    EXPRESSION "6914"
     STYLE
         WIDTH 5
         OUTLINECOLOR  0 0 0
@@ -416,7 +416,7 @@ LAYER
   END #CLASS
   CLASS
     NAME "Périmètre soumis à plan de quartier"
-    EXPRESSION /6211/
+    EXPRESSION "6211"
     STYLE
         PATTERN
             10 6
@@ -437,7 +437,7 @@ LAYER
   END #CLASS
   CLASS
     NAME "Périmètre de plan de quartier en vigueur"
-    EXPRESSION /6112/
+    EXPRESSION "6112"
     STYLE
         WIDTH 4
         OUTLINECOLOR  0 0 0
@@ -452,7 +452,7 @@ LAYER
   END #CLASS
   CLASS
     NAME "Périmètre soumis à plan spécial"
-    EXPRESSION /6212/
+    EXPRESSION "6212"
     STYLE
         PATTERN
             15 5
@@ -494,7 +494,7 @@ LAYER
   END #CLASS
   CLASS
     NAME "Périmètre de plan spécial en vigueur"
-    EXPRESSION /6113/
+    EXPRESSION "6113"
     STYLE
         WIDTH 2
         OUTLINECOLOR  0 0 0
@@ -524,7 +524,7 @@ LAYER
   END #CLASS
   CLASS
     NAME "Périmètre à prescriptions particulières"
-    EXPRESSION /6114/
+    EXPRESSION "6114"
     STYLE
         OUTLINECOLOR 255 0 0
         WIDTH 2.5
@@ -581,7 +581,7 @@ LAYER
   END #CLASS
   CLASS
     NAME "Périmètre à fiche de mesures"
-    EXPRESSION /6116/
+    EXPRESSION "6116"
     STYLE
         PATTERN
             5 6
@@ -602,7 +602,7 @@ LAYER
   END #CLASS
   CLASS
     NAME "Bande d'implantation"
-    EXPRESSION /6117/
+    EXPRESSION "6117"
     STYLE
         OUTLINECOLOR 255 0 0
         WIDTH 2
@@ -617,7 +617,7 @@ LAYER
   END #CLASS
   CLASS
     NAME "Périmètre de protection des sites bâtis"
-    EXPRESSION /5111/
+    EXPRESSION "5111"
     STYLE
         PATTERN
         4 4
@@ -629,7 +629,7 @@ LAYER
   END
   CLASS
     NAME "Périmètre à habitat traditionnellement dispersé"
-    EXPRESSION /6119/
+    EXPRESSION "6119"
     STYLE
         OUTLINECOLOR 228 159 30
         WIDTH 2.5
@@ -645,7 +645,7 @@ LAYER
   END #CLASS
   CLASS
     NAME "Périmètre de plan d'extraction de matériaux en vigueur"
-    EXPRESSION /6118/
+    EXPRESSION "6118"
     STYLE
         OUTLINECOLOR 94 85 64
         WIDTH 3
@@ -660,7 +660,7 @@ LAYER
   END #CLASS
   CLASS
     NAME "Périmètre de site marécageux"
-    EXPRESSION /5213/
+    EXPRESSION "5213"
     STYLE
         OUTLINECOLOR 60 86 40
         WIDTH 2
@@ -745,7 +745,7 @@ LAYER
   TEMPLATE "ttt"
   CLASS
     NAME "Zone de tourisme, sports, détente et loisirs 3 - A constructibilité restreinte"
-    EXPRESSION /5219/
+    EXPRESSION "5219"
     STYLE
         SYMBOL "hatchsymbol"
         COLOR 100 125 190
@@ -785,7 +785,7 @@ LAYER
   END #CLASS
   CLASS
     NAME "Zone à protéger communale"
-    EXPRESSION /5211/
+    EXPRESSION "5211"
     STYLE
         COLOR 99 144 67
         OPACITY 50
@@ -793,7 +793,7 @@ LAYER
   END #CLASS
   CLASS
     NAME "Zone à protéger cantonale"
-    EXPRESSION /5212/
+    EXPRESSION "5212"
     STYLE
         SYMBOL "hatchsymbol"
         SIZE 4
@@ -805,7 +805,7 @@ LAYER
   END #CLASS
   CLASS
     NAME "Zone de crêtes et forêts"
-    EXPRESSION /5214/
+    EXPRESSION "5214"
     STYLE
         OUTLINECOLOR 255 220 121
         WIDTH 1
@@ -821,7 +821,7 @@ LAYER
   END #CLASS
   CLASS
     NAME "Zone de vignes et grèves"
-    EXPRESSION /5215/
+    EXPRESSION "5215"
     STYLE
         OUTLINECOLOR 150 192 122
         WIDTH 1
@@ -837,7 +837,7 @@ LAYER
   END #CLASS
   CLASS
     NAME "Biotope"
-    EXPRESSION /5216/
+    EXPRESSION "5216"
     STYLE
         COLOR 59 86 41
         OPACITY 60
@@ -845,7 +845,7 @@ LAYER
   END #CLASS
   CLASS
     NAME "Réserve naturelle de la faune et de la flore"
-    EXPRESSION /5217/
+    EXPRESSION "5217"
     STYLE
         OUTLINECOLOR 150 192 122
         WIDTH 1
@@ -861,7 +861,7 @@ LAYER
   END #CLASS
   CLASS
     NAME "Zone de protection des rives"
-    EXPRESSION /5218/
+    EXPRESSION "5218"
     STYLE
         SYMBOL "hatchsymbol"
         COLOR 150 192 122
@@ -873,7 +873,7 @@ LAYER
   END #CLASS
   CLASS
     NAME "Synthèse dangers naturels: danger élevé"
-    EXPRESSION /16604/
+    EXPRESSION "16604"
     STYLE
         COLOR 255 0 0
         OPACITY 40
@@ -881,7 +881,7 @@ LAYER
   END # CLASS
   CLASS
     NAME "Synthèse dangers naturels: danger moyen"
-    EXPRESSION /16603/
+    EXPRESSION "16603"
     STYLE
         COLOR 0 0 255
         OPACITY 40
@@ -889,7 +889,7 @@ LAYER
   END # CLASS
   CLASS
     NAME "Synthèse dangers naturels: danger faible"
-    EXPRESSION /16602/
+    EXPRESSION "16602"
     STYLE
         COLOR 255 255 0
         OPACITY 40
@@ -897,7 +897,7 @@ LAYER
   END # CLASS
   CLASS
     NAME "Synthèse dangers naturels: danger résiduel"
-    EXPRESSION /16601/
+    EXPRESSION "16601"
     STYLE
         SYMBOL "hatchsymbol"
         COLOR 255 255 0
@@ -929,35 +929,35 @@ LAYER
   TEMPLATE "ttt"
   CLASS
     NAME "Zone d'habitation à faible densité"
-    EXPRESSION /1101/
+    EXPRESSION "1101"
     STYLE
         COLOR  252 225 23
     END #STYLE
   END #CLASS
   CLASS
     NAME "Zone résidentielle densifiée"
-    EXPRESSION /1102/
+    EXPRESSION "1102"
     STYLE
         COLOR  252 176 23
     END #STYLE
   END #CLASS
   CLASS
     NAME "Zone d'habitation à moyenne densité"
-    EXPRESSION /1103/
+    EXPRESSION "1103"
     STYLE
         COLOR  255 125 23
     END #STYLE
   END #CLASS
   CLASS
     NAME "Zone d'habitation à haute densité"
-    EXPRESSION /1104/
+    EXPRESSION "1104"
     STYLE
         COLOR  255 75 23
     END #STYLE
   END #CLASS
   CLASS
     NAME "Zone mixte"
-    EXPRESSION /1105|1301/
+    EXPRESSION {1105,1301}
     STYLE
         COLOR 184 25 110
     END
@@ -970,21 +970,21 @@ LAYER
   END #CLASS
   CLASS
     NAME "Zone d'ancienne localité"
-    EXPRESSION /1401/
+    EXPRESSION "1401"
     STYLE
         COLOR  148 106 86
     END #STYLE
   END #CLASS
   CLASS
     NAME "Zone de centre ville"
-    EXPRESSION /1402/
+    EXPRESSION "1402"
     STYLE
         COLOR  148 106 86
     END #STYLE
   END #CLASS
   CLASS
     NAME "Zone de ville en damier"
-    EXPRESSION /1403/
+    EXPRESSION "1403"
     STYLE
         COLOR 148 106 86
     END
@@ -997,7 +997,7 @@ LAYER
   END #CLASS
   CLASS
     NAME "Zone de protection de l'ancienne localité"
-    EXPRESSION /1601/
+    EXPRESSION "1601"
     STYLE
         COLOR 122 82 67
     END
@@ -1010,35 +1010,35 @@ LAYER
   END #CLASS
   CLASS
     NAME "Zone de protection du patrimoine"
-    EXPRESSION /1602/
+    EXPRESSION "1602"
     STYLE
         COLOR  122 82 67
     END #STYLE
   END #CLASS
   CLASS
     NAME "Zone artisanale"
-    EXPRESSION /1204/
+    EXPRESSION "1204"
     STYLE
         COLOR  199 160 203
     END #STYLE
   END #CLASS
   CLASS
     NAME "Zone d'activités économiques"
-    expression /1201|1211/
+    EXPRESSION {1201,1211}
     STYLE
         COLOR 179 113 175
     END #STYLE
   END #CLASS
   CLASS
     NAME "Zone industrielle"
-    EXPRESSION /1202/
+    EXPRESSION "1202"
     STYLE
         COLOR  128 73 140
     END #STYLE
   END #CLASS
   CLASS
     NAME "Zone commerciale"
-    EXPRESSION /1203/
+    EXPRESSION "1203"
     STYLE
         COLOR 199 160 203
     END
@@ -1051,21 +1051,21 @@ LAYER
   END #CLASS
   CLASS
     NAME "Zone d'utilité publique"
-    EXPRESSION /1501/
+    EXPRESSION "1501"
     STYLE
         COLOR  157 159 162
     END #STYLE
   END #CLASS
   CLASS
     NAME "Zone d'utilité publique 1 - Constructible"
-    EXPRESSION /1511/
+    EXPRESSION "1511"
     STYLE
         COLOR  157 159 162
     END #STYLE
   END #CLASS
   CLASS
     NAME "Zone d'utilité publique 2 - À constructibilité restreinte"
-    EXPRESSION /1611/
+    EXPRESSION "1611"
     STYLE
         COLOR 138 200 101
     END #STYLE
@@ -1078,7 +1078,7 @@ LAYER
   END #CLASS
   CLASS
     NAME "Zone de verdure"
-    EXPRESSION /1603|1613/
+    EXPRESSION {1603,1613}
     STYLE
         COLOR 138 200 101
     END #STYLE
@@ -1091,35 +1091,35 @@ LAYER
   END #CLASS
   CLASS
     NAME "Zone de sports - détente - loisirs a"
-    EXPRESSION /1502/
+    EXPRESSION "1502"
     STYLE
         COLOR  100 125 190
     END #STYLE
   END #CLASS
   CLASS
     NAME "Zone de tourisme"
-    EXPRESSION /1701/
+    EXPRESSION "1701"
     STYLE
         COLOR  134 170 255
     END #STYLE
   END #CLASS
   CLASS
     NAME "Zone de fermes"
-    EXPRESSION /1901/
+    EXPRESSION "1901"
     STYLE
         COLOR  226 226 167
     END #STYLE
   END #CLASS
   CLASS
     NAME "Zone de chalets"
-    EXPRESSION /1902/
+    EXPRESSION "1902"
     STYLE
         COLOR  255 248 163
     END #STYLE
   END #CLASS
   CLASS
     NAME "Zone de constructions basses"
-    EXPRESSION /1113/
+    EXPRESSION "1113"
     STYLE
         SYMBOL "hatchsymbol"
         SIZE 4
@@ -1130,14 +1130,14 @@ LAYER
   END #CLASS
   CLASS
     NAME "Zone de transport"
-    EXPRESSION /1811/
+    EXPRESSION "1811"
     STYLE
         COLOR  209 210 212
     END #STYLE
   END #CLASS
   CLASS
     NAME "Zone de plan spécial a"
-    EXPRESSION /1114|1212|1312|1412|1512|1614|1712/
+    EXPRESSION {1114,1212,1312,1412,1512,1614,1712}
     STYLE
         SYMBOL "hatchsymbol"
         COLOR 88 88 90
@@ -1154,25 +1154,25 @@ LAYER
   END #CLASS
   CLASS
     NAME "Zone spéciale a"
-    EXPRESSION /1106|1205|1903/
+    EXPRESSION {1106,1205,1903}
     STYLE
         COLOR  88 88 90
     END #STYLE
   END #CLASS
   CLASS
     NAME "Autre zone à bâtir"
-    EXPRESSION /1911/
+    EXPRESSION "1911"
     STYLE
         COLOR 88 88 90
     END #STYLE
   END #CLASS
   CLASS
     NAME "Zone agricole / Aire forestière / Cours d'eau et étendue d'eau / Espace de transport"
-    EXPRESSION /2111/
+    EXPRESSION "2111"
   END
   CLASS
     NAME "Zone viticole"
-    EXPRESSION /2311/
+    EXPRESSION "2311"
     STYLE
         SYMBOL "hatchsymbol"
         SIZE 5
@@ -1183,7 +1183,7 @@ LAYER
   END #CLASS
   CLASS
     NAME "Zone de parcs éoliens"
-    EXPRESSION /4915/
+    EXPRESSION "4915"
     STYLE
         SYMBOL "hatchsymbol"
         SIZE 5
@@ -1194,14 +1194,14 @@ LAYER
   END #CLASS
   CLASS
     NAME "Zone de maintien de l'habitat rural"
-    EXPRESSION /4111/
+    EXPRESSION "4111"
     STYLE
         COLOR  242 203 133
     END #STYLE
   END #CLASS
   CLASS
     NAME "Zone de sports - détente - loisirs b"
-    EXPRESSION /4901/
+    EXPRESSION "4901"
     STYLE
         COLOR 138 200 101
     END #STYLE
@@ -1215,14 +1215,14 @@ LAYER
   END #CLASS
   CLASS
     NAME "Zone d'extraction de matériaux"
-    EXPRESSION /4912/
+    EXPRESSION "4912"
     STYLE
         COLOR  157 144 111
     END #STYLE
   END #CLASS
   CLASS
     NAME "Zone de traitement des déchets"
-    EXPRESSION /4902/
+    EXPRESSION "4902"
     STYLE
         COLOR  255 255 255
     END #STYLE
@@ -1234,7 +1234,7 @@ LAYER
   END #CLASS
   CLASS
     NAME "Zone de décharge"
-    EXPRESSION /4903/
+    EXPRESSION "4903"
     STYLE
         COLOR  255 255 255
     END #STYLE
@@ -1246,7 +1246,7 @@ LAYER
   END #CLASS
   CLASS
     NAME "Zone d'aérodrome"
-    EXPRESSION /4904/
+    EXPRESSION "4904"
     STYLE
         COLOR  209 210 212
         OUTLINECOLOR 88 88 90
@@ -1255,14 +1255,14 @@ LAYER
   END #CLASS
   CLASS
     NAME "Zone des terrains militaires"
-    EXPRESSION /4914/
+    EXPRESSION "4914"
     STYLE
         COLOR  102 102 51
     END #STYLE
   END #CLASS
   CLASS
     NAME "Zone de plan spécial b"
-    EXPRESSION /4917/
+    EXPRESSION "4917"
     STYLE
         SYMBOL "hatchsymbol"
         COLOR 88 88 90
@@ -1280,7 +1280,7 @@ LAYER
   END #CLASS
   CLASS
     NAME "Zone d'utilisation différée"
-    EXPRESSION /4311/
+    EXPRESSION "4311"
     STYLE
         SYMBOL "hatchsymbol"
         COLOR 88 88 90
@@ -1291,7 +1291,7 @@ LAYER
   END #CLASS
   CLASS
     NAME "Zone spéciale b"
-    EXPRESSION /4905/
+    EXPRESSION "4905"
     STYLE
         COLOR  88 88 90
     END #STYLE
@@ -1494,7 +1494,7 @@ LAYER
   CLASSITEM "codegenre"
   CLASS
     NAME "Pollué, investigation nécessaire"
-    EXPRESSION /9903/
+    EXPRESSION "9903"
     STYLE
         COLOR 0 0 255
         OUTLINECOLOR 0 0 0
@@ -1502,7 +1502,7 @@ LAYER
   END
   CLASS
     NAME "Pollué, pas d'atteinte nuisible ou incommodante à attendre"
-    EXPRESSION /9904/
+    EXPRESSION "9904"
     STYLE
         COLOR 255 255 0
         OUTLINECOLOR 0 0 0
@@ -1510,7 +1510,7 @@ LAYER
   END
   CLASS
     NAME "Pollué, ne nécessite ni surveillance ni assainissement"
-    EXPRESSION /9905/
+    EXPRESSION "9905"
     STYLE
         COLOR 255 204 0
         OUTLINECOLOR 0 0 0
@@ -1518,7 +1518,7 @@ LAYER
   END
   CLASS
     NAME "Pollué, nécessite une surveillance"
-    EXPRESSION /9906/
+    EXPRESSION "9906"
     STYLE
         COLOR 255 102 5
         OUTLINECOLOR 0 0 0
@@ -1526,7 +1526,7 @@ LAYER
   END
   CLASS
     NAME "Pollué, nécessite un assainissement"
-    EXPRESSION /9907/
+    EXPRESSION "9907"
     STYLE
         COLOR 255 0 0
         OUTLINECOLOR 0 0 0
@@ -1534,7 +1534,7 @@ LAYER
   END
   CLASS
     NAME "Pollué, nécessitée d'une investigation non encore évaluée"
-    EXPRESSION /9908/
+    EXPRESSION "9908"
     STYLE
         COLOR 95 95 95
         OUTLINECOLOR 0 0 0
@@ -1566,7 +1566,7 @@ LAYER
   CLASSITEM "codegenre"
   CLASS
     NAME "Pollué, investigation nécessaire"
-    EXPRESSION /9903/
+    EXPRESSION "9903"
     STYLE
         SYMBOL "circle"
         COLOR 0 0 255
@@ -1576,7 +1576,7 @@ LAYER
   END
   CLASS
     NAME "Pollué, pas d'atteinte nuisible ou incommodante à attendre"
-    EXPRESSION /9904/
+    EXPRESSION "9904"
     STYLE
         SYMBOL "circle"
         COLOR 255 255 0
@@ -1586,7 +1586,7 @@ LAYER
    END
    CLASS
     NAME "Pollué, ne nécessite ni surveillance ni assainissement"
-    EXPRESSION /9905/
+    EXPRESSION "9905"
     STYLE
         SYMBOL "circle"
         COLOR 255 204 0
@@ -1596,7 +1596,7 @@ LAYER
    END
    CLASS
     NAME "Pollué, nécessite une surveillance"
-    EXPRESSION /9906/
+    EXPRESSION "9906"
     STYLE
         SYMBOL "circle"
         COLOR 255 102 5
@@ -1606,7 +1606,7 @@ LAYER
    END
    CLASS
     NAME "Pollué, nécessite un assainissement"
-    EXPRESSION /9907/
+    EXPRESSION "9907"
     STYLE
         SYMBOL "circle"
         COLOR 255 0 0
@@ -1616,7 +1616,7 @@ LAYER
    END
    CLASS
     NAME "Pollué, nécessitée d'une investigation non encore évaluée"
-    EXPRESSION /9908/
+    EXPRESSION "9908"
     STYLE
         SYMBOL "circle"
         COLOR 95 95 95
@@ -1646,7 +1646,7 @@ LAYER
   CLASSITEM "codegenre"
   CLASS
     NAME "Pollué, investigation nécessaire"
-    EXPRESSION /9903/
+    EXPRESSION "9903"
     STYLE
         COLOR 0 0 255
         OUTLINECOLOR 0 0 0
@@ -1654,7 +1654,7 @@ LAYER
   END
   CLASS
     NAME "Pollué, pas d'atteinte nuisible ou incommodante à attendre"
-    EXPRESSION /9904/
+    EXPRESSION "9904"
     STYLE
         COLOR 255 255 0
         OUTLINECOLOR 0 0 0
@@ -1662,7 +1662,7 @@ LAYER
   END
   CLASS
     NAME "Pollué, ne nécessite ni surveillance ni assainissement"
-    EXPRESSION /9905/
+    EXPRESSION "9905"
     STYLE
         COLOR 255 204 0
         OUTLINECOLOR 0 0 0
@@ -1670,7 +1670,7 @@ LAYER
   END
   CLASS
     NAME "Pollué, nécessite une surveillance"
-    EXPRESSION /9906/
+    EXPRESSION "9906"
     STYLE
         COLOR 255 102 5
         OUTLINECOLOR 0 0 0
@@ -1678,7 +1678,7 @@ LAYER
   END
   CLASS
     NAME "Pollué, nécessite un assainissement"
-    EXPRESSION /9907/
+    EXPRESSION "9907"
     STYLE
         COLOR 255 0 0
         OUTLINECOLOR 0 0 0
@@ -1686,7 +1686,7 @@ LAYER
   END
   CLASS
     NAME "Pollué, nécessitée d'une investigation non encore évaluée"
-    EXPRESSION /9908/
+    EXPRESSION "9908"
     STYLE
         COLOR 95 95 95
         OUTLINECOLOR 0 0 0
@@ -1718,7 +1718,7 @@ LAYER
   CLASSITEM "codegenre"
   CLASS
     NAME "Pollué, investigation nécessaire"
-    EXPRESSION /9903/
+    EXPRESSION "9903"
     STYLE
         SYMBOL "circle"
         COLOR 0 0 255
@@ -1728,7 +1728,7 @@ LAYER
   END
   CLASS
     NAME "Pollué, pas d'atteinte nuisible ou incommodante à attendre"
-    EXPRESSION /9904/
+    EXPRESSION "9904"
     STYLE
         SYMBOL "circle"
         COLOR 255 255 0
@@ -1738,7 +1738,7 @@ LAYER
    END
    CLASS
     NAME "Pollué, ne nécessite ni surveillance ni assainissement"
-    EXPRESSION /9905/
+    EXPRESSION "9905"
     STYLE
         SYMBOL "circle"
         COLOR 255 204 0
@@ -1748,7 +1748,7 @@ LAYER
    END
    CLASS
     NAME "Pollué, nécessite une surveillance"
-    EXPRESSION /9906/
+    EXPRESSION "9906"
     STYLE
         SYMBOL "circle"
         COLOR 255 102 5
@@ -1758,7 +1758,7 @@ LAYER
    END
    CLASS
     NAME "Pollué, nécessite un assainissement"
-    EXPRESSION /9907/
+    EXPRESSION "9907"
     STYLE
         SYMBOL "circle"
         COLOR 255 0 0
@@ -1768,7 +1768,7 @@ LAYER
    END
    CLASS
     NAME "Pollué, nécessitée d'une investigation non encore évaluée"
-    EXPRESSION /9908/
+    EXPRESSION "9908"
     STYLE
         SYMBOL "circle"
         COLOR 95 95 95
@@ -1798,7 +1798,7 @@ LAYER
   CLASSITEM "codegenre"
   CLASS
     NAME "Pollué, investigation nécessaire"
-    EXPRESSION /9903/
+    EXPRESSION "9903"
     STYLE
         COLOR 0 0 255
         OUTLINECOLOR 0 0 0
@@ -1806,7 +1806,7 @@ LAYER
   END
   CLASS
     NAME "Pollué, pas d'atteinte nuisible ou incommodante à attendre"
-    EXPRESSION /9904/
+    EXPRESSION "9904"
     STYLE
         COLOR 255 255 0
         OUTLINECOLOR 0 0 0
@@ -1814,7 +1814,7 @@ LAYER
   END
   CLASS
     NAME "Pollué, ne nécessite ni surveillance ni assainissement"
-    EXPRESSION /9905/
+    EXPRESSION "9905"
     STYLE
         COLOR 255 204 0
         OUTLINECOLOR 0 0 0
@@ -1822,7 +1822,7 @@ LAYER
   END
   CLASS
     NAME "Pollué, nécessite une surveillance"
-    EXPRESSION /9906/
+    EXPRESSION "9906"
     STYLE
         COLOR 255 102 5
         OUTLINECOLOR 0 0 0
@@ -1830,7 +1830,7 @@ LAYER
   END
   CLASS
     NAME "Pollué, nécessite un assainissement"
-    EXPRESSION /9907/
+    EXPRESSION "9907"
     STYLE
         COLOR 255 0 0
         OUTLINECOLOR 0 0 0
@@ -1838,7 +1838,7 @@ LAYER
   END
   CLASS
     NAME "Pollué, nécessitée d'une investigation non encore évaluée"
-    EXPRESSION /9908/
+    EXPRESSION "9908"
     STYLE
         COLOR 95 95 95
         OUTLINECOLOR 0 0 0
@@ -1865,7 +1865,7 @@ LAYER
   CLASSITEM "codegenre"
   CLASS
     NAME "Pollué, investigation nécessaire"
-    EXPRESSION /9903/
+    EXPRESSION "9903"
     STYLE
         COLOR 0 0 255
         OUTLINECOLOR 0 0 0
@@ -1873,7 +1873,7 @@ LAYER
   END
   CLASS
     NAME "Pollué, pas d'atteinte nuisible ou incommodante à attendre"
-    EXPRESSION /9904/
+    EXPRESSION "9904"
     STYLE
         COLOR 255 255 0
         OUTLINECOLOR 0 0 0
@@ -1881,7 +1881,7 @@ LAYER
   END
   CLASS
     NAME "Pollué, ne nécessite ni surveillance ni assainissement"
-    EXPRESSION /9905/
+    EXPRESSION "9905"
     STYLE
         COLOR 255 204 0
         OUTLINECOLOR 0 0 0
@@ -1889,7 +1889,7 @@ LAYER
   END
   CLASS
     NAME "Pollué, nécessite une surveillance"
-    EXPRESSION /9906/
+    EXPRESSION "9906"
     STYLE
         COLOR 255 102 5
         OUTLINECOLOR 0 0 0
@@ -1897,7 +1897,7 @@ LAYER
   END
   CLASS
     NAME "Pollué, nécessite un assainissement"
-    EXPRESSION /9907/
+    EXPRESSION "9907"
     STYLE
         COLOR 255 0 0
         OUTLINECOLOR 0 0 0
@@ -1905,7 +1905,7 @@ LAYER
   END
   CLASS
     NAME "Pollué, nécessitée d'une investigation non encore évaluée"
-    EXPRESSION /9908/
+    EXPRESSION "9908"
     STYLE
         COLOR 95 95 95
         OUTLINECOLOR 0 0 0
@@ -1932,7 +1932,7 @@ LAYER
   CLASSITEM "codegenre"
   CLASS
    NAME "Zone de protection des eaux souterraines S1"
-   EXPRESSION /S1/
+   EXPRESSION "S1"
    STYLE
         COLOR 0 59 179
         OUTLINECOLOR 0 0 128
@@ -1940,7 +1940,7 @@ LAYER
   END
   CLASS
    NAME "Types de zones de protection non prévus par le droit fédéral, S2 à efficacité limitée"
-   EXPRESSION /S2EL/
+   EXPRESSION "S2EL"
    STYLE
         COLOR 64 124 184
         OUTLINECOLOR 0 0 0
@@ -1948,7 +1948,7 @@ LAYER
   END
   CLASS
    NAME "Zone de protection des eaux souterraines S2"
-   EXPRESSION /S2/
+   EXPRESSION "S2"
    STYLE
         COLOR 51 136 255
         OUTLINECOLOR 0 0 128
@@ -1956,7 +1956,7 @@ LAYER
   END
   CLASS
    NAME "Aire d'alimentation Zu au lieu de S3 ou Sm"
-   EXPRESSION /S3Zu/
+   EXPRESSION "S3Zu"
    STYLE
         COLOR 179 210 255
         OUTLINECOLOR 0 0 128
@@ -1970,7 +1970,7 @@ LAYER
   END
   CLASS
     NAME "Zone de protection des eaux souterraines S3"
-    EXPRESSION /S3/
+    EXPRESSION "S3"
     STYLE
         COLOR 179 210 255
         OUTLINECOLOR 0 0 128
@@ -1996,7 +1996,7 @@ LAYER
   CLASSITEM "teneur"
   CLASS
     NAME "Périmètre de protection"
-    EXPRESSION /areal/
+    EXPRESSION "areal"
     STYLE
         COLOR 108 86 116
         OUTLINECOLOR 46 21 53
@@ -2010,7 +2010,7 @@ LAYER
   END
   CLASS
     NAME "Future zone S1"
-    EXPRESSION /secteur Au/
+    EXPRESSION "secteur Au"
     STYLE
         COLOR 255 0 0
         OUTLINECOLOR 255 0 0
@@ -2019,7 +2019,7 @@ LAYER
   END
   CLASS
     NAME "Future zone s2"
-    EXPRESSION /secteur Ao/
+    EXPRESSION "secteur Ao"
     STYLE
         COLOR 255 218 191
         OUTLINECOLOR 255 218 191
@@ -2047,7 +2047,7 @@ LAYER
   TEMPLATE "ttt"
   CLASS
     NAME "Degré de sensibilité IV"
-    EXPRESSION /DS_IV/
+    EXPRESSION "DS_IV"
     STYLE
         COLOR 230 0 0
         # OUTLINECOLOR 0 0 0
@@ -2055,7 +2055,7 @@ LAYER
   END
   CLASS
     NAME "Degré de sensibilité III"
-    EXPRESSION /DS_III/
+    EXPRESSION "DS_III"
     STYLE
         COLOR 255 77 0
         # OUTLINECOLOR 0 0 0
@@ -2063,7 +2063,7 @@ LAYER
   END
   CLASS
     NAME "Degré de sensibilité II"
-    EXPRESSION /DS_II/
+    EXPRESSION "DS_II"
     STYLE
         COLOR 255 166 0
         # OUTLINECOLOR 0 0 0
@@ -2071,7 +2071,7 @@ LAYER
   END
   CLASS
     NAME "Degré de sensibilité I"
-    EXPRESSION /DS_I/
+    EXPRESSION "DS_I"
     STYLE
         COLOR 255 242 0
         # OUTLINECOLOR 0 0 0
@@ -2097,7 +2097,7 @@ LAYER
   CLASSITEM "codegenre"
   CLASS
     NAME "Limite forestière statique"
-    EXPRESSION /llf/
+    EXPRESSION "llf"
     STYLE
       WIDTH 2
       COLOR 230 0 0
@@ -2127,7 +2127,7 @@ LAYER
   CLASSITEM "codegenre"
   CLASS
     NAME "Distance par rapport à la forêt"
-    EXPRESSION /7105/
+    EXPRESSION "7105"
     STYLE
         PATTERN 8 4 1 4 END
         WIDTH 2
@@ -2322,160 +2322,160 @@ LAYER
     MAXSCALEDENOM 1000000000
     CLASSITEM "libgeo"
     CLASS
-        EXPRESSION /Lucerne/
+        EXPRESSION "Lucerne"
         STYLE
             COLOR 255 255 255
         END
     END
     CLASS
-        EXPRESSION /Berne/
+        EXPRESSION "Berne"
         STYLE
             COLOR 160 160 160
         END
     END
     CLASS
-        EXPRESSION /Fribourg/
+        EXPRESSION "Fribourg"
         STYLE
             COLOR 240 240 240
         END
     END
     CLASS
-        EXPRESSION /Vaud/
+        EXPRESSION "Vaud"
         STYLE
             COLOR 192 192 192
         END
     END
     CLASS
-        EXPRESSION ('[libgeo]' eq 'Jura (CH)')
+        EXPRESSION "Jura (CH)"
         STYLE
             COLOR 190 190 190
         END
     END
     CLASS
-        EXPRESSION /Neuchâtel/
+        EXPRESSION "Neuchâtel"
     END
     CLASS
-        EXPRESSION /Valais/
+        EXPRESSION "Valais"
         STYLE
             COLOR 120 120 120
         END
     END
     CLASS
-        EXPRESSION /Genève/
+        EXPRESSION "Genève"
         STYLE
             COLOR 220 220 220
         END
     END
     CLASS
-        EXPRESSION /Zürich/
+        EXPRESSION "Zürich"
         STYLE
             COLOR 130 130 130
         END
     END
     CLASS
-        EXPRESSION /Uri/
+        EXPRESSION "Uri"
         STYLE
             COLOR 220 220 220
         END
     END
     CLASS
-        EXPRESSION /Schwyz/
+        EXPRESSION "Schwyz"
         STYLE
             COLOR 100 100 100
         END
     END
     CLASS
-        EXPRESSION /Obwald/
+        EXPRESSION "Obwald"
         STYLE
             COLOR 200 200 200
         END
     END
     CLASS
-        EXPRESSION /Glaris/
+        EXPRESSION "Glaris"
         STYLE
             COLOR 190 190 190
         END
     END
     CLASS
-        EXPRESSION /Niedwald/
+        EXPRESSION "Niedwald"
         STYLE
             COLOR 150 150 150
         END
     END
     CLASS
-        EXPRESSION /Zoug/
+        EXPRESSION "Zoug"
         STYLE
             COLOR 200 200 200
         END
     END
     CLASS
-        EXPRESSION /Soleure/
+        EXPRESSION "Soleure"
         STYLE
             COLOR 130 130 130
         END
     END
     CLASS
-        EXPRESSION /St-Gall/
+        EXPRESSION "St-Gall"
         STYLE
             COLOR 190 190 190
         END
     END
     CLASS
-        EXPRESSION /Argovie/
+        EXPRESSION "Argovie"
         STYLE
             COLOR 180 180 180
         END
     END
     CLASS
-        EXPRESSION /Schaffouse/
+        EXPRESSION "Schaffouse"
         STYLE
             COLOR 160 160 160
         END
     END
     CLASS
-        EXPRESSION /Bâle Ville/
+        EXPRESSION "Bâle Ville"
         STYLE
             COLOR 220 220 220
         END
     END
     CLASS
-        EXPRESSION /Bâle Campagne/
+        EXPRESSION "Bâle Campagne"
         STYLE
             COLOR 230 230 230
         END
     END
     CLASS
-        EXPRESSION /Thurgovie/
+        EXPRESSION "Thurgovie"
         STYLE
             COLOR 230 230 230
         END
     END
     CLASS
-        EXPRESSION /Tessin/
+        EXPRESSION "Tessin"
         STYLE
             COLOR 180 180 180
         END
     END
     CLASS
-        EXPRESSION /Grisons/
+        EXPRESSION "Grisons"
         STYLE
             COLOR 120 120 120
         END
     END
     CLASS
-        EXPRESSION /Appenzell Ausserrhoden/
+        EXPRESSION "Appenzell Ausserrhoden"
         STYLE
             COLOR 220 220 220
         END
     END
     CLASS
-        EXPRESSION /Appenzell Innerrhoden/
+        EXPRESSION "Appenzell Innerrhoden"
         STYLE
             COLOR 140 140 140
         END
     END
     CLASS
-        EXPRESSION /Doubs/
+        EXPRESSION "Doubs"
         STYLE
             COLOR 255 255 255
             OUTLINECOLOR 200 200 200
